@@ -1,9 +1,7 @@
-"use client"
-
 import * as React from "react"
 
 export default function Home() {
   return (
-    <div>You in Home page</div>
+    <div>Hello</div>
   )
 }
