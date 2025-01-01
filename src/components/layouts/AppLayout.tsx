@@ -10,7 +10,7 @@ import {
 } from "@/components/shadcn/ui/breadcrumb"
 import {LayoutProps} from "@/interfaces"
 
-export default function Layout({ children }: LayoutProps) {
+export default function AppLayout({ children }: LayoutProps) {
 	return (
 		<SidebarProvider>
 			<AppSidebar />
