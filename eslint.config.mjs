@@ -11,13 +11,37 @@ const compat = new FlatCompat({
   baseDirectory: __dirname
 });
 
+// Сортировки
+const alphabetical = [
+  'error',
+  { order: 'asc', type: 'alphabetical' },
+]
+const lineLength = [
+  'error',
+  { order: 'asc', type: 'line-length' },
+]
+
 const perfectionistConfig = {
   plugins: { perfectionist, },
   rules: {
-    'perfectionist/sort-imports': [
+    'perfectionist/sort-array-includes': alphabetical, // Сортировка массивов
+    'perfectionist/sort-classes': alphabetical,        // Сортировка всего (?) в классе
+    'perfectionist/sort-enums': lineLength,            // Сортировка enum
+    'perfectionist/sort-exports': lineLength,          // Сортировка экспортов
+    'perfectionist/sort-imports': [                    // Сортировка импортов
       'error',
-      { type: 'line-length', order: 'asc', },
+      { newlinesBetween: 'always', order: 'asc', partitionByComment: true, type: 'line-length' },
     ],
+    'perfectionist/sort-interfaces': lineLength,            // Сортировка интерфейсов
+    'perfectionist/sort-intersection-types': lineLength,    // Сортировка наследования типов
+    'perfectionist/sort-jsx-props': lineLength,             // Сортировка пропсов
+    'perfectionist/sort-maps': lineLength,                  // Сортировка Map
+    'perfectionist/sort-named-exports': lineLength,         // Сортировка экспортов
+    'perfectionist/sort-named-imports': lineLength,         // Сортировка имён импортов
+    'perfectionist/sort-objects': alphabetical,             // Сортировка объектов
+    'perfectionist/sort-switch-case': alphabetical,         // Сортировка switch-case
+    'perfectionist/sort-union-types': alphabetical,         // Сортировка union типов
+    'perfectionist/sort-variable-declarations': lineLength, // Сортировка объявления переменных
   },
 }
 
