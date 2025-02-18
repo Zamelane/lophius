@@ -1,12 +1,4 @@
-# shadcn/ui monorepo template
-
-This template is for creating a monorepo with shadcn/ui.
-
-## Usage
-
-```bash
-pnpm dlx shadcn@latest init
-```
+# Дипломный проект
 
 ## Adding components
 
