@@ -4,7 +4,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { PanelLeft } from "lucide-react"
 import { Slot } from "@radix-ui/react-slot"
-import { Input } from "@/components/ui/input"
+import {Input} from "@/components/ui/input";
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Skeleton } from "@/components/ui/skeleton"

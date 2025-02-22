@@ -4,5 +4,20 @@
   },
   "Test": {
     "title": "Тестовая страница"
+  },
+  "LoginPage": {
+    "title": "Страница входа",
+    "welcome_title": "Добро пожаловать",
+    "welcome_description": "Войдите используя ваш логин и пароль",
+    "login_field_title": "Логин",
+    "password_field_title": "Пароль",
+    "forgot_password": "Забыли пароль?",
+    "login": "Войти",
+    "dont_have_account": "Нет аккаунта?",
+    "sign_up": "Создать",
+    "by_clicking_continue": "Продолжая, вы принимаете",
+    "terms_of_service": "пользовательское соглашение",
+    "and": "и",
+    "privacy_policy": "политику конфиденциальности"
   }
 }
