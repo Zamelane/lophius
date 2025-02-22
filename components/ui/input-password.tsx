@@ -12,11 +12,13 @@ export default function InputPassword({
 	least8characters,
 	mediumPassword,
 	mustContain,
+	name,
 	required,
 	strongPassword,
 	weakPassword
 }: {
 	id: string|undefined,
+	name: string,
 	required?: boolean
 	least8characters: string,
 	least1number: string,
@@ -74,6 +76,7 @@ export default function InputPassword({
 				<div className="relative">
 					<InputCustom
 						id={id}
+						name={name}
 						className="pe-9"
 						value={password}
 						required={required}

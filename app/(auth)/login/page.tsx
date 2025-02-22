@@ -2,9 +2,9 @@ import Link from "next/link";
 import {useTranslations} from "next-intl";
 import {MetadataProps} from "@/interfaces";
 import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
 import {getTranslations} from "next-intl/server";
 import {InputCustom} from "@/components/ui/input-custom";
+import LoadingButton from "@/components/ui/loading-button";
 import {
   Card,
   CardTitle,
@@ -25,7 +25,9 @@ export async function generateMetadata(props: MetadataProps) {
 }
 
 export default function LoginPage() {
+  'use client'
   const t = useTranslations('LoginPage')
+
   return (
     <div className={"flex flex-col gap-6"}>
       <Card>
@@ -63,9 +65,7 @@ export default function LoginPage() {
                     placeholder="•••"
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  {t('login')}
-                </Button>
+                <LoadingButton type="submit" text={t('login')}/>
               </div>
               <div className="text-center text-sm">
                 {t('dont_have_account')}{" "}
