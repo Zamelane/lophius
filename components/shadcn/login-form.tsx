@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils"
-import {Input} from "@/components/ui/input";
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import {Input} from "@/components/shadcn/ui/input";
+import { Label } from "@/components/shadcn/ui/label"
+import { Button } from "@/components/shadcn/ui/button"
 import {
   Card,
   CardTitle,
   CardHeader,
   CardContent,
   CardDescription,
-} from "@/components/ui/card"
+} from "@/components/shadcn/ui/card"
 
 // TODO: можно удалить файл, наверное
 export function LoginForm({

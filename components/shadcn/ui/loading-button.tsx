@@ -1,6 +1,6 @@
 import {MouseEventHandler} from "react";
 import {LoaderCircle} from "lucide-react";
-import CustomButton from "@/components/ui/custom-button";
+import CustomButton from "@/components/shadcn/ui/custom-button";
 
 export default function LoadingButton({
 	isDisabled,

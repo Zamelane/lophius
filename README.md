@@ -39,3 +39,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ```env
 DB_URL=postgres://user:password@ip:port/databaseName
 ```
+
+## session key
+```env
+SESSION_SECRET=your_secret_key # openssl rand -base64 32
+```

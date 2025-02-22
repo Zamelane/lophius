@@ -13,7 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/shadcn/ui/dropdown-menu"
 import {
   useSidebar,
   SidebarMenu,
@@ -22,7 +22,7 @@ import {
   SidebarGroupLabel,
   SidebarMenuAction,
   SidebarMenuButton,
-} from "@/components/ui/sidebar"
+} from "@/components/shadcn/ui/sidebar"
 
 export function NavProjects({
   projects,

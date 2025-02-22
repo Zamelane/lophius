@@ -1,4 +1,4 @@
-import {bigserial, pgTable, varchar} from "drizzle-orm/pg-core";
+import {pgTable, varchar, bigserial} from "drizzle-orm/pg-core";
 
 const usersTable = pgTable('users', {
   id: bigserial({ mode: 'number' }).primaryKey(),

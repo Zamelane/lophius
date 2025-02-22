@@ -4,7 +4,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from "@/components/ui/avatar"
+} from "@/components/shadcn/ui/avatar"
 import {
   Bell,
   LogOut,
@@ -18,7 +18,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from "@/components/ui/sidebar"
+} from "@/components/shadcn/ui/sidebar"
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -27,7 +27,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/shadcn/ui/dropdown-menu"
 
 export function NavUser({
   user,

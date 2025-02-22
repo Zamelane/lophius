@@ -1,8 +1,8 @@
 'use client';
 import {useId} from "react";
 import * as React from "react";
-import {InputCustom} from "@/components/ui/input-custom";
-import {useCharacterLimit} from "@/components/ui/input-limit/use-character-limit";
+import {InputCustom} from "@/components/shadcn/ui/input-custom";
+import {useCharacterLimit} from "@/components/shadcn/ui/input-limit/use-character-limit";
 
 export default function InputLimit({...props}) {
 	const id = useId();

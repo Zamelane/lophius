@@ -1,14 +1,14 @@
 'use client'
 import Link from "next/link";
 import {useActionState} from "react";
-import {signup} from "@/actions/auth";
+import {signup} from "@/actions/signup";
 import {useTranslations} from "next-intl";
-import {Label} from "@/components/ui/label";
-import InputLimit from "@/components/ui/input-limit";
-import {InputCustom} from "@/components/ui/input-custom";
-import InputPassword from "@/components/ui/input-password";
-import LoadingButton from "@/components/ui/loading-button";
-import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/ui/card";
+import {Label} from "@/components/shadcn/ui/label";
+import InputLimit from "../shadcn/ui/input-limit";
+import {InputCustom} from "@/components/shadcn/ui/input-custom";
+import InputPassword from "@/components/shadcn/ui/input-password";
+import LoadingButton from "@/components/shadcn/ui/loading-button";
+import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/shadcn/ui/card";
 
 export default function SignupForm() {
 	const t = useTranslations('SignupPage')

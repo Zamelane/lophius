@@ -1,7 +1,7 @@
 'use client';
 import {useMemo, useState} from "react";
 import {X, Eye, Check, EyeOff} from "lucide-react";
-import {InputCustom} from "@/components/ui/input-custom";
+import {InputCustom} from "@/components/shadcn/ui/input-custom";
 
 export default function InputPassword({
 	enterAPassword,

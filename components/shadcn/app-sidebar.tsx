@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
-import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
+import { NavMain } from "@/components/shadcn/nav-main"
+import { NavUser } from "@/components/shadcn/nav-user"
+import { NavProjects } from "@/components/shadcn/nav-projects"
+import { NavSecondary } from "@/components/shadcn/nav-secondary"
 import {
   Bot,
   Map,
@@ -25,7 +25,7 @@ import {
   SidebarContent,
   SidebarMenuItem,
   SidebarMenuButton,
-} from "@/components/ui/sidebar"
+} from "@/components/shadcn/ui/sidebar"
 
 const data = {
   navMain: [

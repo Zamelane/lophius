@@ -1,7 +1,7 @@
 import {LayoutProps} from "@/interfaces";
-import {SiteHeader} from "@/components/site-header";
-import {AppSidebar} from "@/components/app-sidebar";
-import {SidebarInset, SidebarProvider} from "@/components/ui/sidebar";
+import {SiteHeader} from "@/components/shadcn/site-header";
+import {AppSidebar} from "@/components/shadcn/app-sidebar";
+import {SidebarInset, SidebarProvider} from "@/components/shadcn/ui/sidebar";
 
 export default function AppLayout({ children }: LayoutProps) {
 	return (

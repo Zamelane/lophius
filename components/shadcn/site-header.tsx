@@ -1,12 +1,12 @@
 "use client"
 
 import { SidebarIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useSidebar } from "@/components/ui/sidebar"
-import { SearchForm } from "@/components/search-form"
-import { Separator } from "@/components/ui/separator"
-import { ModeToggle } from "@/components/ui/themes-toggle";
-import BreadcrumbLogic from "@/components/breadcrumb-logic"
+import { Button } from "@/components/shadcn/ui/button"
+import { useSidebar } from "@/components/shadcn/ui/sidebar"
+import { SearchForm } from "@/components/shadcn/search-form"
+import { Separator } from "@/components/shadcn/ui/separator"
+import { ModeToggle } from "@/components/shadcn/ui/themes-toggle";
+import BreadcrumbLogic from "@/components/shadcn/breadcrumb-logic"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()

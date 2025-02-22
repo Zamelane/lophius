@@ -9,7 +9,7 @@ import {
 	BreadcrumbPage,
 	BreadcrumbEllipsis,
 	BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/shadcn/ui/breadcrumb"
 
 const MAX_BREADCRUMB_LENGTH: number = 3;
 
@@ -23,7 +23,7 @@ const BreadcrumbLogic = () => {
 		<Breadcrumb className="hidden sm:block">
 			<BreadcrumbList>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/">{t('HomePage.title')}</BreadcrumbLink>
+					<BreadcrumbLink href="/public">{t('HomePage.title')}</BreadcrumbLink>
 				</BreadcrumbItem>
 				{pathNames.length > MAX_BREADCRUMB_LENGTH && <BreadcrumbEllipsis />}
 				{pathNames.slice(-MAX_BREADCRUMB_LENGTH).map((link, index) => {
