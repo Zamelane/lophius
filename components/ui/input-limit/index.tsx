@@ -1,7 +1,7 @@
 'use client';
 import {useId} from "react";
 import * as React from "react";
-import {Input} from "@/components/ui/input-limit/input";
+import {InputCustom} from "@/components/ui/input-custom";
 import {useCharacterLimit} from "@/components/ui/input-limit/use-character-limit";
 
 export default function InputLimit({...props}) {
@@ -16,7 +16,7 @@ export default function InputLimit({...props}) {
 	
 	return (
 		<div className="relative">
-			<Input
+			<InputCustom
 				id={id}
 				type="text"
 				value={value}

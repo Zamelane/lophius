@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {useTranslations} from "next-intl";
 import {MetadataProps} from "@/interfaces";
 import {Input} from "@/components/ui/input";
@@ -5,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import {getTranslations} from "next-intl/server";
 import InputLimit from "@/components/ui/input-limit";
+import InputPassword from "@/components/ui/input-password";
 import {
   Card,
   CardTitle,
@@ -12,11 +14,12 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card"
+import {InputCustom} from "@/components/ui/input-custom";
 
 export async function generateMetadata(props: MetadataProps) {
   const t = await getTranslations({
     locale: (await props.params).locale,
-    namespace: 'LoginPage'
+    namespace: 'SignupPage'
   })
 
   return {
@@ -25,7 +28,7 @@ export async function generateMetadata(props: MetadataProps) {
 }
 
 export default function LoginPage() {
-  const t = useTranslations('LoginPage')
+  const t = useTranslations('SignupPage')
   return (
     <div className={"flex flex-col gap-6"}>
       <Card>
@@ -38,34 +41,47 @@ export default function LoginPage() {
             <div className="grid gap-6">
               <div className="grid gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="login">{t('login_field_title')}</Label>
-                  <Input
+                  <Label htmlFor="nickname">{t('nickname_field_title')}</Label>
+                  <InputLimit
                     required
-                    id="login"
                     type="text"
+                    id="nickname"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">{t('password_field_title')}</Label>
-                    <a
-                      href="#"
-                      className="ml-auto text-sm underline-offset-4 hover:underline"
-                    >
-                      {t('forgot_password')}
-                    </a>
-                  </div>
-                  <Input required id="password" type="password" />
+                  <Label htmlFor="email">{t('email_field_title')}</Label>
+                  <InputCustom
+                    required
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">{t('password_field_title')}</Label>
+                  <InputPassword
+                    required
+                    id="password"
+                    mustContain={t('must_contain')}
+                    weakPassword={t('weak_password')}
+                    least1number={t('at_least_1_number')}
+                    mediumPassword={t('medium_password')}
+                    strongPassword={t('strong_password')}
+                    enterAPassword={t('enter_a_password')}
+                    least1lowercase={t('at_least_1_lowercase')}
+                    least1uppercase={t('at_least_1_uppercase')}
+                    least8characters={t('at_least_8_characters')}
+                  />
                 </div>
                 <Button type="submit" className="w-full">
-                  {t('login')}
+                  {t('signup')}
                 </Button>
               </div>
               <div className="text-center text-sm">
-                {t('dont_have_account')}{" "}
-                <a href="#" className="underline underline-offset-4">
-                  {t('sign_up')}
-                </a>
+                {t('have_account')}{" "}
+                <Link href="/login" className="underline underline-offset-4">
+                  {t('sign_in')}
+                </Link>
               </div>
             </div>
           </form>
