@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {useTranslations} from "next-intl";
 import {MetadataProps} from "@/interfaces";
-import { Label } from "@/components/shadcn/ui/label"
 import {getTranslations} from "next-intl/server";
+import { Label } from "@/components/shadcn/ui/label"
 import {InputCustom} from "@/components/shadcn/ui/input-custom";
 import LoadingButton from "@/components/shadcn/ui/loading-button";
 import {

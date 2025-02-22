@@ -2,8 +2,8 @@ import "./globals.css"
 
 import * as React from "react";
 import {LayoutProps} from "@/interfaces";
-import {Toaster} from "@/components/shadcn/ui/sonner";
 import {NextIntlClientProvider} from "next-intl";
+import {Toaster} from "@/components/shadcn/ui/sonner";
 import {getLocale, getMessages} from "next-intl/server";
 import {ThemeProvider} from "@/components/theme-provider";
 
