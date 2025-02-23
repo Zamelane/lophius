@@ -1,9 +1,10 @@
 'use client'
 import Link from "next/link";
-import {useActionState} from "react";
+import {toast} from "sonner";
 import {signup} from "@/actions/signup";
 import {useTranslations} from "next-intl";
 import {Label} from "@/components/shadcn/ui/label";
+import React, {useState, useActionState} from "react";
 import {InputCustom} from "@/components/shadcn/ui/input-custom";
 import InputPassword from "@/components/shadcn/ui/input-password";
 import LoadingButton from "@/components/shadcn/ui/loading-button";
@@ -13,8 +14,28 @@ import InputLimit from "../shadcn/ui/input-limit";
 
 export default function SignupForm() {
 	const t = useTranslations('SignupPage')
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const t_api = useTranslations('Api')
 	const [state, action, pending] = useActionState(signup, undefined)
+	const [getEmail, setEmail] = useState("")
+	const [getErrorsNames, setErrorsNames] = useState<string[]>([])
+
+	function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
+		setEmail(e.target.value)
+	}
+
+	React.useEffect(() => {
+		if (!state)
+			return;
+
+		if (state?.message)
+			toast(t_api(state?.message))
+		else {
+			Object.values(state?.errors ?? [])
+				.map((error) => [...(Array.isArray(error) ? error : [error])].map((api_t_key) => toast(t_api(api_t_key))))
+			setErrorsNames(Object.keys((state?.errors ?? [])))
+			console.log(Object.keys((state?.errors ?? [])))
+		}
+	}, [state, t_api]);
 
 	return (
 		<div className={"flex flex-col gap-6"}>
@@ -33,7 +54,9 @@ export default function SignupForm() {
 										required
 										type="text"
 										id="nickname"
+										maxLength={15}
 										name="nickname"
+										className={getErrorsNames.includes("nickname") ? "border-red-500" : ""}
 									/>
 								</div>
 								<div className="grid gap-2">
@@ -43,7 +66,10 @@ export default function SignupForm() {
 										id="email"
 										name="email"
 										type="email"
+										value={getEmail}
 										placeholder="m@example.com"
+										onChange={handleChangeEmail}
+										className={getErrorsNames.includes("email") ? "border-red-500" : ""}
 									/>
 								</div>
 								<div className="grid gap-2">
@@ -61,6 +87,7 @@ export default function SignupForm() {
 										least1lowercase={t('at_least_1_lowercase')}
 										least1uppercase={t('at_least_1_uppercase')}
 										least8characters={t('at_least_8_characters')}
+										className={getErrorsNames.includes("password") ? "border-red-500" : ""}
 									/>
 								</div>
 								<LoadingButton

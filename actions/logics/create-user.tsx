@@ -1,5 +1,6 @@
 import {db} from "@/db";
 import bcrypt from "bcrypt";
+import {api_t_keys} from "@/i18n";
 import {eq, or} from "drizzle-orm";
 import {usersTable} from "@/db/tables";
 
@@ -11,23 +12,38 @@ export default async function CreateUser({
 	nickname: string,
 	email: string,
 	password: string
-}) {
+}): Promise<{
+	id?: number
+	message?: string
+	errors?: {
+		nickname?: string | string[]
+		email?: string | string[]
+	}
+}> {
 	const alreadyExistsMessage = await db
 		.select()
 		.from(usersTable)
 		.where(or(
 			eq(usersTable.email, email),
-			eq(usersTable.password, password)
+			eq(usersTable.nickname, nickname)
 		))
 		.then((r) => {
 			if (r.length == 0)
 				return null
 
 			if (r[0].email === email)
-				return 'Email already exists'
+				return {
+					errors: {
+						email: api_t_keys.email_is_already_in_use_by_a_different_user
+					}
+				}
 
 			if (r[0].nickname === nickname)
-				return 'Nickname already exists'
+				return {
+					errors: {
+						nickname: api_t_keys.nickname_already_in_use
+					}
+				}
 		})
 
 	if (alreadyExistsMessage)
@@ -45,7 +61,12 @@ export default async function CreateUser({
 			password: hashedPassword,
 		})
 		.returning({ id: usersTable.id })
-		.catch(() => ('Error ...'))
+		.catch((e) => {
+			console.error(e)
+			return {
+				message: api_t_keys.error
+			}
+		})
 
 	if (!Array.isArray(data))
 		return data

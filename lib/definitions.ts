@@ -1,18 +1,22 @@
 import { z } from 'zod'
+import {api_t_keys} from "@/i18n";
 
 export const SignupFormSchema = z.object({
-	email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
+	email: z.string()
+		.trim()
+		.email({ message: api_t_keys.please_enter_a_valid_email })
+		.max(255),
 	nickname: z
 		.string()
-		.min(2, { message: 'Nickname must be at least 2 characters long.' })
-		.trim(),
+		.trim()
+		.min(2, { message: api_t_keys.nickname_must_be_at_least_2_characters_long }),
 	password: z
 		.string()
-		.min(8, { message: 'Be at least 8 characters long' })
-		.regex(/[a-z]/, { message: 'Contain at least one letter1.' })
-		.regex(/[A-Z]/, { message: 'Contain at least one letter2.' })
-		.regex(/[0-9]/, { message: 'Contain at least one number.' })
-		.trim(),
+		.trim()
+		.min(8, { message: api_t_keys.password_at_least_8_characters })
+		.regex(/[a-z]/, { message: api_t_keys.password_at_least_1_lowercase })
+		.regex(/[A-Z]/, { message: api_t_keys.password_at_least_1_uppercase })
+		.regex(/[0-9]/, { message: api_t_keys.password_at_least_1_number }),
 })
 
 export type FormState =

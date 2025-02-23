@@ -4,15 +4,18 @@ import * as React from "react";
 import {InputCustom} from "@/components/shadcn/ui/input-custom";
 import {useCharacterLimit} from "@/components/shadcn/ui/input-limit/use-character-limit";
 
-export default function InputLimit({...props}) {
+interface InputLimitProps extends React.InputHTMLAttributes<HTMLInputElement> {
+	maxLength?: number;
+}
+
+export default function InputLimit({ maxLength, ...props }: InputLimitProps) {
 	const id = useId();
-	const maxLength = 50;
 	const {
 		characterCount,
 		handleChange,
 		maxLength: limit,
 		value,
-	} = useCharacterLimit({maxLength});
+	} = useCharacterLimit({maxLength: maxLength ?? 50});
 	
 	return (
 		<div className="relative">

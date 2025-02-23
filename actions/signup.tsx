@@ -24,10 +24,8 @@ export async function signup(state: FormState, formData: FormData) {
 
 	const user = await CreateUser({ email, nickname, password })
 
-	if (typeof user === 'string')
-		return {
-			message: user
-		}
+	if (!user.id)
+		return user
 
 	// 4. Create user session
 	await createSession(user.id.toString())

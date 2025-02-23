@@ -1,9 +1,11 @@
 'use client';
+import {cn} from "@/lib/utils";
 import {useMemo, useState} from "react";
 import {X, Eye, Check, EyeOff} from "lucide-react";
 import {InputCustom} from "@/components/shadcn/ui/input-custom";
 
 export default function InputPassword({
+	className,
 	enterAPassword,
 	id,
 	least1lowercase,
@@ -28,7 +30,8 @@ export default function InputPassword({
 	enterAPassword: string,
 	weakPassword: string,
 	mediumPassword: string,
-	strongPassword: string
+	strongPassword: string,
+	className: string
 }) {
 	const [password, setPassword] = useState("");
 	const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -77,14 +80,14 @@ export default function InputPassword({
 					<InputCustom
 						id={id}
 						name={name}
-						className="pe-9"
 						value={password}
 						required={required}
 						placeholder="Password"
 						aria-invalid={strengthScore < 4}
+						className={cn("pe-9", className)}
 						type={isVisible ? "text" : "password"}
 						aria-describedby={`${id}-description`}
-						onChange={(e) => setPassword(e.target.value)}
+						onChange={(e) => setPassword(e.target.value.trim())}
 					/>
 					<button
 						type="button"
