@@ -1,13 +1,10 @@
 'use server'
-import {db} from "@/db";
-import bcrypt from 'bcrypt'
-import {usersTable} from "@/db/tables";
 import {redirect} from "next/navigation";
 import {createSession} from "@/lib/session";
+import CreateUser from "@/actions/logics/create-user";
 import { FormState, SignupFormSchema } from '@/lib/definitions'
 
 export async function signup(state: FormState, formData: FormData) {
-	console.log(formData)
 	// Validate form fields
 	const validatedFields = SignupFormSchema.safeParse({
 		email: formData.get('email'),
@@ -25,28 +22,12 @@ export async function signup(state: FormState, formData: FormData) {
 	// 2. Prepare data for insertion into database
 	const { email, nickname, password } = validatedFields.data
 
-	// e.g. Hash the user's password before storing it
-	const hashedPassword = await bcrypt.hash(password, 10)
+	const user = await CreateUser({ email, nickname, password })
 
-	// 3. Insert the user into the database or call an Auth Library's API
-	const data = await db
-		.insert(usersTable)
-		.values({
-			email,
-			nickname,
-			password: hashedPassword,
-		})
-		.returning({ id: usersTable.id })
-
-	console.log(data)
-
-	const user = data[0]
-
-	if (!user) {
+	if (typeof user === 'string')
 		return {
-			message: 'An error occurred while creating your account.',
+			message: user
 		}
-	}
 
 	// 4. Create user session
 	await createSession(user.id.toString())

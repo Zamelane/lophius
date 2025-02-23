@@ -9,7 +9,8 @@ export const SignupFormSchema = z.object({
 	password: z
 		.string()
 		.min(8, { message: 'Be at least 8 characters long' })
-		.regex(/[a-zA-Z]/, { message: 'Contain at least one letter.' })
+		.regex(/[a-z]/, { message: 'Contain at least one letter1.' })
+		.regex(/[A-Z]/, { message: 'Contain at least one letter2.' })
 		.regex(/[0-9]/, { message: 'Contain at least one number.' })
 		.trim(),
 })

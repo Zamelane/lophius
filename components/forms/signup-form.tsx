@@ -13,6 +13,7 @@ import InputLimit from "../shadcn/ui/input-limit";
 
 export default function SignupForm() {
 	const t = useTranslations('SignupPage')
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [state, action, pending] = useActionState(signup, undefined)
 
 	return (

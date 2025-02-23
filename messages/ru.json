@@ -43,5 +43,13 @@
     "terms_of_service": "пользовательское соглашение",
     "and": "и",
     "privacy_policy": "политику конфиденциальности"
+  },
+  "Api": {
+    "signup": {
+      "at_least_8_characters": "Не меньше 8 символов",
+      "at_least_1_number": "Не меньше 1 цифры",
+      "at_least_1_lowercase": "Не меньше 1 прописного символа",
+      "at_least_1_uppercase": "Не меньше 1 заглавной буквы"
+    }
   }
 }

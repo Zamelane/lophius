@@ -23,7 +23,7 @@ const BreadcrumbLogic = () => {
 		<Breadcrumb className="hidden sm:block">
 			<BreadcrumbList>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/public">{t('HomePage.title')}</BreadcrumbLink>
+					<BreadcrumbLink href="/">{t('HomePage.title')}</BreadcrumbLink>
 				</BreadcrumbItem>
 				{pathNames.length > MAX_BREADCRUMB_LENGTH && <BreadcrumbEllipsis />}
 				{pathNames.slice(-MAX_BREADCRUMB_LENGTH).map((link, index) => {
