@@ -74,7 +74,7 @@ export default function InputPassword({
 	};
 
 	return (
-		<div className="min-w-[300px]">
+		<div>
 			<div className="space-y-2">
 				<div className="relative">
 					<InputCustom
