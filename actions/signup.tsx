@@ -1,10 +1,11 @@
 'use server'
 import {redirect} from "next/navigation";
+import {ErrorResponse} from "@/interfaces";
 import {createSession} from "@/lib/session";
+import { SignupFormSchema } from '@/lib/definitions'
 import CreateUser from "@/actions/logics/create-user";
-import { FormState, SignupFormSchema } from '@/lib/definitions'
 
-export async function signup(state: FormState, formData: FormData) {
+export async function signup(state: ErrorResponse|void, formData: FormData): Promise<ErrorResponse|void> {
 	// Validate form fields
 	const validatedFields = SignupFormSchema.safeParse({
 		email: formData.get('email'),
@@ -24,11 +25,11 @@ export async function signup(state: FormState, formData: FormData) {
 
 	const user = await CreateUser({ email, nickname, password })
 
-	if (!user.id)
+	if (typeof user !== "number")
 		return user
 
 	// 4. Create user session
-	await createSession(user.id.toString())
+	await createSession(user.toString())
 	// 5. Redirect
 	redirect('/')
 }

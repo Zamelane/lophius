@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import {api_t_keys} from "@/i18n";
 import {eq, or} from "drizzle-orm";
 import {usersTable} from "@/db/tables";
+import {ErrorResponse} from "@/interfaces";
 
 export default async function CreateUser({
 	email,
@@ -12,14 +13,7 @@ export default async function CreateUser({
 	nickname: string,
 	email: string,
 	password: string
-}): Promise<{
-	id?: number
-	message?: string
-	errors?: {
-		nickname?: string | string[]
-		email?: string | string[]
-	}
-}> {
+}): Promise<ErrorResponse|number> {
 	const alreadyExistsMessage = await db
 		.select()
 		.from(usersTable)
@@ -71,5 +65,5 @@ export default async function CreateUser({
 	if (!Array.isArray(data))
 		return data
 
-	return data[0]
+	return data[0].id
 }

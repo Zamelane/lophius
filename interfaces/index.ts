@@ -9,3 +9,10 @@ export type Action = {
 export type MetadataProps =  {
 	params: Promise<{ locale: string }>
 }
+
+export interface ErrorResponse {
+	message?: string
+	errors?: {
+		[key: string]: string | string[] | undefined
+	}
+}

@@ -18,14 +18,3 @@ export const SignupFormSchema = z.object({
 		.regex(/[A-Z]/, { message: api_t_keys.password_at_least_1_uppercase })
 		.regex(/[0-9]/, { message: api_t_keys.password_at_least_1_number }),
 })
-
-export type FormState =
-	| {
-	errors?: {
-		nickname?: string[]
-		email?: string[]
-		password?: string[]
-	}
-	message?: string
-}
-	| undefined
