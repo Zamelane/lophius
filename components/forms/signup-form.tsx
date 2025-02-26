@@ -11,13 +11,14 @@ import LoadingButton from "@/components/shadcn/ui/loading-button";
 import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/shadcn/ui/card";
 
 import InputLimit from "../shadcn/ui/input-limit";
+import {isErrorsIncluded} from "@/lib/utils";
+import InputMessage from "@/components/custom/InputMessage";
 
 export default function SignupForm() {
 	const t = useTranslations('SignupPage')
 	const t_api = useTranslations('Api')
 	const [state, action, pending] = useActionState(signup, undefined)
 	const [getEmail, setEmail] = useState("")
-	const [getErrorsNames, setErrorsNames] = useState<string[]>([])
 
 	function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
 		setEmail(e.target.value)
@@ -29,12 +30,6 @@ export default function SignupForm() {
 
 		if (state?.message)
 			toast(t_api(state?.message))
-		else {
-			Object.values(state?.errors ?? [])
-				.map((error) => [...(Array.isArray(error) ? error : [error])].map((api_t_key) => toast(t_api(api_t_key))))
-			setErrorsNames(Object.keys((state?.errors ?? [])))
-			console.log(Object.keys((state?.errors ?? [])))
-		}
 	}, [state, t_api]);
 
 	return (
@@ -49,18 +44,34 @@ export default function SignupForm() {
 						<div className="grid gap-6">
 							<div className="grid gap-6">
 								<div className="grid gap-2">
-									<Label htmlFor="nickname">{t('nickname_field_title')}</Label>
+									<div className="flex items-center">
+										<Label htmlFor="nickname">{t('nickname_field_title')}</Label>
+										<InputMessage
+											t={t_api}
+											type='error'
+											className="ml-auto text-right"
+											message={state?.errors?.nickname}
+										/>
+									</div>
 									<InputLimit
 										required
 										type="text"
 										id="nickname"
 										maxLength={15}
 										name="nickname"
-										className={getErrorsNames.includes("nickname") ? "border-red-500" : ""}
+										className={isErrorsIncluded(state?.errors, 'nickname') ? "border-red-500" : ""}
 									/>
 								</div>
 								<div className="grid gap-2">
-									<Label htmlFor="email">{t('email_field_title')}</Label>
+									<div className="flex items-center">
+										<Label htmlFor="email">{t('email_field_title')}</Label>
+										<InputMessage
+											t={t_api}
+											type='error'
+											className="ml-auto text-right"
+											message={state?.errors?.email}
+										/>
+									</div>
 									<InputCustom
 										required
 										id="email"
@@ -69,7 +80,7 @@ export default function SignupForm() {
 										value={getEmail}
 										placeholder="m@example.com"
 										onChange={handleChangeEmail}
-										className={getErrorsNames.includes("email") ? "border-red-500" : ""}
+										className={isErrorsIncluded(state?.errors, 'email') ? "border-red-500" : ""}
 									/>
 								</div>
 								<div className="grid gap-2">
@@ -87,7 +98,7 @@ export default function SignupForm() {
 										least1lowercase={t('at_least_1_lowercase')}
 										least1uppercase={t('at_least_1_uppercase')}
 										least8characters={t('at_least_8_characters')}
-										className={getErrorsNames.includes("password") ? "border-red-500" : ""}
+										className={isErrorsIncluded(state?.errors, 'password') ? "border-red-500" : ""}
 									/>
 								</div>
 								<LoadingButton

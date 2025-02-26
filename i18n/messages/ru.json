@@ -51,8 +51,7 @@
     "password_at_least_1_uppercase": "Пароль должен содержать не меньше 1 заглавной буквы",
     "nickname_must_be_at_least_2_characters_long": "Ник должен содержать не менее 2х символов",
     "please_enter_a_valid_email": "Пожалуйста, введите валидный email-адрес",
-    "email_is_already_in_use_by_a_different_user": "Email адрес уже используется другим пользователем",
-    "nickname_already_in_use": "Никнейм уже используется",
+    "use_by_a_different_user": "Уже используется другим пользователем",
     "error": "Неопознанная ошибка"
   }
 }

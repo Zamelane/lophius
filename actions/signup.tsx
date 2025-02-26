@@ -1,35 +1,42 @@
 'use server'
+import {api_t_keys} from "@/i18n";
 import {redirect} from "next/navigation";
 import {ErrorResponse} from "@/interfaces";
 import {createSession} from "@/lib/session";
-import { SignupFormSchema } from '@/lib/definitions'
+import { SignupFormSchema } from '@/validates'
 import CreateUser from "@/actions/logics/create-user";
 
 export async function signup(state: ErrorResponse|void, formData: FormData): Promise<ErrorResponse|void> {
-	// Validate form fields
-	const validatedFields = SignupFormSchema.safeParse({
+	// Валидация полей
+	const validatedFields = await SignupFormSchema.safeParseAsync({
 		email: formData.get('email'),
 		nickname: formData.get('nickname'),
 		password: formData.get('password'),
 	})
 
-	// If any form fields are invalid, return early
+	// Если какие-то поля не прошли валидацию, выкидываем описание ошибок
 	if (!validatedFields.success) {
 		return {
 			errors: validatedFields.error.flatten().fieldErrors,
 		}
 	}
 
-	// 2. Prepare data for insertion into database
+	// Достаём данные для сохранения
 	const { email, nickname, password } = validatedFields.data
 
+	// Создаём пользователя в базе данных
 	const user = await CreateUser({ email, nickname, password })
+		.catch(() => {
+			return {
+				message: api_t_keys.error,
+			}
+		})
 
 	if (typeof user !== "number")
 		return user
 
-	// 4. Create user session
+	// Создаём сессию пользователя
 	await createSession(user.toString())
-	// 5. Redirect
+	// Переводим на главную
 	redirect('/')
 }

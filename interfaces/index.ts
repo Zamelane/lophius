@@ -13,6 +13,7 @@ export type MetadataProps =  {
 export interface ErrorResponse {
 	message?: string
 	errors?: {
-		[key: string]: string | string[] | undefined
+		[key: string]: string[] | undefined
 	}
 }
+

@@ -124,7 +124,7 @@ export default function InputPassword({
 				{getStrengthText(strengthScore)}. {mustContain}
 			</p>
 
-			<ul className="space-y-1.5" aria-label="Password requirements">
+			<ul className="space-y-1.5 te" aria-label="Password requirements">
 				{strength.map((req, index) => (
 					<li key={index} className="flex items-center gap-2">
 						{req.met ? (
