@@ -7,5 +7,5 @@ export const CheckNicknameExists = async (nickname: string) => {
   const users = await db.select()
     .from(usersTable)
     .where(eq(usersTable.nickname, nickname))
-  return users.length > 0
+  return users.length === 0
 }

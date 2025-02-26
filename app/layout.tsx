@@ -16,22 +16,22 @@ export default async function MyApp({children}: LayoutProps) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
-    <body>
-      <NextIntlClientProvider
-        locale={locale}
-        messages={messages}
-      >
-        <ThemeProvider
-          enableSystem
-          attribute="class"
-          defaultTheme="system"
-          disableTransitionOnChange
+      <body>
+        <NextIntlClientProvider
+          locale={locale}
+          messages={messages}
         >
-          {children}
-        </ThemeProvider>
-        <Toaster/>
-      </NextIntlClientProvider>
-    </body>
+          <ThemeProvider
+            enableSystem
+            attribute="class"
+            defaultTheme="system"
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+          <Toaster/>
+        </NextIntlClientProvider>
+      </body>
     </html>
   )
 }

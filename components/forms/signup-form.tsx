@@ -3,16 +3,16 @@ import Link from "next/link";
 import {toast} from "sonner";
 import {signup} from "@/actions/signup";
 import {useTranslations} from "next-intl";
+import {isErrorsIncluded} from "@/lib/utils";
 import {Label} from "@/components/shadcn/ui/label";
 import React, {useState, useActionState} from "react";
+import FormInput from "@/components/custom/FormInput";
 import {InputCustom} from "@/components/shadcn/ui/input-custom";
 import InputPassword from "@/components/shadcn/ui/input-password";
 import LoadingButton from "@/components/shadcn/ui/loading-button";
 import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/shadcn/ui/card";
 
 import InputLimit from "../shadcn/ui/input-limit";
-import {isErrorsIncluded} from "@/lib/utils";
-import InputMessage from "@/components/custom/InputMessage";
 
 export default function SignupForm() {
 	const t = useTranslations('SignupPage')
@@ -43,35 +43,26 @@ export default function SignupForm() {
 					<form action={action}>
 						<div className="grid gap-6">
 							<div className="grid gap-6">
-								<div className="grid gap-2">
-									<div className="flex items-center">
-										<Label htmlFor="nickname">{t('nickname_field_title')}</Label>
-										<InputMessage
-											t={t_api}
-											type='error'
-											className="ml-auto text-right"
-											message={state?.errors?.nickname}
+								<FormInput
+									t_api={t_api}
+									code={'nickname'}
+									errors={state?.errors?.nickname}
+									title={t('nickname_field_title')}>
+										<InputLimit
+											required
+											type="text"
+											id="nickname"
+											maxLength={15}
+											name="nickname"
+											className={state?.errors?.nickname ? "border-red-500" : ""}
 										/>
-									</div>
-									<InputLimit
-										required
-										type="text"
-										id="nickname"
-										maxLength={15}
-										name="nickname"
-										className={isErrorsIncluded(state?.errors, 'nickname') ? "border-red-500" : ""}
-									/>
-								</div>
-								<div className="grid gap-2">
-									<div className="flex items-center">
-										<Label htmlFor="email">{t('email_field_title')}</Label>
-										<InputMessage
-											t={t_api}
-											type='error'
-											className="ml-auto text-right"
-											message={state?.errors?.email}
-										/>
-									</div>
+								</FormInput>
+								<FormInput
+									code="email"
+									t_api={t_api}
+									errors={state?.errors?.email}
+									title={t('email_field_title')}
+								>
 									<InputCustom
 										required
 										id="email"
@@ -82,7 +73,7 @@ export default function SignupForm() {
 										onChange={handleChangeEmail}
 										className={isErrorsIncluded(state?.errors, 'email') ? "border-red-500" : ""}
 									/>
-								</div>
+								</FormInput>
 								<div className="grid gap-2">
 									<Label htmlFor="password">{t('password_field_title')}</Label>
 									<InputPassword
@@ -98,7 +89,7 @@ export default function SignupForm() {
 										least1lowercase={t('at_least_1_lowercase')}
 										least1uppercase={t('at_least_1_uppercase')}
 										least8characters={t('at_least_8_characters')}
-										className={isErrorsIncluded(state?.errors, 'password') ? "border-red-500" : ""}
+										className={state?.errors?.password ? "border-red-500" : ""}
 									/>
 								</div>
 								<LoadingButton

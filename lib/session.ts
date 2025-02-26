@@ -5,7 +5,12 @@ import { SignJWT, jwtVerify } from 'jose'
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
 
-export async function encrypt(payload: { userId: string; expiresAt: Date }) {
+type payloadType = {
+	userId: string
+	expiresAt: Date
+}
+
+export async function encrypt(payload: payloadType) {
 	return new SignJWT(payload)
 		.setProtectedHeader({ alg: 'HS256' })
 		.setIssuedAt()
@@ -13,12 +18,12 @@ export async function encrypt(payload: { userId: string; expiresAt: Date }) {
 		.sign(encodedKey)
 }
 
-export async function decrypt(session: string | undefined = '') {
+export async function decrypt(session: string | undefined = ''): Promise<payloadType | undefined> {
 	try {
 		const { payload } = await jwtVerify(session, encodedKey, {
 			algorithms: ['HS256'],
 		})
-		return payload
+		return payload as payloadType
 	} catch {
 		console.log('Failed to verify session')
 	}

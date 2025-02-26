@@ -52,6 +52,7 @@
     "nickname_must_be_at_least_2_characters_long": "Ник должен содержать не менее 2х символов",
     "please_enter_a_valid_email": "Пожалуйста, введите валидный email-адрес",
     "use_by_a_different_user": "Уже используется другим пользователем",
-    "error": "Неопознанная ошибка"
+    "error": "Неопознанная ошибка",
+    "invalid_authentication_data": "Пользователь не найден или пароль не верный"
   }
 }

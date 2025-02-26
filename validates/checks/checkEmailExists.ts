@@ -7,5 +7,5 @@ export const CheckEmailExists = async (email: string) => {
   const users = await db.select()
     .from(usersTable)
     .where(eq(usersTable.email, email))
-  return users.length > 0
+  return users.length === 0
 }

@@ -1,3 +1,4 @@
+import {getUser} from "@/lib/dal";
 import {MetadataProps} from "@/interfaces";
 import {getTranslations} from "next-intl/server";
 
@@ -12,8 +13,12 @@ export async function generateMetadata(props: MetadataProps) {
 	}
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+	const auth = await getUser()
 	return (
-		<div>Home page</div>
+		<>
+			<div>Home page</div>
+			<div>You nickname: {auth?.nickname}</div>
+		</>
 	)
 }
