@@ -1,13 +1,13 @@
 import {LayoutProps} from "@/interfaces";
-import AuthProvider from "@/app/auth-provider";
+import AuthProvider from "@/components/auth-provider";
 import {SiteHeader} from "@/components/shadcn/site-header";
 import {AppSidebar} from "@/components/shadcn/app-sidebar";
 import {SidebarInset, SidebarProvider} from "@/components/shadcn/ui/sidebar";
 
 export default function AppLayout({ children }: LayoutProps) {
 	return (
-		<div className="[--header-height:calc(theme(spacing.14))]">
-			<AuthProvider>
+		<AuthProvider>
+			<div className="[--header-height:calc(theme(spacing.14))]">
 				<SidebarProvider className="flex flex-col">
 					<SiteHeader/>
 					<div className="flex flex-1">
@@ -19,7 +19,7 @@ export default function AppLayout({ children }: LayoutProps) {
 						</SidebarInset>
 					</div>
 				</SidebarProvider>
-			</AuthProvider>
-		</div>
+			</div>
+		</AuthProvider>
 	)
 }

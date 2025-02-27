@@ -17,6 +17,11 @@ export interface ErrorResponse {
 	}
 }
 
+export interface AuthErrorResponse {
+	success: false
+	message: string,
+}
+
 export type User = {
 	id: number
 	nickname: string

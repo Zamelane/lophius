@@ -6,6 +6,9 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    nodeMiddleware: true,
+  },
 };
 
 export default withNextIntl(nextConfig);

@@ -18,7 +18,7 @@ export async function encrypt(payload: payloadType) {
 		.sign(encodedKey)
 }
 
-export async function decrypt(session: string | undefined = ''): Promise<payloadType | undefined> {
+export async function decrypt(session: string | undefined = ''): Promise<null | payloadType> {
 	try {
 		const { payload } = await jwtVerify(session, encodedKey, {
 			algorithms: ['HS256'],
@@ -26,6 +26,7 @@ export async function decrypt(session: string | undefined = ''): Promise<payload
 		return payload as payloadType
 	} catch {
 		console.log('Failed to verify session')
+		return null
 	}
 }
 

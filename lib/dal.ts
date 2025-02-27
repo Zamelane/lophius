@@ -7,17 +7,23 @@ import { cookies } from 'next/headers'
 import {usersTable} from "@/db/tables";
 import { decrypt } from '@/lib/session'
 
-type authData = {
+export type authData = {
   isAuth: boolean
   userId?: number
 }
 
+const noAuthObject = { isAuth: false }
+
 export const verifySession = cache(async (): Promise<authData> => {
   const cookie = (await cookies()).get('session')?.value
+
+  if (!cookie)
+    return noAuthObject
+
   const session = await decrypt(cookie)
   
   if (!session?.userId)
-    return { isAuth: false }
+    return noAuthObject
 
   return { isAuth: true, userId: Number.parseInt(session.userId) }
 })
