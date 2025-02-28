@@ -1,3 +1,5 @@
+import {Merge} from "lucide-react";
+
 export type LayoutProps = {
 	children: React.ReactNode
 }
@@ -17,14 +19,21 @@ export interface ErrorResponse {
 	}
 }
 
-export interface AuthErrorResponse {
-	success: false
-	message: string,
-}
-
 export type User = {
 	id: number
 	nickname: string
 	email: string
 	isAdmin: boolean
 }
+
+export type StatusResponse = {
+	success: boolean
+	message?: string,
+}
+
+export type ContentResponse<T> = {
+	content?: T
+}
+
+export type ServerResponse<T> = StatusResponse & ContentResponse<T>
+export type ClientResponse<T> = ContentResponse<T> | ServerResponse<T>

@@ -1,6 +1,9 @@
 "use client"
 
+import Link from "next/link";
 import * as React from "react"
+import {useAuth} from "@/components/auth-context";
+import {Button} from "@/components/shadcn/ui/button";
 import { NavMain } from "@/components/shadcn/nav-main"
 import { NavUser } from "@/components/shadcn/nav-user"
 import { NavProjects } from "@/components/shadcn/nav-projects"
@@ -152,6 +155,7 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { content: auth } = useAuth()
   return (
     <Sidebar
       className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
@@ -180,7 +184,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary className="mt-auto" items={data.navSecondary} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {
+          auth ?
+            <NavUser
+              user={{
+                avatar: '',
+                email: auth.email,
+                name: auth.nickname
+              }}
+            />
+            : <Link href='/login'>
+                <Button className="w-full">Войти</Button>
+              </Link>
+        }
       </SidebarFooter>
     </Sidebar>
   )

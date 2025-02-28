@@ -13,7 +13,7 @@ export default async function CreateUser({
 	password: string
 }): Promise<ErrorResponse|number> {
 	// Хешируем пароль для хранения в БД
-	const hashedPassword = await bcrypt.hash(password, 10)
+	const hashedPassword = await bcrypt.hash(password, 10);
 
 	// Сохраняем пользователя в базе данных и возвращаем его id
 	return await db

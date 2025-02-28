@@ -1,4 +1,5 @@
 import {db} from "@/db";
+import bcrypt from "bcrypt";
 import {eq, or} from "drizzle-orm";
 import {usersTable} from "@/db/tables";
 
@@ -12,8 +13,13 @@ export default async function FindUser({
   return db.select()
     .from(usersTable)
     .where(or(
-      eq(usersTable.email, email),
-      eq(usersTable.password, password)
+      eq(usersTable.email, email)
     ))
-    .then(v => v.length === 0 ? v[0] : null)
+    .then(v => v.length === 1 ? v[0] : null)
+    .then(
+      async (v)=>
+        v
+          ? (await bcrypt.compare(password, v.password) ? v : null)
+          : null
+    )
 }

@@ -53,6 +53,10 @@
     "please_enter_a_valid_email": "Пожалуйста, введите валидный email-адрес",
     "use_by_a_different_user": "Уже используется другим пользователем",
     "error": "Неопознанная ошибка",
-    "invalid_authentication_data": "Пользователь не найден или пароль не верный"
+    "invalid_authentication_data": "Неверная почта или пароль"
+  },
+  "Public": {
+    "close": "Закрыть",
+    "ok": "ОК"
   }
 }

@@ -28,9 +28,9 @@ export const verifySession = cache(async (): Promise<authData> => {
   return { isAuth: true, userId: Number.parseInt(session.userId) }
 })
 
-export const getUser = cache(async (): Promise<null|User> => {
+export const getUser = cache(async (): Promise<undefined|User> => {
   const session = await verifySession()
-  if (!session?.userId) return null
+  if (!session?.userId) return
 
   try {
     return db.select({
@@ -48,6 +48,6 @@ export const getUser = cache(async (): Promise<null|User> => {
       })
   } catch {
     console.log('Failed to fetch user')
-    return null
+    return
   }
 })

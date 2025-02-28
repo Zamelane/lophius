@@ -4,7 +4,7 @@ import {redirect} from "next/navigation";
 import {ErrorResponse} from "@/interfaces";
 import {createSession} from "@/lib/session";
 import { SignupFormSchema } from '@/validates'
-import CreateUser from "@/actions/logics/create-user";
+import CreateUser from "@/actions/server/logics/create-user";
 
 export async function signup(state: ErrorResponse|void, formData: FormData): Promise<ErrorResponse|void> {
 	// Валидация полей

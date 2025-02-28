@@ -2,8 +2,10 @@
 
 import {toast} from "sonner";
 import Link from "next/link";
-import {login} from "@/actions/login";
+import {redirect} from "next/navigation";
 import {useTranslations} from "next-intl";
+import {login} from "@/actions/server/login";
+import {setAuth} from "@/components/auth-context";
 import {Label} from "@/components/shadcn/ui/label";
 import React, {useState, useActionState} from "react";
 import {InputCustom} from "@/components/shadcn/ui/input-custom";
@@ -16,17 +18,28 @@ export default function LoginForm() {
   const t_api = useTranslations('Api')
   const [state, action, pending] = useActionState(login, undefined)
   const [getEmail, setEmail] = useState("")
+  const [getPassword, setPassword] = useState("")
 
   function handleChangeEmail(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value)
+  }
+  
+  function handleChangePassword(e: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(e.target.value)
   }
 
   React.useEffect(() => {
     if (!state)
       return;
 
+    if (state.success && state.content)
+    {
+      setAuth(state)
+      redirect('/')
+    }
+
     if (state?.message)
-      toast(t_api(state?.message))
+      toast.error(t_api(state.message))
   }, [state, t_api]);
 
   return (
@@ -45,10 +58,12 @@ export default function LoginForm() {
                   <InputCustom
                     required
                     id="email"
-                    type="text"
+                    name="email"
+                    type="email"
                     value={getEmail}
                     placeholder="m@example.com"
                     onChange={handleChangeEmail}
+                    className={state?.message ? "border-red-500" : ""}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -70,8 +85,12 @@ export default function LoginForm() {
                   <InputCustom
                     required
                     id="password"
+                    name="password"
                     type="password"
                     placeholder="•••"
+                    value={getPassword}
+                    onChange={handleChangePassword}
+                    className={state?.message ? "border-red-500" : ""}
                   />
                 </div>
                 <LoadingButton

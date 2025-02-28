@@ -1,19 +1,18 @@
 'use client'
 
 import React from "react";
-import {useAuth} from "@/components/auth-provider";
+import {AuthFromSWR} from "@/hooks/auth-from-SWR";
 import {Button} from "@/components/shadcn/ui/button";
 
 export default function Test() {
-  const auth = useAuth()
+  const auth = AuthFromSWR()
   const [list, setList] = React.useState<string[]>([])
-  console.log(auth)
 
   return (
     <>
-      <div>{auth.user ? auth.user?.nickname : "Ooops"}</div>
+      <div>{auth ? auth.nickname : "Ooops"}</div>
       {list.map(i => <div key={i}>{i}</div>)}
-      <Button onClick={() => setList([...list, auth.user?.nickname ?? "none"])}>Add</Button>
+      <Button onClick={() => setList([...list, auth?.nickname ?? "none"])}>Add</Button>
     </>
   )
 }

@@ -9,3 +9,8 @@ export const api_t_keys = {
 	please_enter_a_valid_email: 'please_enter_a_valid_email',
 	use_by_a_different_user: 'use_by_a_different_user'
 }
+
+export const public_t_keys = {
+	close: 'close',
+	ok: 'ok'
+}

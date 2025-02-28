@@ -1,9 +1,9 @@
 'use client'
 import Link from "next/link";
 import {toast} from "sonner";
-import {signup} from "@/actions/signup";
 import {useTranslations} from "next-intl";
 import {isErrorsIncluded} from "@/lib/utils";
+import {signup} from "@/actions/server/signup";
 import {Label} from "@/components/shadcn/ui/label";
 import React, {useState, useActionState} from "react";
 import FormInput from "@/components/custom/FormInput";
@@ -29,7 +29,7 @@ export default function SignupForm() {
 			return;
 
 		if (state?.message)
-			toast(t_api(state?.message))
+			toast.info(t_api(state?.message))
 	}, [state, t_api]);
 
 	return (

@@ -1,13 +1,12 @@
 'use server'
 
 import {api_t_keys} from "@/i18n";
-import {redirect} from "next/navigation";
-import {ErrorResponse} from "@/interfaces";
 import {createSession} from "@/lib/session";
-import FindUser from "@/actions/logics/find-user";
+import FindUser from "@/actions/server/logics/find-user";
+import {ErrorResponse, ServerResponse, User} from "@/interfaces";
 import {LoginFormSchema} from "@/validates/schemas/LoginFormSchema";
 
-export async function login (state: ErrorResponse|void, formData: FormData): Promise<ErrorResponse|void> {
+export async function login (state: ErrorResponse & ServerResponse<User>|void, formData: FormData): Promise<ErrorResponse & ServerResponse<User>|void> {
   // Валидация полей
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
@@ -18,6 +17,7 @@ export async function login (state: ErrorResponse|void, formData: FormData): Pro
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      success: false,
     }
   }
 
@@ -28,11 +28,19 @@ export async function login (state: ErrorResponse|void, formData: FormData): Pro
 
   if (!user)
     return {
-      message: api_t_keys.error
+      message: api_t_keys.invalid_authentication_data,
+      success: false
     }
 
   // Создаём сессию пользователя
-  await createSession(user.toString())
-  // Переводим на главную
-  redirect('/')
+  await createSession(user.id.toString())
+  return {
+    content: {
+      email: user.email,
+      id: user.id,
+      isAdmin: user.isAdmin,
+      nickname: user.nickname
+    },
+    success: true
+  }
 }
