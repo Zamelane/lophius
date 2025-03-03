@@ -1,12 +1,12 @@
 import {logger} from "../utils";
-import type {PluginConfig} from "./types.ts";
+import type {Plugin} from "./types.ts";
 import {PluginStorage} from "./pluginStorage.ts";
 
-export const logicProcess = async (plugins: PluginConfig[]) => {
+export const logicProcess = async (plugins: Plugin[]) => {
   logger.info('Plugin handler initialized ...');
 
   for (const plugin of plugins) {
-    await plugin.main({
+    await plugin.loadLibrary({
       storage: new PluginStorage(plugin.name)
     })
   }

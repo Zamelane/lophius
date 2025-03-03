@@ -1,13 +1,13 @@
 import {logger} from '../utils';
 import {readdir} from 'node:fs/promises'
-import type {PluginConfig} from "./types.ts";
+import type {Plugin} from "./types.ts";
 import {logicProcess} from "./process.ts";
 
 class PluginsManager {
 
   // Плагины (источники)
   private pluginsPath: string = "../plugins";
-  private plugins: PluginConfig[] = []
+  private plugins: Plugin[] = []
   constructor() {
     logger.info("Initializing Manager ...");
   }
@@ -24,7 +24,7 @@ class PluginsManager {
     for (let path of paths) {
       path = `@plugins/${path}`
       try {
-        const { config: plugin }: { config: PluginConfig } = await import(path + '/index.ts')
+        const { config: plugin }: { config: Plugin } = await import(path + '/index.ts')
         this.plugins.push(plugin)
         logger.info(`Successfully load plugin '${plugin.name} (${plugin.version})'!`)
       } catch (err) {
