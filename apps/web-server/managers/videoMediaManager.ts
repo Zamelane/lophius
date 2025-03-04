@@ -11,6 +11,7 @@ export class VideoMediaManager {
   public externalId?: string                                                                 // Идентификатор из источника
   public homepage?: string                                                                   // Url-адрес домашней страницы фильма
   public readonly id?: number                                                                // Идентификатор в нашей базе
+  // Для сериалов ??? -> public inProduction: boolean = false                                                       // В производстве ?
   public isAdult: boolean = true                                                             // Пошлятина ???
   public originCountry?: OriginCountryManager = new OriginCountryManager()                   // Страны происхождения
   public readonly overview?: OverviewMediaManager = new OverviewMediaManager()               // Описания медиа на разных языках
