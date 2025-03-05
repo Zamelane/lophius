@@ -1,10 +1,10 @@
 import 'server-only'
-import {db} from "@/db";
-import {cache} from "react";
-import {eq} from "drizzle-orm";
-import {User} from "@/interfaces";
+import { db      } from "@/db";
+import { cache   } from "react";
+import { eq      } from "drizzle-orm";
+import { User    } from "@/interfaces";
 import { cookies } from 'next/headers'
-import {usersTable} from "@/db/tables";
+import { users   } from "@/db/tables";
 import { decrypt } from '@/lib/session'
 
 export type authData = {
@@ -34,12 +34,12 @@ export const getUser = cache(async (): Promise<undefined|User> => {
 
   try {
     return db.select({
-      email: usersTable.email,
-      id: usersTable.id,
-      nickname: usersTable.nickname
+      email: users.email,
+      id: users.id,
+      nickname: users.nickname
     })
-      .from(usersTable)
-      .where(eq(usersTable.id, session.userId))
+      .from(users)
+      .where(eq(users.id, session.userId))
       .then(r => {
         return {
           ...r[0],

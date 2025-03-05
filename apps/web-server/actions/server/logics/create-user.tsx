@@ -1,6 +1,6 @@
 import {db} from "@/db";
 import bcrypt from "bcrypt";
-import {usersTable} from "@/db/tables";
+import {users} from "@/db/tables";
 import {ErrorResponse} from "@/interfaces";
 
 export default async function CreateUser({
@@ -17,12 +17,12 @@ export default async function CreateUser({
 
 	// Сохраняем пользователя в базе данных и возвращаем его id
 	return await db
-		.insert(usersTable)
+		.insert(users)
 		.values({
 			email,
 			nickname,
 			password: hashedPassword,
 		})
-		.returning({ id: usersTable.id })
+		.returning({ id: users.id })
 		.then((v) => v[0].id)
 }

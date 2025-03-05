@@ -1,11 +1,11 @@
 import {db} from "@/db";
 import {eq} from "drizzle-orm";
-import {usersTable} from "@/db/tables";
+import {users} from "@/db/tables";
 
 export const CheckEmailExists = async (email: string) => {
   console.log('Check email exists');
-  const users = await db.select()
-    .from(usersTable)
-    .where(eq(usersTable.email, email))
-  return users.length === 0
+  const userRows = await db.select()
+    .from(users)
+    .where(eq(users.email, email))
+  return userRows.length === 0
 }

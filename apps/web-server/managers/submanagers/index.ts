@@ -1,0 +1,7 @@
+export * from './genresManager'
+export * from './titleMediaManager'
+export * from './overviewMediaManager'
+export * from './originCountryManager'
+export * from './productionCompaniesManager'
+export * from './productionCountriesManager'
+export * from './videoTranslationsManager'
