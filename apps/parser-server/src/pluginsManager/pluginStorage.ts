@@ -1,5 +1,5 @@
 import {db} from "web/db";
-import {pluginStorageTable} from "web/db/tables";
+import {pluginStorage} from "web/db/tables";
 import {eq} from "web/db"
 import {logger} from "../utils";
 
@@ -13,13 +13,13 @@ export class PluginStorage {
     logger.info(`Plugin (${pluginName}) Storage initialized`);
   }
 
-  public async get<T>(): Promise<Status<T>|null> {
+  public async get<T>(): Promise<Status<T>> {
     return db.select()
-      .from(pluginStorageTable)
-      .where(eq(pluginStorageTable.pluginName, this.pluginName))
+      .from(pluginStorage)
+      .where(eq(pluginStorage.pluginName, this.pluginName))
       .then(v => {
         return {
-          successful: !!v.length,
+          successful: true,
           data: v.length ? v[0].value as T : null
         }
       })
@@ -31,15 +31,39 @@ export class PluginStorage {
       })
   }
 
+  public async create<T>(v: T) {
+    return db.insert(pluginStorage)
+     .values({
+        pluginName: this.pluginName,
+        value: v
+      })
+     .returning()
+     .then(v => {
+        logger.info(`Plugin (${this.pluginName}) Storage insert value success`)
+        return {
+          successful: true,
+          data: v.length ? v[0].value as T : null
+        }
+      })
+      .catch(e => {
+        logger.error(`Plugin (${this.pluginName}) Storage insert value error: ${e}`)
+        return {
+          successful: false
+        }
+      })
+  }
+
   public async update<T>(v: T) {
-    return db.update(pluginStorageTable)
+    return db.update(pluginStorage)
       .set({
         value: v
       })
+      .where(eq(pluginStorage.pluginName, this.pluginName))
       .returning()
       .then(v => {
+        logger.info(`Plugin (${this.pluginName}) Storage update value success`)
         return {
-          successful: !!v.length,
+          successful: true,
           data: v.length ? v[0].value as T : null
         }
       })

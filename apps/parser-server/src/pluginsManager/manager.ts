@@ -53,8 +53,8 @@ class PluginsManager {
   }
 
   private async recheckProcess() {
-    logger.info('Recheck process (sleep 1s) ...')
-    await Bun.sleep(1000)
+    logger.info('Recheck process (sleep 1m) ...')
+    await Bun.sleep(60000)
     this.startMaintenance()
   }
 }

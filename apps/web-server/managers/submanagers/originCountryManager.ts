@@ -1,11 +1,10 @@
 export class OriginCountryManager {
-  private values: string[] = []
+  public values: Country[] = []
+}
 
-  public get() {
-    return this.values;
-  }
-
-  public set(values: string[]) {
-    this.values = values;
-  }
+type Country = {
+  id?: number
+  iso_3166_1: string
+  english_name: string
+  native_name: string
 }

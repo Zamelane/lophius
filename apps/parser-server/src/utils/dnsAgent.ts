@@ -8,3 +8,5 @@ export function GetDnsAgent(dnsIP: string) {
     },
   });
 }
+
+export { fetch, request } from 'undici'

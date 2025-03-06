@@ -19,7 +19,7 @@ export type AllowedMediaTypes = 'film'
   | 'novel'
   | 'music'
 
-type Method = (args: MethodArgs) => Promise<void>
-type MethodArgs = {
+export type Method = (args: MethodArgs) => Promise<void>
+export type MethodArgs = {
   storage: PluginStorage
 }

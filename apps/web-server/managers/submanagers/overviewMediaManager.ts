@@ -1,6 +1,10 @@
 export class OverviewMediaManager {
   public readonly values: Overview[] = []
 
+  constructor(id?: number) {
+    
+  }
+
   public add(value: Overview): void {
     this.values.push(value)
   }

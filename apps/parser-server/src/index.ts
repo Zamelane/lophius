@@ -5,9 +5,6 @@ import {pluginManager} from "./pluginsManager";
 export * from './pluginsManager'
 export * from './utils'
 
-await pluginManager.reloadPlugins()
-await pluginManager.startMaintenance()
-
 const app = fastify({
   /* config */
 })
@@ -23,6 +20,7 @@ app.get('/', (req, res) => {
  */
 export const run = async (port: number = 3001) => {
   try {
+    await pluginManager.reloadPlugins()
     await app.listen({ port })
     return port
   } catch (err) {
