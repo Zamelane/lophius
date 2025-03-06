@@ -1,5 +1,9 @@
-import { mediaManager } from "../mediaManager"
-import { OriginCountryManager, ProductionCompaniesManager, ProductionCountriesManager } from "../submanagers"
+import {
+  OriginCountryManager,
+  ProductionCompaniesManager,
+  ProductionCountriesManager,
+  mediaManager
+} from "@/managers"
 
 export class FilmManager {
   public media: mediaManager
@@ -18,6 +22,10 @@ export class FilmManager {
 
   constructor(id?: number) {
     this.media = new mediaManager(id)
+  }
+
+  public async save() {
+
   }
 }
 

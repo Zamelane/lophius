@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "web-server",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -41,7 +41,8 @@
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.2",
-    "zod-i18n-map": "^2.27.0"
+    "zod-i18n-map": "^2.27.0",
+    "parser-server": "workspace:*"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
