@@ -17,6 +17,11 @@ export const fetcher = async <T>(url: string): Promise<FetcherResponse<T>> => {
       fetchConfig
     )
 
+    console.log(`Запрос к ${url}`)
+
+    // TODO: сделать нормальное ограничение
+    await Bun.sleep(1700)
+
     const data = await response.body.json() as T
 
     return {

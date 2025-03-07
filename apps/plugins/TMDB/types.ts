@@ -1,7 +1,14 @@
+import { PluginStorage } from "apps/parser-server/src/pluginsManager/pluginStorage"
+
 export type StorageData = {
   parsedPage: number
   isParsed: boolean
   lastUpdateDate: Date
+}
+
+export type PluginArgs = {
+  storage: PluginStorage
+  data: StorageData
 }
 
 // Типизация ответа страницы фильмов
@@ -34,4 +41,10 @@ export type LanguagesConfig = {
   iso_639_1: string
   english_name: string
   name: string
+}[]
+
+export type CountriesPage = {
+  iso_3166_1: string
+  english_name: string
+  native_name: string
 }[]

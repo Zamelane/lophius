@@ -1,5 +1,6 @@
 import { Method } from "../../../parser-server/src";
 import { StorageData } from '../types'
+import { autoParseCountries } from "./autoParseCountries";
 import { autoParseLanguages } from "./autoParseLanguages";
 
 export const setup: Method = async ({
@@ -31,4 +32,5 @@ export const setup: Method = async ({
 
   // Скачиваем начальные данные (конфиги)
   await autoParseLanguages()  // Языки
+  await autoParseCountries()
 }

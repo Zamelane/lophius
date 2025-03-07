@@ -9,16 +9,15 @@ const availableChecker = (value: string|undefined|null) => (
 export class LanguageManager {
   private id?: number
   private row?: InferSelectModel<typeof languages>
-  public iso_3166_1   : string | null
   public iso_639_1    : string
   public name         : string | null
   public english_name : string | null
 
-  constructor(language: LanguageType) {
-    this.iso_3166_1   = availableChecker(language.iso_3166_1)
+  constructor(language: LanguageType & LanguageArgs) {
     this.iso_639_1    = language.iso_639_1
     this.name         = availableChecker(language.name)
     this.english_name = availableChecker(language.english_name)
+    this.id = language.id
   }
 
   /**
@@ -31,7 +30,6 @@ export class LanguageManager {
       const result = await db.insert(languages)
         .values({
           iso_639_1:    this.iso_639_1,
-          iso_3166_1:   this.iso_3166_1,
           english_name: this.english_name,
           name:         this.name
         })
@@ -45,17 +43,16 @@ export class LanguageManager {
     }
 
     // Проверяем данные
+    // TODO: учесть редактирование в админке и улучшить првоерку изменений
     if (
       (  !!this.english_name  != !!this.row?.english_name
       || !!this.iso_639_1     != !!this.row?.iso_639_1
-      || !!this.iso_3166_1    != !!this.row?.iso_3166_1
       || !!this.name          != !!this.row?.name         )
       && this.id
     ) {
       const result = await db.update(languages)
        .set({
         english_name: this.english_name,
-        iso_3166_1:   this.iso_3166_1,
         iso_639_1:    this.iso_639_1,
         name:         this.name
       })
@@ -90,16 +87,14 @@ export class LanguageManager {
 }
 
 type LanguageType = {
-  name?: string
-  english_name?: string
-} & LanguageISONoPriority
+  name?:         string | null
+  english_name?: string | null
+} & LanguageISO
 
-export type LanguageISO = {
-  iso_3166_1: string
-  iso_639_1: string
+type LanguageArgs = {
+  id?: number
 }
 
-export type LanguageISONoPriority = {
-  iso_3166_1?: string
+export type LanguageISO = {
   iso_639_1: string
 }

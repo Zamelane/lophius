@@ -1,19 +1,17 @@
 import { LanguageISO } from "web-server/managers"
 import { logger } from "../../../parser-server/src"
-import { PluginStorage } from "../../../parser-server/src/pluginsManager/pluginStorage"
-import { MovieDiscoverPage, StorageData } from "../types"
+import { MovieDiscoverPage, PluginArgs } from "../types"
 import { fetcher } from "./fetcher"
 import { moviePageUrl } from "./urls"
 import { movieAutoSaveDiscover } from "./movieAutoSave"
 
 const maxAttempts = 3
 const language: LanguageISO = {
-  iso_639_1: 'en',
-  iso_3166_1: 'US'
+  iso_639_1: 'en'
 }
 const sleepMS = 10000
 
-export const moviesLibraryLoader = async (args: args) => {
+export const moviesLibraryLoader = async (args: PluginArgs) => {
   let { parsedPage } = args.data
 
   let attempts = 0
@@ -30,7 +28,7 @@ export const moviesLibraryLoader = async (args: args) => {
     {
       attempts++
       logger.debug(`Ошибка запроса (попытка №${attempts}/${maxAttempts})`)
-      Bun.sleep(sleepMS) // отдыхаем
+      await Bun.sleep(sleepMS) // отдыхаем
       continue
     }
 
@@ -53,7 +51,7 @@ export const moviesLibraryLoader = async (args: args) => {
         } catch {
           logger.error(`Ошибка сохранения фильма ${movie.title}`)
           saveMovieAttempts++
-          Bun.sleep(sleepMS) // отдыхаем
+          await Bun.sleep(sleepMS) // отдыхаем
         }
       }
       if (saveMovieAttempts >= maxAttempts){
@@ -66,9 +64,4 @@ export const moviesLibraryLoader = async (args: args) => {
     // Сбрасываем счётчик неудачных попыток
     attempts = 0
   }
-}
-
-type args = {
-  storage: PluginStorage
-  data: StorageData
 }
