@@ -1,5 +1,6 @@
-import { Method } from "../../parser-server/src";
-import { StorageData } from './types'
+import { Method } from "../../../parser-server/src";
+import { StorageData } from '../types'
+import { autoParseLanguages } from "./autoParseLanguages";
 
 export const setup: Method = async ({
   storage
@@ -27,4 +28,7 @@ export const setup: Method = async ({
           throw new Error("Не удалось сохранить настроечные данные в хранилище")
       })
   }
+
+  // Скачиваем начальные данные (конфиги)
+  await autoParseLanguages()  // Языки
 }

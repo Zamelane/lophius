@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "lophius-monorepo",
+      "dependencies": {
+        "typescript": "^5.8.2",
+      },
     },
     "apps/parser-server": {
       "name": "parser-server",

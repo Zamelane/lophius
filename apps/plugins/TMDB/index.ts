@@ -1,4 +1,4 @@
-import {logger, Plugin} from "../../parser-server/src";
+import { Plugin } from "../../parser-server/src";
 import { loadLibrary } from "./loadLibrary";
 import { setup } from "./setup";
 

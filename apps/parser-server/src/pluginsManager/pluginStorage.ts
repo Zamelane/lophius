@@ -1,6 +1,5 @@
-import {db} from "web/db";
-import {pluginStorage} from "web/db/tables";
-import {eq} from "web/db"
+import {db, eq} from "web-server/db";
+import {pluginStorage} from "web-server/db/tables";
 import {logger} from "../utils";
 
 type Status<T> = {

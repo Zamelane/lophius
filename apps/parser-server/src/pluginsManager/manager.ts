@@ -22,6 +22,8 @@ class PluginsManager {
     const paths = await readdir(this.pluginsPath)
 
     for (let path of paths) {
+      if (!(await Bun.file(`${this.pluginsPath}/${path}`).stat())?.isDirectory())
+        continue
       path = `@plugins/${path}`
       try {
         const { config: plugin }: { config: Plugin } = await import(path + '/index.ts')

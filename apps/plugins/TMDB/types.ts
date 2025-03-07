@@ -28,3 +28,10 @@ export type MovieDiscoverItem = {
   vote_average: number
   vote_count: number
 }
+
+// типизация ответа конфига языков
+export type LanguagesConfig = {
+  iso_639_1: string
+  english_name: string
+  name: string
+}[]

@@ -1,11 +1,14 @@
-import { FilmManager } from "web-server/managers";
+import { FilmManager, LanguageISO, LanguageManager } from "web-server/managers";
 import { MovieDiscoverItem } from "../types";
 
 export const movieAutoSaveDiscover = async (
   movie: MovieDiscoverItem,
-  language: string
+  language: LanguageISO
 ) => {
   const manager = new FilmManager() // Заполняем новый фильм
+  const parseLanguage = new LanguageManager({
+    ...language
+  })
 
   // Внешний id
   manager.media.externalId = movie.id.toString()
@@ -20,21 +23,30 @@ export const movieAutoSaveDiscover = async (
   }
 
   // Описание
-  manager.media.overview.add({
-    language,
-    overview: movie.overview
+  if (movie.overview)
+    manager.media.overview.add({
+      language: parseLanguage,
+      overview: movie.overview
+    })
+
+  // Язык оригинального названия 
+  const originalLanguage = new LanguageManager({
+    iso_639_1: movie.original_language
   })
 
-  // Заголовки
+  // Оригинальное название
   manager.media.title.add({
-    language,
-    title: movie.title
+    language: originalLanguage,
+    title: movie.original_title,
+    isOriginal: true
   })
 
-  if (movie.original_language != language)
+  // Название на языке извлечения
+  if (movie.title != movie.original_title)
     manager.media.title.add({
-      language: movie.original_language,
-      title: movie.original_title
+      language: parseLanguage,
+      title: movie.title,
+      isOriginal: false
     })
 
   // Постер

@@ -2,7 +2,7 @@ import {TitleMediaManager} from "@/managers/submanagers/titleMediaManager";
 import {OverviewMediaManager} from "@/managers/submanagers/overviewMediaManager";
 
 // TODO: объединить в общий менеджер переводов (translations) заголовки, описания и прочее
-export class mediaManager {
+export class MediaManager {
   public readonly id?: number                         // Идентификатор в нашей базе
   // Внешние таблицы
   public readonly title: TitleMediaManager            // Названия на разных языках

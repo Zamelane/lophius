@@ -2,11 +2,11 @@ import {
   OriginCountryManager,
   ProductionCompaniesManager,
   ProductionCountriesManager,
-  mediaManager
+  MediaManager
 } from "@/managers"
 
 export class FilmManager {
-  public media: mediaManager
+  public media: MediaManager
 
   public productionCompanies?: ProductionCompaniesManager                                    // Компании производства
   public productionCountries?: ProductionCountriesManager                                    // Страны производства
@@ -21,7 +21,7 @@ export class FilmManager {
   public vote?: Vote                                                                         // Оценка
 
   constructor(id?: number) {
-    this.media = new mediaManager(id)
+    this.media = new MediaManager(id)
   }
 
   public async save() {
