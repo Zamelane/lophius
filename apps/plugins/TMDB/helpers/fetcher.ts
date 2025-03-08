@@ -1,5 +1,4 @@
-import { GetDnsAgent } from "../../../parser-server/src";
-import { request } from "../../../parser-server/src";
+import { GetDnsAgent, request } from "parser-server/src";
 
 export const fetchConfig = {
   method: 'GET',
