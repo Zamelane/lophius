@@ -1,17 +1,59 @@
+import { LanguageManager } from "../managers/components/language";
+import { LanguagesTableType, LoadedStatusType, SettedStatusType, TitlesTableType, TitleType } from "../types";
+
 export class TitleConstructor {
-  private id?: number
-  private data?: TitleType
+  private data: LoadedStatusType<TitlesTableType>
+  & SettedStatusType<TitleType> = {
+    isLoaded: false,
+    isSetted: false
+  }
 
-  constructor(id?: number) {
-
+  private language: LoadedStatusType<LanguagesTableType> = {
+    isLoaded: false
   }
 
   /**
    * Загружает данные о заголовке из базы
    * @param id - идентификатор перевода в базе
    */
-  public async load(id?: number) {
+  // public async load(id: number) {
 
+  // }
+
+  /**
+   * Устанавливает уже загруженные данные из БД в конструктор
+   * @param value 
+   */
+  public async setAlreadyLoadedTitle(raw: TitlesTableType) {
+    if (
+      !this.language.isLoaded ||
+      this.language.raw.id !== raw.languageId
+    ) {
+      const language = await LanguageManager
+        .getById(raw.languageId)
+
+        if (language){
+          this.language = {
+            isLoaded: true,
+            raw: language
+          }
+        }
+    }
+    this.data = {
+      ...this.data,
+      isLoaded: true,
+      raw
+    }
+
+    if (this.language.isLoaded)
+      this.data = {
+        ...this.data,
+        isSetted: true,
+        value: {
+          ...this.language.raw,
+          ...raw
+        }
+      }
   }
 
   /**
@@ -19,7 +61,7 @@ export class TitleConstructor {
    * @returns boolean - загружен ли из базы на данный момент
    */
   public isLoaded() {
-    return !!this.id;
+    return this.data.isLoaded;
   }
 
   /**
@@ -27,7 +69,11 @@ export class TitleConstructor {
    * @param value - Вся информация о заголовке
    */
   public set(value: TitleType) {
-    this.data = value;
+    this.data = {
+      ...this.data,
+      isSetted: true,
+      value
+    };
   }
 
   /**
@@ -36,10 +82,10 @@ export class TitleConstructor {
    * @returns boolean - было ли выполнено редактирование (без сохранения в базе)
    */
   public editCode(code: string) {
-    if (!this.data)
+    if (!this.data.isSetted)
       return false
 
-    this.data.code = code
+    this.data.value.code = code
     return true
   }
 
@@ -49,19 +95,14 @@ export class TitleConstructor {
    * @returns boolean - было ли выполнено редактирование (без сохранения в базе)
    */
   public editTitle(title: string) {
-    if (!this.data)
+    if (!this.data.isSetted)
       return false
 
-    this.data.title = title
+    this.data.value.title = title
     return true
   }
 
   public save() {
     
   }
-}
-
-export type TitleType = {
-  code: string
-  title: string
 }

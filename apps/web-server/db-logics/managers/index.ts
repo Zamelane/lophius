@@ -1,2 +1,2 @@
-export * from './filmManager'
-export * from './mediaManager'
+export * from './media'
+export * from './components'

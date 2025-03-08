@@ -6,7 +6,7 @@ export const medias = pgTable('medias', {
   id: bigserial({ mode: 'number' }).primaryKey(),
   externalId: varchar({ length: 12 }), // 10 символов на int32 и 2 для префикса сервисов
   releaseDate: date(),
-  isAdult: boolean().default(true),
+  isAdult: boolean().notNull().default(true),
   revenue: bigint({ mode: 'number' }),
   budget: bigint({ mode: 'number' })
 })
