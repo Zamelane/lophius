@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 // Подключаем интернационализацию
 import createNextIntlPlugin from "next-intl/plugin";
+import path from "path";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
@@ -9,6 +10,7 @@ const nextConfig: NextConfig = {
   experimental: {
     nodeMiddleware: true,
   },
+  outputFileTracingRoot: path.join(__dirname, '../../'),
 };
 
 export default withNextIntl(nextConfig);

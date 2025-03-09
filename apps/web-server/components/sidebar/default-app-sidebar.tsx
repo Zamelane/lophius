@@ -9,16 +9,17 @@ import { NavUser } from "@/components/shadcn/nav-user"
 import { NavProjects } from "@/components/shadcn/nav-projects"
 import { NavSecondary } from "@/components/shadcn/nav-secondary"
 import {
-  Bot,
   Map,
   Send,
   Frame,
   Command,
-  BookOpen,
   LifeBuoy,
   PieChart,
-  Settings2,
-  SquareTerminal,
+  Popcorn,
+  Clapperboard,
+  GalleryVerticalEnd,
+  Library,
+  Music,
 } from "lucide-react"
 import {
   Sidebar,
@@ -31,9 +32,9 @@ import {
 } from "@/components/shadcn/ui/sidebar"
 
 const data = {
-  navMain: [
+  medias: [
     {
-      icon: SquareTerminal,
+      icon: Popcorn,
       isActive: true,
       items: [
         {
@@ -49,30 +50,11 @@ const data = {
           url: "#",
         },
       ],
-      title: "Playground",
+      title: "Кино",
       url: "#",
     },
     {
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-      title: "Models",
-      url: "#",
-    },
-    {
-      icon: BookOpen,
+      icon: Clapperboard,
       items: [
         {
           title: "Introduction",
@@ -91,11 +73,11 @@ const data = {
           url: "#",
         },
       ],
-      title: "Documentation",
+      title: "Аниме",
       url: "#",
     },
     {
-      icon: Settings2,
+      icon: GalleryVerticalEnd,
       items: [
         {
           title: "General",
@@ -114,19 +96,65 @@ const data = {
           url: "#",
         },
       ],
-      title: "Settings",
+      title: "Комиксы",
+      url: "#",
+    },
+    {
+      icon: Library,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+      title: "Книги",
+      url: "#",
+    },
+    {
+      icon: Music,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+      title: "Музыка",
       url: "#",
     },
   ],
   navSecondary: [
     {
       icon: LifeBuoy,
-      title: "Support",
+      title: "Помощь",
       url: "#",
     },
     {
       icon: Send,
-      title: "Feedback",
+      title: "Обратная связь",
       url: "#",
     },
   ],
@@ -154,7 +182,7 @@ const data = {
   },
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function DefaultAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { content: auth } = useAuth()
   return (
     <Sidebar
@@ -179,7 +207,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain title="Медиа" items={data.medias} />
         <NavProjects projects={data.projects} />
         <NavSecondary className="mt-auto" items={data.navSecondary} />
       </SidebarContent>

@@ -19,8 +19,10 @@ import {
 } from "@/components/shadcn/ui/sidebar"
 
 export function NavMain({
+  title,
   items,
 }: {
+  title: string,
   items: {
     title: string
     url: string
@@ -34,7 +36,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible asChild key={item.title} defaultOpen={item.isActive}>

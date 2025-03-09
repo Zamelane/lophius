@@ -41,10 +41,12 @@ export const getUser = cache(async (): Promise<undefined|User> => {
       .from(users)
       .where(eq(users.id, session.userId))
       .then(r => {
-        return {
-          ...r[0],
-          isAdmin: false // TODO: что-то с ролями решить
-        }
+        if (r.length)
+          return {
+            ...r[0],
+            isAdmin: false // TODO: что-то с ролями решить
+          }
+          return
       })
   } catch {
     console.log('Failed to fetch user')
