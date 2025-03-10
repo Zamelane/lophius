@@ -1,5 +1,3 @@
-import {Merge} from "lucide-react";
-
 export type LayoutProps = {
 	children: React.ReactNode
 }
@@ -37,3 +35,5 @@ export type ContentResponse<T> = {
 
 export type ServerResponse<T> = StatusResponse & ContentResponse<T>
 export type ClientResponse<T> = ContentResponse<T> | ServerResponse<T>
+
+export * from './types'

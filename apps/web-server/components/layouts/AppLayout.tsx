@@ -1,24 +1,19 @@
 import {LayoutProps} from "@/interfaces";
-import {SiteHeader} from "@/components/shadcn/site-header";
-import {DefaultAppSidebar} from "@/components/sidebar/default-app-sidebar";
-import {SidebarInset, SidebarProvider} from "@/components/shadcn/ui/sidebar";
-import { UniqueAppSidebar } from "../sidebar/unique-app-sidebar";
+
+import { SiteHeader } from "../helps/site-header";
+import { AppSidebar } from "../sidebar/app-sidebar";
+import { SidebarInset, SidebarProvider } from "../ui/sidebar";
 
 export default async function AppLayout({ children }: LayoutProps) {
 	return (
-		<div className="[--header-height:calc(theme(spacing.14))]">
-			<SidebarProvider className="flex flex-col">
-				<SiteHeader/>
-				<div className="flex flex-1">
-					{/* <DefaultAppSidebar/> */}
-					<UniqueAppSidebar/>
-					<SidebarInset>
-						<div className="flex flex-1 flex-col gap-4 p-4">
-							{children}
-						</div>
-					</SidebarInset>
+		<SidebarProvider>
+      <AppSidebar />
+      <SidebarInset className="ml-[2px]">
+				<SiteHeader />
+        <div className="flex flex-1 flex-col gap-4 p-4">
+					{children}
 				</div>
-			</SidebarProvider>
-		</div>
+      </SidebarInset>
+    </SidebarProvider>
 	)
 }

@@ -1,0 +1,1 @@
+export const mediaPaths = ['/anime', '/book', '/comic', '/kino', '/music']
