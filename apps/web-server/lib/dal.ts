@@ -2,9 +2,9 @@ import 'server-only'
 import { db      } from "@/db";
 import { cache   } from "react";
 import { eq      } from "drizzle-orm";
+import { users   } from "@/db/tables";
 import { User    } from "@/interfaces";
 import { cookies } from 'next/headers'
-import { users   } from "@/db/tables";
 import { decrypt } from '@/lib/session'
 
 export type authData = {

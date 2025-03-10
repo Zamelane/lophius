@@ -2,17 +2,17 @@
 import Link from "next/link";
 import {toast} from "sonner";
 import {useTranslations} from "next-intl";
+import {Label} from "@/components/ui/label";
 import {isErrorsIncluded} from "@/lib/utils";
 import {signup} from "@/actions/server/signup";
-import {Label} from "@/components/shadcn/ui/label";
 import React, {useState, useActionState} from "react";
-import FormInput from "@/components/custom/FormInput";
-import {InputCustom} from "@/components/shadcn/ui/input-custom";
-import InputPassword from "@/components/shadcn/ui/input-password";
-import LoadingButton from "@/components/shadcn/ui/loading-button";
-import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/shadcn/ui/card";
+import {InputCustom} from "@/components/ui/input-custom";
+import InputPassword from "@/components/ui/input-password";
+import LoadingButton from "@/components/ui/loading-button";
+import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/ui/card";
 
-import InputLimit from "../shadcn/ui/input-limit";
+import FormInput from "../helps/FormInput";
+import InputLimit from "../ui/input-limit";
 
 export default function SignupForm() {
 	const t = useTranslations('SignupPage')

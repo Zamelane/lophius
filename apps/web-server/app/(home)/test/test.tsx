@@ -1,8 +1,8 @@
 'use client'
 
 import React from "react";
+import {Button} from "@/components/ui/button";
 import {AuthFromSWR} from "@/hooks/auth-from-SWR";
-import {Button} from "@/components/shadcn/ui/button";
 
 export default function Test() {
   const auth = AuthFromSWR()
