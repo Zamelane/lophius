@@ -2,187 +2,230 @@
 
 import Link from "next/link"
 import * as React from "react"
-import { NavMain } from "@/components/sidebar/nav-main"
+import { mediaPaths } from "@/interfaces"
+import { usePathname } from "next/navigation"
 import { NavUser } from "@/components/sidebar/nav-user"
-import { NavProjects } from "@/components/sidebar/nav-projects"
 import { TeamSwitcher } from "@/components/sidebar/team-switcher"
 import {
   Sidebar,
   SidebarRail,
+  SidebarGroup,
   SidebarFooter,
   SidebarHeader,
   SidebarContent,
   SidebarMenuButton,
+  SidebarGroupLabel,
 } from "@/components/ui/sidebar"
 import {
-  Bot,
-  Map,
-  Frame,
+  Cat,
+  Home,
+  Book,
   Music,
   LogIn,
+  Users,
+  Search,
   Library,
   Popcorn,
   Combine,
-  BookOpen,
-  PieChart,
-  Settings2,
+  History,
+  Sparkles,
+  MusicIcon,
+  LayoutList,
+  LibraryBig,
   Clapperboard,
-  SquareTerminal,
+  NotebookText,
   GalleryVerticalEnd,
 } from "lucide-react"
 
 import { useAuth } from "../helps/auth-context"
+import { LightNavMain } from "./light-nav-main"
 
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-      title: "Playground",
-      url: "#",
-    },
-    {
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-      title: "Models",
-      url: "#",
-    },
-    {
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-      title: "Documentation",
-      url: "#",
-    },
-    {
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-      title: "Settings",
-      url: "#",
-    },
-  ],
-  projects: [
-    {
-      icon: Frame,
-      name: "Design Engineering",
-      url: "#",
-    },
-    {
-      icon: PieChart,
-      name: "Sales & Marketing",
-      url: "#",
-    },
-    {
-      icon: Map,
-      name: "Travel",
-      url: "#",
-    },
-  ],
-  user: {
-    avatar: "/avatars/shadcn.jpg",
-    email: "m@example.com",
-    name: "shadcn",
+const mainMenu = [
+  {
+    icon: Search,
+    title: "Поиск",
+    url: "#",
   },
-}
+  {
+    icon: Home,
+    isActive: true,
+    title: "Домашняя",
+    url: "#"
+  }
+]
 
-const teams = [
+const medias = [
   {
     logo: Combine,
-    name: "Все медиа"
+    name: "Все медиа",
+    path: '/'
   },
   {
     logo: Popcorn,
-    name: "Фильмы и сериалы"
+    name: "Фильмы и сериалы",
+    path: '/kino'
   },
   {
     logo: Clapperboard,
-    name: "Аниме"
+    name: "Аниме",
+    path: '/anime'
   },
   {
     logo: GalleryVerticalEnd,
-    name: "Комиксы"
+    name: "Комиксы",
+    path: '/comic'
   },
   {
     logo: Library,
-    name: "Книги"
+    name: "Книги",
+    path: '/book'
   },
   {
     logo: Music,
-    name: "Музыка"
+    name: "Музыка",
+    path: '/music'
   },
+]
+
+// const kinoNavMain = [
+//   {
+//     icon: Clapperboard,
+//     isActive: true,
+//     items: [
+//       {
+//         title: "Вся библиотека",
+//         url: "#",
+//       },
+//       {
+//         title: "Starred",
+//         url: "#",
+//       },
+//       {
+//         title: "Settings",
+//         url: "#",
+//       },
+//     ],
+//     title: "Каталог",
+//     url: "#",
+//   }
+// ]
+
+const publicNavMain = [
+  {
+    menu: [
+      {
+        icon: Users,
+        isActive: false,
+        title: "Пользователи",
+        url: "#",
+      },
+      {
+        icon: LibraryBig,
+        isActive: false,
+        title: "Публичные коллекции",
+        url: "#",
+      }
+    ],
+    title: "Сообщество"
+  }
+]
+
+const kinoNavMain = [
+  {
+    menu: [
+      {
+        icon: Sparkles,
+        isActive: false,
+        title: "Новинки",
+        url: "#",
+      },
+      {
+        icon: LayoutList,
+        isActive: false,
+        title: "Каталог",
+        url: "#",
+      },
+      {
+        icon: History,
+        isActive: false,
+        title: "Недавно обновлённые",
+        url: "#",
+      }
+    ],
+    title: "Наша база"
+  },
+  ...publicNavMain
+]
+
+const navMain1 = [
+  {
+    menu: [
+      {
+        icon: Clapperboard,
+        isActive: false,
+        title: "Фильмы и сериалы",
+        url: "#",
+      },
+      {
+        icon: Cat,
+        isActive: false,
+        title: "Аниме",
+        url: "#",
+      },
+      {
+        icon: NotebookText,
+        isActive: false,
+        title: "Комиксы",
+        url: "#",
+      },
+      {
+        icon: Book,
+        isActive: false,
+        title: "Книги",
+        url: "#",
+      },
+      {
+        icon: MusicIcon,
+        isActive: false,
+        title: "Музыка",
+        url: "#",
+      },
+    ],
+    title: "Наша база"
+  },
+  ...publicNavMain
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { content: auth } = useAuth()
+  const path = usePathname()
+
+  const activeMedia = mediaPaths.find(v => path.startsWith(v)) ?? "/"
+  let navMain = navMain1
+
+  switch (activeMedia) {
+    case '/kino':
+      navMain = kinoNavMain
+      break;
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={teams} />
+        <TeamSwitcher path={path} teams={medias} />
+        <LightNavMain items={mainMenu} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {
+          navMain.map((v, i) => (
+            <SidebarGroup key={i}>
+              <SidebarGroupLabel>{v.title}</SidebarGroupLabel>
+              <LightNavMain items={v.menu} />
+            </SidebarGroup>
+          ))
+        }
+        {/* <NavMain items={navMain} /> */}
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
       {
@@ -195,7 +238,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               }}
             />
             : <Link href='/login'>
-                <SidebarMenuButton className="w-full">
+                <SidebarMenuButton className="w-full bg-primary text-primary-foreground">
                   <LogIn/>
                   <span className="text-center w-full">Войти</span>
                   <LogIn className="opacity-0"/> {/* Костыль :))) */}

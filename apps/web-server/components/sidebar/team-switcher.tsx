@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { useState } from "react"
+import { redirect } from "next/navigation"
 import { ChevronsUpDown } from "lucide-react"
 import {
   useSidebar,
@@ -17,25 +19,40 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 
+type team = {
+  name: string
+  logo: React.ElementType,
+  path: string
+}
+
 export function TeamSwitcher({
-  teams,
+  path,
+  teams
 }: {
-  teams: {
-    name: string
-    logo: React.ElementType
-  }[]
+  teams: team[]
+  path: string
 }) {
+  const [open, setOpen] = useState(false);
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const [activeTeam, setVisibleActiveTeam] = React.useState(
+    teams.find(v => v.path.startsWith(path)) ??
+    teams[0]
+  )
 
   if (!activeTeam) {
     return null
   }
 
+  function setActiveTeam(value: team) {
+    setVisibleActiveTeam(value)
+    setOpen(false)
+    redirect(value.path)
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"

@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { SearchForm } from "@/components/helps/search-form"
 import { ModeToggle } from "@/components/helps/themes-toggle";
 
-import BreadcrumbLogic from "./broadcrumb-logic"
+import BreadcrumbLogic from "../ui/broadcrumb-logic"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()

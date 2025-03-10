@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import {useTranslations} from "next-intl";
+import { mediaPaths } from '@/interfaces';
 import { usePathname } from 'next/navigation';
 import {
 	Breadcrumb,
@@ -14,7 +15,13 @@ import {
 const MAX_BREADCRUMB_LENGTH: number = 3;
 
 const BreadcrumbLogic = () => {
-	const paths: string = usePathname();
+	let paths: string = usePathname();
+
+	const homePath = mediaPaths.find(v => paths.startsWith(v)) ?? '/'
+
+	if (homePath !== '/')
+		paths = paths.replaceAll(homePath, '/').replaceAll('//', '/')
+
 	const separator: string = "/";
 	const pathNames: string[] = paths.split(separator).filter(path => path !== "");
 	const t = useTranslations()
@@ -23,7 +30,7 @@ const BreadcrumbLogic = () => {
 		<Breadcrumb className="hidden sm:block">
 			<BreadcrumbList>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/">{t('HomePage.title')}</BreadcrumbLink>
+					<BreadcrumbLink href={homePath}>{t('HomePage.title')}</BreadcrumbLink>
 				</BreadcrumbItem>
 				{pathNames.length > MAX_BREADCRUMB_LENGTH && <BreadcrumbEllipsis />}
 				{pathNames.slice(-MAX_BREADCRUMB_LENGTH).map((link, index) => {
