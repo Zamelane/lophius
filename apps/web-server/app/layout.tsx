@@ -3,10 +3,10 @@ import "./globals.css"
 import * as React from "react";
 import {getUser} from "@/lib/dal";
 import {NextIntlClientProvider} from "next-intl";
-import {Toaster} from "@/components/shadcn/ui/sonner";
-import {AuthProvider} from "@/components/auth-context";
+import {Toaster} from "@/components/ui/sonner";
+import {AuthProvider} from "@/components/helps/auth-context";
 import {getLocale, getMessages} from "next-intl/server";
-import {ThemeProvider} from "@/components/theme-provider";
+import {ThemeProvider} from "@/components/helps/theme-provider";
 import {User, LayoutProps, ContentResponse} from "@/interfaces";
 
 export default async function MyApp({children}: LayoutProps) {

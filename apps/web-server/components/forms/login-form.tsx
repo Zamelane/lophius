@@ -4,14 +4,15 @@ import {toast} from "sonner";
 import Link from "next/link";
 import {redirect} from "next/navigation";
 import {useTranslations} from "next-intl";
+import {Label} from "@/components/ui/label";
 import {login} from "@/actions/server/login";
-import {setAuth} from "@/components/auth-context";
-import {Label} from "@/components/shadcn/ui/label";
 import React, {useState, useActionState} from "react";
-import {InputCustom} from "@/components/shadcn/ui/input-custom";
-import LoadingButton from "@/components/shadcn/ui/loading-button";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/shadcn/ui/popover";
-import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/shadcn/ui/card";
+import {InputCustom} from "@/components/ui/input-custom";
+import LoadingButton from "@/components/ui/loading-button";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Card, CardTitle, CardHeader, CardContent, CardDescription} from "@/components/ui/card";
+
+import { setAuth } from "../helps/auth-context";
 
 export default function LoginForm() {
   const t = useTranslations('LoginPage')
