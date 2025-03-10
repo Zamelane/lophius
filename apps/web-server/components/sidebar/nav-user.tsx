@@ -1,5 +1,6 @@
 "use client"
 
+import { UserLogout } from "@/actions/client/user"
 import {
   Avatar,
   AvatarImage,
@@ -28,7 +29,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { UserLogout } from "@/actions/client/user"
 
 export function NavUser({
   user,

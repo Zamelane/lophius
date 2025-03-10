@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Plus, ChevronsUpDown } from "lucide-react"
+import { ChevronsUpDown } from "lucide-react"
 import {
   useSidebar,
   SidebarMenu,

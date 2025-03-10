@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import * as React from "react"
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavUser } from "@/components/sidebar/nav-user"
@@ -17,24 +18,20 @@ import {
   Bot,
   Map,
   Frame,
-  Command,
+  Music,
+  LogIn,
+  Library,
+  Popcorn,
+  Combine,
   BookOpen,
   PieChart,
   Settings2,
-  AudioWaveform,
+  Clapperboard,
   SquareTerminal,
   GalleryVerticalEnd,
-  Music,
-  Library,
-  Clapperboard,
-  Popcorn,
-  Film,
-  LogIn,
-  Combine,
 } from "lucide-react"
+
 import { useAuth } from "../helps/auth-context"
-import Link from "next/link"
-import { Button } from "../ui/button"
 
 // This is sample data.
 const data = {
@@ -151,28 +148,28 @@ const data = {
 
 const teams = [
   {
-    name: "Все медиа",
-    logo: Combine
+    logo: Combine,
+    name: "Все медиа"
   },
   {
-    name: "Фильмы и сериалы",
-    logo: Popcorn
+    logo: Popcorn,
+    name: "Фильмы и сериалы"
   },
   {
-    name: "Аниме",
-    logo: Clapperboard
+    logo: Clapperboard,
+    name: "Аниме"
   },
   {
-    name: "Комиксы",
-    logo: GalleryVerticalEnd
+    logo: GalleryVerticalEnd,
+    name: "Комиксы"
   },
   {
-    name: "Книги",
-    logo: Library
+    logo: Library,
+    name: "Книги"
   },
   {
-    name: "Музыка",
-    logo: Music
+    logo: Music,
+    name: "Музыка"
   },
 ]
 
