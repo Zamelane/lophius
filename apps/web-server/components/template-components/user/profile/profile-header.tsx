@@ -7,14 +7,24 @@ import { Centrize } from "../../other/centrize"
 import { ProfileAvatar } from "./profile-avatar"
 
 export const ProfileHeader = async () => {
-  const backgroundImage = undefined
+  const backgroundImage = "https://files.zmln.ru/%5Bwalls%5D%20%D0%9E%D0%B1%D0%BE%D0%B8/59.jpg"
   const avatarImage = "https://github.com/shadcn.png"
   const userName = "Nickname"
   return (
     <div>
       <div className="px-2">
-        <div className="w-full h-96 rounded-sm bg-muted">
-          { backgroundImage ? <Image alt="" src={backgroundImage}/> : null }
+        <div className="w-full h-96 rounded-md bg-muted overflow-clip">
+          { 
+            backgroundImage
+            ? <Image
+                alt=""
+                width={3440}
+                height={1440}
+                src={backgroundImage}
+                className="object-cover w-full h-full"
+              />
+            : null
+          }
         </div>
       </div>
 
@@ -24,7 +34,7 @@ export const ProfileHeader = async () => {
             <ProfileAvatar
               minUserName={userName}
               avatarImage={avatarImage}
-              className="-translate-y-1/2"
+              className="-translate-y-1/2 border-2 border-foreground"
             />
             <div className="flex flex-col pl-8 min-w-[200px]">
               <TextAnimate

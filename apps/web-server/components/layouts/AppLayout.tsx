@@ -8,7 +8,7 @@ export default async function AppLayout({ children }: LayoutProps) {
 	return (
 		<SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="ml-[2px]">
+      <SidebarInset className="ml-[2px] overflow-hidden">
 				<SiteHeader />
 				{children}
       </SidebarInset>

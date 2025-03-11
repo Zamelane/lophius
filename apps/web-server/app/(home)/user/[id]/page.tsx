@@ -15,11 +15,11 @@ export default async function UserPage({
 }: ParamsType) {
   const { id } = await params
   return (
-    <>
+    <div>
       <ProfileHeader/>
       <Centrize>
         <ProfileMenu/>
       </Centrize>
-    </>
+    </div>
   )
 }

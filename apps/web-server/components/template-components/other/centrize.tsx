@@ -11,7 +11,7 @@ export const Centrize = ({
 }: LayoutProps & ClassNameType) => {
   return (
     <div className="flex justify-center">
-      <div className={cn("w-full px-4", className)}>
+      <div className={cn("w-full px-4 max-w-screen-2xl", className)}>
         {children}
       </div>
     </div>
