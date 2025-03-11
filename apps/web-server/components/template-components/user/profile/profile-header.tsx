@@ -5,11 +5,13 @@ import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe
 
 import { Centrize } from "../../other/centrize"
 import { ProfileAvatar } from "./profile-avatar"
+import EditProfileDialog from "./dialogs/edit-dialog"
 
 export const ProfileHeader = async () => {
   const backgroundImage = "https://files.zmln.ru/%5Bwalls%5D%20%D0%9E%D0%B1%D0%BE%D0%B8/59.jpg"
   const avatarImage = "https://github.com/shadcn.png"
   const userName = "Nickname"
+  const isMe = false
   return (
     <div>
       <div className="px-2">
@@ -65,16 +67,20 @@ export const ProfileHeader = async () => {
           </div>
         
           <div className="flex-shrink-0 w-full sm:w-auto ml-auto">
-            <AnimatedSubscribeButton className="sm:w-36 w-full">
-              <span className="group inline-flex items-center">
-                Follow
-                <ChevronRightIcon className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </span>
-              <span className="group inline-flex items-center">
-                <CheckIcon className="mr-2 size-4" />
-                Subscribed
-              </span>
-              </AnimatedSubscribeButton>
+            {
+              isMe
+                ? <AnimatedSubscribeButton className="sm:w-36 w-full">
+                    <span className="group inline-flex items-center">
+                      Follow
+                      <ChevronRightIcon className="ml-1 size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                    <span className="group inline-flex items-center">
+                      <CheckIcon className="mr-2 size-4" />
+                      Subscribed
+                    </span>
+                  </AnimatedSubscribeButton>
+                : <EditProfileDialog className="w-full"/>
+            }
           </div>
         </div>
       </Centrize>
