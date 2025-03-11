@@ -10,9 +10,7 @@ export default async function AppLayout({ children }: LayoutProps) {
       <AppSidebar />
       <SidebarInset className="ml-[2px]">
 				<SiteHeader />
-        <div className="flex flex-1 flex-col gap-4 p-4">
-					{children}
-				</div>
+				{children}
       </SidebarInset>
     </SidebarProvider>
 	)

@@ -15,6 +15,7 @@ import {
   SidebarContent,
   SidebarMenuButton,
   SidebarGroupLabel,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   Cat,

@@ -27,6 +27,12 @@ const BreadcrumbLogic = () => {
 	const t = useTranslations()
 
 	return (
+		<div className="hidden sm:block">
+			<i>Тут будет breadcrumb (его нужно переписать)</i>
+		</div>
+	)
+
+	return (
 		<Breadcrumb className="hidden sm:block">
 			<BreadcrumbList>
 				<BreadcrumbItem>
