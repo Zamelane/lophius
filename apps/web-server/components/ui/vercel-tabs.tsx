@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import { useRef, useState, useEffect } from "react"
 
 interface Tab {
   id: string
@@ -16,8 +16,8 @@ interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
-  ({ className, tabs, activeTab, onTabChange, ...props }, ref) => {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  ({ /*activeTab,*/ className, onTabChange, tabs, ...props }, ref) => {
+    const [hoveredIndex, setHoveredIndex] = useState<null | number>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const [hoverStyle, setHoverStyle] = useState({})
     const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" })
@@ -69,17 +69,17 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
         <div className="relative">
           {/* Hover Highlight */}
           <div
-            className="absolute h-[30px] transition-all duration-300 ease-out bg-[#0e0f1114] dark:bg-[#ffffff1a] rounded-[6px] flex items-center"
             style={{
               ...hoverStyle,
               opacity: hoveredIndex !== null ? 1 : 0,
             }}
+            className="absolute h-[30px] transition-all duration-300 ease-out bg-[#0e0f1114] dark:bg-[#ffffff1a] rounded-[6px] flex items-center"
           />
 
           {/* Active Indicator */}
           <div
-            className="absolute bottom-[-6px] h-[2px] bg-[#0e0f11] dark:bg-white transition-all duration-300 ease-out"
             style={activeStyle}
+            className="absolute bottom-[-6px] h-[2px] bg-[#0e0f11] dark:bg-white transition-all duration-300 ease-out"
           />
 
           {/* Tabs */}
@@ -87,19 +87,21 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
             {tabs.map((tab, index) => (
               <div
                 key={tab.id}
+                onMouseLeave={() => setHoveredIndex(null)}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 ref={(el) => (tabRefs.current[index] = el)}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onClick={() => {
+                  setActiveIndex(index)
+                  onTabChange?.(tab.id)
+                }}
                 className={cn(
                   "px-3 py-2 cursor-pointer transition-colors duration-300 h-[30px]",
                   index === activeIndex 
                     ? "text-[#0e0e10] dark:text-white" 
                     : "text-[#0e0f1199] dark:text-[#ffffff99]"
                 )}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => {
-                  setActiveIndex(index)
-                  onTabChange?.(tab.id)
-                }}
               >
                 <div className="text-sm font-medium leading-5 whitespace-nowrap flex items-center justify-center h-full">
                   {tab.label}

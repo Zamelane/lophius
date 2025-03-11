@@ -12,9 +12,9 @@ type ParamsType = {
 }
 
 export default async function UserPage({
-  params
+  //params
 }: ParamsType) {
-  const { id } = await params
+  //const { id } = await params
   return (
     <div>
       <ProfileHeader/>

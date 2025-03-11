@@ -8,6 +8,7 @@ import { NavUser } from "@/components/sidebar/nav-user"
 import { TeamSwitcher } from "@/components/sidebar/team-switcher"
 import {
   Sidebar,
+  //useSidebar,
   SidebarRail,
   SidebarGroup,
   SidebarFooter,
@@ -15,7 +16,6 @@ import {
   SidebarContent,
   SidebarMenuButton,
   SidebarGroupLabel,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   Cat,

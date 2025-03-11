@@ -3,7 +3,7 @@
 import { JSX, useState, useEffect } from "react";
 
 import { Title } from "./title";
-import { Carousel, CarouselApi, CarouselItem, CarouselContent } from "../ui/carousel"
+import { Carousel, CarouselApi, CarouselItem, CarouselContent } from "../../ui/carousel"
 
 interface Gallery6Props {
   title: string

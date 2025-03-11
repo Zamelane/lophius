@@ -3,7 +3,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { useRef, useState, useEffect } from "react"
-import { Separator } from "./separator"
 
 interface Tab {
   id: string
@@ -17,7 +16,7 @@ interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
-  ({ activeTab, className, onTabChange, tabs, ...props }, ref) => {
+  ({ /*activeTab,*/ className, onTabChange, tabs, ...props }, ref) => {
     const [hoveredIndex, setHoveredIndex] = useState<null | number>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const [hoverStyle, setHoverStyle] = useState({})
@@ -89,6 +88,8 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
               <div
                 key={tab.id}
                 onMouseLeave={() => setHoveredIndex(null)}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 ref={(el) => (tabRefs.current[index] = el)}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onClick={() => {
