@@ -2,7 +2,7 @@
 
 import { type LucideIcon } from "lucide-react"
 
-import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "../ui/sidebar"
+import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "../ui/sidebar"
 
 
 export function LightNavMain({
@@ -15,11 +15,18 @@ export function LightNavMain({
     isActive?: boolean
   }[]
 }) {
+  const { open } = useSidebar()
   return (
     <SidebarMenu>
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild isActive={item.isActive}>
+          <SidebarMenuButton
+            asChild
+            isActive={item.isActive}
+            tooltip={{
+              children: item.title,
+              hidden: open
+            }}>
             <a href={item.url}>
               <item.icon />
               <span>{item.title}</span>
