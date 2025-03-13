@@ -50,7 +50,7 @@ const MenubarSubTrigger = React.forwardRef<
   {
     inset?: boolean
   } & React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubTrigger>
->(({ children, className, inset, ...props }, ref) => (
+>(({ inset, children, className, ...props }, ref) => (
   <MenubarPrimitive.SubTrigger
     ref={ref}
     className={cn(
@@ -86,7 +86,7 @@ const MenubarContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
 >(
   (
-    { align = "start", alignOffset = -4, className, sideOffset = 8, ...props },
+    { className, sideOffset = 8, align = "start", alignOffset = -4, ...props },
     ref,
   ) => (
     <MenubarPrimitive.Portal>
@@ -111,7 +111,7 @@ const MenubarItem = React.forwardRef<
   {
     inset?: boolean
   } & React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Item>
->(({ className, inset, ...props }, ref) => (
+>(({ inset, className, ...props }, ref) => (
   <MenubarPrimitive.Item
     ref={ref}
     className={cn(
@@ -174,7 +174,7 @@ const MenubarLabel = React.forwardRef<
   {
     inset?: boolean
   } & React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Label>
->(({ className, inset, ...props }, ref) => (
+>(({ inset, className, ...props }, ref) => (
   <MenubarPrimitive.Label
     ref={ref}
     className={cn(

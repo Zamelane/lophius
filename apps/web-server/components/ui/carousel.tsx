@@ -47,12 +47,12 @@ const Carousel = React.forwardRef<
 >(
   (
     {
+      opts,
+      setApi,
+      plugins,
       children,
       className,
-      opts,
       orientation = "horizontal",
-      plugins,
-      setApi,
       ...props
     },
     ref
@@ -122,15 +122,15 @@ const Carousel = React.forwardRef<
     return (
       <CarouselContext.Provider
         value={{
-          api: api,
-          canScrollNext,
-          canScrollPrev,
-          carouselRef,
           opts,
-          orientation:
-            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+          api: api,
           scrollNext,
           scrollPrev,
+          carouselRef,
+          canScrollNext,
+          canScrollPrev,
+          orientation:
+            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
         }}
       >
         <div
@@ -197,7 +197,7 @@ const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, size = "icon", variant = "outline", ...props }, ref) => {
-  const { canScrollPrev, orientation, scrollPrev } = useCarousel()
+  const { scrollPrev, orientation, canScrollPrev } = useCarousel()
 
   return (
     <Button
@@ -226,7 +226,7 @@ const CarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, size = "icon", variant = "outline", ...props }, ref) => {
-  const { canScrollNext, orientation, scrollNext } = useCarousel()
+  const { scrollNext, orientation, canScrollNext } = useCarousel()
 
   return (
     <Button

@@ -22,7 +22,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   {
     inset?: boolean
   } & React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger>
->(({ children, className, inset, ...props }, ref) => (
+>(({ inset, children, className, ...props }, ref) => (
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
@@ -79,7 +79,7 @@ const DropdownMenuItem = React.forwardRef<
   {
     inset?: boolean
   } & React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item>
->(({ className, inset, ...props }, ref) => (
+>(({ inset, className, ...props }, ref) => (
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
@@ -143,7 +143,7 @@ const DropdownMenuLabel = React.forwardRef<
   {
     inset?: boolean
   } & React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label>
->(({ className, inset, ...props }, ref) => (
+>(({ inset, className, ...props }, ref) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
     className={cn(

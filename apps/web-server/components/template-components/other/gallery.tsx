@@ -11,8 +11,8 @@ interface Gallery6Props {
 }
 
 export const Gallery = ({
-  items = [],
-  title
+  title,
+  items = []
 }: Gallery6Props) => {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [canScrollPrev, setCanScrollPrev] = useState(false);

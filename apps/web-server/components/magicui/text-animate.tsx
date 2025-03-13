@@ -65,20 +65,13 @@ interface TextAnimateProps extends MotionProps {
 }
 
 const staggerTimings: Record<AnimationType, number> = {
-  character: 0.03,
   line: 0.06,
   text: 0.06,
   word: 0.05,
+  character: 0.03,
 };
 
 const defaultContainerVariants = {
-  exit: {
-    opacity: 0,
-    transition: {
-      staggerChildren: 0.05,
-      staggerDirection: -1,
-    },
-  },
   hidden: { opacity: 1 },
   show: {
     opacity: 1,
@@ -87,13 +80,20 @@ const defaultContainerVariants = {
       staggerChildren: 0.05,
     },
   },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerDirection: -1,
+      staggerChildren: 0.05,
+    },
+  },
 };
 
 const defaultItemVariants: Variants = {
+  hidden: { opacity: 0 },
   exit: {
     opacity: 0,
   },
-  hidden: { opacity: 0 },
   show: {
     opacity: 1,
   },
@@ -103,18 +103,86 @@ const defaultItemAnimationVariants: Record<
   AnimationVariant,
   { container: Variants; item: Variants }
 > = {
-  blurIn: {
+  slideDown: {
     container: defaultContainerVariants,
     item: {
+      hidden: { y: -20, opacity: 0 },
+      show: {
+        y: 0,
+        opacity: 1,
+        transition: { duration: 0.3 },
+      },
       exit: {
-        filter: "blur(10px)",
+        y: 20,
         opacity: 0,
         transition: { duration: 0.3 },
       },
-      hidden: { filter: "blur(10px)", opacity: 0 },
+    },
+  },
+  slideLeft: {
+    container: defaultContainerVariants,
+    item: {
+      hidden: { x: 20, opacity: 0 },
       show: {
-        filter: "blur(0px)",
+        x: 0,
         opacity: 1,
+        transition: { duration: 0.3 },
+      },
+      exit: {
+        x: -20,
+        opacity: 0,
+        transition: { duration: 0.3 },
+      },
+    },
+  },
+  slideRight: {
+    container: defaultContainerVariants,
+    item: {
+      hidden: { x: -20, opacity: 0 },
+      show: {
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.3 },
+      },
+      exit: {
+        x: 20,
+        opacity: 0,
+        transition: { duration: 0.3 },
+      },
+    },
+  },
+  fadeIn: {
+    container: defaultContainerVariants,
+    item: {
+      hidden: { y: 20, opacity: 0 },
+      exit: {
+        y: 20,
+        opacity: 0,
+        transition: { duration: 0.3 },
+      },
+      show: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          duration: 0.3,
+        },
+      },
+    },
+  },
+  slideUp: {
+    container: defaultContainerVariants,
+    item: {
+      hidden: { y: 20, opacity: 0 },
+      show: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          duration: 0.3,
+        },
+      },
+      exit: {
+        y: -20,
+        opacity: 0,
         transition: {
           duration: 0.3,
         },
@@ -124,82 +192,33 @@ const defaultItemAnimationVariants: Record<
   blurInDown: {
     container: defaultContainerVariants,
     item: {
-      hidden: { filter: "blur(10px)", opacity: 0, y: -20 },
+      hidden: { y: -20, opacity: 0, filter: "blur(10px)" },
       show: {
-        filter: "blur(0px)",
+        y: 0,
         opacity: 1,
+        filter: "blur(0px)",
         transition: {
+          y: { duration: 0.3 },
           filter: { duration: 0.3 },
           opacity: { duration: 0.4 },
-          y: { duration: 0.3 },
         },
-        y: 0,
       },
     },
   },
-  blurInUp: {
+  blurIn: {
     container: defaultContainerVariants,
     item: {
+      hidden: { opacity: 0, filter: "blur(10px)" },
       exit: {
+        opacity: 0,
         filter: "blur(10px)",
-        opacity: 0,
-        transition: {
-          filter: { duration: 0.3 },
-          opacity: { duration: 0.4 },
-          y: { duration: 0.3 },
-        },
-        y: 20,
+        transition: { duration: 0.3 },
       },
-      hidden: { filter: "blur(10px)", opacity: 0, y: 20 },
       show: {
+        opacity: 1,
         filter: "blur(0px)",
-        opacity: 1,
-        transition: {
-          filter: { duration: 0.3 },
-          opacity: { duration: 0.4 },
-          y: { duration: 0.3 },
-        },
-        y: 0,
-      },
-    },
-  },
-  fadeIn: {
-    container: defaultContainerVariants,
-    item: {
-      exit: {
-        opacity: 0,
-        transition: { duration: 0.3 },
-        y: 20,
-      },
-      hidden: { opacity: 0, y: 20 },
-      show: {
-        opacity: 1,
         transition: {
           duration: 0.3,
-        },
-        y: 0,
-      },
-    },
-  },
-  scaleDown: {
-    container: defaultContainerVariants,
-    item: {
-      exit: {
-        opacity: 0,
-        scale: 1.5,
-        transition: { duration: 0.3 },
-      },
-      hidden: { opacity: 0, scale: 1.5 },
-      show: {
-        opacity: 1,
-        scale: 1,
-        transition: {
-          duration: 0.3,
-          scale: {
-            damping: 15,
-            stiffness: 300,
-            type: "spring",
-          },
         },
       },
     },
@@ -207,15 +226,15 @@ const defaultItemAnimationVariants: Record<
   scaleUp: {
     container: defaultContainerVariants,
     item: {
+      hidden: { opacity: 0, scale: 0.5 },
       exit: {
         opacity: 0,
         scale: 0.5,
         transition: { duration: 0.3 },
       },
-      hidden: { opacity: 0, scale: 0.5 },
       show: {
-        opacity: 1,
         scale: 1,
+        opacity: 1,
         transition: {
           duration: 0.3,
           scale: {
@@ -227,88 +246,69 @@ const defaultItemAnimationVariants: Record<
       },
     },
   },
-  slideDown: {
+  scaleDown: {
     container: defaultContainerVariants,
     item: {
+      hidden: { opacity: 0, scale: 1.5 },
       exit: {
         opacity: 0,
+        scale: 1.5,
         transition: { duration: 0.3 },
+      },
+      show: {
+        scale: 1,
+        opacity: 1,
+        transition: {
+          duration: 0.3,
+          scale: {
+            damping: 15,
+            stiffness: 300,
+            type: "spring",
+          },
+        },
+      },
+    },
+  },
+  blurInUp: {
+    container: defaultContainerVariants,
+    item: {
+      hidden: { y: 20, opacity: 0, filter: "blur(10px)" },
+      show: {
+        y: 0,
+        opacity: 1,
+        filter: "blur(0px)",
+        transition: {
+          y: { duration: 0.3 },
+          filter: { duration: 0.3 },
+          opacity: { duration: 0.4 },
+        },
+      },
+      exit: {
         y: 20,
-      },
-      hidden: { opacity: 0, y: -20 },
-      show: {
-        opacity: 1,
-        transition: { duration: 0.3 },
-        y: 0,
-      },
-    },
-  },
-  slideLeft: {
-    container: defaultContainerVariants,
-    item: {
-      exit: {
         opacity: 0,
-        transition: { duration: 0.3 },
-        x: -20,
-      },
-      hidden: { opacity: 0, x: 20 },
-      show: {
-        opacity: 1,
-        transition: { duration: 0.3 },
-        x: 0,
-      },
-    },
-  },
-  slideRight: {
-    container: defaultContainerVariants,
-    item: {
-      exit: {
-        opacity: 0,
-        transition: { duration: 0.3 },
-        x: 20,
-      },
-      hidden: { opacity: 0, x: -20 },
-      show: {
-        opacity: 1,
-        transition: { duration: 0.3 },
-        x: 0,
-      },
-    },
-  },
-  slideUp: {
-    container: defaultContainerVariants,
-    item: {
-      exit: {
-        opacity: 0,
+        filter: "blur(10px)",
         transition: {
-          duration: 0.3,
+          y: { duration: 0.3 },
+          filter: { duration: 0.3 },
+          opacity: { duration: 0.4 },
         },
-        y: -20,
-      },
-      hidden: { opacity: 0, y: 20 },
-      show: {
-        opacity: 1,
-        transition: {
-          duration: 0.3,
-        },
-        y: 0,
       },
     },
   },
 };
 
 export function TextAnimate({
-  animation = "fadeIn",
-  as: Component = "p",
-  by = "word",
   children,
+  variants,
   className,
   delay = 0,
-  duration = 0.3,
+  by = "word",
   once = false,
+  duration = 0.3,
   segmentClassName,
   startOnView = true,
-  variants,
+  as: Component = "p",
+  animation = "fadeIn",
   ...props
 }: TextAnimateProps) {
   const MotionComponent = motion.create(Component);
@@ -332,15 +332,16 @@ export function TextAnimate({
 
   const finalVariants = variants
     ? {
+        item: variants,
         container: {
+          hidden: { opacity: 0 },
           exit: {
             opacity: 0,
             transition: {
-              staggerChildren: duration / segments.length,
               staggerDirection: -1,
+              staggerChildren: duration / segments.length,
             },
           },
-          hidden: { opacity: 0 },
           show: {
             opacity: 1,
             transition: {
@@ -350,17 +351,17 @@ export function TextAnimate({
             },
           },
         },
-        item: variants,
       }
     : animation
       ? {
+          item: defaultItemAnimationVariants[animation].item,
           container: {
             ...defaultItemAnimationVariants[animation].container,
             exit: {
               ...defaultItemAnimationVariants[animation].container.exit,
               transition: {
-                staggerChildren: duration / segments.length,
                 staggerDirection: -1,
+                staggerChildren: duration / segments.length,
               },
             },
             show: {
@@ -371,9 +372,8 @@ export function TextAnimate({
               },
             },
           },
-          item: defaultItemAnimationVariants[animation].item,
         }
-      : { container: defaultContainerVariants, item: defaultItemVariants };
+      : { item: defaultItemVariants, container: defaultContainerVariants };
 
   return (
     <AnimatePresence mode="popLayout">

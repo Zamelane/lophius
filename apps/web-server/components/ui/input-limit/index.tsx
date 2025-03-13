@@ -11,10 +11,10 @@ interface InputLimitProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export default function InputLimit({ maxLength, ...props }: InputLimitProps) {
 	const id = useId();
 	const {
-		characterCount,
-		handleChange,
-		maxLength: limit,
 		value,
+		handleChange,
+		characterCount,
+		maxLength: limit,
 	} = useCharacterLimit({maxLength: maxLength ?? 50});
 	
 	return (

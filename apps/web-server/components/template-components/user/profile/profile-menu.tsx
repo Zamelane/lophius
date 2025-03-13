@@ -5,7 +5,7 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 const tabs = [
   { id: "overview", label: "Информация" },
-  { id: "integrations", label: "Друзья" },
+  { label: "Друзья", id: "integrations" },
   { id: "activity", label: "Папки" },
   { id: "collections", label: "Коллекции" },
   { id: "domains", label: "Комментарии" },

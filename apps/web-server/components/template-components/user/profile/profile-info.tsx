@@ -3,11 +3,11 @@ import { SimpleTitle } from "../../titles/simple-title"
 
 export const ProfileInfo = () => {
   const stats = [
-    { title: 'Просмотры',         value: '1.33k' },
-    { title: 'Лайки',             value: '10'    },
-    { title: 'Комментарии',       value: '0'     },
-    { title: 'Подписок',          value: '123'   },
-    { title: 'Создано коллекций', value: '12'    },
+    { value: '1.33k',         title: 'Просмотры' },
+    { value: '10',             title: 'Лайки'    },
+    { value: '0',       title: 'Комментарии'     },
+    { value: '123',          title: 'Подписок'   },
+    { value: '12', title: 'Создано коллекций'    },
   ]
   return (
     <div className="flex flex-col flex-grow gap-3 py-2 max-w-full">

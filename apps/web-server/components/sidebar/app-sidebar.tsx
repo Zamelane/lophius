@@ -43,38 +43,38 @@ import { LightNavMain } from "./light-nav-main"
 
 const mainMenu = [
   {
+    url: "#",
     icon: Search,
     title: "Поиск",
-    url: "#",
   },
   {
+    url: "#",
     icon: Home,
     isActive: true,
-    title: "Домашняя",
-    url: "#"
+    title: "Домашняя"
   }
 ]
 
 const medias = [
   {
+    path: '/',
     logo: Combine,
-    name: "Все медиа",
-    path: '/'
+    name: "Все медиа"
   },
   {
     logo: Popcorn,
-    name: "Фильмы и сериалы",
-    path: '/kino'
+    path: '/kino',
+    name: "Фильмы и сериалы"
   },
   {
-    logo: Clapperboard,
     name: "Аниме",
-    path: '/anime'
+    path: '/anime',
+    logo: Clapperboard
   },
   {
-    logo: GalleryVerticalEnd,
+    path: '/comic',
     name: "Комиксы",
-    path: '/comic'
+    logo: GalleryVerticalEnd
   },
   {
     logo: Library,
@@ -113,86 +113,86 @@ const medias = [
 
 const publicNavMain = [
   {
+    title: "Сообщество",
     menu: [
       {
+        url: "#",
         icon: Users,
         isActive: false,
         title: "Пользователи",
-        url: "#",
       },
       {
-        icon: LibraryBig,
-        isActive: false,
-        title: "Публичные коллекции",
         url: "#",
+        isActive: false,
+        icon: LibraryBig,
+        title: "Публичные коллекции",
       }
-    ],
-    title: "Сообщество"
+    ]
   }
 ]
 
 const kinoNavMain = [
   {
+    title: "Наша база",
     menu: [
       {
+        url: "#",
         icon: Sparkles,
         isActive: false,
         title: "Новинки",
-        url: "#",
       },
       {
-        icon: LayoutList,
+        url: "#",
         isActive: false,
+        icon: LayoutList,
         title: "Каталог",
-        url: "#",
       },
       {
+        url: "#",
         icon: History,
         isActive: false,
         title: "Недавно обновлённые",
-        url: "#",
       }
-    ],
-    title: "Наша база"
+    ]
   },
   ...publicNavMain
 ]
 
 const navMain1 = [
   {
+    title: "Наша база",
     menu: [
       {
+        url: "#",
+        isActive: false,
         icon: Clapperboard,
-        isActive: false,
         title: "Фильмы и сериалы",
-        url: "#",
       },
       {
+        url: "#",
         icon: Cat,
-        isActive: false,
         title: "Аниме",
-        url: "#",
+        isActive: false,
       },
       {
-        icon: NotebookText,
+        url: "#",
         isActive: false,
         title: "Комиксы",
-        url: "#",
+        icon: NotebookText,
       },
       {
+        url: "#",
         icon: Book,
-        isActive: false,
         title: "Книги",
-        url: "#",
+        isActive: false,
       },
       {
+        url: "#",
         icon: MusicIcon,
         isActive: false,
         title: "Музыка",
-        url: "#",
       },
-    ],
-    title: "Наша база"
+    ]
   },
   ...publicNavMain
 ]

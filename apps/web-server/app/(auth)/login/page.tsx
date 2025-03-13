@@ -5,8 +5,8 @@ import LoginForm from "@/components/forms/login-form";
 
 export async function generateMetadata(props: MetadataProps) {
   const t = await getTranslations({
-    locale: (await props.params).locale,
-    namespace: 'LoginPage'
+    namespace: 'LoginPage',
+    locale: (await props.params).locale
   })
 
   return {

@@ -3,11 +3,11 @@ import {LoaderCircle} from "lucide-react";
 import CustomButton from "@/components/ui/custom-button";
 
 export default function LoadingButton({
-	isDisabled,
-	isLoading,
-	onClick,
 	text,
-	type
+	type,
+	onClick,
+	isLoading,
+	isDisabled
 }: {
 	isLoading?: boolean,
 	isDisabled?: boolean,

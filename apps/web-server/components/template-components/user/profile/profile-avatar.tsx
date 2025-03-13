@@ -8,7 +8,7 @@ type PropsType = {
 }
 
 export const ProfileAvatar = (props: PropsType) => {
-  const { avatarImage, className, minUserName } = props
+  const { className, avatarImage, minUserName } = props
   return (
     <Avatar
           className={cn(

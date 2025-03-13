@@ -3,8 +3,8 @@ import {getTranslations} from "next-intl/server";
 
 export async function generateMetadata(props: MetadataProps) {
 	const t = await getTranslations({
-		locale: (await props.params).locale,
-		namespace: 'HomePage'
+		namespace: 'HomePage',
+		locale: (await props.params).locale
 	})
 
 	return {

@@ -5,19 +5,19 @@ import {X, Eye, Check, EyeOff} from "lucide-react";
 import {InputCustom} from "@/components/ui/input-custom";
 
 export default function InputPassword({
-	className,
-	enterAPassword,
 	id,
-	least1lowercase,
-	least1number,
-	least1uppercase,
-	least8characters,
-	mediumPassword,
-	mustContain,
 	name,
 	required,
+	className,
+	mustContain,
+	least1number,
+	weakPassword,
+	enterAPassword,
+	mediumPassword,
 	strongPassword,
-	weakPassword
+	least1lowercase,
+	least1uppercase,
+	least8characters
 }: {
 	id: string|undefined,
 	name: string,
@@ -47,8 +47,8 @@ export default function InputPassword({
 		];
 
 		return requirements.map((req) => ({
-			met: req.regex.test(pass),
 			text: req.text,
+			met: req.regex.test(pass),
 		}));
 	};
 

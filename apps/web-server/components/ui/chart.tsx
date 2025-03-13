@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import * as RechartsPrimitive from "recharts"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { dark: ".dark", light: "" } as const
+const THEMES = { light: "", dark: ".dark" } as const
 
 export type ChartConfig = {
   [k in string]: {
@@ -41,7 +41,7 @@ const ChartContainer = React.forwardRef<
       typeof RechartsPrimitive.ResponsiveContainer
     >["children"]
   }
->(({ children, className, config, id, ...props }, ref) => {
+>(({ id, config, children, className, ...props }, ref) => {
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
 
@@ -66,7 +66,7 @@ const ChartContainer = React.forwardRef<
 })
 ChartContainer.displayName = "Chart"
 
-const ChartStyle = ({ config, id }: { id: string; config: ChartConfig }) => {
+const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color
   )
@@ -114,19 +114,19 @@ const ChartTooltipContent = React.forwardRef<
 >(
   (
     {
-      active,
-      className,
       color,
-      formatter,
-      hideIndicator = false,
-      hideLabel = false,
-      indicator = "dot",
       label,
-      labelClassName,
-      labelFormatter,
-      labelKey,
+      active,
       nameKey,
       payload,
+      labelKey,
+      className,
+      formatter,
+      labelClassName,
+      labelFormatter,
+      hideLabel = false,
+      indicator = "dot",
+      hideIndicator = false,
     },
     ref
   ) => {
@@ -215,11 +215,11 @@ const ChartTooltipContent = React.forwardRef<
                           className={cn(
                             "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
                             {
+                              "w-1": indicator === "line",
                               "h-2.5 w-2.5": indicator === "dot",
                               "my-0.5": nestLabel && indicator === "dashed",
                               "w-0 border-[1.5px] border-dashed bg-transparent":
                                 indicator === "dashed",
-                              "w-1": indicator === "line",
                             }
                           )}
                         />
@@ -266,7 +266,7 @@ const ChartLegendContent = React.forwardRef<
     } & Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign">
 >(
   (
-    { className, hideIcon = false, nameKey, payload, verticalAlign = "bottom" },
+    { nameKey, payload, className, hideIcon = false, verticalAlign = "bottom" },
     ref
   ) => {
     const { config } = useChart()

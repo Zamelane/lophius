@@ -3,11 +3,11 @@ import {Label} from "@/components/ui/label";
 import {TranslationFunctionType} from "@/interfaces/translationFunctionType";
 
 export default function InputMessage({
+  t,
+  message,
+  type = 'info',
   className = '',
   isMultiple = false,
-  message,
-  t,
-  type = 'info',
 }: {
   message?: string[]
   type?: 'error' | 'info' | 'success',

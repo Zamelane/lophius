@@ -34,8 +34,8 @@ export const getUser = cache(async (): Promise<undefined|User> => {
 
   try {
     return db.select({
-      email: users.email,
       id: users.id,
+      email: users.email,
       nickname: users.nickname
     })
       .from(users)

@@ -17,7 +17,7 @@ export const AnimatedSubscribeButton = React.forwardRef<
   AnimatedSubscribeButtonProps
 >(
   (
-    { children, className, onClick, subscribeStatus = false, ...props },
+    { onClick, children, className, subscribeStatus = false, ...props },
     ref,
   ) => {
     const [isSubscribed, setIsSubscribed] = useState<boolean>(subscribeStatus);
@@ -83,7 +83,7 @@ export const AnimatedSubscribeButton = React.forwardRef<
             <motion.span
               key="reaction"
               initial={{ x: 0 }}
-              exit={{ transition: { duration: 0.1 }, x: 50 }}
+              exit={{ x: 50, transition: { duration: 0.1 } }}
               className="relative flex items-center justify-center font-semibold"
             >
               {initialChild} {/* Use children for unsubscribed state */}

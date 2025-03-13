@@ -2,7 +2,7 @@
 
 import { type LucideIcon } from "lucide-react"
 
-import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "../ui/sidebar"
+import { useSidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "../ui/sidebar"
 
 
 export function LightNavMain({
@@ -24,8 +24,8 @@ export function LightNavMain({
             asChild
             isActive={item.isActive}
             tooltip={{
-              children: item.title,
-              hidden: open
+              hidden: open,
+              children: item.title
             }}>
             <a href={item.url}>
               <item.icon />

@@ -5,11 +5,11 @@ import InputMessage from "@/components/forms/inputs/input-message";
 import {TranslationFunctionType} from "@/interfaces/translationFunctionType";
 
 export default function FormInput({
-  children,
   code,
-  errors,
   t_api,
-  title
+  title,
+  errors,
+  children
 }: LayoutProps & {
   errors: string[] | undefined,
   t_api: TranslationFunctionType,

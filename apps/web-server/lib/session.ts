@@ -32,14 +32,14 @@ export async function decrypt(session: string | undefined = ''): Promise<null | 
 
 export async function createSession(userId: string) {
 	const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
-	const session = await encrypt({ expiresAt, userId })
+	const session = await encrypt({ userId, expiresAt })
 	const cookieStore = await cookies()
 
 	cookieStore.set('session', session, {
-		expires: expiresAt,
-		httpOnly: true,
 		path: '/',
-		sameSite: 'lax',
 		secure: true,
+		httpOnly: true,
+		sameSite: 'lax',
+		expires: expiresAt,
 	})
 }
