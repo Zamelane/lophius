@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -24,36 +26,44 @@ export default function EditProfileDialog({...props}) {
 
   const maxLength = 180;
   const {
-    characterCount,
-    handleChange,
-    maxLength: limit,
     value,
+    handleChange,
+    characterCount,
+    maxLength: limit,
   } = useCharacterLimit({
+    maxLength,
     initialValue:
-      "Hey, I am Margaret, a web developer who loves turning ideas into amazing websites!",
-    maxLength
+      ""
   });
+
+  const [userName,  setUserName ] = useState("")
+  const [email,     setEmail    ] = useState("")
+  const [aboutMe,   setAboutMe  ] = useState(value)
+  const [avatar,    setAvatar   ] = useState("")
+  const [profileBG, setProfileBG] = useState("")
+
+  const t = useTranslations('ProfilePage')
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" {...props}><Edit/></Button>
+        <Button variant="secondary" {...props}><Edit/> {t('edit_button_text')}</Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg [&>button:last-child]:top-3.5">
         <DialogHeader className="contents space-y-0 text-left">
           <DialogTitle className="border-b border-border px-6 py-4 text-base">
-            Edit profile
+            {t('edit_profile')}
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="sr-only">
           Make changes to your profile here. You can change your photo and set a username.
         </DialogDescription>
         <div className="overflow-y-auto">
-          <ProfileBg defaultImage="https://originui.com/profile-bg.jpg" />
-          <Avatar defaultImage="https://originui.com/avatar-72-01.jpg" />
+          <ProfileBg defaultImage={profileBG} />
+          <Avatar defaultImage={avatar} />
           <div className="px-6 pb-6 pt-4">
             <form className="space-y-4">
-              <div className="flex flex-col gap-4 sm:flex-row">
+              {/* <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex-1 space-y-2">
                   <Label htmlFor={`${id}-first-name`}>First name</Label>
                   <Input
@@ -74,17 +84,18 @@ export default function EditProfileDialog({...props}) {
                     defaultValue="Villard"
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="space-y-2">
-                <Label htmlFor={`${id}-username`}>Username</Label>
+                <Label htmlFor={`${id}-username`}>{t('nickname')}</Label>
                 <div className="relative">
                   <Input
                     required
                     type="text"
+                    value={userName}
                     id={`${id}-username`}
                     className="peer pe-9"
-                    placeholder="Username"
-                    defaultValue="margaret-villard-69"
+                    placeholder="ExampleName"
+                    onChange={v => setUserName(v.target.value)}
                   />
                   <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
                     <Check
@@ -97,29 +108,29 @@ export default function EditProfileDialog({...props}) {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor={`${id}-website`}>Website</Label>
-                <div className="flex rounded-lg shadow-sm shadow-black/5">
-                  <span className="-z-10 inline-flex items-center rounded-s-lg border border-input bg-background px-3 text-sm text-muted-foreground">
-                    https://
-                  </span>
+                <Label htmlFor={`${id}-website`}>{t('email')}</Label>
+                <div className="flex shadow-sm">
                   <Input
-                    type="text"
-                    id={`${id}-website`}
-                    placeholder="yourwebsite.com"
-                    defaultValue="www.margaret.com"
-                    className="-ms-px rounded-s-none shadow-none"
+                    type="email"
+                    value={email}
+                    id={`${id}-email`}
+                    placeholder="example@mail.ru"
+                    onChange={v => setEmail(v.target.value)}
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor={`${id}-bio`}>Biography</Label>
+                <Label htmlFor={`${id}-bio`}>{t('about_me')}</Label>
                 <Textarea
+                  value={aboutMe}
                   id={`${id}-bio`}
-                  defaultValue={value}
                   maxLength={maxLength}
-                  onChange={handleChange}
                   aria-describedby={`${id}-description`}
-                  placeholder="Write a few sentences about yourself"
+                  placeholder={t('about_me_placeholder')}
+                  onChange={v => {
+                    setAboutMe(v.target.value)
+                    handleChange(v)
+                  }}
                 />
                 <p
                   role="status"
@@ -127,7 +138,7 @@ export default function EditProfileDialog({...props}) {
                   id={`${id}-description`}
                   className="mt-2 text-right text-xs text-muted-foreground"
                 >
-                  <span className="tabular-nums">{limit - characterCount}</span> characters left
+                  <span className="tabular-nums">{limit - characterCount}</span> {t('characters_left')}
                 </p>
               </div>
             </form>
@@ -136,11 +147,11 @@ export default function EditProfileDialog({...props}) {
         <DialogFooter className="border-t border-border px-6 py-4">
           <DialogClose asChild>
             <Button type="button" variant="outline">
-              Cancel
+              {t('cancel')}
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="button">Save changes</Button>
+            <Button type="button">{t('save_changes')}</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
@@ -150,7 +161,7 @@ export default function EditProfileDialog({...props}) {
 
 function ProfileBg({ defaultImage }: { defaultImage?: string }) {
   const [hideDefault, setHideDefault] = useState(false);
-  const { fileInputRef, handleFileChange, handleRemove, handleThumbnailClick, previewUrl } =
+  const { previewUrl, fileInputRef, handleRemove, handleFileChange, handleThumbnailClick } =
     useImageUpload();
 
   const currentImage = previewUrl || (!hideDefault ? defaultImage : null);
@@ -164,7 +175,7 @@ function ProfileBg({ defaultImage }: { defaultImage?: string }) {
     <div className="h-32">
       <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-muted">
         {currentImage && (
-          <img
+          <Image
             width={512}
             height={96}
             src={currentImage}
@@ -206,7 +217,7 @@ function ProfileBg({ defaultImage }: { defaultImage?: string }) {
 }
 
 function Avatar({ defaultImage }: { defaultImage?: string }) {
-  const { fileInputRef, handleFileChange, handleThumbnailClick, previewUrl } = useImageUpload();
+  const { previewUrl, fileInputRef, handleFileChange, handleThumbnailClick } = useImageUpload();
 
   const currentImage = previewUrl || defaultImage;
 
@@ -214,7 +225,7 @@ function Avatar({ defaultImage }: { defaultImage?: string }) {
     <div className="-mt-10 px-6">
       <div className="relative flex size-20 items-center justify-center overflow-hidden rounded-full border-4 border-background bg-muted shadow-sm shadow-black/10">
         {currentImage && (
-          <img
+          <Image
             width={80}
             height={80}
             src={currentImage}

@@ -49,11 +49,11 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
   }, []);
 
   return {
-    fileInputRef,
     fileName,
-    handleFileChange,
-    handleRemove,
-    handleThumbnailClick,
     previewUrl,
+    fileInputRef,
+    handleRemove,
+    handleFileChange,
+    handleThumbnailClick,
   };
 }

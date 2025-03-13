@@ -15,7 +15,7 @@ export const ProfileHeader = async () => {
   return (
     <div>
       <div className="px-2">
-        <div className="w-full h-96 rounded-md bg-muted overflow-clip">
+        <div className="w-full h-56 sm:h-96 rounded-md bg-muted overflow-clip">
           { 
             backgroundImage
             ? <Image
@@ -32,13 +32,13 @@ export const ProfileHeader = async () => {
 
       <Centrize className="px-10 py-4">
         <div className="flex flex-row flex-wrap gap-x-4">
-          <div className="grid grid-cols-[auto,auto] h-20">
+          <div className="flex flex-col items-center sm:items-start mx-auto sm:ml-0 sm:grid sm:grid-cols-[auto,auto] h-36 sm:h-14">
             <ProfileAvatar
               minUserName={userName}
               avatarImage={avatarImage}
               className="-translate-y-1/2 border-2 border-foreground"
             />
-            <div className="flex flex-col pl-8 min-w-[200px]">
+            <div className="flex flex-col items-center sm:items-start sm:pl-8 sm:translate-y-0 min-w-[200px] -translate-y-[45px]">
               <TextAnimate
                 by="character"
                 animation="slideLeft"

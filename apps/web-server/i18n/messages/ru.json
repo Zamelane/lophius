@@ -44,6 +44,17 @@
     "and": "и",
     "privacy_policy": "политику конфиденциальности"
   },
+  "ProfilePage": {
+    "edit_button_text": "Редактировать",
+    "edit_profile": "Редактировать профиль",
+    "nickname": "Никнейм",
+    "email": "Почта",
+    "about_me": "О себе",
+    "about_me_placeholder": "Напишите несколько предложений о себе",
+    "characters_left": "символов осталось",
+    "cancel": "Отмена",
+    "save_changes": "Сохранить изменения"
+  },
   "Api": {
     "password_at_least_8_characters": "Пароль должен содержать не меньше 8 символов",
     "password_at_least_1_number": "Пароль должен содержать не меньше 1 цифры",
