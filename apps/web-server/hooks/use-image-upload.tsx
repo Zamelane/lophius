@@ -15,9 +15,16 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
   }, []);
 
   const handleFileChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (file) {
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await fetch('/api/assets', {
+          method: 'POST',
+          body: formData
+        })
+// TODO: доделать загрузку
         setFileName(file.name);
         const url = URL.createObjectURL(file);
         setPreviewUrl(url);

@@ -1,28 +1,49 @@
 import Image from "next/image"
 import { CheckIcon, ChevronRightIcon } from "lucide-react"
 import { TextAnimate } from "@/components/magicui/text-animate"
+import { GetUserByIdApiHandlerType } from "@/actions/api/user/[id]/route"
 import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe-button"
 
 import { Centrize } from "../../other/centrize"
 import { ProfileAvatar } from "./profile-avatar"
 import EditProfileDialog from "./dialogs/edit-dialog"
 
-export const ProfileHeader = async () => {
-  const backgroundImage = "https://files.zmln.ru/%5Bwalls%5D%20%D0%9E%D0%B1%D0%BE%D0%B8/59.jpg"
-  const avatarImage = "https://github.com/shadcn.png"
-  const userName = "Nickname"
-  const isMe = false
+type ParamsType = {
+  data: Awaited<GetUserByIdApiHandlerType>
+}
+
+export const ProfileHeader = ({
+  data
+}: ParamsType) => {
+  const {
+    success,
+    content
+  } = data
+
+  if (!success || !content)
+    return <p>Error content extracted</p>
+  
+  const {
+    bio,
+    isMe,
+    email,
+    avatar,
+    nickname,
+    background,
+    id: userId
+  } = content
+
   return (
     <div>
       <div className="px-2">
         <div className="w-full h-56 sm:h-96 rounded-md bg-muted overflow-clip">
           { 
-            backgroundImage
+            background
             ? <Image
                 alt=""
                 width={3440}
                 height={1440}
-                src={backgroundImage}
+                src={`/api/assets/${background.hash}`}
                 className="object-cover w-full h-full"
               />
             : null
@@ -34,16 +55,16 @@ export const ProfileHeader = async () => {
         <div className="flex flex-row flex-wrap gap-x-4">
           <div className="flex flex-col items-center sm:items-start mx-auto sm:ml-0 sm:grid sm:grid-cols-[auto,auto] h-36 sm:h-14">
             <ProfileAvatar
-              minUserName={userName}
-              avatarImage={avatarImage}
+              minUserName={nickname}
               className="-translate-y-1/2 border-2 border-foreground"
+              avatarImage={avatar ? `/api/assets/${avatar.hash}` : ""}
             />
             <div className="flex flex-col items-center sm:items-start sm:pl-8 sm:translate-y-0 min-w-[200px] -translate-y-[45px]">
               <TextAnimate
                 by="character"
                 animation="slideLeft"
                 className="font-bold leading-none text-2xl">
-                {userName}
+                {nickname}
               </TextAnimate>
               <p className="leading-8">
                 <TextAnimate
@@ -68,7 +89,7 @@ export const ProfileHeader = async () => {
         
           <div className="flex-shrink-0 w-full sm:w-auto ml-auto">
             {
-              isMe
+              !isMe
                 ? <AnimatedSubscribeButton className="sm:w-36 w-full">
                     <span className="group inline-flex items-center">
                       Follow
@@ -79,7 +100,15 @@ export const ProfileHeader = async () => {
                       Subscribed
                     </span>
                   </AnimatedSubscribeButton>
-                : <EditProfileDialog className="w-full"/>
+                : <EditProfileDialog
+                    email={email!}
+                    bio={bio ?? ""}
+                    userId={userId}
+                    className="w-full"
+                    nickname={nickname}
+                    avatarHash={avatar?.hash ?? ""}
+                    backgroundHash={background?.hash ?? ""}
+                  />
             }
           </div>
         </div>

@@ -17,7 +17,7 @@ export interface ErrorResponse {
 	}
 }
 
-export type User = {
+export type CurrentUserInfo = {
 	id: number
 	nickname: string
 	email: string

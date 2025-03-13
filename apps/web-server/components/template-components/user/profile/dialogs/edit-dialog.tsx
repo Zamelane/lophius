@@ -21,7 +21,25 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-export default function EditProfileDialog({...props}) {
+type PropsType = {
+  userId: number
+  nickname: string
+  email: string
+  bio: string
+  avatarHash: string
+  backgroundHash: string
+  className: string|undefined
+}
+
+export default function EditProfileDialog({
+  bio,
+  userId,
+  nickname,
+  avatarHash,
+  backgroundHash,
+  email: emailValue,
+  ...props
+}: PropsType) {
   const id = useId();
 
   const maxLength = 180;
@@ -33,14 +51,14 @@ export default function EditProfileDialog({...props}) {
   } = useCharacterLimit({
     maxLength,
     initialValue:
-      ""
+      bio
   });
 
-  const [userName,  setUserName ] = useState("")
-  const [email,     setEmail    ] = useState("")
+  const [userName,  setUserName ] = useState(nickname)
+  const [email,     setEmail    ] = useState(emailValue)
   const [aboutMe,   setAboutMe  ] = useState(value)
-  const [avatar,    setAvatar   ] = useState("")
-  const [profileBG, setProfileBG] = useState("")
+  const [avatar,    setAvatar   ] = useState(avatarHash)
+  const [profileBG, setProfileBG] = useState(backgroundHash)
 
   const t = useTranslations('ProfilePage')
 

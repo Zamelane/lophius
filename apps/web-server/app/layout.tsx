@@ -1,13 +1,13 @@
 import "./globals.css"
 
 import * as React from "react";
-import {getUser} from "@/lib/dal";
+import {getCurrentUser} from "@/lib/dal";
 import {Toaster} from "@/components/ui/sonner";
 import {NextIntlClientProvider} from "next-intl";
 import {getLocale, getMessages} from "next-intl/server";
 import {AuthProvider} from "@/components/helps/auth-context";
 import {ThemeProvider} from "@/components/helps/theme-provider";
-import {User, LayoutProps, ContentResponse} from "@/interfaces";
+import {CurrentUserInfo, LayoutProps, ContentResponse} from "@/interfaces";
 
 export default async function MyApp({children}: LayoutProps) {
   const locale = await getLocale();
@@ -15,8 +15,8 @@ export default async function MyApp({children}: LayoutProps) {
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages();
-  const auth: ContentResponse<User> = {
-    content: await getUser()
+  const auth: ContentResponse<CurrentUserInfo> = {
+    content: await getCurrentUser()
   }
 
   return (

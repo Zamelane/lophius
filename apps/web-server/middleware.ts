@@ -1,16 +1,16 @@
-import {getUser} from "@/lib/dal";
+import {getCurrentUser} from "@/lib/dal";
 import { NextRequest, NextResponse } from 'next/server'
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard']
 //const publicRoutes = ['/login', '/signup', '/']
-const apiPublicRoutes = ['/', '/login', '/signin']
+const apiProtectedRoutes = [''] // РоутыЮ, которые требуют авторизацию
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
   const isProtectedRoute = protectedRoutes.includes(path)
-  const isApiPublicRoute = apiPublicRoutes.includes(path)
-  const user = await getUser()
+  const isApiProtectedRoute = apiProtectedRoutes.includes(path)
+  const user = await getCurrentUser()
 
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set('x-url', req.url);
@@ -21,13 +21,13 @@ export async function middleware(req: NextRequest) {
   }
 
   if (
-    !isApiPublicRoute &&
+    isApiProtectedRoute &&
     !user &&
     req.nextUrl.pathname.startsWith('/api')
   )
   {
     return Response.json(
-        { message: 'authentication failed', success: false },
+        { success: false, message: 'authentication failed' },
         { status: 401 }
       )
   }

@@ -1,29 +1,10 @@
-import { Centrize } from "@/components/template-components/other/centrize"
-import { ProfileMenu } from "@/components/template-components/user/profile/profile-menu"
-import { ProfileInfo } from "@/components/template-components/user/profile/profile-info"
-import { ProfileHeader } from "@/components/template-components/user/profile/profile-header"
+import { ParamsType } from "@/interfaces"
+import { GetUserByIdApiHandler } from "@/actions/api/user/[id]/route"
+import { UserProfilePageComponent } from "@/components/template-components/user/profile"
 
-type IdType = {
-  id: string
-}
+export default async function UserPage({ params }: ParamsType) {
+  const { id } = await params
+  const user = await GetUserByIdApiHandler(id)
 
-type ParamsType = {
-  params: Promise<IdType>
-}
-
-export default async function UserPage({
-  //params
-}: ParamsType) {
-  //const { id } = await params
-  return (
-    <div>
-      <ProfileHeader/>
-      <Centrize>
-        <ProfileMenu/>
-        <div className="mt-4">
-          <ProfileInfo/>
-        </div>
-      </Centrize>
-    </div>
-  )
+  return <UserProfilePageComponent id={id} fallbackData={user} />
 }

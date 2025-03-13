@@ -3,10 +3,10 @@
 import {api_t_keys} from "@/i18n";
 import {createSession} from "@/lib/session";
 import FindUser from "@/actions/server/logics/find-user";
-import {ErrorResponse, ServerResponse, User} from "@/interfaces";
+import {ErrorResponse, ServerResponse, CurrentUserInfo} from "@/interfaces";
 import {LoginFormSchema} from "@/validates/schemas/LoginFormSchema";
 
-export async function login (state: ErrorResponse & ServerResponse<User>|void, formData: FormData): Promise<ErrorResponse & ServerResponse<User>|void> {
+export async function login (state: ErrorResponse & ServerResponse<CurrentUserInfo>|void, formData: FormData): Promise<ErrorResponse & ServerResponse<CurrentUserInfo>|void> {
   // Валидация полей
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
