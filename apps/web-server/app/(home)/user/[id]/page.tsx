@@ -34,7 +34,7 @@ export async function generateMetadata(
     title: user.nickname,
     description: user.bio,
     openGraph: {
-      images: '/og/user/' + user.id
+      images: '/api/og/user/' + user.id
     },
     verification: {
       other: {
