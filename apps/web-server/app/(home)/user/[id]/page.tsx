@@ -20,26 +20,34 @@ export async function generateMetadata(
 
   if (!numberId || isNaN(numberId))
     return {
-      title: 'Incorrect user id'
+      title: 'Incorrect user id',
+      openGraph: {
+        title: 'Incorrect user id'
+      }
     }
 
   const user = await MakeUserInfo(numberId, session?.userId)
 
   if (!user)
     return {
-      title: 'User not found'
+      title: 'User not found',
+      openGraph: {
+        title: 'User not found'
+      }
     }
   
   return {
     title: user.nickname,
     description: user.bio,
-    openGraph: {
-      images: '/api/og/user/' + user.id
-    },
     verification: {
       other: {
         "lophius": `@${user.nickname}`
       }
+    },
+    openGraph: {
+      title: user.nickname,
+      description: user.bio ?? "",
+      images: '/api/og/user/' + user.id
     }
   }
 }

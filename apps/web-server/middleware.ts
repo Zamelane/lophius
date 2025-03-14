@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard']
 //const publicRoutes = ['/login', '/signup', '/']
-const apiProtectedRoutes = [''] // РоутыЮ, которые требуют авторизацию
+const apiProtectedRoutes = [''] // Роуты, которые требуют авторизацию
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
