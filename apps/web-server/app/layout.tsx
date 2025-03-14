@@ -12,6 +12,7 @@ import {LayoutProps, CurrentUserInfo, ContentResponse} from "@/interfaces";
 
 export const metadata: Metadata = {
   applicationName: 'Lophius',
+  metadataBase: new URL(process.env.PUBLIC_URL!),
   title: {
     default: 'Home',
     template: '%s | Lophius'
