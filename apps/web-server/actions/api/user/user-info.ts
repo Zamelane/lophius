@@ -1,12 +1,13 @@
 import { getUser } from "@/lib/dal"
+import { UserInfo } from "@/interfaces"
 
-export async function MakeUserInfo(userId: number, userIdForCheckIsMe?: number) {
-  const user = await getUser(userId, userIdForCheckIsMe)
+export async function MakeUserInfo(userId: number, userIdForCheckIsMe?: number): Promise<undefined|UserInfo> {
+  const user = await getUser(userId)
 
   if (!user)
     return
 
-  if (user.isMe)
+  if (user.id === userIdForCheckIsMe)
     return user
 
   return {

@@ -36,4 +36,15 @@ export type ContentResponse<T> = {
 export type ServerResponse<T> = StatusResponse & ContentResponse<T>
 export type ClientResponse<T> = ContentResponse<T> | ServerResponse<T>
 
+export type ApiResponse<T> = {
+  success: false;
+  error: {
+    message: string;
+    code?: number;
+  }
+} | {
+  success: true;
+  data: T;
+}
+
 export * from './types'

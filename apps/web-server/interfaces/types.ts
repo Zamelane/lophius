@@ -1,4 +1,6 @@
 import { SWRConfiguration } from "swr"
+import { UsersTableType } from "@/db/tables"
+import { FilesTableType } from "@/db/tables/files"
 
 export const mediaPaths = ['/anime', '/book', '/comic', '/kino', '/music']
 
@@ -14,4 +16,19 @@ export type ParamsType = {
 export type FallbackType<T> = {
   fallback?: SWRConfiguration
   fallbackData: T
+}
+
+// Вспомогательные
+export type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+// Типизация сущностей
+export type User = WithOptional<UsersTableType, 'email' | 'password'>
+export type AvatarImage = FilesTableType
+export type BackgroundImage = FilesTableType
+
+// Объединения сущностей
+export type UserInfo = User & {
+  avatar: AvatarImage | null
+  background: BackgroundImage | null
+  isMe?: boolean
 }

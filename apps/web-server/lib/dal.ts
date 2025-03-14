@@ -5,9 +5,9 @@ import { eq      } from "drizzle-orm";
 import { users   } from "@/db/tables";
 import { cookies } from 'next/headers'
 import { decrypt } from '@/lib/session'
-import { files } from '@/db/tables/files';
-import { alias } from 'drizzle-orm/pg-core';
-import { CurrentUserInfo    } from "@/interfaces";
+import { files   } from '@/db/tables/files';
+import { alias   } from 'drizzle-orm/pg-core';
+import { UserInfo, CurrentUserInfo } from "@/interfaces";
 
 export type authData = {
   isAuth: boolean
@@ -56,7 +56,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUserInfo|undefined>
   }
 })
 
-export const getUser = cache(async (userId: number, userIdForCheckIsMe?: number) => {
+export const getUser = cache(async (userId: number): Promise<undefined|UserInfo> => {
   try {
     const avatar = alias(files, 'avatar');
     const background = alias(files, 'background');
@@ -71,8 +71,7 @@ export const getUser = cache(async (userId: number, userIdForCheckIsMe?: number)
         return {
             ...users,
             avatar,
-            background,
-            isMe: users.id === userIdForCheckIsMe
+            background
         }
       })
       .catch(() => undefined)
