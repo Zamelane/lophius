@@ -60,6 +60,6 @@ export default async function UserPage({ params }: ParamsType) {
 
   if (!user)
     return <NotFound title="User not found"/>
-
-  return <UserProfilePageComponent data={{ ...user, isMe: numberId === session?.userId }} />
+  
+  return <UserProfilePageComponent isAuth={session.isAuth} data={{ ...user, isMe: numberId === session?.userId }} />
 }

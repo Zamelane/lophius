@@ -1,15 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { UserInfo } from "@/interfaces";
+import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { SetState, UserInfo } from "@/interfaces";
 import { Textarea } from "@/components/ui/text-area";
-import { X, Edit, Check, ImagePlus } from "lucide-react";
+import { useApiRequest } from "@/hooks/use-api-request";
 import { useImageUpload } from "@/hooks/use-image-upload";
+import UpdateUser from "@/actions/server/logics/update-user";
 import { useId, Dispatch, useState, SetStateAction } from "react";
+import { X, Edit, Check, ImagePlus, LoaderCircle } from "lucide-react";
+import { ChickNickname } from "@/actions/server/logics/check-nickname";
 import { useCharacterLimit } from "@/components/ui/input-limit/use-character-limit";
 import {
   Dialog,
@@ -24,11 +28,13 @@ import {
 
 type PropsType = {
   data: UserInfo,
+  setData: SetState<UserInfo>,
   className: string|undefined
 }
 
 export default function EditProfileDialog({
   data,
+  setData,
   ...props
 }: PropsType) {
   const id = useId();
@@ -45,24 +51,59 @@ export default function EditProfileDialog({
       data.bio ?? ""
   });
 
-  const [userName,    setUserName     ] = useState(data.nickname)
+  const [nickname,    setNickName     ] = useState(data.nickname)
   const [email,       setEmail        ] = useState(data.email)
   const [aboutMe,     setAboutMe      ] = useState(value)
 
   const [avatarId,    setAvatarId     ] = useState(data.avatar?.id)
-  const [backgroidId, setBackgroidId  ] = useState(data.background?.id)
+  const [backgroundId, setBackgroidId  ] = useState(data.background?.id)
 
-  const [isLoading,   setIsLoading    ] = useState(false)
+  const { execute, isPending } = useApiRequest(UpdateUser)
+  
+  const { execute: checkExecute, isPending: isPendingCheck } = useApiRequest(ChickNickname)
+
+  const [ open, setOpen ] = useState(false)
+  const [ isCheck, setIsCheck ] = useState(true)
 
   const t = useTranslations('ProfilePage')
   //const [state, formAction, pending] = useActionState(createUser, initialState)
 
-  function save() {
-    
+  async function nicknameChange(v: string) {
+    setNickName(v)
+    if (!isPendingCheck) {
+      const result = await checkExecute(v, data.nickname)
+      if (result.success)
+        setIsCheck(result.data)
+    }
+  }
+
+  async function save() {
+    const result = await execute({
+      email,
+      avatarId,
+      nickname,
+      backgroundId,
+      bio: aboutMe
+    })
+
+    if (result?.success) {
+      const updatedData = {
+        ...data,
+        bio: result.data.bio,
+        avatarId: result.data.avatarId,
+        nickname: result.data.nickname,
+        backgroundImageId: result.data.backgroundImageId,
+      };
+
+      // Обновляем состояние в родительском компоненте
+      setData(updatedData);
+      setOpen(false)
+      toast.success('Профиль успешно обновлён')
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary" {...props}><Edit/> {t('edit_button_text')}</Button>
       </DialogTrigger>
@@ -76,7 +117,7 @@ export default function EditProfileDialog({
           Make changes to your profile here. You can change your photo and set a username.
         </DialogDescription>
         <div className="overflow-y-auto">
-          <ProfileBg id={backgroidId} setId={setBackgroidId} />
+          <ProfileBg id={backgroundId} setId={setBackgroidId} />
           <Avatar id={avatarId} setId={setAvatarId} />
           <div className="px-6 pb-6 pt-4">
             <form className="space-y-4">
@@ -108,19 +149,37 @@ export default function EditProfileDialog({
                   <Input
                     required
                     type="text"
-                    value={userName}
+                    value={nickname}
                     id={`${id}-username`}
                     className="peer pe-9"
                     placeholder="ExampleName"
-                    onChange={v => setUserName(v.target.value)}
+                    onChange={v => nicknameChange(v.target.value)}
                   />
                   <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                    <Check
-                      size={16}
-                      strokeWidth={2}
-                      aria-hidden="true"
-                      className="text-emerald-500"
-                    />
+                    {
+                      isPendingCheck
+                      ? (
+                        <LoaderCircle size={16} strokeWidth={2} aria-hidden="true" className="animate-spin" />
+                      ) : (
+                        isCheck
+                        ? (
+                            <Check
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                            className="text-emerald-500"
+                          />
+                          )
+                        : (
+                          <X
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                            className="text-red-500"
+                          />
+                        )
+                      )
+                    }
                   </div>
                 </div>
               </div>
@@ -167,11 +226,13 @@ export default function EditProfileDialog({
               {t('cancel')}
             </Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button
-              type="button"
-              onClick={save}>{t('save_changes')}</Button>
-          </DialogClose>
+          <Button
+            type="button"
+            onClick={save}
+            disabled={isPending}
+          >
+            {t('save_changes')}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -183,41 +244,51 @@ function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetSta
   const { previewUrl, fileInputRef, handleRemove, handleFileChange, handleThumbnailClick } =
     useImageUpload();
 
-  const currentImage = previewUrl || (!hideDefault ? '/api/assets/' + id : null);
+  const [isLoading, setIsLoading] = useState(false)
+
+  const currentImage = previewUrl || (!hideDefault && id ? '/api/assets/id/' + id : null);
 
   const handleImageRemove = () => {
     handleRemove();
     setHideDefault(true);
+    setId(undefined)
   };
 
   async function changeImg(event: React.ChangeEvent<HTMLInputElement>) {
+    setIsLoading(true)
     const result = await handleFileChange(event)
     if (result)
       setId(result.id!)
+    setIsLoading(false)
   }
 
   return (
     <div className="h-32">
       <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-muted">
-        {currentImage && (
+        {currentImage && !isLoading && (
           <Image
             width={512}
             height={96}
             src={currentImage}
+            onError={handleImageRemove}
             className="h-full w-full object-cover"
             alt={previewUrl ? "Preview of uploaded image" : "Default profile background"}
           />
         )}
         <div className="absolute inset-0 flex items-center justify-center gap-2">
-          <button
-            type="button"
-            onClick={handleThumbnailClick}
-            aria-label={currentImage ? "Change image" : "Upload image"}
-            className="z-50 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white outline-offset-2 transition-colors hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
-          >
-            <ImagePlus size={16} strokeWidth={2} aria-hidden="true" />
-          </button>
-          {currentImage && (
+          {
+            !isLoading && (
+              <button
+                type="button"
+                onClick={handleThumbnailClick}
+                aria-label={currentImage ? "Change image" : "Upload image"}
+                className="z-50 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white outline-offset-2 transition-colors hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
+              >
+                <ImagePlus size={16} strokeWidth={2} aria-hidden="true" />
+              </button>
+            )
+          }
+          {currentImage && !isLoading && (
             <button
               type="button"
               aria-label="Remove image"
@@ -227,6 +298,11 @@ function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetSta
               <X size={16} strokeWidth={2} aria-hidden="true" />
             </button>
           )}
+          {
+            isLoading && (
+              <LoaderCircle size={32} strokeWidth={2} aria-hidden="true" className="animate-spin" />
+            )
+          }
         </div>
       </div>
       <input
@@ -244,18 +320,22 @@ function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetSta
 function Avatar({ id, setId }: { id: number|undefined, setId: Dispatch<SetStateAction<number|undefined>> }) {
   const { previewUrl, fileInputRef, handleFileChange, handleThumbnailClick } = useImageUpload();
 
-  const currentImage = previewUrl || '/api/assets/' + id;
+  const currentImage = previewUrl || (id ? '/api/assets/id/' + id : null);
+
+  const [isLoading, setIsLoading] = useState(false)
 
   async function changeImg(event: React.ChangeEvent<HTMLInputElement>) {
+    setIsLoading(true)
     const result = await handleFileChange(event)
     if (result)
       setId(result.id!)
+    setIsLoading(false)
   }
 
   return (
     <div className="-mt-10 px-6">
       <div className="relative flex size-20 items-center justify-center overflow-hidden rounded-full border-4 border-background bg-muted shadow-sm shadow-black/10">
-        {currentImage && (
+        {currentImage && !isLoading && (
           <Image
             width={80}
             height={80}
@@ -264,14 +344,23 @@ function Avatar({ id, setId }: { id: number|undefined, setId: Dispatch<SetStateA
             className="h-full w-full object-cover"
           />
         )}
-        <button
-          type="button"
-          onClick={handleThumbnailClick}
-          aria-label="Change profile picture"
-          className="absolute flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white outline-offset-2 transition-colors hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
-        >
-          <ImagePlus size={16} strokeWidth={2} aria-hidden="true" />
-        </button>
+        {
+          !isLoading && (
+            <button
+              type="button"
+              onClick={handleThumbnailClick}
+              aria-label="Change profile picture"
+              className="absolute flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white outline-offset-2 transition-colors hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
+            >
+              <ImagePlus size={16} strokeWidth={2} aria-hidden="true" />
+            </button>
+          )
+        }
+        {
+          isLoading && (
+            <LoaderCircle size={32} strokeWidth={2} aria-hidden="true" className="animate-spin" />
+          )
+        }
         <input
           type="file"
           accept="image/*"

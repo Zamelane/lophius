@@ -1,3 +1,4 @@
+import { Dispatch } from "react"
 import { SWRConfiguration } from "swr"
 import { UsersTableType } from "@/db/tables"
 import { FilesTableType } from "@/db/tables/files"
@@ -20,6 +21,7 @@ export type FallbackType<T> = {
 
 // Вспомогательные
 export type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+export type SetState<T> =  Dispatch<T>
 
 // Типизация сущностей
 export type User = WithOptional<UsersTableType, 'email' | 'password'>
@@ -28,7 +30,7 @@ export type BackgroundImage = FilesTableType
 
 // Объединения сущностей
 export type UserInfo = User & {
-  avatar: AvatarImage | null
-  background: BackgroundImage | null
+  avatar?: AvatarImage | null
+  background?: BackgroundImage | null
   isMe?: boolean
 }

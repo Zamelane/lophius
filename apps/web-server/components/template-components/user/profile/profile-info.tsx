@@ -1,7 +1,11 @@
+import { UserInfo } from "@/interfaces"
+
 import { SimpleTitle } from "../../titles/simple-title"
 //import { ProfileActivityChart } from "./charts/activity-chart"
 
-export const ProfileInfo = () => {
+export const ProfileInfo = ({
+  data
+}: { data: UserInfo }) => {
   const stats = [
     { value: '1.33k',         title: 'Просмотры' },
     { value: '10',             title: 'Лайки'    },
@@ -12,7 +16,7 @@ export const ProfileInfo = () => {
   return (
     <div className="flex flex-col flex-grow gap-3 py-2 max-w-full">
       <SimpleTitle title="О себе">
-        <i>Пользователь ничего нам не рассказал...</i>
+      <i>{data.bio && data.bio.length ? data.bio :  'Пользователь ничего нам не рассказал...'}</i>
       </SimpleTitle>
 
       <SimpleTitle title="Статистика">

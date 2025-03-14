@@ -85,7 +85,7 @@ function SubtreeGeneratedByString(value: string): string[] {
   return subtrees
 }
 
-function GetPathByFilename(fileHash: string, ext: string) {
+export function GetPathByFilename(fileHash: string, ext: string) {
   const filePath = SubtreeGeneratedByString(fileHash)
   const fileName = filePath.pop()!
 

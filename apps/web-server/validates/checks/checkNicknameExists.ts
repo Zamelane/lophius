@@ -6,6 +6,6 @@ export const CheckNicknameExists = async (nickname: string) => {
   console.log('CheckNicknameExists');
   const userRows = await db.select()
     .from(users)
-    .where(eq(users.nickname, nickname))
+    .where(eq(users.nickname, nickname.toLocaleLowerCase()))
   return userRows.length === 0
 }

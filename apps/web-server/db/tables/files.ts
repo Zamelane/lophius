@@ -8,7 +8,7 @@ export const files = pgTable('files', {
   hash: varchar().notNull(),
   width: smallint().notNull(),
   height: smallint().notNull(),
-  ext: varchar({ length: 3 }).notNull(),
+  ext: varchar({ length: 4 }).notNull(),
   externalPath: varchar({ length: 255 }),
   id: bigserial({ mode: "number" }).primaryKey(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),

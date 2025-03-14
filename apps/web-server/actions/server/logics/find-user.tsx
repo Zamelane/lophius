@@ -1,7 +1,7 @@
 import {db} from "@/db";
 import bcrypt from "bcrypt";
-import {eq, or} from "drizzle-orm";
 import {users} from "@/db/tables";
+import {eq, or} from "drizzle-orm";
 
 export default async function FindUser({
   email,

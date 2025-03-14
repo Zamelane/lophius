@@ -40,8 +40,12 @@ export type ApiResponse<T> = {
   success: false;
   error: {
     message: string;
+		i18n: string;
     code?: number;
-  }
+  };
+	validateErrors?: {
+		[key: string]: string[] | undefined;
+	}
 } | {
   success: true;
   data: T;
