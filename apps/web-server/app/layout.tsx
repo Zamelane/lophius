@@ -1,13 +1,28 @@
 import "./globals.css"
 
 import * as React from "react";
+import { Metadata } from "next";
 import {getCurrentUser} from "@/lib/dal";
 import {Toaster} from "@/components/ui/sonner";
 import {NextIntlClientProvider} from "next-intl";
 import {getLocale, getMessages} from "next-intl/server";
 import {AuthProvider} from "@/components/helps/auth-context";
 import {ThemeProvider} from "@/components/helps/theme-provider";
-import {CurrentUserInfo, LayoutProps, ContentResponse} from "@/interfaces";
+import {LayoutProps, CurrentUserInfo, ContentResponse} from "@/interfaces";
+
+export const metadata: Metadata = {
+  applicationName: 'Lophius',
+  title: {
+    default: 'Home',
+    template: '%s | Lophius'
+  },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false
+  },
+  keywords: ['Lophius', 'Media', 'Collections', 'films', 'serials', 'comics', 'music', 'books']
+}
 
 export default async function MyApp({children}: LayoutProps) {
   const locale = await getLocale();

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { UserInfo } from "@/interfaces";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/text-area";
 import { X, Edit, Check, ImagePlus } from "lucide-react";
 import { useImageUpload } from "@/hooks/use-image-upload";
-import { useId, Dispatch, useState, SetStateAction, useActionState } from "react";
+import { useId, Dispatch, useState, SetStateAction } from "react";
 import { useCharacterLimit } from "@/components/ui/input-limit/use-character-limit";
 import {
   Dialog,
@@ -22,22 +23,12 @@ import {
 } from "@/components/ui/dialog";
 
 type PropsType = {
-  userId: number
-  nickname: string
-  email: string
-  bio: string
-  avatarHash: string
-  backgroundHash: string
+  data: UserInfo,
   className: string|undefined
 }
 
 export default function EditProfileDialog({
-  bio,
-  userId,
-  nickname,
-  avatarHash,
-  backgroundHash,
-  email: emailValue,
+  data,
   ...props
 }: PropsType) {
   const id = useId();
@@ -51,16 +42,16 @@ export default function EditProfileDialog({
   } = useCharacterLimit({
     maxLength,
     initialValue:
-      bio
+      data.bio ?? ""
   });
 
-  const [userName,    setUserName     ] = useState(nickname)
-  const [email,       setEmail        ] = useState(emailValue)
+  const [userName,    setUserName     ] = useState(data.nickname)
+  const [email,       setEmail        ] = useState(data.email)
   const [aboutMe,     setAboutMe      ] = useState(value)
-  const [avatar,      setAvatar       ] = useState(avatarHash)
-  const [profileBG,   setProfileBG    ] = useState(backgroundHash)
-  const [avatarId,    setAvatarId     ] = useState<null|number>(null)
-  const [backgroidId, setBackgroidId  ] = useState<null|number>(null)
+
+  const [avatarId,    setAvatarId     ] = useState(data.avatar?.id)
+  const [backgroidId, setBackgroidId  ] = useState(data.background?.id)
+
   const [isLoading,   setIsLoading    ] = useState(false)
 
   const t = useTranslations('ProfilePage')
@@ -85,8 +76,8 @@ export default function EditProfileDialog({
           Make changes to your profile here. You can change your photo and set a username.
         </DialogDescription>
         <div className="overflow-y-auto">
-          <ProfileBg setId={setBackgroidId} defaultImage={profileBG} />
-          <Avatar setId={setAvatarId} defaultImage={avatar} />
+          <ProfileBg id={backgroidId} setId={setBackgroidId} />
+          <Avatar id={avatarId} setId={setAvatarId} />
           <div className="px-6 pb-6 pt-4">
             <form className="space-y-4">
               {/* <div className="flex flex-col gap-4 sm:flex-row">
@@ -187,12 +178,12 @@ export default function EditProfileDialog({
   );
 }
 
-function ProfileBg({ setId, defaultImage }: { defaultImage?: string, setId: Dispatch<SetStateAction<null|number>> }) {
+function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetStateAction<number|undefined>> }) {
   const [hideDefault, setHideDefault] = useState(false);
   const { previewUrl, fileInputRef, handleRemove, handleFileChange, handleThumbnailClick } =
     useImageUpload();
 
-  const currentImage = previewUrl || (!hideDefault ? defaultImage : null);
+  const currentImage = previewUrl || (!hideDefault ? '/api/assets/' + id : null);
 
   const handleImageRemove = () => {
     handleRemove();
@@ -250,10 +241,10 @@ function ProfileBg({ setId, defaultImage }: { defaultImage?: string, setId: Disp
   );
 }
 
-function Avatar({ setId, defaultImage }: { defaultImage?: string, setId: Dispatch<SetStateAction<null|number>> }) {
+function Avatar({ id, setId }: { id: number|undefined, setId: Dispatch<SetStateAction<number|undefined>> }) {
   const { previewUrl, fileInputRef, handleFileChange, handleThumbnailClick } = useImageUpload();
 
-  const currentImage = previewUrl || defaultImage;
+  const currentImage = previewUrl || '/api/assets/' + id;
 
   async function changeImg(event: React.ChangeEvent<HTMLInputElement>) {
     const result = await handleFileChange(event)

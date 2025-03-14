@@ -84,13 +84,8 @@ export const ProfileHeader = ({
                     </span>
                   </AnimatedSubscribeButton>
                 : <EditProfileDialog
+                    data={data}
                     className="w-full"
-                    email={data.email!}
-                    bio={data.bio ?? ""}
-                    userId={data.id}
-                    nickname={data.nickname}
-                    avatarHash={data.avatar?.hash ?? ""}
-                    backgroundHash={data.background?.hash ?? ""}
                   />
             }
           </div>
