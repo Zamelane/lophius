@@ -3,8 +3,8 @@
 import {api_t_keys} from "@/i18n";
 import {createSession} from "@/lib/session";
 import FindUser from "@/actions/server/logics/find-user";
-import {ErrorResponse, ServerResponse, CurrentUserInfo} from "@/interfaces";
 import {LoginFormSchema} from "@/validates/schemas/LoginFormSchema";
+import {ErrorResponse, ServerResponse, CurrentUserInfo} from "@/interfaces";
 
 export async function login (state: ErrorResponse & ServerResponse<CurrentUserInfo>|void, formData: FormData): Promise<ErrorResponse & ServerResponse<CurrentUserInfo>|void> {
   // Валидация полей
@@ -16,8 +16,8 @@ export async function login (state: ErrorResponse & ServerResponse<CurrentUserIn
   // Если какие-то поля не прошли валидацию, выкидываем описание ошибок
   if (!validatedFields.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
       success: false,
+      errors: validatedFields.error.flatten().fieldErrors,
     }
   }
 
@@ -28,19 +28,19 @@ export async function login (state: ErrorResponse & ServerResponse<CurrentUserIn
 
   if (!user)
     return {
-      message: api_t_keys.invalid_authentication_data,
-      success: false
+      success: false,
+      message: api_t_keys.invalid_authentication_data
     }
 
   // Создаём сессию пользователя
   await createSession(user.id.toString())
   return {
+    success: true,
     content: {
-      email: user.email,
       id: user.id,
+      email: user.email,
       isAdmin: user.isAdmin,
       nickname: user.nickname
-    },
-    success: true
+    }
   }
 }

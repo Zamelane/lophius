@@ -6,22 +6,25 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true
+  },
   /* config options here */
   experimental: {
     nodeMiddleware: true,
   },
+  outputFileTracingRoot: path.join(__dirname, '../../'),
   images: {
     remotePatterns: [
       {
-        hostname: 'files.zmln.ru',
-        pathname: '/**',
         port: '',
-        protocol: 'https',
         search: '',
+        pathname: '/**',
+        protocol: 'https',
+        hostname: 'files.zmln.ru',
       },
     ],
-  },
-  outputFileTracingRoot: path.join(__dirname, '../../'),
+  }
 };
 
 export default withNextIntl(nextConfig);

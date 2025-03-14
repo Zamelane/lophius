@@ -24,12 +24,23 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
           method: 'POST',
           body: formData
         })
-// TODO: доделать загрузку
+
+        const json = await response.json() as {
+          fileExt: string,
+          fileHash: string,
+          id: number | undefined
+        }
+
+        if (!json.id)
+          return
+
         setFileName(file.name);
         const url = URL.createObjectURL(file);
         setPreviewUrl(url);
         previewRef.current = url;
         onUpload?.(url);
+
+        return json
       }
     },
     [onUpload],

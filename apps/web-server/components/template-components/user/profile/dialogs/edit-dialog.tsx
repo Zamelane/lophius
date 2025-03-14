@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useId, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/text-area";
 import { X, Edit, Check, ImagePlus } from "lucide-react";
 import { useImageUpload } from "@/hooks/use-image-upload";
+import { useId, Dispatch, useState, SetStateAction, useActionState } from "react";
 import { useCharacterLimit } from "@/components/ui/input-limit/use-character-limit";
 import {
   Dialog,
@@ -54,13 +54,21 @@ export default function EditProfileDialog({
       bio
   });
 
-  const [userName,  setUserName ] = useState(nickname)
-  const [email,     setEmail    ] = useState(emailValue)
-  const [aboutMe,   setAboutMe  ] = useState(value)
-  const [avatar,    setAvatar   ] = useState(avatarHash)
-  const [profileBG, setProfileBG] = useState(backgroundHash)
+  const [userName,    setUserName     ] = useState(nickname)
+  const [email,       setEmail        ] = useState(emailValue)
+  const [aboutMe,     setAboutMe      ] = useState(value)
+  const [avatar,      setAvatar       ] = useState(avatarHash)
+  const [profileBG,   setProfileBG    ] = useState(backgroundHash)
+  const [avatarId,    setAvatarId     ] = useState<null|number>(null)
+  const [backgroidId, setBackgroidId  ] = useState<null|number>(null)
+  const [isLoading,   setIsLoading    ] = useState(false)
 
   const t = useTranslations('ProfilePage')
+  const [state, formAction, pending] = useActionState(createUser, initialState)
+
+  function save() {
+    
+  }
 
   return (
     <Dialog>
@@ -77,8 +85,8 @@ export default function EditProfileDialog({
           Make changes to your profile here. You can change your photo and set a username.
         </DialogDescription>
         <div className="overflow-y-auto">
-          <ProfileBg defaultImage={profileBG} />
-          <Avatar defaultImage={avatar} />
+          <ProfileBg setId={setBackgroidId} defaultImage={profileBG} />
+          <Avatar setId={setAvatarId} defaultImage={avatar} />
           <div className="px-6 pb-6 pt-4">
             <form className="space-y-4">
               {/* <div className="flex flex-col gap-4 sm:flex-row">
@@ -169,7 +177,9 @@ export default function EditProfileDialog({
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="button">{t('save_changes')}</Button>
+            <Button
+              type="button"
+              onClick={save}>{t('save_changes')}</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
@@ -177,7 +187,7 @@ export default function EditProfileDialog({
   );
 }
 
-function ProfileBg({ defaultImage }: { defaultImage?: string }) {
+function ProfileBg({ setId, defaultImage }: { defaultImage?: string, setId: Dispatch<SetStateAction<null|number>> }) {
   const [hideDefault, setHideDefault] = useState(false);
   const { previewUrl, fileInputRef, handleRemove, handleFileChange, handleThumbnailClick } =
     useImageUpload();
@@ -188,6 +198,12 @@ function ProfileBg({ defaultImage }: { defaultImage?: string }) {
     handleRemove();
     setHideDefault(true);
   };
+
+  async function changeImg(event: React.ChangeEvent<HTMLInputElement>) {
+    const result = await handleFileChange(event)
+    if (result)
+      setId(result.id!)
+  }
 
   return (
     <div className="h-32">
@@ -227,17 +243,23 @@ function ProfileBg({ defaultImage }: { defaultImage?: string }) {
         accept="image/*"
         ref={fileInputRef}
         className="hidden"
-        onChange={handleFileChange}
+        onChange={changeImg}
         aria-label="Upload image file"
       />
     </div>
   );
 }
 
-function Avatar({ defaultImage }: { defaultImage?: string }) {
+function Avatar({ setId, defaultImage }: { defaultImage?: string, setId: Dispatch<SetStateAction<null|number>> }) {
   const { previewUrl, fileInputRef, handleFileChange, handleThumbnailClick } = useImageUpload();
 
   const currentImage = previewUrl || defaultImage;
+
+  async function changeImg(event: React.ChangeEvent<HTMLInputElement>) {
+    const result = await handleFileChange(event)
+    if (result)
+      setId(result.id!)
+  }
 
   return (
     <div className="-mt-10 px-6">
@@ -264,7 +286,7 @@ function Avatar({ defaultImage }: { defaultImage?: string }) {
           accept="image/*"
           ref={fileInputRef}
           className="hidden"
-          onChange={handleFileChange}
+          onChange={changeImg}
           aria-label="Upload profile picture"
         />
       </div>
