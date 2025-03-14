@@ -19,6 +19,8 @@ export const ProfileAvatar = (props: PropsType) => {
             className
           )}>
             <AvatarImage 
+              width={0}
+              height={0}
               src={avatarImage}
               className="object-cover"
               onLoad={() => setIsLoading(false)}

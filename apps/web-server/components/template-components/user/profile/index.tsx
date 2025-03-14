@@ -18,9 +18,9 @@ export function UserProfilePageComponent({ data, isAuth }: ParamsType) {
   return (
     <>
       <ProfileHeader data={get} setData={set} isAuth={isAuth} />
-      <Centrize>
+      <Centrize className="sm:px-4 px-0">
         <ProfileMenu/>
-        <div className="mt-4">
+        <div className="mt-4 px-4 sm:px-0">
           <ProfileInfo data={get}/>
         </div>
       </Centrize>

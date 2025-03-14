@@ -3,6 +3,7 @@ import { useState } from "react"
 import { SetState, UserInfo } from "@/interfaces"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CheckIcon, ChevronRightIcon } from "lucide-react"
+import { ImageZoom } from "@/components/ui/zoomable-image"
 import { TextAnimate } from "@/components/magicui/text-animate"
 import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe-button"
 
@@ -26,10 +27,10 @@ export const ProfileHeader = ({
   return (
     <div>
       <div className="px-2">
-        <div className="relative w-full h-56 sm:h-96 rounded-md bg-muted overflow-clip">
+        <div className="relative w-full h-56 sm:h-96 rounded-md bg-muted overflow-clip children-h-full">
           { 
             data.background
-            ? <Image
+            ? <ImageZoom
                 alt=""
                 width={data.background.width}
                 height={data.background.height}

@@ -37,6 +37,9 @@ export default async function MyApp({children}: LayoutProps) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, user-scalable=no"/>
+      </head>
       <body>
         <NextIntlClientProvider
           locale={locale}
