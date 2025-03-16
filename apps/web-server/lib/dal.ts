@@ -1,13 +1,11 @@
 import 'server-only'
-import { db      } from "@/db";
-import { cache   } from "react";
-import { eq      } from "drizzle-orm";
-import { users   } from "@/db/tables";
-import { cookies } from 'next/headers'
-import { decrypt } from '@/lib/session'
-import { files   } from '@/db/tables/files';
-import { alias   } from 'drizzle-orm/pg-core';
-import { UserInfo, CurrentUserInfo } from "@/interfaces";
+import { db       } from "@/db";
+import { cache    } from "react";
+import { eq       } from "drizzle-orm";
+import { users    } from "@/db/tables";
+import { cookies  } from 'next/headers'
+import { UserInfo } from "@/interfaces";
+import { decrypt  } from '@/lib/session'
 
 export type authData = {
   isAuth: boolean
@@ -30,17 +28,12 @@ export const verifySession = cache(async (): Promise<authData> => {
   return { isAuth: true, userId: Number.parseInt(session.userId) }
 })
 
-export const getCurrentUser = cache(async (): Promise<CurrentUserInfo|undefined> => {
+export const getCurrentUser = cache(async (): Promise<undefined|UserInfo> => {
   const session = await verifySession()
   if (!session?.userId) return
 
   try {
-    return db.select({
-      id: users.id,
-      email: users.email,
-      isAdmin: users.isAdmin,
-      nickname: users.nickname
-    })
+    return db.select()
       .from(users)
       .where(eq(users.id, session.userId))
       .then(r => {
@@ -56,27 +49,38 @@ export const getCurrentUser = cache(async (): Promise<CurrentUserInfo|undefined>
   }
 })
 
-export const getUser = cache(async (userId: number): Promise<undefined|UserInfo> => {
+export const getUserById = cache(async (userId: number): Promise<undefined|UserInfo> => {
   try {
-    const avatar = alias(files, 'avatar');
-    const background = alias(files, 'background');
+    // const avatar = alias(files, 'avatar');
+    // const background = alias(files, 'background');
     return db
       .select()
       .from(users)
-      .leftJoin(avatar, eq(users.avatarId, avatar.id))
-      .leftJoin(background, eq(users.backgroundImageId, background.id))
       .where(eq(users.id, userId))
       .then(r => {
-        const { users, avatar, background } = r[0]
-        return {
-            ...users,
-            avatar,
-            background
-        }
+        return r[0]
       })
       .catch(() => undefined)
   } catch {
     console.log('Error to fetch user ' + userId)
+    return
+  }
+})
+
+export const getUserByNickname = cache(async (nickname: string): Promise<undefined|UserInfo> => {
+  try {
+    // const avatar = alias(files, 'avatar');
+    // const background = alias(files, 'background');
+    return db
+      .select()
+      .from(users)
+      .where(eq(users.nickname, nickname))
+      .then(r => {
+        return r[0]
+      })
+      .catch(() => undefined)
+  } catch {
+    console.log('Error to fetch user ' + nickname)
     return
   }
 })

@@ -3,7 +3,6 @@ import { useState } from "react"
 import { SetState, UserInfo } from "@/interfaces"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CheckIcon, ChevronRightIcon } from "lucide-react"
-import { ImageZoom } from "@/components/ui/zoomable-image"
 import { TextAnimate } from "@/components/magicui/text-animate"
 import { AnimatedSubscribeButton } from "@/components/magicui/animated-subscribe-button"
 
@@ -27,13 +26,13 @@ export const ProfileHeader = ({
   return (
     <div>
       <div className="px-2">
-        <div className="relative w-full h-56 sm:h-96 rounded-md bg-muted overflow-clip children-h-full">
+        <div className="relative w-full h-36 sm:h-96 rounded-md bg-muted overflow-clip children-h-full">
           { 
-            data.background
-            ? <ImageZoom
+            data.backgroundImageId
+            ? <Image
                 alt=""
-                width={data.background.width}
-                height={data.background.height}
+                fill={true}
+                priority={true}
                 onLoad={() => setIsBgLoading(false)}
                 onError={() => setIsBgLoading(false)}
                 className="object-cover w-full h-full"
@@ -56,7 +55,7 @@ export const ProfileHeader = ({
             <ProfileAvatar
               minUserName={data.nickname}
               className="-translate-y-1/2 border-2 border-foreground"
-              avatarImage={data.avatar ? `/api/assets/id/${data.avatarId}` : ""}
+              avatarImage={data.avatarId ? `/api/assets/id/${data.avatarId}` : undefined}
             />
             <div className="flex flex-col items-center sm:items-start sm:pl-8 sm:translate-y-0 min-w-[200px] -translate-y-[45px]">
               <TextAnimate

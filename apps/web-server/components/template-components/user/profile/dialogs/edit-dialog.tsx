@@ -55,8 +55,8 @@ export default function EditProfileDialog({
   const [email,       setEmail        ] = useState(data.email)
   const [aboutMe,     setAboutMe      ] = useState(value)
 
-  const [avatarId,    setAvatarId     ] = useState(data.avatar?.id)
-  const [backgroundId, setBackgroidId  ] = useState(data.background?.id)
+  const [avatarId,    setAvatarId     ] = useState(data.avatarId)
+  const [backgroundId, setBackgroidId  ] = useState(data.backgroundImageId)
 
   const { execute, isPending } = useApiRequest(UpdateUser)
   
@@ -239,7 +239,7 @@ export default function EditProfileDialog({
   );
 }
 
-function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetStateAction<number|undefined>> }) {
+function ProfileBg({ id, setId }: { id: null|number, setId: Dispatch<SetStateAction<null|number>> }) {
   const [hideDefault, setHideDefault] = useState(false);
   const { previewUrl, fileInputRef, handleRemove, handleFileChange, handleThumbnailClick } =
     useImageUpload();
@@ -251,7 +251,7 @@ function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetSta
   const handleImageRemove = () => {
     handleRemove();
     setHideDefault(true);
-    setId(undefined)
+    setId(null)
   };
 
   async function changeImg(event: React.ChangeEvent<HTMLInputElement>) {
@@ -317,7 +317,7 @@ function ProfileBg({ id, setId }: { id: number|undefined, setId: Dispatch<SetSta
   );
 }
 
-function Avatar({ id, setId }: { id: number|undefined, setId: Dispatch<SetStateAction<number|undefined>> }) {
+function Avatar({ id, setId }: { id: null|number, setId: Dispatch<SetStateAction<null|number>> }) {
   const { previewUrl, fileInputRef, handleFileChange, handleThumbnailClick } = useImageUpload();
 
   const currentImage = previewUrl || (id ? '/api/assets/id/' + id : null);

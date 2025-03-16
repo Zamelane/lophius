@@ -10,8 +10,8 @@ import { UpdateProfileSchema } from "@/validates/schemas/UpdateProfileSchema"
 type Params = {
   nickname?: string
   email?: string
-  avatarId?: number
-  backgroundId?: number,
+  avatarId?: null | number
+  backgroundId?: null | number,
   bio?: string
 }
 

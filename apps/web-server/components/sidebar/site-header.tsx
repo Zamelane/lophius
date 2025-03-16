@@ -4,7 +4,7 @@ import { SidebarIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useSidebar } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
-import { SearchForm } from "@/components/helps/search-form"
+// import { SearchForm } from "@/components/helps/search-form"
 import { ModeToggle } from "@/components/helps/themes-toggle";
 
 //import BreadcrumbLogic from "../ui/breadcrumb-logic"
@@ -25,7 +25,8 @@ export function SiteHeader() {
         </Button>
         <Separator className="mr-2 h-4" orientation="vertical" />
         {/* <BreadcrumbLogic/> */}
-        <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+        <p className="sm:ml-auto w-full"/>
+        {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
         <div className="w-max">
           <ModeToggle/>
         </div>

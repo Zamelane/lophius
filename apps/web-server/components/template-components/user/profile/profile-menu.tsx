@@ -5,10 +5,10 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 const tabs = [
   { id: "overview", label: "Информация" },
-  { label: "Друзья", id: "integrations" },
-  { id: "activity", label: "Папки" },
+  { id: "friends", label: "Друзья" },
+  { id: "folders", label: "Папки" },
   { id: "collections", label: "Коллекции" },
-  { id: "domains", label: "Комментарии" },
+  { id: "comments", label: "Комментарии" },
 ]
 
 export const ProfileMenu = () => {

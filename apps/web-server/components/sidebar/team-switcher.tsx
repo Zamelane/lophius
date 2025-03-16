@@ -25,7 +25,7 @@ type team = {
   path: string
 }
 
-export function TeamSwitcher({
+export function ModeSwitcher({
   path,
   teams
 }: {

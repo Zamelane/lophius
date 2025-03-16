@@ -17,13 +17,6 @@ export interface ErrorResponse {
 	}
 }
 
-export type CurrentUserInfo = {
-	id: number
-	nickname: string
-	email: string
-	isAdmin: boolean
-}
-
 export type StatusResponse = {
 	success: boolean
 	message?: string,

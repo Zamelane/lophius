@@ -7,11 +7,11 @@ export const ProfileInfo = ({
   data
 }: { data: UserInfo }) => {
   const stats = [
-    { value: '1.33k',         title: 'Просмотры' },
-    { value: '10',             title: 'Лайки'    },
-    { value: '0',       title: 'Комментарии'     },
-    { value: '123',          title: 'Подписок'   },
-    { value: '12', title: 'Создано коллекций'    },
+    { value: '1.33k', title: 'Просмотры'         },
+    { value: '10',    title: 'Лайки'             },
+    { value: '0',     title: 'Комментарии'       },
+    { value: '123',   title: 'Подписок'          },
+    { value: '12',    title: 'Создано коллекций' },
   ]
   return (
     <div className="flex flex-col flex-grow gap-3 py-2 max-w-full">

@@ -18,17 +18,21 @@ export const ProfileAvatar = (props: PropsType) => {
             "size-28 bg-muted-foreground",
             className
           )}>
-            <AvatarImage 
-              width={0}
-              height={0}
-              src={avatarImage}
-              className="object-cover"
-              onLoad={() => setIsLoading(false)}
-              onError={() => setIsLoading(false)}
-              style={{
-                opacity: isLoading ? 0 : 1
-              }}
-            />
+            {
+              avatarImage && 
+                <AvatarImage 
+                  width={0}
+                  height={0}
+                  alt="avatar"
+                  src={avatarImage}
+                  className="object-cover"
+                  onLoad={() => setIsLoading(false)}
+                  onError={() => setIsLoading(false)}
+                  style={{
+                    opacity: isLoading ? 0 : 1
+                  }}
+                />
+            }
             <AvatarFallback
               className="text-4xl">
                 {

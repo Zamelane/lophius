@@ -2,229 +2,238 @@
 
 import Link from "next/link"
 import * as React from "react"
-import { mediaPaths } from "@/interfaces"
 import { usePathname } from "next/navigation"
 import { NavUser } from "@/components/sidebar/nav-user"
-import { TeamSwitcher } from "@/components/sidebar/team-switcher"
+import { ModeSwitcher } from "@/components/sidebar/team-switcher"
 import {
   Sidebar,
   //useSidebar,
   SidebarRail,
-  SidebarGroup,
   SidebarFooter,
   SidebarHeader,
   SidebarContent,
   SidebarMenuButton,
-  SidebarGroupLabel,
 } from "@/components/ui/sidebar"
 import {
   Cat,
   Home,
   Book,
-  Music,
   LogIn,
   Users,
+  Group,
   Search,
-  Library,
-  Popcorn,
-  Combine,
-  History,
-  Sparkles,
+  Podcast,
+  BookCopy, ListTodo,
   MusicIcon,
-  LayoutList,
-  LibraryBig,
-  Clapperboard,
+  TvMinimal,
+  ServerCog,
+  ShieldUser, Clapperboard,
   NotebookText,
-  GalleryVerticalEnd,
+  CalendarDays,
+  CalendarHeart,
+  SquareLibrary,
+  Sparkles
 } from "lucide-react"
 
 import { useAuth } from "../helps/auth-context"
 import { LightNavMain } from "./light-nav-main"
+import { NavMain, NavMainMenuType } from "./nav-main"
 
-const mainMenu = [
+const modes = [
+  {
+    path: '/',
+    logo: TvMinimal,
+    name: "Приложение"
+  },
+  {
+    path: '/admin',
+    name: "Админка",
+    logo: ShieldUser
+  }
+]
+
+const adminMenu = [
+  {
+    url: "#",
+    icon: Search,
+    title: "Поиск",
+  }
+]
+
+const adminNav: NavMainMenuType = [
+  {
+    title: 'Статистика',
+    items: [
+      {
+        url: "/admin",
+        title: "Сервер",
+        icon: ServerCog
+      }
+    ]
+  }
+]
+
+const publicMenu = [
   {
     url: "#",
     icon: Search,
     title: "Поиск",
   },
   {
-    url: "#",
+    url: "/",
     icon: Home,
     isActive: true,
     title: "Домашняя"
   }
 ]
 
-const medias = [
+const publicNav: NavMainMenuType = [
   {
-    path: '/',
-    logo: Combine,
-    name: "Все медиа"
-  },
-  {
-    logo: Popcorn,
-    path: '/kino',
-    name: "Фильмы и сериалы"
-  },
-  {
-    name: "Аниме",
-    path: '/anime',
-    logo: Clapperboard
-  },
-  {
-    path: '/comic',
-    name: "Комиксы",
-    logo: GalleryVerticalEnd
-  },
-  {
-    logo: Library,
-    name: "Книги",
-    path: '/book'
-  },
-  {
-    logo: Music,
-    name: "Музыка",
-    path: '/music'
-  },
-]
-
-// const kinoNavMain = [
-//   {
-//     icon: Clapperboard,
-//     isActive: true,
-//     items: [
-//       {
-//         title: "Вся библиотека",
-//         url: "#",
-//       },
-//       {
-//         title: "Starred",
-//         url: "#",
-//       },
-//       {
-//         title: "Settings",
-//         url: "#",
-//       },
-//     ],
-//     title: "Каталог",
-//     url: "#",
-//   }
-// ]
-
-const publicNavMain = [
-  {
-    title: "Сообщество",
-    menu: [
+    title: 'Наша база',
+    items: [
       {
-        url: "#",
-        icon: Users,
-        isActive: false,
-        title: "Пользователи",
+        url: "/tv",
+        title: "Фильмы",
+        icon: Clapperboard,
+        menu: [
+          {
+            url: '/1',
+            icon: Sparkles,
+            title: 'Каталог'
+          },
+          {
+            url: '/2',
+            icon: Sparkles,
+            title: 'Каталог'
+          }
+        ]
       },
       {
-        url: "#",
-        isActive: false,
-        icon: LibraryBig,
-        title: "Публичные коллекции",
+        icon: Cat,
+        url: "/anime",
+        title: "Аниме",
+        menu: [
+          {
+            url: '/',
+            title: 'Каталог'
+          }
+        ]
+      },
+      {
+        url: "/comic",
+        title: "Манхва",
+        icon: NotebookText,
+        menu: [
+          {
+            url: '/',
+            title: 'Каталог'
+          }
+        ]
+      },
+      {
+        icon: Book,
+        url: "/book",
+        title: "Книги",
+        menu: [
+          {
+            url: '/',
+            title: 'Каталог'
+          }
+        ]
+      },
+      {
+        url: "/music",
+        icon: MusicIcon,
+        title: "Музыка",
+        menu: [
+          {
+            url: '/',
+            title: 'Каталог'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: "Сообщество",
+    items: [
+      {
+        icon: BookCopy,
+        title: "Коллекции",
+        url: '/collections'
+      },
+      {
+        icon: Users,
+        url: '/users',
+        title: "Пользователи"
+      },
+      {
+        url: '/calendar',
+        icon: CalendarDays,
+        title: "Медийный календарь"
+      }
+    ]
+  },
+  {
+    title: "Моя библиотека",
+    items: [
+      {
+        icon: CalendarHeart,
+        url: '/calendar/me',
+        title: 'Мой календарь'
+      },
+      {
+        icon: SquareLibrary,
+        url: '/collections/me',
+        title: 'Мои коллекции'
+      },
+      {
+        icon: ListTodo,
+        title: 'Мои списки',
+        url: '/collections/me'
+      }
+    ]
+  },
+  {
+    title: "Подписки",
+    items: [
+      {
+        icon: Podcast,
+        url: '/subscriptions/users',
+        title: "Подписки на пользователей"
+      },
+      {
+        icon: Group,
+        title: "Подписки на коллекции",
+        url: '/subscriptions/collections'
       }
     ]
   }
-]
-
-const kinoNavMain = [
-  {
-    title: "Наша база",
-    menu: [
-      {
-        url: "#",
-        icon: Sparkles,
-        isActive: false,
-        title: "Новинки",
-      },
-      {
-        url: "#",
-        isActive: false,
-        icon: LayoutList,
-        title: "Каталог",
-      },
-      {
-        url: "#",
-        icon: History,
-        isActive: false,
-        title: "Недавно обновлённые",
-      }
-    ]
-  },
-  ...publicNavMain
-]
-
-const navMain1 = [
-  {
-    title: "Наша база",
-    menu: [
-      {
-        url: "#",
-        isActive: false,
-        icon: Clapperboard,
-        title: "Фильмы и сериалы",
-      },
-      {
-        url: "#",
-        icon: Cat,
-        title: "Аниме",
-        isActive: false,
-      },
-      {
-        url: "#",
-        isActive: false,
-        title: "Комиксы",
-        icon: NotebookText,
-      },
-      {
-        url: "#",
-        icon: Book,
-        title: "Книги",
-        isActive: false,
-      },
-      {
-        url: "#",
-        icon: MusicIcon,
-        isActive: false,
-        title: "Музыка",
-      },
-    ]
-  },
-  ...publicNavMain
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { content: auth } = useAuth()
   const path = usePathname()
 
-  const activeMedia = mediaPaths.find(v => path.startsWith(v)) ?? "/"
-  let navMain = navMain1
+  const activeMedia = ['/admin'].find(v => path.startsWith(v)) ?? "/"
+  let navMain = publicNav
+  let lightMenu = publicMenu
 
   switch (activeMedia) {
-    case '/kino':
-      navMain = kinoNavMain
+    case '/admin':
+      navMain = adminNav
+      lightMenu = adminMenu
       break;
   }
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher path={path} teams={medias} />
-        <LightNavMain items={mainMenu} />
+        <ModeSwitcher path={path} teams={modes} />
+        <LightNavMain items={lightMenu} />
       </SidebarHeader>
       <SidebarContent>
-        {
-          navMain.map((v, i) => (
-            <SidebarGroup key={i}>
-              <SidebarGroupLabel>{v.title}</SidebarGroupLabel>
-              <LightNavMain items={v.menu} />
-            </SidebarGroup>
-          ))
-        }
+        <NavMain config={navMain}/>
         {/* <NavMain items={navMain} /> */}
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
@@ -234,7 +243,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <NavUser
               user={{
                 avatar: '',
-                email: auth.email,
+                email: auth.email!,
                 name: auth.nickname
               }}
             />

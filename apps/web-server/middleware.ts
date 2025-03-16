@@ -8,6 +8,10 @@ const apiProtectedRoutes = [''] // Роуты, которые требуют а�
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
+
+  if (path.startsWith('/_next/static/') || path.startsWith('/favicon.ico'))
+    return NextResponse.next()
+
   const isProtectedRoute = protectedRoutes.includes(path)
   const isApiProtectedRoute = apiProtectedRoutes.includes(path)
   const user = await getCurrentUser()

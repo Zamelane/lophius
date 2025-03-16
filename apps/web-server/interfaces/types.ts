@@ -3,8 +3,6 @@ import { SWRConfiguration } from "swr"
 import { UsersTableType } from "@/db/tables"
 import { FilesTableType } from "@/db/tables/files"
 
-export const mediaPaths = ['/anime', '/book', '/comic', '/kino', '/music']
-
 // Для типизации страниц
 export type IdType = {
   id: string

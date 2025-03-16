@@ -1,6 +1,6 @@
 import {LayoutProps} from "@/interfaces";
 
-import { SiteHeader } from "../helps/site-header";
+import { SiteHeader } from "../sidebar/site-header";
 import { AppSidebar } from "../sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "../ui/sidebar";
 
