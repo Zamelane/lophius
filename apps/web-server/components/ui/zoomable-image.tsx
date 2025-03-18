@@ -41,6 +41,7 @@ export function ImageZoom({
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
       )}
       {...zoomProps}
+      canSwipeToUnzoom={true}
       zoomImg={{
         sizes: undefined,
         src: getImageSrc(props.src),
@@ -50,7 +51,6 @@ export function ImageZoom({
         ),
         ...zoomInProps,
       }}
-      canSwipeToUnzoom={true}
     >
       {children ?? (
           <Image

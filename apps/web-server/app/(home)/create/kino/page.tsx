@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Title } from "@/components/me-ui/title";
 import { CustomMenu } from "@/components/me-ui/custom-menu";
+import { Centrize } from "@/components/template-components/other/centrize";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
 
 import { DefaultInfo } from "./(tabs)/default-info";
-import { Centrize } from "@/components/template-components/other/centrize";
 
 const tabs = [
   {
@@ -135,6 +135,6 @@ type FilmInfo = KinoInfo & {
   }[]
 }
 
-type SerialInfo = KinoInfo & {
+type SerialInfo = {
 
-}
+} & KinoInfo

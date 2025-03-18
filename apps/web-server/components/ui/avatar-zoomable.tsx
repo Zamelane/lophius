@@ -24,7 +24,7 @@ ZoomableAvatar.displayName = AvatarPrimitive.Root.displayName
 const ZoomableAvatarImage = React.forwardRef<
   React.ElementRef<typeof HTMLImageElement>, // Changed to HTMLImageElement
   { src?: string } & React.ComponentPropsWithoutRef<typeof ImageZoom> // Ensure src is optional
->(({ className, src, alt, ...props }, ref) => {
+>(({ src, alt, className, ...props }, ref) => {
   // Only render ImageZoom if src is provided and not an empty string
   if (!src || src.length === 0) {
     return null; // Return null to avoid rendering the image element

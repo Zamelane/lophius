@@ -1,4 +1,3 @@
-import { Centrize } from "@/components/template-components/other/centrize";
 import { VideoCard } from "@/components/template-components/media/cards/video-card";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
 import { TitleList } from "@/components/template-components/media/containers/title-list";
