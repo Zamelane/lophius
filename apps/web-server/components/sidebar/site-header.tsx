@@ -7,6 +7,8 @@ import { Separator } from "@/components/ui/separator"
 // import { SearchForm } from "@/components/helps/search-form"
 import { ModeToggle } from "@/components/helps/themes-toggle";
 
+import { EditDropdownMenu } from "../template-components/media/edit-dropdown-menu"
+
 //import BreadcrumbLogic from "../ui/breadcrumb-logic"
 
 export function SiteHeader() {
@@ -27,7 +29,8 @@ export function SiteHeader() {
         {/* <BreadcrumbLogic/> */}
         <p className="sm:ml-auto w-full"/>
         {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
-        <div className="w-max">
+        <div className="w-max flex flex-row gap-2">
+          <EditDropdownMenu/>
           <ModeToggle/>
         </div>
       </div>

@@ -26,6 +26,12 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'files.zmln.ru',
       },
+      {
+        hostname: 'image.tmdb.org'
+      },
+      {
+        hostname: 'www.themoviedb.org'
+      }
     ],
   }
 };

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronRight, type LucideIcon } from "lucide-react"
 import {
@@ -18,8 +19,8 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuShortcut, ContextMenuTrigger } from "../ui/context-menu"
-import Link from "next/link"
+
+import { ContextMenu, ContextMenuItem, ContextMenuContent, ContextMenuTrigger, ContextMenuShortcut } from "../ui/context-menu"
 
 export type NavMainMenuType = {
   title: string,
@@ -50,7 +51,7 @@ export function NavMain({
             <SidebarGroupLabel>{v.title}</SidebarGroupLabel>
             <SidebarMenu>
               {v.items.map((item) => (
-                <Collapsible asChild key={item.title} defaultOpen={path === item.url}>
+                <Collapsible asChild key={'c_' + item.title} defaultOpen={path === item.url}>
                   <SidebarMenuItem>
                     <ContextMenu>
                       <ContextMenuTrigger>
@@ -63,8 +64,8 @@ export function NavMain({
                       </ContextMenuTrigger>
                       <ContextMenuContent>
                         {item.menu?.map((subItem) => (
-                          <Link href={subItem.url} key={subItem.title}>
-                            <ContextMenuItem key={subItem.title}>
+                          <Link href={subItem.url} key={'s_' + subItem.title}>
+                            <ContextMenuItem key={'ss_' + subItem.title}>
                               {subItem.title}
                               {
                                 subItem.icon && 
@@ -88,7 +89,7 @@ export function NavMain({
                         <CollapsibleContent>
                           <SidebarMenuSub>
                             {item.menu?.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubItem key={'sm_' + subItem.title}>
                                 <SidebarMenuSubButton asChild>
                                   <a href={subItem.url}>
                                     {subItem.icon && <subItem.icon/>}

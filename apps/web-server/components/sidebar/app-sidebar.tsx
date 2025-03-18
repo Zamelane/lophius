@@ -24,15 +24,15 @@ import {
   Search,
   Podcast,
   BookCopy, ListTodo,
+  Sparkles,
   MusicIcon,
   TvMinimal,
-  ServerCog,
-  ShieldUser, Clapperboard,
+  ServerCog, ShieldUser,
+  Clapperboard,
   NotebookText,
   CalendarDays,
   CalendarHeart,
-  SquareLibrary,
-  Sparkles
+  SquareLibrary
 } from "lucide-react"
 
 import { useAuth } from "../helps/auth-context"
@@ -99,12 +99,12 @@ const publicNav: NavMainMenuType = [
           {
             url: '/1',
             icon: Sparkles,
-            title: 'Каталог'
+            title: 'Каталог 1'
           },
           {
             url: '/2',
             icon: Sparkles,
-            title: 'Каталог'
+            title: 'Каталог 2'
           }
         ]
       },

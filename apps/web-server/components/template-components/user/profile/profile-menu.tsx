@@ -21,10 +21,10 @@ export const ProfileMenu = () => {
         vertical={false}
         className="w-full pb-2"
       >
-      <Tabs
-        tabs={tabs}
-        onTabChange={(tabId: string) => console.log(`Tab changed to: ${tabId}`)}
-      />
+        <Tabs
+          tabs={tabs}
+          onTabChange={(tabId: string) => console.log(`Tab changed to: ${tabId}`)}
+        />
       </ScrollContainer>
     </div>
   )
