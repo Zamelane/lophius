@@ -1,4 +1,8 @@
-export type LayoutProps = {
+export type ClassNameType = {
+	className?: string
+}
+
+export type LayoutProps = ClassNameType & {
 	children: React.ReactNode
 }
 

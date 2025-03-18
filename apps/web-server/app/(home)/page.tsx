@@ -1,5 +1,6 @@
 import {MetadataProps} from "@/interfaces";
 import {getTranslations} from "next-intl/server";
+import { ContentLayout } from "@/components/template-components/other/content-layout";
 
 export async function generateMetadata(props: MetadataProps) {
 	const t = await getTranslations({
@@ -14,6 +15,8 @@ export async function generateMetadata(props: MetadataProps) {
 
 export default async function HomePage() {
 	return (
-		<div>Home page</div>
+		<ContentLayout className="px-4">
+			<div>Home page</div>
+		</ContentLayout>
 	)
 }

@@ -1,10 +1,40 @@
+'use client'
+import { useState } from "react";
+import { Title } from "@/components/me-ui/title";
 import { CustomMenu } from "@/components/me-ui/custom-menu";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
+
+import { DefaultInfo } from "./(tabs)/default-info";
+import { Centrize } from "@/components/template-components/other/centrize";
 
 const tabs = [
   {
     id: "info",
     title: "Основная информация"
+  },
+  {
+    id: "production",
+    title: "Производство"
+  },
+  {
+    id: "translates",
+    title: "Интернационализация"
+  },
+  {
+    id: "seo",
+    title: "Ключевые слова"
+  },
+  {
+    id: "seasons",
+    title: "Сезоны"
+  },
+  {
+    id: "actors",
+    title: "Актёры"
+  },
+  {
+    id: "trailers",
+    title: "Трейлеры"
   },
   {
     id: "related",
@@ -13,9 +43,20 @@ const tabs = [
 ]
 
 export default function KinoCreatePage() {
+  const [selected, setSelected] = useState(tabs[0])
   return (
     <ContentLayout className="px-4">
-      <CustomMenu tabs={tabs}/>
+      <Title className="text-center md:text-left">Создание кино</Title>
+      <CustomMenu
+        tabs={tabs}
+        selected={selected}
+        setSelected={setSelected}
+      />
+      <Centrize className="p-0">
+        {
+          selected.id === 'info' && <DefaultInfo/>
+        }
+      </Centrize>
     </ContentLayout>
   )
 }
@@ -95,5 +136,5 @@ type FilmInfo = KinoInfo & {
 }
 
 type SerialInfo = KinoInfo & {
-  
+
 }

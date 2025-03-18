@@ -1,12 +1,13 @@
+import { cn } from "@/lib/utils";
 import { LayoutProps } from "@/interfaces";
 
 type Props = LayoutProps & {
   className?: string
 }
 
-export function ContentLayout({ children, ...props }: Props) {
+export function ContentLayout({ children, className }: Props) {
   return (
-    <div className="flex flex-grow flex-col max-w-full" {...props}>
+    <div className={cn("flex flex-grow flex-col max-w-full gap-4", className)}>
       {children}
     </div>
   )

@@ -1,20 +1,24 @@
 'use client'
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { LayoutProps } from "@/interfaces";
+import { Dispatch, SetStateAction } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 
 import { Button } from "../ui/button";
 
-type Props = {
-  tabs: {
-    id: string
-    title: string
-  }[]
+type Tab = {
+  id: string
+  title: string
 }
 
-export function CustomMenu({ tabs }: Props) {
-  const [selected, setSelected] = useState(tabs[0])
+type Props = {
+  tabs: Tab[]
+  selected: Tab
+  setSelected: Dispatch<SetStateAction<Tab>>
+}
+
+export function CustomMenu({ tabs, selected, setSelected }: Props) {
   return (
     <ScrollContainer className="flex select-none min-w-full max-w-full border-b-border border-b-[1px]">
       <div className="flex gap-1" style={{transform: 'none', transition: undefined, pointerEvents: 'auto'}}>
@@ -47,5 +51,15 @@ export function CustomMenu({ tabs }: Props) {
         }
       </div>
     </ScrollContainer>
+  )
+}
+
+export function MenuContent({ children }: LayoutProps) {
+  return (
+    <div className="flex flex-grow pt-2 max-w-full">
+      <div className="flex flex-col gap-4 min-w-full">
+        { children }
+      </div>
+    </div>
   )
 }
