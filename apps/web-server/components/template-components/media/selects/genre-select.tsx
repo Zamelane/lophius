@@ -3,22 +3,33 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LanguageInfoDataType } from "@/interfaces/edit-types";
-import { ClassNameType, LanguageTranslation } from "@/interfaces";
+import { ClassNameType, GenreTranslation } from "@/interfaces";
 import { Check, ListPlusIcon, ChevronsUpDownIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { GenreInfoDataType, LanguageInfoDataType } from "@/interfaces/edit-types";
 import { Command, CommandItem, CommandList, CommandEmpty, CommandGroup, CommandInput } from "@/components/ui/command";
 
-import { CreateLanguageDialog } from "./language-dialogs/create-language-dialog";
+import { CreateGenreDialog } from "./genre-dialogs/create-genre-dialog";
 
 type Props = {
   placeholder?: string
   languages: LanguageInfoDataType
+  genres: GenreInfoDataType
 }
 
-export function LanguageSelect({ className, languages, placeholder }: Props & ClassNameType) {
+export function GenreSelect({ genres, className, languages, placeholder }: Props & ClassNameType) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState<LanguageTranslation|null>(null)
+  const [value, setValue] = useState<GenreTranslation[]>([])
+
+  function addOrRemoveValue(toSetValue: GenreTranslation) {
+    const newValue = value.filter(v => v.english_name === toSetValue.english_name ? null : v)
+
+    if (newValue.length === value.length)
+      newValue.push(toSetValue)
+
+    setValue(newValue)
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -30,7 +41,7 @@ export function LanguageSelect({ className, languages, placeholder }: Props & Cl
             className
           )}
         >
-          {value?.english_name ?? placeholder ?? 'Select language'}
+          {value.length ? value.map(v => v.english_name).join(', ') : placeholder ?? 'Select country'}
           <ChevronsUpDownIcon className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -39,41 +50,37 @@ export function LanguageSelect({ className, languages, placeholder }: Props & Cl
           <CommandInput
             autoFocus
             className="h-9"
-            placeholder="Поиск языков..."
+            placeholder="Поиск жанров..."
           />
           <CommandList>
             <CommandEmpty>
               <div className="flex flex-col items-center gap-2">
                 Нет ни одного совпадения
-                <CreateLanguageDialog
-                  languages={languages}
-                  setValue={v => {
-                    setValue(v)
-                    setOpen(false)
-                  }}>
+                <CreateGenreDialog
+                  genres={genres}
+                  languages={languages}>
                   <Button className="w-min">
                     <ListPlusIcon/>
                     Создать
                   </Button>
-                </CreateLanguageDialog>
+                </CreateGenreDialog>
               </div>
             </CommandEmpty>
             <CommandGroup>
               {
-                languages.get.map((v, i) => (
+                genres.get.map((v, i) => (
                   <CommandItem
                     key={'l_' + i}
                     value={v.english_name}
                     onSelect={() => {
-                      setValue(v)
-                      setOpen(false)
+                      addOrRemoveValue(v)
                     }}
                   >
                     {v.english_name}
                     <Check
                       className={cn(
                         "ml-auto",
-                        v === value
+                        value.find(f => f.english_name === v.english_name)
                           ? "opacity-100"
                           : "opacity-0"
                       )}

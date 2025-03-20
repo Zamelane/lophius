@@ -1,7 +1,7 @@
 import { Dispatch } from "react"
 import { SWRConfiguration } from "swr"
 import { FilesTableType } from "@/db/tables/files"
-import { UsersTableType, LanguagesTableType } from "@/db/tables"
+import { UsersTableType, GenresTableType, LanguagesTableType, CountriesTableType } from "@/db/tables"
 
 // Для типизации страниц
 export type IdType = {
@@ -33,8 +33,16 @@ export type User = WithOptional<UsersTableType, 'email' | 'password'>
 export type AvatarImage = FilesTableType
 export type BackgroundImage = FilesTableType
 export type Language = WithOptional<LanguagesTableType, 'id'>
+
+// Сущности переводов
 export type LanguageTranslation = 
   WithOptional<Language, 'id'>
+  & WithOptional<{translates: Translate[]}, 'translates'>
+export type CountryTranslation =
+  WithOptional<CountriesTableType, 'id'>
+  & WithOptional<{translates: Translate[]}, 'translates'>
+export type GenreTranslation =
+  WithOptional<GenresTableType, 'id'>
   & WithOptional<{translates: Translate[]}, 'translates'>
 
 // Объединения сущностей

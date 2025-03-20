@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { MenuContent } from "@/components/me-ui/custom-menu";
 import { DetailedInfoDataType } from "@/interfaces/edit-types";
 import { Plus, TrashIcon, SquareArrowOutUpRightIcon } from "lucide-react";
+import { GenreSelect } from "@/components/template-components/media/selects/genre-select";
+import { CountrySelect } from "@/components/template-components/media/selects/country-select";
 import { LanguageSelect } from "@/components/template-components/media/selects/language-select";
 import { EditSection, EditSectionItem, EditSectionGroup } from "@/components/me-ui/custom-edit";
 import { KinoTypeSelect } from "@/components/template-components/media/selects/kino-type-select";
@@ -14,7 +16,9 @@ import { KinoCategorySelect } from "@/components/template-components/media/selec
 type Props = DetailedInfoDataType
 
 export function DefaultInfo({
-  languages
+  genres,
+  languages,
+  countries
 }: Props) {
   return (
     <MenuContent>
@@ -26,10 +30,10 @@ export function DefaultInfo({
         </EditSectionItem>
       </EditSection>
 
-      <EditSection isRequired title="Интернационализация оригинала">
-        {/* <EditSectionItem>
-          <LanguageSelect className="w-full" placeholder="Исходная страна"/>
-        </EditSectionItem> */}
+      <EditSection isRequired title="Информация об оригинале">
+        <EditSectionItem>
+          <CountrySelect className="w-full" countries={countries} languages={languages} placeholder="Исходная страна"/>
+        </EditSectionItem>
         <EditSectionItem>
           <LanguageSelect languages={languages} placeholder="Язык оригинала"/>
           <Input placeholder="Оригинальное название"/>
@@ -42,12 +46,10 @@ export function DefaultInfo({
       <EditSection isRequired title="Основная информация">
         <EditSectionItem>
           <Input type='number' placeholder="Год выпуска"/>
+          <GenreSelect genres={genres} className="w-full" placeholder="Жанры" languages={languages} />
           {/* <LanguageSelect placeholder="Тип" className="w-full"/>
           <LanguageSelect className="w-full" placeholder="Возростная метка"/> */}
         </EditSectionItem>
-        {/* <EditSectionItem>
-          <LanguageSelect className="w-full" placeholder="Жанры"/>
-        </EditSectionItem> */}
       </EditSection>
 
       <EditSection title="Внешние ссылки">

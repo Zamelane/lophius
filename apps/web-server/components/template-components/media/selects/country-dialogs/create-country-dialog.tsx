@@ -5,26 +5,27 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { Input } from "@/components/shadcn/ui/input";
 import { Button } from "@/components/shadcn/ui/button";
 import { Dispatch, useState, SetStateAction } from "react";
-import { LanguageInfoDataType } from "@/interfaces/edit-types";
-import { LayoutProps, LanguageTranslation } from "@/interfaces";
+import { LayoutProps, CountryTranslation } from "@/interfaces";
 import { Language, Translate, WithRequired } from "@/interfaces";
+import { CountryInfoDataType, LanguageInfoDataType } from "@/interfaces/edit-types";
 import { Dialog, DialogTitle, DialogHeader, DialogFooter, DialogContent, DialogTrigger, DialogDescription } from "@/components/shadcn/ui/dialog";
 
 import { LanguageSelect } from "../language-select";
 
 type Props = LayoutProps & {
+  countries: CountryInfoDataType,
   languages: LanguageInfoDataType,
-  setValue?: Dispatch<SetStateAction<LanguageTranslation|null>>
+  setValue?: Dispatch<SetStateAction<CountryTranslation|null>>
 }
 
-export function CreateLanguageDialog({ children, setValue, languages }: Props) {
+export function CreateCountryDialog({ children, setValue, countries, languages }: Props) {
   const [translations, setTranslations] = useState<{value: string, language: Language|null}[]>([
     {
       value: "",
       language: null
     }
   ])
-  const [iso_639_1, setIso_639_1] = useState("")
+  const [iso_3166_1, setIso_3166_1] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
   function add() {
@@ -58,37 +59,42 @@ export function CreateLanguageDialog({ children, setValue, languages }: Props) {
     });
   }
   function isoInputChange(value: string) {
-    setIso_639_1(value)
+    setIso_3166_1(value)
   }
 
   function handleSave() {
-    for(const language of languages.get)
-      if (language.iso_639_1.toLocaleLowerCase() === iso_639_1.toLocaleLowerCase())
+    for(const language of countries.get)
+      if (language.iso_3166_1.toLocaleLowerCase() === iso_3166_1.toLocaleLowerCase())
       {
         toast.warning('Код языка занят ノಠ_ಠノ', {
-          description: `Язык с ISO-639-1 ('${iso_639_1.toLocaleLowerCase()}') уже существует. Попробуйте найти его в поиске и использовать, не создавайте новый!`
+          description: `Язык с ISO-3166-1 ('${iso_3166_1.toLocaleLowerCase()}') уже существует. Попробуйте найти его в поиске и использовать, не создавайте новый!`
         })
         return
       }
     
-    if (iso_639_1.length !== 2) {
-      toast.warning('ISO-639-1 некорректен (┳◇┳)', {
-        description: 'Код ISO-639-1 должен состоять из 2х символов. Пожалуйста, поищите эти коды в интернете, если не уверены в правильности.'
+    if (iso_3166_1.length !== 2) {
+      toast.warning('ISO-3166-1 некорректен (┳◇┳)', {
+        description: 'Код ISO-3166-1 должен состоять из 2х символов. Пожалуйста, поищите эти коды в интернете, если не уверены в правильности.'
       })
       return
     }
 
     const english_name = translations[0].value
 
-    const valueToSet = {
-      iso_639_1,
-      translates: [
-        ...(translations as WithRequired<Translate, 'language'>[])
-      ],
-      english_name: english_name.substring(0, 1).toUpperCase() + english_name.substring(1, english_name.length).toLocaleLowerCase()
+    if (english_name.length < 2) {
+      toast.warning('Вы не ввели именование страны (на английском)')
+      return
     }
 
-    languages.set(oldValue => {
+    const valueToSet = {
+      iso_3166_1,
+      english_name,
+      translates: [
+        ...(translations.filter(v => v.language && v.value.length > 0) as WithRequired<Translate, 'language'>[])
+      ]
+    }
+
+    countries.set(oldValue => {
       const newValue = [...oldValue]
       newValue.push(valueToSet)
       return newValue
@@ -107,21 +113,21 @@ export function CreateLanguageDialog({ children, setValue, languages }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Создание языка</DialogTitle>
+          <DialogTitle>Создание страны</DialogTitle>
           <DialogDescription>
-            Введите код языка (ISO 639-1) и его переводы.
+            Введите код страны (ISO 3166-1) и её переводы.
             Когда закончите, обязательно сохраните.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-2">
           <div className="flex flex-row items-center gap-4">
-            <Input id="iso-639-1" value={iso_639_1} className="w-full" placeholder="ISO-639-1" onChange={v => isoInputChange(v.target.value)} />
+            <Input id="iso-3166-1" value={iso_3166_1} className="w-full" placeholder="ISO-3166-1" onChange={v => isoInputChange(v.target.value)} />
           </div>
         </div>
         <div className="flex flex-col gap-2 py-2">
           {
             translations.map((v, i) => (
-              <div key={"tc_" + i} className="flex flex-row gap-4">
+              <div key={"tc_3166_" + i} className="flex flex-row gap-4">
                 {i !== 0 && <LanguageSelect placeholder="Язык" languages={languages}/>}
                 <div className="w-full flex flex-row gap-2">
                   <Input value={v.value} id={"tc_i_" + 1} onChange={v => translationInputChange(v.target.value, i)} placeholder={i === 0 ? 'Название на английском' : 'Перевод на другой язык'} />

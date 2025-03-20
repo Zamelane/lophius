@@ -1,10 +1,10 @@
 'use client'
 import { useState } from "react";
 import { Title } from "@/components/me-ui/title";
-import { LanguageTranslation } from "@/interfaces";
 import { CustomMenu } from "@/components/me-ui/custom-menu";
 import { Centrize } from "@/components/template-components/other/centrize";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
+import { GenreTranslation, CountryTranslation, LanguageTranslation } from "@/interfaces";
 
 import { DefaultInfo } from "./(tabs)/default-info";
 
@@ -45,7 +45,14 @@ const tabs = [
 
 export default function KinoCreatePage() {
   const [selected, setSelected] = useState(tabs[0])
+
+  // Списочные значения
   const [languages, setLanguages] = useState<LanguageTranslation[]>([])
+  const [countries, setCountries] = useState<CountryTranslation[]>([])
+  const [genres,    setGenres   ] = useState<GenreTranslation[]>([])
+
+  // Выбранные значения
+
   return (
     <ContentLayout className="px-4">
       <Title className="text-center md:text-left">Создание кино</Title>
@@ -58,7 +65,10 @@ export default function KinoCreatePage() {
         {
           selected.id === 'info'
           && <DefaultInfo 
-                languages={{get: languages, set: setLanguages}}/>
+                genres={{get: genres, set: setGenres}}
+                languages={{get: languages, set: setLanguages}}
+                countries={{get: countries, set: setCountries}}
+              />
         }
       </Centrize>
     </ContentLayout>
