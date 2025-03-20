@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
 import { Title } from "@/components/me-ui/title";
+import { LanguageTranslation } from "@/interfaces";
 import { CustomMenu } from "@/components/me-ui/custom-menu";
 import { Centrize } from "@/components/template-components/other/centrize";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
@@ -44,6 +45,7 @@ const tabs = [
 
 export default function KinoCreatePage() {
   const [selected, setSelected] = useState(tabs[0])
+  const [languages, setLanguages] = useState<LanguageTranslation[]>([])
   return (
     <ContentLayout className="px-4">
       <Title className="text-center md:text-left">Создание кино</Title>
@@ -54,7 +56,9 @@ export default function KinoCreatePage() {
       />
       <Centrize className="p-0">
         {
-          selected.id === 'info' && <DefaultInfo/>
+          selected.id === 'info'
+          && <DefaultInfo 
+                languages={{get: languages, set: setLanguages}}/>
         }
       </Centrize>
     </ContentLayout>

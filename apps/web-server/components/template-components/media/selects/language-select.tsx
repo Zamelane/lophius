@@ -1,28 +1,26 @@
+'use client'
+
 import { cn } from "@/lib/utils";
-import { ClassNameType } from "@/interfaces";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDownIcon } from "lucide-react";
+import { LanguageInfoDataType } from "@/interfaces/edit-types";
+import { ClassNameType, LanguageTranslation } from "@/interfaces";
+import { Check, ListPlusIcon, ChevronsUpDownIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandItem, CommandList, CommandEmpty, CommandGroup, CommandInput } from "@/components/ui/command";
 
-const languages = [
-  {
-    id: 1,
-    i18n: 'russian'
-  },
-  {
-    id: 2,
-    i18n: 'english'
-  }
-]
+import { CreateLanguageDialog } from "./language-dialog/create-language-dialog";
 
 type Props = {
   placeholder?: string
+  languages: LanguageInfoDataType
 }
 
-export function LanguageSelect({ className, placeholder }: Props & ClassNameType) {
+export function LanguageSelect({ className, languages, placeholder }: Props & ClassNameType) {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState<LanguageTranslation|null>(null)
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant='outline'
@@ -32,26 +30,54 @@ export function LanguageSelect({ className, placeholder }: Props & ClassNameType
             className
           )}
         >
-          {placeholder ?? 'Select language'}
+          {value?.english_name ?? placeholder ?? 'Select language'}
           <ChevronsUpDownIcon className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <Command>
+        <Command className="w-52">
           <CommandInput
+            autoFocus
             className="h-9"
             placeholder="Поиск языков..."
           />
           <CommandList>
-            <CommandEmpty>Нет ни одного совпадения</CommandEmpty>
+            <CommandEmpty>
+              <div className="flex flex-col items-center gap-2">
+                Нет ни одного совпадения
+                <CreateLanguageDialog
+                  languages={languages}
+                  setValue={v => {
+                    setValue(v)
+                    setOpen(false)
+                  }}>
+                  <Button className="w-min">
+                    <ListPlusIcon/>
+                    Создать
+                  </Button>
+                </CreateLanguageDialog>
+              </div>
+            </CommandEmpty>
             <CommandGroup>
               {
-                languages.map((v, i) => (
+                languages.get.map((v, i) => (
                   <CommandItem
                     key={'l_' + i}
-                    value={v.i18n}
+                    value={v.english_name}
+                    onSelect={() => {
+                      setValue(v)
+                      setOpen(false)
+                    }}
                   >
-                    {v.i18n}
+                    {v.english_name}
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        v === value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
                   </CommandItem>
                 ))
               }

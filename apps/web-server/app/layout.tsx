@@ -8,7 +8,7 @@ import {NextIntlClientProvider} from "next-intl";
 import {getLocale, getMessages} from "next-intl/server";
 import {AuthProvider} from "@/components/helps/auth-context";
 import {ThemeProvider} from "@/components/helps/theme-provider";
-import {LayoutProps, CurrentUserInfo, ContentResponse} from "@/interfaces";
+import {UserInfo, LayoutProps, ContentResponse} from "@/interfaces";
 
 export const metadata: Metadata = {
   applicationName: 'Lophius',
@@ -31,7 +31,7 @@ export default async function MyApp({children}: LayoutProps) {
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages();
-  const auth: ContentResponse<CurrentUserInfo> = {
+  const auth: ContentResponse<UserInfo> = {
     content: await getCurrentUser()
   }
 
@@ -57,6 +57,7 @@ export default async function MyApp({children}: LayoutProps) {
           </ThemeProvider>
           <Toaster richColors
                    closeButton
+                   duration={8000}
           />
         </NextIntlClientProvider>
       </body>

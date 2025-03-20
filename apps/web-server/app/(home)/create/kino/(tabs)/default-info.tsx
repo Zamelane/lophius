@@ -4,13 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MenuContent } from "@/components/me-ui/custom-menu";
+import { DetailedInfoDataType } from "@/interfaces/edit-types";
 import { Plus, TrashIcon, SquareArrowOutUpRightIcon } from "lucide-react";
 import { LanguageSelect } from "@/components/template-components/media/selects/language-select";
 import { EditSection, EditSectionItem, EditSectionGroup } from "@/components/me-ui/custom-edit";
 import { KinoTypeSelect } from "@/components/template-components/media/selects/kino-type-select";
 import { KinoCategorySelect } from "@/components/template-components/media/selects/kino-category-select";
 
-export function DefaultInfo() {
+type Props = DetailedInfoDataType
+
+export function DefaultInfo({
+  languages
+}: Props) {
   return (
     <MenuContent>
 
@@ -22,11 +27,11 @@ export function DefaultInfo() {
       </EditSection>
 
       <EditSection isRequired title="Интернационализация оригинала">
-        <EditSectionItem>
+        {/* <EditSectionItem>
           <LanguageSelect className="w-full" placeholder="Исходная страна"/>
-        </EditSectionItem>
+        </EditSectionItem> */}
         <EditSectionItem>
-          <LanguageSelect placeholder="Язык оригинала"/>
+          <LanguageSelect languages={languages} placeholder="Язык оригинала"/>
           <Input placeholder="Оригинальное название"/>
         </EditSectionItem>
         <EditSectionItem>
@@ -37,12 +42,12 @@ export function DefaultInfo() {
       <EditSection isRequired title="Основная информация">
         <EditSectionItem>
           <Input type='number' placeholder="Год выпуска"/>
-          <LanguageSelect placeholder="Тип" className="w-full"/>
-          <LanguageSelect className="w-full" placeholder="Возростная метка"/>
+          {/* <LanguageSelect placeholder="Тип" className="w-full"/>
+          <LanguageSelect className="w-full" placeholder="Возростная метка"/> */}
         </EditSectionItem>
-        <EditSectionItem>
+        {/* <EditSectionItem>
           <LanguageSelect className="w-full" placeholder="Жанры"/>
-        </EditSectionItem>
+        </EditSectionItem> */}
       </EditSection>
 
       <EditSection title="Внешние ссылки">
