@@ -1,40 +1,26 @@
 'use client'
 
+import Image from "next/image";
 import { useState } from "react";
-import { LanguageTranslation } from "@/interfaces";
 import { Input } from "@/components/shadcn/ui/input";
 import { Button } from "@/components/shadcn/ui/button";
 import { Textarea } from "@/components/shadcn/ui/textarea";
 import { MenuContent } from "@/components/me-ui/custom-menu";
+import { KinoTranslatesInfoDataType } from "@/interfaces/edit-types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/shadcn/ui/tooltip";
+import { Card, CardTitle, CardContent, CardDescription } from "@/components/shadcn/ui/card";
 import { EditSection, EditSectionItem, EditSectionGroup } from "@/components/me-ui/custom-edit";
-import { Card, CardTitle, CardHeader, CardContent, CardDescription } from "@/components/shadcn/ui/card";
 import { CopyPlus, TypeIcon, TrashIcon, ListPlusIcon, BookDashedIcon, ChevronDownIcon, NotepadTextIcon } from "lucide-react";
-import Image from "next/image";
+import { CreateTranslateDialog } from "@/components/template-components/media/selects/translate-dialogs/create-translate-dialog";
 
-export function TranslateTab() {
-  const [translates, setTranslates] = useState<{
-    isCollapsed: boolean
-    language: LanguageTranslation
-    overview: string
-    titles: string[]
-  }[]>([
-    {
-      overview: "",
-      titles: [""],
-      isCollapsed: true,
-      language: { iso_639_1: 'ru', english_name: 'Russian' }
-    },
-    {
-      overview: "",
-      titles: [""],
-      isCollapsed: true,
-      language: { iso_639_1: 'en', english_name: 'English' }
-    }
-  ])
+type Props = KinoTranslatesInfoDataType
+
+export function TranslateTab({ languages, translates: { get: translates, set: setTranslates } }: Props) {
+  const [collapsied, setCollapsied] = useState<{isCollapsed: boolean}[]>([])
+  const [search, setSearch] = useState("")
 
   function setCollapsed(index: number) {
-    setTranslates(state => state.slice().map((v,i) => i === index ? {...v, isCollapsed: !v.isCollapsed} : v))
+    setCollapsied(state => state.slice().map((v,i) => i === index ? {isCollapsed: !v.isCollapsed} : v))
   }
 
   function addTitle(index: number) {
@@ -80,12 +66,18 @@ export function TranslateTab() {
     <MenuContent>
       <EditSection title="Переводы заголовков и описания">
         <EditSectionGroup>
-          <Input placeholder="Поиск по языку ..."/>
+          <Input
+            value={search}
+            placeholder="Поиск по языку ..."
+            onChange={v => setSearch(v.target.value)}
+          />
           <Tooltip>
             <TooltipTrigger>
-              <Button asChild className="w-min" variant="outline">
-                <CopyPlus width={16}/>
-              </Button>
+              <CreateTranslateDialog languages={languages} translates={{get: translates, set: setTranslates}}>
+                <Button asChild className="w-min" variant="outline">
+                  <CopyPlus width={16}/>
+                </Button>
+              </CreateTranslateDialog>
             </TooltipTrigger>
             <TooltipContent>
               <p>Добавить перевод</p>
@@ -94,51 +86,64 @@ export function TranslateTab() {
         </EditSectionGroup>
         {
           translates.map((v,i) => (
+            !search.length
+            || v.language.english_name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+            || v.language.iso_639_1.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+            || (v.language.translates?.filter(v => v.value.toLocaleLowerCase().includes(search.toLocaleLowerCase()))?.length ?? 0) > 0
+          ) && (
             <EditSectionItem key={'td_' + i}>
-              <Card className="w-full">
-                <CardHeader className="flex flex-row items-center p-4">
-                    <CardTitle className="flex gap-1 items-center">
-                      <div className="flex items-center gap-2 px-1">
-                        <Image
-                          width={16}
-                          height={16}
-                          alt={v.language.iso_639_1}
-                          src={`/images/iso-639-1/${v.language.iso_639_1}.svg`}
-                        />
-                        {v.language.english_name}
-                      </div>
-                      { v.titles[0].trim().length > 0 && (
-                          <>
-                            <TypeIcon/>
-                            <p className="text-md text-muted-foreground truncate">{v.titles[0]}</p>
-                          </>
+              <Card className="w-full py-2 px-2">
+                <div className="grid grid-cols-[1fr,auto]">
+                  <div className="max-w-full overflow-hidden">
+                    <div className="flex flex-row items-center">
+                      <CardTitle className="flex gap-1 items-items-start">
+                        <div className="flex items-center gap-2 px-1 py-1">
+                          <Image
+                            width={16}
+                            height={16}
+                            alt={v.language.iso_639_1}
+                            src={`/images/iso-639-1/${v.language.iso_639_1}.svg`}
+                          />
+                          {v.language.english_name}
+                        </div>
+                        {
+                          !v.titles[0].trim().length
+                          && !v.overview.trim().length
+                          && <BookDashedIcon/>
+                        }
+                      </CardTitle>
+                    </div>
+                    <CardDescription className="px-1">
+                      {
+                        (collapsied.length - 1 >= i || collapsied.push({isCollapsed: true}))
+                        && collapsied[i].isCollapsed && (
+                          <div>
+                            {
+                              v.titles[0].length > 0
+                              && <div className="grid grid-cols-[auto,1fr] items-center">
+                                <TypeIcon width={16}/>
+                                <p className="text-md italic text-muted-foreground truncate">{v.titles[0]}</p>
+                              </div>
+                            }
+                            {
+                              v.overview.length > 0
+                              && <div className="grid grid-cols-[auto,1fr] items-center">
+                                <NotepadTextIcon width={16}/>
+                                <p className="text-md italic text-muted-foreground truncate">{v.overview}</p>
+                              </div>
+                            }
+                          </div>
                         )
                       }
-                      {
-                        v.overview.trim().length > 0
-                        && (
-                          <>
-                            <NotepadTextIcon/>
-                            <p className="text-md text-muted-foreground truncate">{v.overview}</p>
-                          </>
-                        )
-                      }
-                      {
-                        !v.titles[0].trim().length
-                        && !v.overview.trim().length
-                        && <BookDashedIcon/>
-                      }
-                    </CardTitle>
-                    <CardDescription>
-                      
                     </CardDescription>
-                  <Button variant="ghost" className="ml-auto w-5 h-7" onClick={() => setCollapsed(i)}>
+                  </div>
+                  <Button variant="ghost" className="ml-auto w-7 h-7" onClick={() => setCollapsed(i)}>
                     <ChevronDownIcon/>
                   </Button>
-                </CardHeader>
+                </div>
                 {
-                  !v.isCollapsed && (
-                    <CardContent className="p-4 pt-0">
+                  !collapsied[i].isCollapsed && (
+                    <CardContent className="p-0 pt-2">
                       <div className="flex flex-col gap-2">
                         <Textarea
                           value={v.overview}

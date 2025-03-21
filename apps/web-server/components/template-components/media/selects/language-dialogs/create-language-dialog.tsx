@@ -9,6 +9,7 @@ import { Dispatch, useState, SetStateAction } from "react";
 import { LanguageInfoDataType } from "@/interfaces/edit-types";
 import { LayoutProps, LanguageTranslation } from "@/interfaces";
 import { Language, Translate, WithRequired } from "@/interfaces";
+import { EditSectionItem } from "@/components/me-ui/custom-edit";
 import { Dialog, DialogTitle, DialogHeader, DialogFooter, DialogContent, DialogTrigger, DialogDescription } from "@/components/shadcn/ui/dialog";
 
 import { LanguageSelect } from "../language-select";
@@ -137,8 +138,23 @@ export function CreateLanguageDialog({ children, setValue, languages }: Props) {
         <div className="flex flex-col gap-2 py-2">
           {
             translations.map((v, i) => (
-              <div key={"tc_" + i} className="flex flex-row gap-4">
-                {i !== 0 && <LanguageSelect placeholder="Язык" languages={languages}/>}
+              <EditSectionItem key={"tc_" + i}>
+                {/* TODO: Тут не надёжно, т.к. '!' */}
+                {i !== 0 && <LanguageSelect
+                  placeholder="Язык"
+                  languages={languages}
+                  className="min-w-[120px]"
+                  value={{
+                    get: v.language,
+                    set: (nsv) => {setTranslations(state => state.slice().map(
+                      (sv, si) => si === i ? {
+                        ...sv,
+                        language: {
+                          ...(nsv as LanguageTranslation)
+                        }
+                    } : sv
+                  ))}
+                }} />}
                 <div className="w-full flex flex-row gap-2">
                   <Input value={v.value} id={"tc_i_" + 1} onChange={v => translationInputChange(v.target.value, i)} placeholder={i === 0 ? 'Название на английском' : 'Перевод на другой язык'} />
                   {
@@ -149,7 +165,7 @@ export function CreateLanguageDialog({ children, setValue, languages }: Props) {
                     )
                   }
                 </div>
-              </div>
+              </EditSectionItem>
             ))
           }
         </div>

@@ -6,8 +6,8 @@ import { PlusIcon, TrashIcon } from "lucide-react";
 import { Input } from "@/components/shadcn/ui/input";
 import { Button } from "@/components/shadcn/ui/button";
 import { Dispatch, useState, SetStateAction } from "react";
-import { LayoutProps, CountryTranslation } from "@/interfaces";
 import { Language, Translate, WithRequired } from "@/interfaces";
+import { LayoutProps, CountryTranslation, LanguageTranslation } from "@/interfaces";
 import { CountryInfoDataType, LanguageInfoDataType } from "@/interfaces/edit-types";
 import { Dialog, DialogTitle, DialogHeader, DialogFooter, DialogContent, DialogTrigger, DialogDescription } from "@/components/shadcn/ui/dialog";
 
@@ -139,7 +139,17 @@ export function CreateCountryDialog({ children, setValue, countries, languages }
           {
             translations.map((v, i) => (
               <div key={"tc_3166_" + i} className="flex flex-row gap-4">
-                {i !== 0 && <LanguageSelect placeholder="Язык" languages={languages}/>}
+                {i !== 0 && <LanguageSelect placeholder="Язык" languages={languages} value={{
+                  get: v.language,
+                  set: (nsv) => setTranslations(state => state.slice().map(
+                    (sv, si) => si === i ? {
+                      ...sv,
+                      language: {
+                        ...(nsv as LanguageTranslation)
+                      }
+                    } : sv
+                  ))
+                }}/>}
                 <div className="w-full flex flex-row gap-2">
                   <Input value={v.value} id={"tc_i_" + 1} onChange={v => translationInputChange(v.target.value, i)} placeholder={i === 0 ? 'Название на английском' : 'Перевод на другой язык'} />
                   {

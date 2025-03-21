@@ -18,7 +18,8 @@ export function DefaultInfoTab({
   languages,
   countries,
   kinoCategory,
-  serialStatus
+  serialStatus,
+  originalLanguage
 }: Props) {
   return (
     <MenuContent>
@@ -30,7 +31,7 @@ export function DefaultInfoTab({
         </EditSectionItem>
       </EditSection>
 
-      <OriginalInfoSection countries={countries} languages={languages}/>
+      <OriginalInfoSection countries={countries} languages={languages} originalLanguage={originalLanguage} />
       <DefaultInfoSection genres={genres} languages={languages} serialStatus={serialStatus} />
       <ExternalLinksSection links={links}/>
 

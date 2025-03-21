@@ -4,9 +4,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LanguageInfoDataType } from "@/interfaces/edit-types";
 import { ClassNameType, LanguageTranslation } from "@/interfaces";
 import { Check, ListPlusIcon, ChevronsUpDownIcon } from "lucide-react";
+import { WithInfoDataType, LanguageInfoDataType } from "@/interfaces/edit-types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandItem, CommandList, CommandEmpty, CommandGroup, CommandInput } from "@/components/ui/command";
 
@@ -14,12 +14,17 @@ import { CreateLanguageDialog } from "./language-dialogs/create-language-dialog"
 
 type Props = {
   placeholder?: string
-  languages: LanguageInfoDataType
+  languages: LanguageInfoDataType,
+  value: WithInfoDataType<LanguageTranslation|null>
 }
 
-export function LanguageSelect({ className, languages, placeholder }: Props & ClassNameType) {
+export function LanguageSelect({
+  className,
+  languages,
+  placeholder,
+  value: {get: value, set: setValue}
+}: Props & ClassNameType) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState<LanguageTranslation|null>(null)
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -32,7 +37,7 @@ export function LanguageSelect({ className, languages, placeholder }: Props & Cl
             className
           )}
         >
-          <div className="flex gap-1 items-center">
+          <div className="flex gap-1 items-center w-full">
             {
               value?.english_name
               && <Image

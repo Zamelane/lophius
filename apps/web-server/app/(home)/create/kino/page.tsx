@@ -5,7 +5,7 @@ import { InfoIcon, LanguagesIcon } from "lucide-react";
 import { Tab, CustomMenu } from "@/components/me-ui/custom-menu";
 import { Centrize } from "@/components/template-components/other/centrize";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
-import { KinoType, GenreTranslation, KinoCategoryType, SerialStatusType, CountryTranslation, LanguageTranslation } from "@/interfaces";
+import { KinoType, GenreTranslation, KinoCategoryType, SerialStatusType, CountryTranslation, LanguageTranslation, KinoTranslateType } from "@/interfaces";
 
 import { TranslateTab } from "./(tabs)/translate";
 import { DefaultInfoTab } from "./(tabs)/default-info";
@@ -59,11 +59,13 @@ export default function KinoCreatePage() {
   const [countries,              setCountries             ] = useState<CountryTranslation[]>([])
   const [genres,                 setGenres                ] = useState<GenreTranslation[]>([])
   const [links,                  setLinks                 ] = useState<string[]>([])
+  const [translates,             setTranslates            ] = useState<KinoTranslateType[]>([])
 
   // Выбранные значения     
   const [kinoType,               setKinoType              ] = useState<KinoType | null>(null)
   const [kinoCategory,           setKinoCategory          ] = useState<KinoCategoryType | null>(null)
   const [serialProductionStatus, setSerialProductionStatus] = useState<null | SerialStatusType>(null)
+  const [originalLanguage,       setOriginalLanguage      ] = useState<LanguageTranslation|null>(null)
 
   return (
     <ContentLayout className="px-4">
@@ -83,12 +85,16 @@ export default function KinoCreatePage() {
                 languages={{get: languages, set: setLanguages}}
                 countries={{get: countries, set: setCountries}}
                 kinoCategory={{get: kinoCategory, set: setKinoCategory}}
+                originalLanguage={{get: originalLanguage, set: setOriginalLanguage}}
                 serialStatus={{get: serialProductionStatus, set: setSerialProductionStatus}}
               />
         }
         {
           selected.id === 'translate'
-          && <TranslateTab/>
+          && <TranslateTab
+            languages={{get: languages, set: setLanguages}}
+            translates={{get: translates, set: setTranslates}}
+          />
         }
       </Centrize>
     </ContentLayout>
