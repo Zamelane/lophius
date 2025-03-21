@@ -1,5 +1,6 @@
 'use client'
 
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -27,11 +28,23 @@ export function LanguageSelect({ className, languages, placeholder }: Props & Cl
           className={cn(
             "justify-between",
             "text-muted-foreground",
+            "justify-start",
             className
           )}
         >
-          {value?.english_name ?? placeholder ?? 'Select language'}
-          <ChevronsUpDownIcon className="opacity-50" />
+          <div className="flex gap-1 items-center">
+            {
+              value?.english_name
+              && <Image
+                width={16}
+                height={16}
+                alt={value.iso_639_1}
+                src={`/images/iso-639-1/${value.iso_639_1}.svg`}
+              />
+            }
+            {value?.english_name ?? placeholder ?? 'Select language'}
+            <ChevronsUpDownIcon className="opacity-50 ml-auto mr-1" />
+          </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent>
@@ -69,6 +82,12 @@ export function LanguageSelect({ className, languages, placeholder }: Props & Cl
                       setOpen(false)
                     }}
                   >
+                    <Image
+                      width={16}
+                      height={16}
+                      alt={v.iso_639_1}
+                      src={`/images/iso-639-1/${v.iso_639_1}.svg`}
+                    />
                     {v.english_name}
                     <Check
                       className={cn(

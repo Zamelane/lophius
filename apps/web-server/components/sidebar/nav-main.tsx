@@ -56,10 +56,10 @@ export function NavMain({
                     <ContextMenu>
                       <ContextMenuTrigger>
                         <SidebarMenuButton asChild tooltip={item.title} isActive={path === item.url}>
-                          <a href={item.url}>
+                          <Link href={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
-                          </a>
+                          </Link>
                         </SidebarMenuButton>
                       </ContextMenuTrigger>
                       <ContextMenuContent>
@@ -91,10 +91,10 @@ export function NavMain({
                             {item.menu?.map((subItem) => (
                               <SidebarMenuSubItem key={'sm_' + subItem.title}>
                                 <SidebarMenuSubButton asChild>
-                                  <a href={subItem.url}>
+                                  <Link href={subItem.url}>
                                     {subItem.icon && <subItem.icon/>}
                                     <span>{subItem.title}</span>
-                                  </a>
+                                  </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             ))}

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -38,11 +39,23 @@ export function CountrySelect({ className, countries, languages, placeholder }: 
           className={cn(
             "justify-between",
             "text-muted-foreground",
+            "justify-start gap-0",
             className
           )}
         >
-          {value.length ? value.map(v => v.english_name).join(', ') : placeholder ?? 'Select country'}
-          <ChevronsUpDownIcon className="opacity-50" />
+          {value.length ? value.map((v,i) => (
+            <div className="flex gap-1" key={'iso_3166_1_' + i}>
+              {i !== 0 && ', '}
+              <Image
+                width={16}
+                height={16}
+                alt={v.iso_3166_1}
+                src={`/images/iso-3166-1/${v.iso_3166_1}.svg`}
+              />
+              {v.english_name}
+            </div>
+          )) : placeholder ?? 'Select country'}
+          <ChevronsUpDownIcon className="opacity-50 ml-auto" />
         </Button>
       </PopoverTrigger>
       <PopoverContent>
@@ -76,6 +89,12 @@ export function CountrySelect({ className, countries, languages, placeholder }: 
                       addOrRemoveValue(v)
                     }}
                   >
+                    <Image
+                      width={16}
+                      height={16}
+                      alt={v.iso_3166_1}
+                      src={`/images/iso-3166-1/${v.iso_3166_1}.svg`}
+                    />
                     {v.english_name}
                     <Check
                       className={cn(

@@ -1,3 +1,5 @@
+'use client'
+
 import {LayoutProps} from "@/interfaces";
 
 import { Footer } from "./Footer";
@@ -5,7 +7,7 @@ import { SiteHeader } from "../sidebar/site-header";
 import { AppSidebar } from "../sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "../ui/sidebar";
 
-export default async function AppLayout({ children }: LayoutProps) {
+export default function AppLayout({ children }: LayoutProps) {
 	return (
 		<SidebarProvider>
       <AppSidebar />

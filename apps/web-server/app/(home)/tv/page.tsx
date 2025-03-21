@@ -2,7 +2,7 @@ import { VideoCard } from "@/components/template-components/media/cards/video-ca
 import { ContentLayout } from "@/components/template-components/other/content-layout";
 import { TitleList } from "@/components/template-components/media/containers/title-list";
 
-export default function Page() {
+export default async function Page() {
   return (
     <ContentLayout>
       <TitleList px={4} title="В тренде">

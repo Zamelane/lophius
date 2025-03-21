@@ -1,5 +1,12 @@
 import { Dispatch, SetStateAction } from "react"
-import { GenreTranslation, CountryTranslation, LanguageTranslation } from "@/interfaces"
+import {
+  KinoType,
+  SerialStatusType,
+  GenreTranslation,
+  KinoCategoryType,
+  CountryTranslation,
+  LanguageTranslation
+} from "@/interfaces"
 
 export type WithInfoDataType <T> = {
   get: T
@@ -12,8 +19,18 @@ export type CountryInfoDataType = WithInfoDataType<CountryTranslation[]>
 
 export type GenreInfoDataType = WithInfoDataType<GenreTranslation[]>
 
-export type DetailedInfoDataType = {
+export type ExternalLinksInfoDataType = WithInfoDataType<string[]>
+
+export type KinoTypeInfoDataType = WithInfoDataType<KinoType|null>
+export type KinoCategoryInfoDataType = WithInfoDataType<KinoCategoryType|null>
+export type SerialProductionStatusInfoDataType = WithInfoDataType<null|SerialStatusType>
+
+export type KinoDetailedInfoDataType = {
   languages: LanguageInfoDataType
   countries: CountryInfoDataType
   genres: GenreInfoDataType
+  links: ExternalLinksInfoDataType
+  kinoType: KinoTypeInfoDataType
+  kinoCategory: KinoCategoryInfoDataType
+  serialStatus: SerialProductionStatusInfoDataType
 }

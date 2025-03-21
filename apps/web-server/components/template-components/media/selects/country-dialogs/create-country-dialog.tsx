@@ -1,6 +1,7 @@
 'use client'
 
 import { toast } from "sonner";
+import Image from "next/image";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { Input } from "@/components/shadcn/ui/input";
 import { Button } from "@/components/shadcn/ui/button";
@@ -27,6 +28,7 @@ export function CreateCountryDialog({ children, setValue, countries, languages }
   ])
   const [iso_3166_1, setIso_3166_1] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const [imgVisibility, setImgVisibility] = useState(false)
 
   function add() {
     if (translations[translations.length - 1].value.trim().length < 1)
@@ -120,7 +122,16 @@ export function CreateCountryDialog({ children, setValue, countries, languages }
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-2">
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-row items-center">
+            <Image
+              width={32}
+              height={32}
+              alt={iso_3166_1}
+              className={imgVisibility ? 'mr-4' : 'w-0'}
+              src={`/images/iso-3166-1/${iso_3166_1}.svg`}
+              onErrorCapture={() => setImgVisibility(false)}
+              onLoadingComplete={() => setImgVisibility(true)}
+            />
             <Input id="iso-3166-1" value={iso_3166_1} className="w-full" placeholder="ISO-3166-1" onChange={v => isoInputChange(v.target.value)} />
           </div>
         </div>

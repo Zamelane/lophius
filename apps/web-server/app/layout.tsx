@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import {getCurrentUser} from "@/lib/dal";
 import {Toaster} from "@/components/ui/sonner";
 import {NextIntlClientProvider} from "next-intl";
+import { AppProgressBar } from "next-app-progress-bar";
 import {getLocale, getMessages} from "next-intl/server";
 import {AuthProvider} from "@/components/helps/auth-context";
 import {ThemeProvider} from "@/components/helps/theme-provider";
@@ -41,6 +42,11 @@ export default async function MyApp({children}: LayoutProps) {
         <meta name="viewport" content="width=device-width, user-scalable=no"/>
       </head>
       <body>
+        <AppProgressBar
+          shadow={false}
+          color="#FAFAFA"
+          showSpinner={false}
+        />
         <NextIntlClientProvider
           locale={locale}
           messages={messages}

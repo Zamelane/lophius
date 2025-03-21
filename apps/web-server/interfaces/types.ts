@@ -51,3 +51,8 @@ export type UserInfo = User & {
   background?: BackgroundImage | null
   isMe?: boolean
 }
+
+// Прочее
+export type KinoType = 'film' | 'serial'
+export type KinoCategoryType = 'anime' | 'cinema'
+export type SerialStatusType = 'canceled' | 'coming out' | 'completed' | 'in production' | 'ongoing' | 'planned'

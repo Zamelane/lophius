@@ -1,9 +1,17 @@
+'use client'
+
+import { KinoType } from "@/interfaces";
 import { SquarePlayIcon, SquareStackIcon } from "lucide-react";
+import { KinoTypeInfoDataType } from "@/interfaces/edit-types";
 import { Select, SelectItem, SelectGroup, SelectLabel, SelectValue, SelectContent, SelectTrigger } from "@/components/shadcn/ui/select";
 
-export function KinoTypeSelect() {
+type Props = {
+  kinoType: KinoTypeInfoDataType
+}
+
+export function KinoTypeSelect({ kinoType: { set } }: Props) {
   return (
-    <Select>
+    <Select onValueChange={v => set(v as KinoType)}>
       <SelectTrigger>
         <SelectValue placeholder="Тип контента" />
       </SelectTrigger>

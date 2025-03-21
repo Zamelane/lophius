@@ -1,15 +1,17 @@
 'use client'
 
 import { cn } from "@/lib/utils";
+import { LucideIcon } from "lucide-react";
 import { LayoutProps } from "@/interfaces";
 import { Dispatch, SetStateAction } from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 
 import { Button } from "../ui/button";
 
-type Tab = {
+export type Tab = {
   id: string
   title: string
+  icon?: LucideIcon
 }
 
 type Props = {
@@ -41,7 +43,8 @@ export function CustomMenu({ tabs, selected, setSelected }: Props) {
                     "[&_svg]:shrink-0 font-medium hover:bg-accent hover:text-accent-foreground h-8 px-3 py-2 [&_svg]:mr-1 justify-center"
                   )
                 }>
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center">
+                  {v.icon && <v.icon/>}
                   {v.title}
                 </div>
               </Button>

@@ -1,57 +1,69 @@
 'use client'
 import { useState } from "react";
 import { Title } from "@/components/me-ui/title";
-import { CustomMenu } from "@/components/me-ui/custom-menu";
+import { InfoIcon, LanguagesIcon } from "lucide-react";
+import { Tab, CustomMenu } from "@/components/me-ui/custom-menu";
 import { Centrize } from "@/components/template-components/other/centrize";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
-import { GenreTranslation, CountryTranslation, LanguageTranslation } from "@/interfaces";
+import { KinoType, GenreTranslation, KinoCategoryType, SerialStatusType, CountryTranslation, LanguageTranslation } from "@/interfaces";
 
-import { DefaultInfo } from "./(tabs)/default-info";
+import { TranslateTab } from "./(tabs)/translate";
+import { DefaultInfoTab } from "./(tabs)/default-info";
 
-const tabs = [
+const tabs: Tab[] = [
   {
     id: "info",
+    icon: InfoIcon,
     title: "Основная информация"
   },
   {
-    id: "production",
-    title: "Производство"
+    id: "translate",
+    title: "Переводы",
+    icon: LanguagesIcon
   },
-  {
-    id: "translates",
-    title: "Интернационализация"
-  },
-  {
-    id: "seo",
-    title: "Ключевые слова"
-  },
-  {
-    id: "seasons",
-    title: "Сезоны"
-  },
-  {
-    id: "actors",
-    title: "Актёры"
-  },
-  {
-    id: "trailers",
-    title: "Трейлеры"
-  },
-  {
-    id: "related",
-    title: "Связанное"
-  }
+  // {
+  //   id: "production",
+  //   title: "Производство"
+  // },
+  // {
+  //   id: "translates",
+  //   title: "Интернационализация"
+  // },
+  // {
+  //   id: "seo",
+  //   title: "Ключевые слова"
+  // },
+  // {
+  //   id: "seasons",
+  //   title: "Сезоны"
+  // },
+  // {
+  //   id: "actors",
+  //   title: "Актёры"
+  // },
+  // {
+  //   id: "trailers",
+  //   title: "Трейлеры"
+  // },
+  // {
+  //   id: "related",
+  //   title: "Связанное"
+  // }
 ]
 
 export default function KinoCreatePage() {
-  const [selected, setSelected] = useState(tabs[0])
+  const [selected, setSelected] = useState<Tab>(tabs[0])
 
   // Списочные значения
-  const [languages, setLanguages] = useState<LanguageTranslation[]>([])
-  const [countries, setCountries] = useState<CountryTranslation[]>([])
-  const [genres,    setGenres   ] = useState<GenreTranslation[]>([])
+  const [languages,              setLanguages             ] = useState<LanguageTranslation[]>([])
+  const [countries,              setCountries             ] = useState<CountryTranslation[]>([])
+  const [genres,                 setGenres                ] = useState<GenreTranslation[]>([])
+  const [links,                  setLinks                 ] = useState<string[]>([])
 
-  // Выбранные значения
+  // Выбранные значения     
+  const [kinoType,               setKinoType              ] = useState<KinoType | null>(null)
+  const [kinoCategory,           setKinoCategory          ] = useState<KinoCategoryType | null>(null)
+  const [serialProductionStatus, setSerialProductionStatus] = useState<null | SerialStatusType>(null)
 
   return (
     <ContentLayout className="px-4">
@@ -64,11 +76,19 @@ export default function KinoCreatePage() {
       <Centrize className="p-0">
         {
           selected.id === 'info'
-          && <DefaultInfo 
+          && <DefaultInfoTab 
+                links={{get: links, set: setLinks}}
                 genres={{get: genres, set: setGenres}}
+                kinoType={{get: kinoType, set: setKinoType}}
                 languages={{get: languages, set: setLanguages}}
                 countries={{get: countries, set: setCountries}}
+                kinoCategory={{get: kinoCategory, set: setKinoCategory}}
+                serialStatus={{get: serialProductionStatus, set: setSerialProductionStatus}}
               />
+        }
+        {
+          selected.id === 'translate'
+          && <TranslateTab/>
         }
       </Centrize>
     </ContentLayout>
