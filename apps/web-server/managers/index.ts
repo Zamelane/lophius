@@ -1,2 +1,2 @@
-export * from './movie-manager'
+export * from './media-manager'
 export * from './language-manager'

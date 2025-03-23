@@ -13,11 +13,11 @@ export const logicProcess = async (plugins: Plugin[]) => {
     }
 
     const pluginProcess = plugin.setup(args)
-      .catch(() => logger.error(`Plugin (${plugin.name}) setup error`))
       .then(() => {
         logger.info(`Plugin (${plugin.name}) setup success`)
-        plugin.loadLibrary(args).catch(() => logger.error(`Plugin (${plugin.name}) loadLibrary error`))
+        plugin.loadLibrary(args).catch((e) => logger.error(`Plugin (${plugin.name}) loadLibrary error: ${e}`))
       })
+      .catch(() => logger.error(`Plugin (${plugin.name}) setup error`))
 
       processes.push(pluginProcess)
   }

@@ -12,6 +12,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@hey-api/client-fetch": "^0.8.3",
+        "@types/bun": "^1.2.5",
         "fastify": "^5.2.1",
         "pino-pretty": "^13.0.0",
         "undici": "^7.4.0",

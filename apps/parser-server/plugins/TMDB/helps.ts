@@ -1,4 +1,4 @@
-import { PluginStorage } from "@/src/pluginsManager/pluginStorage"
+import { PluginStorage } from "src/pluginsManager/pluginStorage"
 import { StorageData } from "./types"
 
 export async function getDataByStorage(storage: PluginStorage) {
