@@ -1,7 +1,7 @@
 <div align="center">
   <img alt="Lophius logo" height="150" src="./_docs/logo.png" width="150">
   <h1 align="center"><b>Lophius</b></h1>
-  <p align="center">🏭 A system for automating the collection, tracking, curation of media, and much more.</p>
+  <p align="center">🏭 Система автоматизации сбора, отслеживания, коллекционирования медиа и многого другого.</p>
 </div>
 
 <br>
@@ -28,32 +28,32 @@
 
 ## Demo
 
-You can view the demo version at [lophius.zmln.ru](https://lophius.zmln.ru)
+Демо-версию можно просмотреть по адресу [lophius.zmln.ru](https://lophius.zmln.ru)
 ![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.zmln.ru
 )
 ## Run Locally
 
-1. Clone the repository
+1. Клонируйте репозиторий
 
 ```bash
   git clone https://github.com/zamelane/lophius
 ```
 
-2. Navigate to the project server directory
+2. Перейдите в директорию с проектом сервер
 
 ```bash
   cd lophius/apps/web-server
 ```
 
-3. Install dependencies
+3. Установите зависимости
 
 ```bash
   bun i
 ```
 
-4. Fill in the configuration file `.env` (see `.env.example` for an example)
+4. Заполните конфигурационный файл `.env` (пример заполнения см. в файле `.env.example`)
 
-5. Build and start the server (production)
+5. Соберите и запустите сервер (production)
 
 ```bash
   bun run build
@@ -68,10 +68,16 @@ You can view the demo version at [lophius.zmln.ru](https://lophius.zmln.ru)
 
 ## Roadmap
 
-- Development plans for the project (step-by-step):
-- Implement manual media editors
-- Integrate external services for metadata extraction
-- Implement the creation of collections and lists
-- Add media tracking functionality (receiving notifications)
-- Integrate a media release calendar
-- Refactoring
+Планы по разработке проекта (поэтапно):
+
+- Реализовать ручные редакторы медиа
+
+- Интегрировать внешние сервисы для извлечения метаданных
+
+- Реализовать создание коллекций и списков
+
+- Добавить возможность отслеживания медиа (получение уведомлений)
+
+- Интегрировать календарь выхода медиа
+
+- Рефакторинг
