@@ -1,0 +1,73 @@
+{
+  "HomePage": {
+    "title": "Главная"
+  },
+  "Test": {
+    "title": "Тестовая страница"
+  },
+  "LoginPage": {
+    "title": "Страница входа",
+    "welcome_title": "Добро пожаловать",
+    "welcome_description": "Войдите используя вашу почту и пароль",
+    "email_field_title": "Почта",
+    "password_field_title": "Пароль",
+    "forgot_password": "Забыли пароль?",
+    "login": "Войти",
+    "dont_have_account": "Нет аккаунта?",
+    "sign_up": "Создать",
+    "by_clicking_continue": "Продолжая, вы принимаете",
+    "terms_of_service": "пользовательское соглашение",
+    "and": "и",
+    "privacy_policy": "политику конфиденциальности"
+  },
+  "SignupPage": {
+    "title": "Страница регистрации",
+    "welcome_title": "Регистрация",
+    "welcome_description": "Создайте свой аккаунт в мире медиа",
+    "nickname_field_title": "Никнейм",
+    "email_field_title": "Почта",
+    "password_field_title": "Пароль",
+    "at_least_8_characters": "Не меньше 8 символов",
+    "at_least_1_number": "Не меньше 1 цифры",
+    "at_least_1_lowercase": "Не меньше 1 прописного символа",
+    "at_least_1_uppercase": "Не меньше 1 заглавной буквы",
+    "must_contain": "Он должен содержать:",
+    "enter_a_password": "Придумайте пароль",
+    "weak_password": "Слабый пароль",
+    "medium_password": "Средний пароль",
+    "strong_password": "Надёжный пароль",
+    "signup": "Зарегистрироваться",
+    "have_account": "Есть аккаунт?",
+    "sign_in": "Войти",
+    "by_clicking_continue": "Продолжая, вы принимаете",
+    "terms_of_service": "пользовательское соглашение",
+    "and": "и",
+    "privacy_policy": "политику конфиденциальности"
+  },
+  "ProfilePage": {
+    "edit_button_text": "Редактировать",
+    "edit_profile": "Редактировать профиль",
+    "nickname": "Никнейм",
+    "email": "Почта",
+    "about_me": "О себе",
+    "about_me_placeholder": "Напишите несколько предложений о себе",
+    "characters_left": "символов осталось",
+    "cancel": "Отмена",
+    "save_changes": "Сохранить изменения"
+  },
+  "Api": {
+    "password_at_least_8_characters": "Пароль должен содержать не меньше 8 символов",
+    "password_at_least_1_number": "Пароль должен содержать не меньше 1 цифры",
+    "password_at_least_1_lowercase": "Пароль должен содержать не меньше 1 прописного символа",
+    "password_at_least_1_uppercase": "Пароль должен содержать не меньше 1 заглавной буквы",
+    "nickname_must_be_at_least_2_characters_long": "Ник должен содержать не менее 2х символов",
+    "please_enter_a_valid_email": "Пожалуйста, введите валидный email-адрес",
+    "use_by_a_different_user": "Уже используется другим пользователем",
+    "error": "Неопознанная ошибка",
+    "invalid_authentication_data": "Неверная почта или пароль"
+  },
+  "Public": {
+    "close": "Закрыть",
+    "ok": "ОК"
+  }
+}
