@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Lophius logo" height="150" src="./_docs/logo.png" width="150">
+  <img alt="Lophius logo" height="150" src="./logo.png" width="150">
   <h1 align="center"><b>Lophius</b></h1>
   <p align="center">🏭 Система автоматизации сбора, отслеживания, коллекционирования медиа и многого другого.</p>
 </div>
