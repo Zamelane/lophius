@@ -3,6 +3,7 @@ import { getDataByStorage } from "../helps";
 import { discoverMovie } from "../client";
 import { StorageData } from "../types";
 import { saveMovies } from "../save/movie";
+import { logger } from "src";
 
 const maxAttempts = 3
 
@@ -62,6 +63,8 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
       await storage.update({ ...storageData, movies: { ...storageData.movies, page } })
       page = data.page
       totalPages = data.total_pages
+
+      logger.info(`Страница ${page}/${totalPages} успешо извлечена!`)
       break
     }
 
