@@ -15,10 +15,11 @@ export const files = pgTable('files', {
   // updateAt: timestamp({ mode: 'date' }).$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 })
 
-export const filesRelations = relations(
-  files, ({ many }) => ({
-    users: many(users)
-  })
-)
+// FIX: похоже в обратную сторону не обязательно указывать ? (а то drizzle studio ошибку кидает)
+// export const filesRelations = relations(
+//   files, ({ many }) => ({
+//     users: many(users)
+//   })
+// )
 
 export type FilesTableType = InferSelectModel<typeof files>

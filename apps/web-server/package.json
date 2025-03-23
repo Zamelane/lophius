@@ -11,7 +11,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:full": "bun db:generate && bun db:push"
+    "db:full": "bun db:generate && bun db:push",
+    "db:studio": "bunx drizzle-kit studio"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.3",
@@ -84,7 +85,7 @@
     "@types/pg": "^8.11.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "drizzle-kit": "^0.30.4",
+    "drizzle-kit": "^0.30.5",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "eslint-plugin-perfectionist": "^4.9.0",

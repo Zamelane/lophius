@@ -105,7 +105,7 @@
         "@types/pg": "^8.11.11",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "drizzle-kit": "^0.30.4",
+        "drizzle-kit": "^0.30.5",
         "eslint": "^9",
         "eslint-config-next": "15.1.0",
         "eslint-plugin-perfectionist": "^4.9.0",
