@@ -2,6 +2,7 @@ import {logger} from '../utils';
 import {readdir} from 'node:fs/promises'
 import type {Plugin} from "./types.ts";
 import {logicProcess} from "./process.ts";
+import Bun from 'bun'
 
 class PluginsManager {
 

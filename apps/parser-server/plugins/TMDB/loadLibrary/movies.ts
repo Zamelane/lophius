@@ -1,6 +1,6 @@
-import { PluginStorage } from "@/src/pluginsManager/pluginStorage";
+import { PluginStorage } from "src/pluginsManager/pluginStorage";
 import { getDataByStorage } from "../helps";
-import { discoverMovie, DiscoverMovieResponse } from "../client";
+import { discoverMovie } from "../client";
 import { StorageData } from "../types";
 import { saveMovies } from "../save/movie";
 
@@ -23,7 +23,7 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
   await storage.update({ ...storageData, movies: { ...storageData.movies, startLastUpdateDate: new Date() }})
 
   // Получаем стартовые данные
-  let { data: initData } = await discoverMovie({ auth: token!, query: { page: 0 } })
+  let { data: initData } = await discoverMovie({ auth: token!, query: { page: 1 } })
 
   if (!initData || !initData?.total_pages) {
     throw new Error(`Не удалось получить стартовые данные фильмов: сервер не вернул результаты или не удалось подключиться`)
@@ -43,7 +43,7 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
     let attempts = 0
 
     while (attempts <= maxAttempts) {
-      const { data, error } = await discoverMovie({ auth: token!, query: { page } })
+      const { data, error } = await discoverMovie({ auth: token!, query: { page, sort_by: 'primary_release_date.asc' } })
 
       if (
         error
@@ -58,7 +58,7 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
       attempts = 0
 
       // Тут сохраняем data
-      saveMovies(data, defaultLang)
+      saveMovies(data, await storage.GetSourceId(), defaultLang)
       await storage.update({ ...storageData, movies: { ...storageData.movies, page } })
       page = data.page
       totalPages = data.total_pages

@@ -1,4 +1,4 @@
-import { PluginStorage } from "@/src/pluginsManager/pluginStorage"
+import { PluginStorage } from "src/pluginsManager/pluginStorage"
 
 export type StorageData = {
   movies: ParsedConfig

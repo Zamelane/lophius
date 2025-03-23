@@ -15,11 +15,11 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"],
-      "@plugins/*": ["./plugins/*"],
-      "web-server/*": ["../web-server/*"]
+      "@/*": ["../web-server/*"],
+      "@plugins/*": ["./plugins/*"]
     },
     "baseUrl": ".",
+    "typeRoots": ["../web-server/interfaces"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],

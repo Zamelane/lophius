@@ -1,6 +1,9 @@
-import {json, pgTable, varchar} from "drizzle-orm/pg-core";
+import {json, integer, pgTable, varchar} from "drizzle-orm/pg-core";
+
+import { sources } from "./sources";
 
 export const pluginStorage = pgTable('plugin_storage', {
+  value: json().default(null),
   pluginName: varchar().notNull().unique(),
-  value: json().default(null)
+  sourceId: integer().references(() => sources.id).notNull().primaryKey()
 })
