@@ -6,7 +6,7 @@ import {logicProcess} from "./process.ts";
 class PluginsManager {
 
   // Плагины (источники)
-  private pluginsPath: string = "../plugins";
+  private pluginsPath: string = "./plugins";
   private plugins: Plugin[] = []
   constructor() {
     logger.info("Initializing Manager ...");

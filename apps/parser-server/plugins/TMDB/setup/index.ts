@@ -1,7 +1,11 @@
-import { Method } from "../../../parser-server/src";
+import { Method } from "../../../src";
+import { ClientOptions } from "../client";
+import { client } from "../client/client.gen";
 import { StorageData } from '../types'
-import { autoParseCountries } from "./autoParseCountries";
-import { autoParseLanguages } from "./autoParseLanguages";
+
+const clientOptions: ClientOptions = {
+  baseUrl: 'https://api.themoviedb.org'
+}
 
 export const setup: Method = async ({
   storage
@@ -18,9 +22,22 @@ export const setup: Method = async ({
   // Если данных в хранилище нет, то заносим базовые
   if (!storageGetResult?.data) {
     data = storageGetResult.data = {
-      parsedPage: 0,
-      isParsed: false,
-      lastUpdateDate: new Date()
+      movies: {
+        isFullParsed: false,
+        page: 0,
+        firstUpdateDate: null,
+        startLastUpdateDate: null,
+        succesfullLastUpdateDate: null,
+      },
+      serials: {
+        isFullParsed: false,
+        page: 0,
+        firstUpdateDate: null,
+        startLastUpdateDate: null,
+        succesfullLastUpdateDate: null
+      },
+      token: process.env.TMDB_TOKEN ?? null,
+      defaultLang: 'en'
     }
 
     await storage.create(data)
@@ -30,7 +47,6 @@ export const setup: Method = async ({
       })
   }
 
-  // Скачиваем начальные данные (конфиги)
-  await autoParseLanguages()  // Языки
-  await autoParseCountries()
+  // Настраиваем клиент
+  client.setConfig(clientOptions)
 }
