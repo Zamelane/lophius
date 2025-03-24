@@ -1,7 +1,7 @@
-import { db, eq } from "@/db";
 import { cache } from "react";
 import { languages } from "@/db/tables";
 import { Language } from "@/interfaces";
+import { db, eq, TransactionParam } from "@/db";
 
 export class LanguageManager {
 
@@ -35,13 +35,14 @@ export class LanguageManager {
       .then(v => v.length ? v[0] : undefined)
   })
 
-  public static create = async (data: Language): Promise<Language[]> => {
-    return await db.insert(languages)
+  public static create = async (data: Language & TransactionParam): Promise<Language> => {
+    return await data.tx.insert(languages)
       .values(data)
       .onConflictDoUpdate({ 
         set: data,
         target: languages.iso_639_1
       })
       .returning()
+      .then(v => v[0])
   }
 }

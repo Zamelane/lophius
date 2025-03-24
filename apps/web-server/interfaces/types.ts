@@ -2,6 +2,7 @@ import { Dispatch } from "react"
 import { SWRConfiguration } from "swr"
 import { FilesTableType } from "@/db/tables/files"
 import { UsersTableType, GenresTableType, LanguagesTableType, CountriesTableType } from "@/db/tables"
+import { TranslatesTableType } from "@/db/tables/translates"
 
 // Для типизации страниц
 export type IdType = {
@@ -34,6 +35,7 @@ export type AvatarImage = FilesTableType
 export type BackgroundImage = FilesTableType
 export type Language = WithOptional<LanguagesTableType, 'id'>
 export type Country = WithOptional<CountriesTableType, 'id'>
+export type TranslateItem = TranslatesTableType
 
 // Сущности переводов
 export type LanguageTranslation = 
