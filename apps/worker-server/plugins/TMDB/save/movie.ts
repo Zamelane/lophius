@@ -2,6 +2,7 @@ import { allFieldsDefined, ArrayElementType, GetPropertyType } from "@/interface
 import { DiscoverMovieResponse } from "../client";
 import { db, Transaction } from "@/db";
 import { MediaManager } from "@/managers";
+import { logger } from "src";
 
 export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: number, defaultLang: string) {
   if (!moviesData.results)
@@ -52,4 +53,9 @@ export async function saveMovie(
       },
       tx
     })
+
+  if (!media)
+    logger.warn(`Не смог сохранить: ${external_id}`)
+
+  
 }

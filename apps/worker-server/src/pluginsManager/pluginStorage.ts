@@ -79,7 +79,12 @@ export class PluginStorage {
     })
   }
 
-  public async update<T>(v: T) {
+  public async update<T>(v: T): Promise<{
+    successful: true,
+    data: T|null
+  }| {
+    successful: false
+  }> {
     return db.update(pluginStorage)
       .set({
         value: v

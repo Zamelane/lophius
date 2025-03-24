@@ -1,5 +1,6 @@
 import { PluginStorage } from "src/pluginsManager/pluginStorage"
 import { StorageData } from "./types"
+import { RateLimiter } from "src/utils/rateLimiter"
 
 export async function getDataByStorage(storage: PluginStorage) {
   let { data, successful } = await storage.get<StorageData>()
@@ -9,3 +10,5 @@ export async function getDataByStorage(storage: PluginStorage) {
 
   return data
 }
+
+export const rateLimiter = new RateLimiter(40, 60_000)

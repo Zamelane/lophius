@@ -13,6 +13,8 @@ type ParsedConfig = {
   startLastUpdateDate: Date | null
   succesfullLastUpdateDate: Date | null
   page: number
+  date_gte: string | null
+  date: string | null
 }
 
 export type PluginArgs = {
