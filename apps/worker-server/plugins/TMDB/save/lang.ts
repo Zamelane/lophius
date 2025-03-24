@@ -1,5 +1,6 @@
 import { LanguageManager } from 'web-server/managers'
 import { configurationLanguages } from '../client'
+import { rateLimiter } from '../helps'
 
 export async function checkExistOrCreateLangByISO(iso_639_1: string, token: string) {
   const lang = await LanguageManager.getOneByISO_639_1(iso_639_1)
@@ -8,7 +9,9 @@ export async function checkExistOrCreateLangByISO(iso_639_1: string, token: stri
     return
   
   let english_name
-  const { error, data } = await configurationLanguages({ auth: token })
+  const { error, data } = await rateLimiter.callWithRateLimit(
+    async () => configurationLanguages({ auth: token })
+  )
 
   if(!data) {
     throw new Error(`Не удалось запросить конфигурацию языка: ${JSON.stringify(error)}`)

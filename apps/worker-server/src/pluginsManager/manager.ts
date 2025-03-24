@@ -1,4 +1,4 @@
-import {logger} from '../utils';
+import {logger} from '../utils/index.ts';
 import {readdir} from 'node:fs/promises'
 import type {Plugin} from "./types.ts";
 import {logicProcess} from "./process.ts";
@@ -8,13 +8,15 @@ class PluginsManager {
 
   // Плагины (источники)
   private pluginsPath: string = "./plugins";
-  private plugins: Plugin[] = []
+  private plugins: {
+    plugin: Plugin
+    promise: Promise<void>|undefined
+  }[] = []
+  private maintenanceIsRun = false
+
   constructor() {
     logger.info("Initializing Manager ...");
   }
-
-  // Статусы обработок
-  private process?: Promise<void>
 
   /**
    * Загружает плагины (источники) в систему
@@ -28,7 +30,10 @@ class PluginsManager {
       path = `@plugins/${path}`
       try {
         const { config: plugin }: { config: Plugin } = await import(path + '/index.ts')
-        this.plugins.push(plugin)
+        this.plugins.push({
+          plugin,
+          promise: undefined
+        })
         logger.info(`Successfully load plugin '${plugin.name} (${plugin.version})'!`)
       } catch (err) {
         logger.error(`Failed to load plugin (${path}), more detailed: ${err} ...`)
@@ -43,22 +48,18 @@ class PluginsManager {
    */
   public async startMaintenance() {
     logger.info("Starting Maintenance (plugin handler) ...")
-    this.process = logicProcess(this.plugins)
+    this.maintenanceIsRun = true
 
-    this.process
-      .catch(e => {
-        logger.error(`Plugin handler error: ${e}`)
-      })
-      .finally(() => {
-        this.process = undefined
-        this.recheckProcess()
-      })
-  }
+    while (this.maintenanceIsRun) {
+      for (const plugin of this.plugins) {
+        if (plugin.promise === undefined)
+          plugin.promise = logicProcess(plugin.plugin).then(() => plugin.promise = undefined)
+      }
+      logger.info('Recheck process (sleep 1m) ...')
+      await Bun.sleep(60000)
+    }
 
-  private async recheckProcess() {
-    logger.info('Recheck process (sleep 1m) ...')
-    await Bun.sleep(60000)
-    this.startMaintenance()
+    this.maintenanceIsRun = false
   }
 }
 

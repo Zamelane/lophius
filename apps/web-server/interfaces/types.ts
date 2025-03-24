@@ -33,6 +33,7 @@ export type User = WithOptional<UsersTableType, 'email' | 'password'>
 export type AvatarImage = FilesTableType
 export type BackgroundImage = FilesTableType
 export type Language = WithOptional<LanguagesTableType, 'id'>
+export type Country = WithOptional<CountriesTableType, 'id'>
 
 // Сущности переводов
 export type LanguageTranslation = 

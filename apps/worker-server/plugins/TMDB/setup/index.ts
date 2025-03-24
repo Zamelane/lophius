@@ -28,13 +28,17 @@ export const setup: Method = async ({
         firstUpdateDate: null,
         startLastUpdateDate: null,
         succesfullLastUpdateDate: null,
+        date_gte: null,
+        date: null
       },
       serials: {
         isFullParsed: false,
         page: 0,
         firstUpdateDate: null,
         startLastUpdateDate: null,
-        succesfullLastUpdateDate: null
+        succesfullLastUpdateDate: null,
+        date_gte: null,
+        date: null
       },
       token: process.env.TMDB_TOKEN ?? null,
       defaultLang: 'en'
