@@ -1,3 +1,4 @@
+import { InferSelectModel } from "drizzle-orm";
 import { text, bigint, integer, pgTable, varchar, smallint } from "drizzle-orm/pg-core";
 
 import { medias } from "./medias";
@@ -14,3 +15,5 @@ export const translates = pgTable('translates', {
   languageId: integer().notNull().references(() => languages.id),
   mediaId: bigint({ mode: 'number' }).notNull().references(() => medias.id)
 })
+
+export type TranslatesTableType = InferSelectModel<typeof translates>
