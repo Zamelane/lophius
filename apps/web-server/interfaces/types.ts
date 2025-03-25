@@ -1,8 +1,16 @@
 import { Dispatch } from "react"
 import { SWRConfiguration } from "swr"
 import { FilesTableType } from "@/db/tables/files"
-import { UsersTableType, GenresTableType, LanguagesTableType, CountriesTableType } from "@/db/tables"
 import { TranslatesTableType } from "@/db/tables/translates"
+import {
+  UsersTableType,
+  GenresTableType,
+  LanguagesTableType,
+  CountriesTableType,
+  CompaniesTableType,
+  SourceGenresTableType,
+  ExternalFilesTableType
+} from "@/db/tables"
 
 // Для типизации страниц
 export type IdType = {
@@ -36,6 +44,14 @@ export type BackgroundImage = FilesTableType
 export type Language = WithOptional<LanguagesTableType, 'id'>
 export type Country = WithOptional<CountriesTableType, 'id'>
 export type TranslateItem = TranslatesTableType
+export type Company = WithOptional<CompaniesTableType, 'id'>
+export type ExternalFile = {
+    domain: string
+    https: boolean
+  }
+  & WithOptional<ExternalFilesTableType, 'external_domain' | 'id'>
+export type Genre = WithOptional<GenresTableType, 'id'>
+export type SourceGenre = WithOptional<SourceGenresTableType, 'genreId'>
 
 // Сущности переводов
 export type LanguageTranslation = 
@@ -63,4 +79,7 @@ export type KinoTranslateType = {
   language: LanguageTranslation
   overview: string
   titles: string[]
+}
+export type PartialStatusType = {
+  isPartial: boolean
 }
