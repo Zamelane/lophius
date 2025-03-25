@@ -49,7 +49,7 @@ export type ExternalImage = {
     domain: string
     https: boolean
   }
-  & WithOptional<ExternalImagesTableType, 'externalDomainId' | 'id'>
+  & WithOptional<ExternalImagesTableType, 'externalDomainId' | 'id' | 'languageId' | 'sourceId'>
 export type Genre = WithOptional<GenresTableType, 'id'>
 export type SourceGenre = WithOptional<SourceGenresTableType, 'genreId'>
 

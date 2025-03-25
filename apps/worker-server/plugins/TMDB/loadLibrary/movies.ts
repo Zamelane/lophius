@@ -68,7 +68,7 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
     date_gte = lastItemReleaseDate ?? null
 
     // Сохраняем результаты страниц
-    await saveMovies(data, await storage.GetSourceId(), defaultLang)
+    await saveMovies(data, await storage.GetSourceId(), token!)
     const rs = await storage.update<StorageData>({ ...storageData, movies: {
       ...storageData.movies,
       date_gte,
