@@ -9,7 +9,7 @@ export const genres = pgTable('genres', {
 })
 
 export const sourceGenres = pgTable('source_genres', {
-  external_id: integer().notNull(),
+  external_id: varchar({ length: 255 }).notNull(),
   genreId: integer().references(() => genres.id).notNull(),
   sourceId: bigint({ mode: 'number' }).notNull().references(() => sources.id)
 }, (table) => [

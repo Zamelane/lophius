@@ -6,7 +6,7 @@ import { CountryManager } from "./country-manager"
 import { LanguageManager } from "./language-manager"
 
 export class TranslateManager {
-  public static async create(data: TranslateItem & TransactionParam) {
+  public static async create(data: TranslateItem & TransactionParam):Promise<TranslateItem> {
     return data.tx.insert(translates).values({
       ...data
     }).returning().then(v => v[0])
@@ -20,7 +20,7 @@ export class TranslateManager {
     mediaId: number
     languageId: number
     countryId: number
-  }) {
+  }): Promise<TranslateItem | undefined> {
     return db.select().from(translates).where(
       and(
         eq(translates.languageId, languageId),
@@ -34,7 +34,7 @@ export class TranslateManager {
     tx,
     data,
     mediaId
-  }: TransactionParam & SaveTranslateProps) {
+  }: TransactionParam & SaveTranslateProps): Promise<TranslateItem> {
     // Ищем или создаём язык
     const languageId = data.languageId
       ?? await LanguageManager.getOneByISO_639_1(data.language_iso_639_1)
@@ -50,10 +50,10 @@ export class TranslateManager {
 
     // Ищем страну
     const countryId = data.countryId
-      ?? await CountryManager.getOneByISO_3166_1(data.countryLanguage_iso_3166_1)
+      ?? await CountryManager.GetOneByISO_3166_1(data.countryLanguage_iso_3166_1)
           .then(async v => v
             ? v
-            : await CountryManager.create({
+            : await CountryManager.Create({
               tx,
               english_name: data.countryEnglishName,
               iso_3166_1: data.countryLanguage_iso_3166_1
@@ -103,7 +103,7 @@ export class TranslateManager {
     })
   }
 
-  public static async update(data: TranslateItem & TransactionParam) {
+  public static async update(data: TranslateItem & TransactionParam): Promise<TranslateItem> {
     return data.tx.update(translates).set({
       ...data
     }).where(

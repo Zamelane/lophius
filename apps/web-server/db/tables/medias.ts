@@ -6,6 +6,7 @@ import { sources } from "./sources";
 import { mediaTypes } from "./mediaTypes";
 
 export const medias = pgTable('medias', {
+  isVideo: boolean(),
   mediaType: mediaTypes().notNull(),
   isAdult: boolean().notNull().default(true),
   id: bigserial({ mode: "number" }).primaryKey(),

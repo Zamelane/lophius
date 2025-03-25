@@ -21,3 +21,21 @@ export type NoUndefinedFields<T> = {
 export function allFieldsDefined<T extends object>(obj: T): obj is NoUndefinedFields<T> {
   return Object.values(obj).every((value) => value !== undefined);
 }
+
+export function compareObjects<T extends object, K extends keyof T>(
+  obj1: T,
+  obj2: T,
+  excludeFields: K[]
+): boolean {
+  const keys = Object.keys(obj1) as Array<keyof T>;
+
+  return keys.every(key => {
+    // Пропускаем исключённые поля
+    if (excludeFields.includes(key as K)) {
+      return true;
+    }
+    
+    // Сравниваем значения
+    return obj1[key] === obj2[key];
+  });
+}
