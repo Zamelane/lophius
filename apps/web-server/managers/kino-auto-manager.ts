@@ -8,7 +8,6 @@ import {
   SourceGenre,
   WithRequired,
   ExternalImage,
-  NonEmptyArray,
   compareObjects,
   PartialStatusType
 } from "@/interfaces"
@@ -360,26 +359,6 @@ export class KinoAutoManager {
       }))
     }
 
-    // Сохраняем разговорные языки
-    if (spoken_languages) {
-      const languageIds: number[] = []
-      const promises_sl = []
-      for (const spoken_language of spoken_languages) {
-        promises_sl.push(LanguageManager.create({
-          tx,
-          ...spoken_language
-        }).then(v => languageIds.push(v.id)))
-      }
-
-      await Promise.all(promises_sl)
-
-      promises.push(SpokenLanguageManager.AutoLink({
-        tx,
-        languageIds,
-        mediaId: media.id
-      }))
-    }
-
     // Сохраняем страны происхождения
     if (origin_countries) {
       const countryIds: number[] = []
@@ -543,7 +522,7 @@ type PrimaryValuesKinoSaveProps = KeysBySerialSaveProps & {
   category: 'anime' | 'kino'
   type: 'film' | 'serial'
   status: null | StatusesEnumType
-  translates: NonEmptyArray<TranslateData>
+  translates: TranslateData[]
   isVideo: boolean|null
   isAdult: boolean
   external_id: string

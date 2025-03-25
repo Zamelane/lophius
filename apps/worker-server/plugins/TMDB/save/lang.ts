@@ -1,6 +1,7 @@
 import { LanguageManager } from 'web-server/managers'
 import { configurationLanguages } from '../client'
 import { rateLimiter } from '../helps'
+import { db } from '@/db'
 
 export async function checkExistOrCreateLangByISO(iso_639_1: string, token: string) {
   const lang = await LanguageManager.getOneByISO_639_1(iso_639_1)
@@ -27,9 +28,13 @@ export async function checkExistOrCreateLangByISO(iso_639_1: string, token: stri
   if (!english_name)
     throw new Error(`Не удалось извлечь английское именование для языка`)
 
-  await LanguageManager.create({
-    english_name,
-    iso_639_1
+  db.transaction(async (tx) => {
+    await LanguageManager.create({
+      english_name,
+      iso_639_1,
+      native_name: null,
+      tx
+    })
   })
 
   return
