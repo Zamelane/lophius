@@ -1,6 +1,6 @@
 import { TranslateItem } from "@/interfaces"
 import { translates } from "@/db/tables/translates"
-import { db, eq, and, TransactionParam } from "@/db"
+import { db, eq, and, notInArray, TransactionParam } from "@/db"
 
 import { CountryManager } from "./country-manager"
 import { LanguageManager } from "./language-manager"
@@ -10,6 +10,22 @@ export class TranslateManager {
     return data.tx.insert(translates).values({
       ...data
     }).returning().then(v => v[0])
+  }
+
+  public static async DeleteIfNotArray({
+    tx,
+    mediaId,
+    translateIds
+  }: TransactionParam & {
+    translateIds: number[]
+    mediaId: number
+  }) {
+    tx.delete(translates).where(
+      and(
+        eq(translates.mediaId, mediaId),
+        notInArray(translates.id, translateIds)
+      )
+    )
   }
 
   public static async getTranslateByLanguageId({
@@ -30,35 +46,41 @@ export class TranslateManager {
     ).limit(1).then(v => v.length ? v[0] : undefined)
   }
 
+  // TODO: учитывать isPartial ???
   public static async saveTranslate({
     tx,
     data,
     mediaId
   }: TransactionParam & SaveTranslateProps): Promise<TranslateItem> {
     // Ищем или создаём язык
-    const languageId = data.languageId
-      ?? await LanguageManager.getOneByISO_639_1(data.language_iso_639_1)
-          .then(async v => v
-            ? v
+    let languageId = data.language.id
+    if (data.language.id === undefined){
+      const lang = await LanguageManager.getOneByISO_639_1(data.language.iso_639_1)
+      languageId = lang !== undefined
+            ? lang.id
             : await LanguageManager.create({
               tx,
-              iso_639_1: data.language_iso_639_1,
-              english_name: data.languageEnglishName,
-              native_name: data.languageNativeName ?? null
-            })
-          ).then( v => v.id)
-
+              iso_639_1: data.language.iso_639_1,
+              english_name: data.language.englishName,
+              native_name: data.language.nativeName ?? null
+            }).then(v => v.id)
+    }
     // Ищем страну
-    const countryId = data.countryId
-      ?? await CountryManager.GetOneByISO_3166_1(data.countryLanguage_iso_3166_1)
-          .then(async v => v
-            ? v
-            : await CountryManager.Create({
+    let countryId = data.country.id
+    if (data.country.id === undefined){
+      const country = await CountryManager.GetCountryByISO_3166_1({
+        iso_3166_1: data.country.iso_3166_1
+      })
+      countryId = country !== undefined
+        ? country.id
+        : await CountryManager.Create({
               tx,
-              english_name: data.countryEnglishName,
-              iso_3166_1: data.countryLanguage_iso_3166_1
-            })
-          ).then(v => v.id)
+              country: {
+                iso_3166_1: data.country.iso_3166_1,
+                english_name: data.country.englishName
+              }
+            }).then(v => v.id)
+    }
 
     // Сохраняем перевод
     const existTranslate = await this.getTranslateByLanguageId({
@@ -82,6 +104,7 @@ export class TranslateManager {
           languageId: languageId!,
           title: (existTranslate.title || data.title) ?? null,
           runtime: (existTranslate.runtime || data.runtime) ?? 0,
+          isOriginal: data.isOriginal ?? existTranslate.isOriginal,
           tagline: (existTranslate.tagline || data.tagline) ?? null,
           homepage: (existTranslate.homepage || data.homepage) ?? null,
           overview: (existTranslate.overview || data.overview) ?? null
@@ -100,6 +123,7 @@ export class TranslateManager {
       tagline: data.tagline ?? "",
       homepage: data.homepage ?? "",
       overview: data.overview ?? "",
+      isOriginal: data.isOriginal ?? false
     })
   }
 
@@ -118,28 +142,33 @@ export class TranslateManager {
 
 type SaveTranslateProps = {
   mediaId: number
-  data: CountryDataType & LanguageDataType & {
-    homepage?: string
-    overview?: string
-    runtime?: number
-    tagline?: string
-    title?: string
-  }
+  data: TranslateData
 }
 
-type LanguageDataType = {
-  languageId: number
-} | {
-  languageId?: undefined
-  language_iso_639_1: string
-  languageEnglishName: string
-  languageNativeName: string | undefined
+export type TranslateData = {
+  homepage?: null | string
+  overview?: null | string
+  runtime?: null | number
+  tagline?: null | string
+  title?: null | string
+  isOriginal?: boolean
+  language: LanguageDataType
+  country: CountryDataType
 }
 
-type CountryDataType = {
-  countryId: number
+export type LanguageDataType = {
+  id: number
 } | {
-  countryId?: undefined
-  countryLanguage_iso_3166_1: string
-  countryEnglishName: string
+  id?: undefined
+  iso_639_1: string
+  englishName: string
+  nativeName: string | undefined
+}
+
+export type CountryDataType = {
+  id: number
+} | {
+  id?: undefined
+  iso_3166_1: string
+  englishName: string
 }

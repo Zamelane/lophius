@@ -6,9 +6,9 @@ import {
   Country,
   Language,
   SourceGenre,
-  ExternalFile,
   WithRequired,
-  TranslateItem,
+  ExternalImage,
+  NonEmptyArray,
   compareObjects,
   PartialStatusType
 } from "@/interfaces"
@@ -16,12 +16,18 @@ import {
 import { MediaManager } from "./media-manager"
 import { GenreManager } from "./genre-manager"
 import { CountryManager } from "./country-manager"
-import { ReleaseDateManager } from "./release-date-manager"
-import { StatusesManager } from "./statuses-manager"
-import { MediaBudgetManager } from "./media-budget-manager"
 import { RevenueManager } from "./revenue-manager"
+import { StatusesManager } from "./statuses-manager"
+import { LanguageManager } from "./language-manager"
 import { MediaVotesManager } from "./media-votes-manager"
+import { ReleaseDateManager } from "./release-date-manager"
+import { MediaBudgetManager } from "./media-budget-manager"
+import { ExternalFileManager } from "./external-file-manager"
+import { OriginCountryManager } from "./origin-country-manager"
+import { SpokenLanguageManager } from "./spoken-language-manager"
+import { TranslateData, TranslateManager } from "./translate-manager"
 import { ProductionCompanyManager } from "./production-company-manager"
+import { MediaProductionCountryManager } from "./media-production-country-manager"
 
 export class KinoAutoManager {
   public static async _autoAddGenresByMedia({
@@ -85,11 +91,15 @@ export class KinoAutoManager {
     if (isMediaNew && primary_release_date || !isMediaNew) {
       let existCountry: CountriesTableType|undefined
       if (primary_release_date) {
-        existCountry = await CountryManager.GetOneByISO_3166_1(primary_release_date.country.iso_3166_1)
+        existCountry = await CountryManager.GetCountryByISO_3166_1({
+          iso_3166_1: primary_release_date.country.iso_3166_1
+        })
         existCountry ??= await CountryManager.Create({
           tx,
-          iso_3166_1: primary_release_date.country.iso_3166_1,
-          english_name: primary_release_date.country.english_name
+          country: {
+            iso_3166_1: primary_release_date.country.iso_3166_1,
+            english_name: primary_release_date.country.english_name
+          }
         })
       }
 
@@ -144,25 +154,23 @@ export class KinoAutoManager {
     tx,
     type,
     vote,
-    logos,
     status,
     budget,
     genres,
     isAdult,
     isVideo,
     revenue,
+    posters,
     category,
     sourceId,
     isPartial,
     backdrops,
     translates,
     external_id,
-    primary_logo,
-    original_title,
+    primary_poster,
     origin_countries,
     primary_backdrop,
     spoken_languages,
-    original_language,
     primary_release_date,
     production_companies,
     production_countries
@@ -255,8 +263,178 @@ export class KinoAutoManager {
       }))
     }
 
+    // Сохраняем страны производства и связываем их с медиа
+    promises.push(this._autoSaveCountries({
+      tx,
+      isPartial,
+      mediaId: media.id,
+      countries: production_countries ?? []
+    }))
+
+    // Сохраняем задники
+    if (backdrops || primary_backdrop) {
+      const saveBackdrops = backdrops ?? []
+      if (primary_backdrop)
+        saveBackdrops.push(primary_backdrop)
+
+      const backdropsIds: number[] = []
+      const promises_sbd = []
+      for (const sbd of saveBackdrops) {
+        promises_sbd.push(ExternalFileManager.CreateOrUpdateFile({
+          tx,
+          file: sbd
+        }).then(v => { backdropsIds.push(v.id) }))
+      }
+
+      await Promise.all(promises_sbd)
+      promises.push(ExternalFileManager.AutoLink({
+        tx,
+        isPartial,
+        mediaId: media.id,
+        imgType: 'backdrop',
+        externalImagesIds: backdropsIds
+      }))
+    }
+
+    // Сохраняем постеры
+    if (posters || primary_poster) {
+      const savePosters = posters ?? []
+      if (primary_poster)
+        savePosters.push(primary_poster)
+
+      const postersIds: number[] = []
+      const promises_spr = []
+      for (const spr of savePosters) {
+        promises_spr.push(ExternalFileManager.CreateOrUpdateFile({
+          tx,
+          file: spr
+        }).then(v => { postersIds.push(v.id) }))
+      }
+
+      await Promise.all(promises_spr)
+      promises.push(ExternalFileManager.AutoLink({
+        tx,
+        isPartial,
+        mediaId: media.id,
+        imgType: 'poster',
+        externalImagesIds: postersIds
+      }))
+    }
+
+    // Сохраняем переводы
+    for (const translate of translates) {
+      const promises_te = []
+      const teIds: number[] = []
+      promises_te.push(TranslateManager.saveTranslate({
+        tx,
+        data: translate,
+        mediaId: media.id
+      }).then(v => teIds.push(v.id!)))
+
+      await Promise.all(promises_te)
+      if (!isPartial)
+        promises.push(TranslateManager.DeleteIfNotArray({
+          tx,
+          mediaId: media.id,
+          translateIds: teIds
+        }))
+    }
+
+    // Сохраняем разговорные языки
+    if (spoken_languages) {
+      const languageIds: number[] = []
+      const promises_sl = []
+      for (const spoken_language of spoken_languages) {
+        promises_sl.push(LanguageManager.create({
+          tx,
+          ...spoken_language
+        }).then(v => languageIds.push(v.id)))
+      }
+
+      await Promise.all(promises_sl)
+
+      promises.push(SpokenLanguageManager.AutoLink({
+        tx,
+        languageIds,
+        mediaId: media.id
+      }))
+    }
+
+    // Сохраняем разговорные языки
+    if (spoken_languages) {
+      const languageIds: number[] = []
+      const promises_sl = []
+      for (const spoken_language of spoken_languages) {
+        promises_sl.push(LanguageManager.create({
+          tx,
+          ...spoken_language
+        }).then(v => languageIds.push(v.id)))
+      }
+
+      await Promise.all(promises_sl)
+
+      promises.push(SpokenLanguageManager.AutoLink({
+        tx,
+        languageIds,
+        mediaId: media.id
+      }))
+    }
+
+    // Сохраняем страны происхождения
+    if (origin_countries) {
+      const countryIds: number[] = []
+      const promises_sl = []
+      for (const origin_country of origin_countries) {
+        promises_sl.push(CountryManager.Create({
+          tx,
+          country: origin_country
+        }).then(v => countryIds.push(v.id)))
+      }
+
+      await Promise.all(promises_sl)
+
+      promises.push(OriginCountryManager.AutoLink({
+        tx,
+        mediaId: media.id,
+        countriesIds: countryIds
+      }))
+    }
     
     // Ждём полного завершения сохранения
+    await Promise.all(promises)
+  }
+
+  private static async _autoSaveCountries({
+    tx,
+    mediaId,
+    isPartial,
+    countries
+  }: TransactionParam & {
+    countries: Country[],
+    mediaId: number,
+    isPartial: boolean
+  }) {
+    const promises = []
+
+    if (!isPartial)
+      promises.push(MediaProductionCountryManager.UnlinkIfNotArrayISO_3166_1({
+        tx,
+        mediaId,
+        iso_3166_1_array: countries.map(v => v.iso_3166_1)
+      }))
+
+    for (const country of countries) {
+      const existCountry = await CountryManager.SaveOrGetCountry({
+        tx,
+        country
+      })
+      promises.push(MediaProductionCountryManager.Link({
+        tx,
+        mediaId,
+        countryId: existCountry.id
+      }))
+    }
+
     await Promise.all(promises)
   }
 
@@ -353,10 +531,10 @@ type KinoSaveProps = PrimaryInfo & PartialStatusType & PrimaryValuesKinoSaveProp
   production_countries?: Country[]
   production_companies?: (Company & PartialStatusType)[]
   primary_release_date: null | PrimaryReleaseDateType
-  primary_logo?: ExternalFile
-  primary_backdrop?: ExternalFile
-  logos?: ExternalFile[]
-  backdrops?: ExternalFile[]
+  primary_backdrop?: ExternalImage
+  backdrops?: ExternalImage[]
+  primary_poster?: ExternalImage
+  posters?: ExternalImage[]
   genres?: GenresDataType
   budget?: null|number
 }
@@ -364,17 +542,8 @@ type KinoSaveProps = PrimaryInfo & PartialStatusType & PrimaryValuesKinoSaveProp
 type PrimaryValuesKinoSaveProps = KeysBySerialSaveProps & {
   category: 'anime' | 'kino'
   type: 'film' | 'serial'
-  original_language: {
-    languageId: number
-  } | {
-    languageId?: undefined
-    language_iso_639_1: string
-    english_name: string
-    native_name?: string
-  }
-  original_title: null|string
   status: null | StatusesEnumType
-  translates: TranslateItem[]
+  translates: NonEmptyArray<TranslateData>
   isVideo: boolean|null
   isAdult: boolean
   external_id: string
