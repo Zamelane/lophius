@@ -3,7 +3,7 @@ import { text, bigint, pgTable, varchar, integer, bigserial, AnyPgColumn } from 
 
 import { sources } from "./sources";
 import { countries } from "./countries";
-import { externalFiles } from "./external-files";
+import { externalImages } from "./external-images";
 
 export const companies = pgTable('companies', {
   description: text(),
@@ -13,7 +13,7 @@ export const companies = pgTable('companies', {
   external_id: varchar({ length: 255 }).notNull(),
   originCountryId: integer().references(() => countries.id),
   sourceId: bigint({ mode: 'number' }).notNull().references(() => sources.id),
-  logoExternalFileId: bigint({ mode: 'number' }).references(() => externalFiles.id),
+  logoExternalFileId: bigint({ mode: 'number' }).references(() => externalImages.id),
   parentCompanyId: bigint({ mode: 'number' }).references((): AnyPgColumn => companies.id)
 })
 

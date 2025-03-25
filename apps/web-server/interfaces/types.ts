@@ -9,7 +9,7 @@ import {
   CountriesTableType,
   CompaniesTableType,
   SourceGenresTableType,
-  ExternalFilesTableType
+  ExternalImagesTableType
 } from "@/db/tables"
 
 // Для типизации страниц
@@ -43,13 +43,13 @@ export type AvatarImage = FilesTableType
 export type BackgroundImage = FilesTableType
 export type Language = WithOptional<LanguagesTableType, 'id'>
 export type Country = WithOptional<CountriesTableType, 'id'>
-export type TranslateItem = TranslatesTableType
+export type TranslateItem = WithOptional<TranslatesTableType, 'id'>
 export type Company = WithOptional<CompaniesTableType, 'id'>
-export type ExternalFile = {
+export type ExternalImage = {
     domain: string
     https: boolean
   }
-  & WithOptional<ExternalFilesTableType, 'external_domain' | 'id'>
+  & WithOptional<ExternalImagesTableType, 'externalDomainId' | 'id'>
 export type Genre = WithOptional<GenresTableType, 'id'>
 export type SourceGenre = WithOptional<SourceGenresTableType, 'genreId'>
 
@@ -83,3 +83,4 @@ export type KinoTranslateType = {
 export type PartialStatusType = {
   isPartial: boolean
 }
+export type NonEmptyArray<T> = [T, ...T[]];
