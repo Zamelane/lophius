@@ -1,7 +1,7 @@
 import { LanguageManager } from 'web-server/managers'
 import { configurationLanguages } from '../client'
 import { rateLimiter } from '../helps'
-import { db } from '@/db'
+import { db } from '../../../../web-server/database'
 
 export async function checkExistOrCreateLangByISO(iso_639_1: string, token: string) {
   const lang = await LanguageManager.getOneByISO_639_1(iso_639_1)

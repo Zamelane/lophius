@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { Language } from "@/interfaces";
-import { db, eq, TransactionParam } from "@/db";
-import { languages, LanguagesTableType } from "@/db/tables";
+import { db, eq, TransactionParam } from "database";
+import { languages, LanguagesTableType } from "@/database/schemas";
 
 export class LanguageManager {
 

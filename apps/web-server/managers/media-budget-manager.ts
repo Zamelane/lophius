@@ -1,5 +1,5 @@
-import { mediaBudgets } from "@/db/tables";
-import { eq, TransactionParam } from "@/db";
+import { eq, TransactionParam } from "database";
+import { media_budgets } from "@/database/schemas";
 
 export class MediaBudgetManager {
   static async Save({
@@ -11,22 +11,22 @@ export class MediaBudgetManager {
     budget: null|number
   }) {
     if (!budget)
-      return await tx.delete(mediaBudgets).where(eq(mediaBudgets.mediaId, mediaId))
+      return await tx.delete(media_budgets).where(eq(media_budgets.mediaId, mediaId))
         .then(() => null)
 
-    const upd = await tx.update(mediaBudgets)
+    const upd = await tx.update(media_budgets)
       .set({ budget })
-      .where(eq(mediaBudgets.mediaId, mediaId))
+      .where(eq(media_budgets.mediaId, mediaId))
       .returning().then(v => v.length ? v[0] : undefined)
 
     if (upd)
       return upd
 
-    return await tx.insert(mediaBudgets)
+    return await tx.insert(media_budgets)
       .values({budget, mediaId})
       .onConflictDoUpdate({
         set: { budget },
-        target: [mediaBudgets.mediaId]
+        target: [media_budgets.mediaId]
       }).returning()
         .then(v => v[0])
   }

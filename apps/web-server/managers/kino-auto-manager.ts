@@ -1,5 +1,5 @@
-import { TransactionParam } from "@/db"
-import { Media, MediasTableType, StatusesEnumType, CountriesTableType } from "@/db/tables"
+import { TransactionParam } from "database"
+import { Media, MediasTableType, StatusesEnumType, CountriesTableType } from "@/database/schemas"
 import {
   Genre,
   Company,

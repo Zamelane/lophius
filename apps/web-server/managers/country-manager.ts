@@ -1,6 +1,6 @@
 import { Country } from "@/interfaces";
-import { countries } from "@/db/tables";
-import { db, eq, TransactionParam } from "@/db";
+import { countries } from "@/database/schemas";
+import { db, eq, TransactionParam } from "database";
 
 export class CountryManager {
   public static async Create({

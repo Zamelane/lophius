@@ -1,5 +1,5 @@
-import { db, eq, and, TransactionParam } from "@/db";
-import { Media, medias, MediasTableType } from "@/db/tables/medias";
+import { db, eq, and, TransactionParam } from "database";
+import { Media, medias, MediasTableType } from "@/database/schemas/medias";
 
 export class MediaManager {
   public static async create({

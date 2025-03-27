@@ -1,6 +1,9 @@
 {
   "name": "lophius-monorepo",
   "private": true,
+  "scripts": {
+    "install:all": "cd apps/web-server && bun i && cd ../worker-server && bun i"
+  },
   "workspaces": [
     "apps/*"
   ],

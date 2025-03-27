@@ -1,5 +1,5 @@
-import { eq, and, inArray, notInArray, TransactionParam } from "@/db";
-import { countries, releaseDates, ReleaseDatesTableType } from "@/db/tables";
+import { eq, and, inArray, notInArray, TransactionParam } from "database";
+import { countries, releaseDates, ReleaseDatesTableType } from "@/database/schemas";
 
 export class ReleaseDateManager {
   public static async Create({

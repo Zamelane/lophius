@@ -1,6 +1,6 @@
 import { Genre, SourceGenre } from "@/interfaces"
-import { genres, mediaGenres, sourceGenres } from "@/db/tables"
-import { eq, db, and, inArray, notInArray, TransactionParam } from "@/db"
+import { genres, mediaGenres, sourceGenres } from "@/database/schemas"
+import { eq, db, and, inArray, notInArray, TransactionParam } from "database"
 
 export class GenreManager {
   public static async CreateSourceGenreAuto({

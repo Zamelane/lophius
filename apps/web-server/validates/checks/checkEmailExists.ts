@@ -1,6 +1,6 @@
-import {db} from "@/db";
+import {db} from "database";
 import {eq} from "drizzle-orm";
-import {users} from "@/db/tables";
+import {users} from "@/database/schemas";
 
 export const CheckEmailExists = async (email: string) => {
   console.log('Check email exists');
