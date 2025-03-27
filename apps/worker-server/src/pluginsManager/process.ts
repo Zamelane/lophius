@@ -15,7 +15,10 @@ export const logicProcess = async (plugin: Plugin) => {
   pluginProcess.then(async () => {
     logger.info(`Plugin (${plugin.name}) setup success`)
     await plugin.loadLibrary(args).catch(
-      (e) => logger.error(`Plugin (${plugin.name}) loadLibrary error: ${e}`)
+      (e) => {
+        logger.error(`Plugin (${plugin.name}) loadLibrary error: ${e}`)
+        console.log(e)
+      }
     )
   })
 

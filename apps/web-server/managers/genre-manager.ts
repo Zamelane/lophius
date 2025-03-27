@@ -60,13 +60,7 @@ export class GenreManager {
     return tx.insert(mediaGenres).values({
       genreId,
       mediaId,
-    }).onConflictDoUpdate({
-      target: [mediaGenres.genreId, mediaGenres.mediaId],
-      set: {
-        genreId,
-        mediaId
-      }
-    }).returning().then(v => v[0])
+    }).onConflictDoNothing().returning().then(v => v[0])
   }
 
   public static async RemoveAllByMediaIdIfNotInExternalIdArray({

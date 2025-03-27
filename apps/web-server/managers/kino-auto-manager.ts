@@ -46,7 +46,7 @@ export class KinoAutoManager {
         // Удаляем из базы все связи медиа с жанрами, у которых другой внешний id
         await GenreManager.RemoveAllByMediaIdIfNotInExternalIdArray({
           tx,
-          mediaId: media.id!,
+          mediaId: media.id,
           externalIds: genres.values?.map(v => v.external_id) ?? []
         })
       }
@@ -67,7 +67,7 @@ export class KinoAutoManager {
           // Связываем жанры с медиа
           await GenreManager.LinkGenreAndMedia({
             tx,
-            mediaId: media.id!,
+            mediaId: media.id,
             genreId: publicGenreId
           })
         }
@@ -175,7 +175,6 @@ export class KinoAutoManager {
     production_countries
   }: KinoSaveProps & TransactionParam) {
     console.log(type) // TODO: сохранение сериалов
-    const promises = []
     const media_date = {
       isAdult,
       isVideo,
@@ -199,76 +198,76 @@ export class KinoAutoManager {
       media_b: media_date
     })
 
-    // Сохраняем релиз
-    promises.push(this._autoSavePrimaryReleaseDate({
-      tx,
-      media,
-      isMediaNew,
-      primary_release_date
-    }))
+    // // Сохраняем релиз
+    // await this._autoSavePrimaryReleaseDate({
+    //   tx,
+    //   media,
+    //   isMediaNew,
+    //   primary_release_date
+    // })
 
     // Если есть жанр или медиа не новое
     if (genres)
-      promises.push(this._autoAddGenresByMedia({
+      await this._autoAddGenresByMedia({
         tx,
         media,
         genres,
         sourceId,
         isMediaNew
-      }))
+      })
     
     // Сохраняем статус
-    promises.push(StatusesManager.SaveStatusByMedia({
+    await StatusesManager.SaveStatusByMedia({
       tx,
       status,
       mediaId: media.id
-    }))
+    })
 
     // Сохраняем бюджет
     if (budget || !isPartial) {
-      promises.push(MediaBudgetManager.Save({
+      await MediaBudgetManager.Save({
         tx,
         mediaId: media.id,
         budget: budget ?? null
-      }))
+      })
     }
 
     // Сохраняем доход
     if (revenue || !isPartial) {
-      promises.push(RevenueManager.Save({
+      await RevenueManager.Save({
         tx,
         mediaId: media.id,
         revenue: revenue ?? null
-      }))
+      })
     }
 
     // Сохраняем внешнии оценки
     if (vote) {
-      promises.push(MediaVotesManager.Save({
+      await MediaVotesManager.Save({
         tx,
         ...vote,
         mediaId: media.id,
-      }))
+      })
     }
 
     // Сохраняем компании
     if (production_companies) {
-      promises.push(this._saveProductionCompanies({
+      await this._saveProductionCompanies({
         tx,
         sourceId,
         isPartial,
         mediaId: media.id,
         production_companies
-      }))
+      })
     }
 
     // Сохраняем страны производства и связываем их с медиа
-    promises.push(this._autoSaveCountries({
+    await this._autoSaveCountries({
       tx,
       isPartial,
       mediaId: media.id,
       countries: production_countries ?? []
-    }))
+    })
 
     // Сохраняем задники
     if (backdrops || primary_backdrop) {
@@ -277,22 +276,21 @@ export class KinoAutoManager {
         saveBackdrops.push(primary_backdrop)
 
       const backdropsIds: number[] = []
-      const promises_sbd = []
       for (const sbd of saveBackdrops) {
-        promises_sbd.push(ExternalFileManager.CreateOrUpdateFile({
-          tx,
-          file: sbd
-        }).then(v => { backdropsIds.push(v.id) }))
+        if (sbd.path)
+          await ExternalFileManager.CreateOrUpdateFile({
+            tx,
+            file: sbd
+          }).then(v => { backdropsIds.push(v.id) })
       }
 
-      await Promise.all(promises_sbd)
-      promises.push(ExternalFileManager.AutoLink({
+      await ExternalFileManager.AutoLink({
         tx,
         isPartial,
         mediaId: media.id,
         imgType: 'backdrop',
         externalImagesIds: backdropsIds
-      }))
+      })
     }
 
     // Сохраняем постеры
@@ -302,85 +300,73 @@ export class KinoAutoManager {
         savePosters.push(primary_poster)
 
       const postersIds: number[] = []
-      const promises_spr = []
       for (const spr of savePosters) {
-        promises_spr.push(ExternalFileManager.CreateOrUpdateFile({
-          tx,
-          file: spr
-        }).then(v => { postersIds.push(v.id) }))
+        if (spr.path)
+          await ExternalFileManager.CreateOrUpdateFile({
+            tx,
+            file: spr
+          }).then(v => { postersIds.push(v.id) })
       }
 
-      await Promise.all(promises_spr)
-      promises.push(ExternalFileManager.AutoLink({
+      await ExternalFileManager.AutoLink({
         tx,
         isPartial,
         mediaId: media.id,
         imgType: 'poster',
         externalImagesIds: postersIds
-      }))
+      })
     }
 
     // Сохраняем переводы
     for (const translate of translates) {
-      const promises_te = []
       const teIds: number[] = []
-      promises_te.push(TranslateManager.saveTranslate({
+      await TranslateManager.saveTranslate({
         tx,
         data: translate,
         mediaId: media.id
-      }).then(v => teIds.push(v.id!)))
+      }).then(v => teIds.push(v.id!))
 
-      await Promise.all(promises_te)
       if (!isPartial)
-        promises.push(TranslateManager.DeleteIfNotArray({
+        await TranslateManager.DeleteIfNotArray({
           tx,
           mediaId: media.id,
           translateIds: teIds
-        }))
+        })
     }
 
     // Сохраняем разговорные языки
     if (spoken_languages) {
       const languageIds: number[] = []
-      const promises_sl = []
       for (const spoken_language of spoken_languages) {
-        promises_sl.push(LanguageManager.create({
+        await LanguageManager.create({
           tx,
           ...spoken_language
-        }).then(v => languageIds.push(v.id)))
+        }).then(v => languageIds.push(v.id))
       }
 
-      await Promise.all(promises_sl)
-
-      promises.push(SpokenLanguageManager.AutoLink({
+      await SpokenLanguageManager.AutoLink({
         tx,
         languageIds,
         mediaId: media.id
-      }))
+      })
     }
 
     // Сохраняем страны происхождения
     if (origin_countries) {
       const countryIds: number[] = []
-      const promises_sl = []
       for (const origin_country of origin_countries) {
-        promises_sl.push(CountryManager.Create({
+        await CountryManager.Create({
           tx,
           country: origin_country
-        }).then(v => countryIds.push(v.id)))
+        }).then(v => countryIds.push(v.id))
       }
 
-      await Promise.all(promises_sl)
-
-      promises.push(OriginCountryManager.AutoLink({
+      await OriginCountryManager.AutoLink({
         tx,
         mediaId: media.id,
         countriesIds: countryIds
-      }))
+      })
     }
-    
-    // Ждём полного завершения сохранения
-    await Promise.all(promises)
   }
 
   private static async _autoSaveCountries({

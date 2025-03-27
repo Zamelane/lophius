@@ -9,6 +9,7 @@ export class CountryManager {
   }: TransactionParam & {
     country: Country
   }) {
+    console.log(country.iso_3166_1)
     return tx.insert(countries).values({
       ...country
     }).onConflictDoUpdate({
