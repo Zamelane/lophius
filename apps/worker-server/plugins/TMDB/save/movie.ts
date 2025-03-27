@@ -80,14 +80,14 @@ export async function saveMovie(
     isAdult,
     isPartial: false,
     isVideo,
-    primary_release_date: {
-      date: detailed.release_date,
-      country: {
-        english_name: detailed.production_countries[detailed.production_companies.length].name!,
-        iso_3166_1: detailed.production_countries[detailed.production_companies.length].iso_3166_1!
-      },
-      isPartial: false
-    },
+    // primary_release_date: {
+    //   date: detailed.release_date,
+    //   country: {
+    //     english_name: detailed.production_countries[detailed.production_companies.length].name!,
+    //     iso_3166_1: detailed.production_countries[detailed.production_companies.length].iso_3166_1!
+    //   },
+    //   isPartial: false
+    // },
     runtime: detailed.runtime,
     sourceId,
     status: null,
@@ -115,7 +115,8 @@ export async function saveMovie(
       width: v.width!,
       path: v.file_path!,
       vote_avg: v.vote_average!.toString(),
-      vote_count: v.vote_count!
+      vote_count: v.vote_count!,
+      sourceId
     })),
     budget: detailed.budget,
     primary_poster: {
@@ -125,7 +126,8 @@ export async function saveMovie(
       height: null,
       width: null,
       vote_avg: null,
-      vote_count: null
+      vote_count: null,
+      sourceId
     },
     genres: {
       isPartial: false,
@@ -148,7 +150,8 @@ export async function saveMovie(
       width: v.width!,
       path: v.file_path!,
       vote_avg: v.vote_average!.toString(),
-      vote_count: v.vote_count!
+      vote_count: v.vote_count!,
+      sourceId
     })),
     primary_backdrop: {
       domain: 'image.tmdb.org',
@@ -157,7 +160,8 @@ export async function saveMovie(
       height: null,
       width: null,
       vote_avg: null,
-      vote_count: null
+      vote_count: null,
+      sourceId
     },
     production_companies: detailed.production_companies.map(v => ({
       name: v.name!,

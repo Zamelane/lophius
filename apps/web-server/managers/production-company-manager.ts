@@ -40,7 +40,7 @@ export class ProductionCompanyManager {
     ).limit(1).then(v => v.length ? v[0] : undefined)
 
     if (existCompany) {
-      return tx.update(companies).set({
+      return await tx.update(companies).set({
         ...company,
         name: isPartial && !company.name ? existCompany.name : company.name,
         homepage: isPartial && !company.homepage ? existCompany.homepage : company.homepage,
@@ -56,7 +56,7 @@ export class ProductionCompanyManager {
       ).returning().then(v => v[0])
     }
 
-    return tx.insert(companies).values({
+    return await tx.insert(companies).values({
       ...company,
       sourceId
     }).onConflictDoUpdate({

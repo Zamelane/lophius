@@ -1,5 +1,5 @@
 import { InferSelectModel } from "drizzle-orm";
-import { text, bigint, pgTable, varchar, integer, bigserial, AnyPgColumn } from "drizzle-orm/pg-core";
+import { text, bigint, unique, pgTable, varchar, integer, bigserial, AnyPgColumn } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";
 import { countries } from "./countries";
@@ -15,6 +15,8 @@ export const companies = pgTable('companies', {
   sourceId: bigint({ mode: 'number' }).notNull().references(() => sources.id),
   logoExternalFileId: bigint({ mode: 'number' }).references(() => externalImages.id),
   parentCompanyId: bigint({ mode: 'number' }).references((): AnyPgColumn => companies.id)
-})
+}, (table) => [
+  unique().on(table.external_id, table.sourceId)
+])
 
 export type CompaniesTableType = InferSelectModel<typeof companies>

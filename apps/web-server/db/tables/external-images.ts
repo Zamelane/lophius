@@ -1,5 +1,5 @@
 import { InferSelectModel } from "drizzle-orm";
-import { unique, integer, pgTable, varchar, decimal, bigserial } from "drizzle-orm/pg-core";
+import { unique, bigint, integer, pgTable, varchar, decimal, bigserial } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";
 import { languages } from "./languages";
@@ -14,7 +14,7 @@ export const externalImages = pgTable('external_images', {
   id: bigserial({ mode: 'number' }).primaryKey(),
   languageId: integer().references(() => languages.id),
   externalDomainId: integer().notNull().references(() => externalDomains.id),
-  sourceId: bigserial({ mode: 'number' }).references(() => sources.id).notNull()
+  sourceId: bigint({ mode: 'number' }).references(() => sources.id).notNull()
 }, (table) => [
   unique().on(table.sourceId, table.path, table.externalDomainId)
 ])
