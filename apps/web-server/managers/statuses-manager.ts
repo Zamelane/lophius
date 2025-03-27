@@ -1,5 +1,5 @@
-import { db, eq, TransactionParam } from "@/db";
-import { mediaStatuses, StatusesEnumType } from "@/db/tables";
+import { db, eq, TransactionParam } from "database";
+import { media_statuses, StatusesEnumType } from "@/database/schemas";
 
 export class StatusesManager {
   public static async CreateStatusByMediaId({
@@ -10,12 +10,12 @@ export class StatusesManager {
     mediaId: number
     status: StatusesEnumType
   }) {
-    tx.insert(mediaStatuses).values({
+    tx.insert(media_statuses).values({
       status,
       mediaId
     }).onConflictDoUpdate({
       set: {status},
-      target: [mediaStatuses.mediaId]
+      target: [media_statuses.mediaId]
     })
       .returning().then(v => v[0])
   }
@@ -26,7 +26,7 @@ export class StatusesManager {
   }: TransactionParam & {
     mediaId: number
   }) {
-    await tx.delete(mediaStatuses).where(eq(mediaStatuses.mediaId, mediaId))
+    await tx.delete(media_statuses).where(eq(media_statuses.mediaId, mediaId))
   }
 
   public static async GetStatusByMediaId({
@@ -35,8 +35,8 @@ export class StatusesManager {
     mediaId: number
   }) {
     return await db.select()
-      .from(mediaStatuses)
-      .where(eq(mediaStatuses.mediaId, mediaId))
+      .from(media_statuses)
+      .where(eq(media_statuses.mediaId, mediaId))
       .limit(1).then(v => v.length ? v[0] : undefined)
   }
 
@@ -89,11 +89,11 @@ export class StatusesManager {
     mediaId: number
     status: StatusesEnumType
   }) {
-    return tx.update(mediaStatuses)
+    return tx.update(media_statuses)
       .set({
         status
       })
-      .where(eq(mediaStatuses.mediaId, mediaId))
+      .where(eq(media_statuses.mediaId, mediaId))
       .returning()
       .then(v => v.length ? v[0] : undefined)
   }

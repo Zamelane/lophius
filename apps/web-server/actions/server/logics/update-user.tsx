@@ -1,7 +1,7 @@
 'use server'
 
-import { db, eq } from "@/db"
-import { users } from "@/db/tables"
+import { db, eq } from "database"
+import { users } from "@/database/schemas"
 import { api_t_keys } from "@/i18n"
 import { verifySession } from "@/lib/dal"
 import { UserInfo, ApiResponse } from "@/interfaces"

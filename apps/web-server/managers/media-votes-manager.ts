@@ -1,5 +1,5 @@
-import { mediaVotes } from "@/db/tables"
-import { eq, TransactionParam } from "@/db"
+import { eq, TransactionParam } from "database"
+import { media_votes } from "@/database/schemas"
 
 export class MediaVotesManager {
   static async Save({
@@ -15,22 +15,22 @@ export class MediaVotesManager {
     avg_max: number
   }) {
     if (!avg)
-      return await tx.delete(mediaVotes).where(eq(mediaVotes.mediaId, mediaId))
+      return await tx.delete(media_votes).where(eq(media_votes.mediaId, mediaId))
         .then(() => null)
 
-    const upd = await tx.update(mediaVotes)
+    const upd = await tx.update(media_votes)
       .set({ 
         count,
         avg: avg.toString(),
         avg_max: avg_max.toString()
        })
-      .where(eq(mediaVotes.mediaId, mediaId))
+      .where(eq(media_votes.mediaId, mediaId))
       .returning().then(v => v.length ? v[0] : undefined)
 
     if (upd)
       return upd
 
-    return await tx.insert(mediaVotes)
+    return await tx.insert(media_votes)
       .values({
         count,
         mediaId,
@@ -38,7 +38,7 @@ export class MediaVotesManager {
         avg_max: avg_max.toString()
       })
       .onConflictDoUpdate({
-        target: [mediaVotes.mediaId],
+        target: [media_votes.mediaId],
         set: {
           count,
           avg: avg.toString(),

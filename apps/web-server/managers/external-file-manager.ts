@@ -1,7 +1,7 @@
 import { ExternalImage } from "@/interfaces";
-import { eq, and, notInArray, TransactionParam } from "@/db";
-import { externalPosters } from "@/db/tables/external-posters";
-import { externalImages, externalDomains, externalBackdrops } from "@/db/tables";
+import { eq, and, notInArray, TransactionParam } from "database";
+import { external_posters } from "@/database/schemas/external_posters";
+import { external_images, external_domains, external_backdrops } from "@/database/schemas";
 
 type ImgType = 'backdrop' | 'poster'
 
@@ -44,17 +44,17 @@ export class ExternalFileManager {
   }: TransactionParam & {
     file: ExternalImage
   }) {
-    return tx.insert(externalImages).values({
+    return tx.insert(external_images).values({
       ...file,
-      externalDomainId: await tx.select().from(externalDomains).where(
+      externalDomainId: await tx.select().from(external_domains).where(
         and(
-          eq(externalDomains.domain, file.domain),
-          eq(externalDomains.https, file.https)
+          eq(external_domains.domain, file.domain),
+          eq(external_domains.https, file.https)
         )
       ).then(v => {
         if (v.length)
           return v[0].id
-        return tx.insert(externalDomains).values({
+        return tx.insert(external_domains).values({
           https: file.https,
           domain: file.domain
         }).onConflictDoNothing()
@@ -63,7 +63,7 @@ export class ExternalFileManager {
       })
     }).onConflictDoUpdate({
       set: {...file},
-      target: [externalImages.path, externalImages.sourceId, externalImages.externalDomainId]
+      target: [external_images.path, external_images.sourceId, external_images.externalDomainId]
     }).returning().then(v => v[0])
   }
 
@@ -113,8 +113,8 @@ export class ExternalFileManager {
     imgType: ImgType
   }) {
     switch (imgType) {
-      case 'backdrop': return externalBackdrops
-      case 'poster': return externalPosters
+      case 'backdrop': return external_backdrops
+      case 'poster': return external_posters
     }
   }
 }

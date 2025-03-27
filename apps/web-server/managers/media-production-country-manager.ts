@@ -1,5 +1,5 @@
-import { countries, mediaProductionCountries } from "@/db/tables";
-import { eq, and, inArray, notInArray, TransactionParam } from "@/db";
+import { eq, and, inArray, notInArray, TransactionParam } from "database";
+import { countries, media_production_countries } from "@/database/schemas";
 
 export class MediaProductionCountryManager {
   public static async Link({
@@ -10,7 +10,7 @@ export class MediaProductionCountryManager {
     countryId: number
     mediaId: number
   }) {
-    return tx.insert(mediaProductionCountries).values({
+    return tx.insert(media_production_countries).values({
       mediaId,
       countryId
     }).onConflictDoNothing()
@@ -26,11 +26,11 @@ export class MediaProductionCountryManager {
     iso_3166_1_array: string[],
     mediaId: number
   }) {
-    await tx.delete(mediaProductionCountries).where(
+    await tx.delete(media_production_countries).where(
       and(
-        eq(mediaProductionCountries.mediaId, mediaId),
+        eq(media_production_countries.mediaId, mediaId),
         notInArray(
-          mediaProductionCountries.countryId,
+          media_production_countries.countryId,
           tx.select({countryId: countries.id})
             .from(countries)
             .where(inArray(countries.iso_3166_1, iso_3166_1_array))

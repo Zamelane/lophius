@@ -28,7 +28,7 @@ const perfectionistConfig = {
     'perfectionist/sort-enums': lineLength,                 // Сортировка enum
     'perfectionist/sort-exports': lineLength,               // Сортировка экспортов
     'perfectionist/sort-objects': lineLength,               // Сортировка объектов
-    'perfectionist/sort-classes': alphabetical,             // Сортировка всего (?) в классе
+    //'perfectionist/sort-classes': alphabetical,             // Сортировка всего (?) в классе
     'perfectionist/sort-jsx-props': lineLength,             // Сортировка пропсов
     'perfectionist/sort-interfaces': lineLength,            // Сортировка интерфейсов
     'perfectionist/sort-named-exports': lineLength,         // Сортировка экспортов

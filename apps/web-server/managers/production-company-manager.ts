@@ -1,6 +1,6 @@
 import { Company, PartialStatusType } from "@/interfaces";
-import { companies, mediaProductionCompanies } from "@/db/tables";
-import { eq, and, inArray, notInArray, TransactionParam } from "@/db";
+import { eq, and, inArray, notInArray, TransactionParam } from "database";
+import { companies, media_production_companies } from "@/database/schemas";
 
 export class ProductionCompanyManager {
   public static async LinkByMediaId({
@@ -11,7 +11,7 @@ export class ProductionCompanyManager {
     mediaId: number
     companyId: number
   }) {
-    return tx.insert(mediaProductionCompanies).values({
+    return tx.insert(media_production_companies).values({
       mediaId,
       companyId
     }).onConflictDoUpdate({
@@ -19,7 +19,7 @@ export class ProductionCompanyManager {
         mediaId,
         companyId
       },
-      target: [mediaProductionCompanies.mediaId, mediaProductionCompanies.companyId]
+      target: [media_production_companies.mediaId, media_production_companies.companyId]
     }).returning().then(v => v[0])
   }
 
@@ -75,10 +75,10 @@ export class ProductionCompanyManager {
     mediaId: number
     companyId: number
   }) {
-    return tx.delete(mediaProductionCompanies).where(
+    return tx.delete(media_production_companies).where(
       and(
-        eq(mediaProductionCompanies.mediaId, mediaId),
-        eq(mediaProductionCompanies.companyId, companyId)
+        eq(media_production_companies.mediaId, mediaId),
+        eq(media_production_companies.companyId, companyId)
       )
     ).then(() => null)
   }
@@ -91,11 +91,11 @@ export class ProductionCompanyManager {
     externalIds: string[]
     mediaId: number
   }) {
-    return tx.delete(mediaProductionCompanies).where(
+    return tx.delete(media_production_companies).where(
       and(
-        eq(mediaProductionCompanies.mediaId, mediaId),
+        eq(media_production_companies.mediaId, mediaId),
         notInArray(
-          mediaProductionCompanies.companyId,
+          media_production_companies.companyId,
           tx.select({
             companyId: companies.id
           }).from(companies).where(inArray(companies.external_id, externalIds))

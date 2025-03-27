@@ -1,6 +1,6 @@
 import fs from 'fs'
-import { db, eq } from "@/db"
-import { files } from "@/db/tables/files"
+import { db, eq } from "database"
+import { files } from "@/database/schemas/files"
 import { NextResponse } from "next/server"
 import { GetPathByFilename } from '@/lib/utils/upload-file'
 

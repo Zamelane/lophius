@@ -1,5 +1,5 @@
-import { spokenLanguages } from "@/db/tables";
-import { eq, and, notInArray, TransactionParam } from "@/db";
+import { spoken_languages } from "@/database/schemas";
+import { eq, and, notInArray, TransactionParam } from "database";
 
 export class SpokenLanguageManager {
   public static async AutoLink({
@@ -19,10 +19,10 @@ export class SpokenLanguageManager {
       }))
     }
 
-    promises.push(tx.delete(spokenLanguages).where(
+    promises.push(tx.delete(spoken_languages).where(
       and(
-        eq(spokenLanguages.mediaId, mediaId),
-        notInArray(spokenLanguages.languageId, languageIds)
+        eq(spoken_languages.mediaId, mediaId),
+        notInArray(spoken_languages.languageId, languageIds)
       )
     ))
 
@@ -37,7 +37,7 @@ export class SpokenLanguageManager {
     languageId: number
     mediaId: number
   }) {
-    return tx.insert(spokenLanguages).values({
+    return tx.insert(spoken_languages).values({
       mediaId,
       languageId
     }).onConflictDoNothing()

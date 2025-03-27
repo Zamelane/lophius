@@ -1,5 +1,5 @@
-import { eq, and, notInArray, TransactionParam } from "@/db"
-import { originCountries } from "@/db/tables/origin-countries"
+import { eq, and, notInArray, TransactionParam } from "database"
+import { origin_countries } from "@/database/schemas/origin_countries"
 
 export class OriginCountryManager {
   public static async AutoLink({
@@ -19,10 +19,10 @@ export class OriginCountryManager {
       }))
     }
 
-    promises.push(tx.delete(originCountries).where(
+    promises.push(tx.delete(origin_countries).where(
       and(
-        eq(originCountries.mediaId, mediaId),
-        notInArray(originCountries.countryId, countriesIds)
+        eq(origin_countries.mediaId, mediaId),
+        notInArray(origin_countries.countryId, countriesIds)
       )
     ))
 
@@ -37,7 +37,7 @@ export class OriginCountryManager {
     countryId: number
     mediaId: number
   }) {
-    return tx.insert(originCountries).values({
+    return tx.insert(origin_countries).values({
       mediaId,
       countryId
     }).onConflictDoNothing()

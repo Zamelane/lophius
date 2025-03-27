@@ -1,7 +1,7 @@
 import { Dispatch } from "react"
 import { SWRConfiguration } from "swr"
-import { FilesTableType } from "@/db/tables/files"
-import { TranslatesTableType } from "@/db/tables/translates"
+import { FilesTableType } from "@/database/schemas/files"
+import { TranslatesTableType } from "@/database/schemas/translates"
 import {
   UsersTableType,
   GenresTableType,
@@ -10,7 +10,7 @@ import {
   CompaniesTableType,
   SourceGenresTableType,
   ExternalImagesTableType
-} from "@/db/tables"
+} from "@/database/schemas"
 
 // Для типизации страниц
 export type IdType = {

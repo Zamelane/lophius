@@ -1,9 +1,9 @@
 import fs from 'node:fs'
-import { db } from '@/db'
+import { db } from 'database'
 import sharp from 'sharp'
 import path from "node:path"
 import { api_t_keys } from "@/i18n"
-import { files } from '@/db/tables/files'
+import { files } from '@/database/schemas/files'
 
 import { getFileHash } from "./get-file-hash"
 import { MakeTranslateResponse } from "../make-response"

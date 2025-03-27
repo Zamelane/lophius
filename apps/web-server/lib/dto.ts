@@ -12,7 +12,7 @@
 // }
 //
 // export async function getProfileDTO(slug: string) {
-//   const data = await db.query.users.findMany({
+//   const data = await database.query.users.findMany({
 //     where: eq(users.slug, slug),
 //     // Return specific columns here
 //   })

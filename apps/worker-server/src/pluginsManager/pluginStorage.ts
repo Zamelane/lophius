@@ -1,5 +1,5 @@
-import { db, eq } from "@/db";
-import { pluginStorage, sources } from "@/db/tables";
+import { db, eq } from "../../../web-server/database";
+import { plugin_storage, sources } from "@/database/schemas";
 import { logger } from "src/utils";
 
 
@@ -20,8 +20,8 @@ export class PluginStorage {
       return this.sourceId
 
     const sourceId = await db.select()
-      .from(pluginStorage)
-      .where(eq(pluginStorage.pluginName, this.pluginName))
+      .from(plugin_storage)
+      .where(eq(plugin_storage.pluginName, this.pluginName))
       .then(v => v[0].sourceId)
 
     this.sourceId = sourceId
@@ -31,8 +31,8 @@ export class PluginStorage {
 
   public async get<T>(): Promise<Status<T>> {
     return db.select()
-      .from(pluginStorage)
-      .where(eq(pluginStorage.pluginName, this.pluginName))
+      .from(plugin_storage)
+      .where(eq(plugin_storage.pluginName, this.pluginName))
       .then(v => {
         return {
           successful: true,
@@ -56,7 +56,7 @@ export class PluginStorage {
         .returning()
         .then(v => v[0].id)
       
-      return tx.insert(pluginStorage)
+      return tx.insert(plugin_storage)
         .values({
             sourceId,
             pluginName: this.pluginName,
@@ -85,11 +85,11 @@ export class PluginStorage {
   }| {
     successful: false
   }> {
-    return db.update(pluginStorage)
+    return db.update(plugin_storage)
       .set({
         value: v
       })
-      .where(eq(pluginStorage.pluginName, this.pluginName))
+      .where(eq(plugin_storage.pluginName, this.pluginName))
       .returning()
       .then(v => {
         logger.info(`Plugin (${this.pluginName}) Storage update value success`)

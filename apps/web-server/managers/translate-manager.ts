@@ -1,6 +1,6 @@
 import { TranslateItem } from "@/interfaces"
-import { translates } from "@/db/tables/translates"
-import { db, eq, and, notInArray, TransactionParam } from "@/db"
+import { translates } from "@/database/schemas/translates"
+import { db, eq, and, notInArray, TransactionParam } from "database"
 
 import { CountryManager } from "./country-manager"
 import { LanguageManager } from "./language-manager"

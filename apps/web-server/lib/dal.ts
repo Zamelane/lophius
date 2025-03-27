@@ -1,8 +1,8 @@
 import 'server-only'
-import { db       } from "@/db";
+import { db       } from "database";
 import { cache    } from "react";
 import { eq       } from "drizzle-orm";
-import { users    } from "@/db/tables";
+import { users    } from "@/database/schemas";
 import { cookies  } from 'next/headers'
 import { UserInfo } from "@/interfaces";
 import { decrypt  } from '@/lib/session'
