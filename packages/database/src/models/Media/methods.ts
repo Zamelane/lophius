@@ -36,8 +36,8 @@ export async function findMediaByExternalId(
 	this: MediaRepository,
 	externalId: string,
 	sourceId: SourceId
-) {
-	return queryOneResult(
+): Promise<MediaModel|undefined> {
+	const r = queryOneResult(
 		await this.tx.select()
 			.from(medias)
 			.where(and(
@@ -45,6 +45,11 @@ export async function findMediaByExternalId(
 				eq(medias.sourceId, sourceId)
 			))
 	)
+
+	if (!r)
+		return undefined
+
+	return new MediaModel(r)
 }
 
 /**
@@ -66,4 +71,20 @@ export async function insertMedia(
 			.returning(),
 		r => data.media.id = r.id
 	)!
+}
+
+export async function updateMedia(
+	this: MediaRepository,
+	media: MediaModel
+) {
+	media.validateRequiredIds()
+	return queryOneResult(
+		await this.tx.update(medias)
+			.set({
+				...media
+			})
+			.where(eq(medias.id, media.id))
+			.returning(),
+		r => media.set(r)
+	)
 }

@@ -1,7 +1,5 @@
 import { db, eq } from "database";
 import { plugin_storage, sources } from "database/src/schemas";
-import { logger } from "src/utils";
-
 
 type Status<T> = {
   successful: boolean
@@ -12,7 +10,7 @@ export class PluginStorage {
   public sourceId: number|null = null
 
   constructor(private readonly pluginName: string) {
-    logger.info(`Plugin (${pluginName}) Storage initialized`);
+    console.info(`Plugin (${pluginName}) Storage initialized`);
   }
 
   public async GetSourceId() {
@@ -40,7 +38,7 @@ export class PluginStorage {
         }
       })
       .catch(e => {
-        logger.error(`Plugin (${this.pluginName}) Storage get value error: ${e}`)
+        console.error(`Plugin (${this.pluginName}) Storage get value error: ${e}`)
         return {
           successful: false
         }
@@ -64,14 +62,14 @@ export class PluginStorage {
          })
         .returning()
         .then(v => {
-           logger.info(`Plugin (${this.pluginName}) Storage insert value success`)
+           console.info(`Plugin (${this.pluginName}) Storage insert value success`)
            return {
              successful: true,
              data: v.length ? v[0].value as T : null
            }
          })
          .catch(e => {
-           logger.error(`Plugin (${this.pluginName}) Storage insert value error: ${e}`)
+           console.error(`Plugin (${this.pluginName}) Storage insert value error: ${e}`)
            return {
              successful: false
            }
@@ -92,14 +90,14 @@ export class PluginStorage {
       .where(eq(plugin_storage.pluginName, this.pluginName))
       .returning()
       .then(v => {
-        logger.info(`Plugin (${this.pluginName}) Storage update value success`)
+        console.info(`Plugin (${this.pluginName}) Storage update value success`)
         return {
           successful: true,
           data: v.length ? v[0].value as T : null
         }
       })
       .catch(e => {
-        logger.error(`Plugin (${this.pluginName}) Storage update value error: ${e}`)
+        console.error(`Plugin (${this.pluginName}) Storage update value error: ${e}`)
         return {
           successful: false
         }

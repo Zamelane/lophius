@@ -5,7 +5,7 @@ import {
 import {
 	insertMedia,
 	findMediaById,
-	findMediaByExternalId
+	findMediaByExternalId, updateMedia
 } from "./methods";
 
 /**
@@ -19,4 +19,5 @@ export class MediaRepository {
 	findByExternalId = findMediaByExternalId
 
 	insert = insertMedia
+	update = updateMedia
 }
