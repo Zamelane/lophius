@@ -30,6 +30,6 @@ export class RateLimiter {
     this.callCount++;
 
     // Вызываем callback и возвращаем его результат
-    return await callback();
+    return callback();
   }
 }

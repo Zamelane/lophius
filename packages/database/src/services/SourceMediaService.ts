@@ -17,6 +17,8 @@ import {
 	MediaRepository,
 	pickExistingByType,
 } from "../index";
+import {CountryModel} from "../models/Country/model.ts";
+import {LanguageModel} from "../models/Language/model.ts";
 
 export class SourceMediaService extends BaseService {
 	private readonly mediaRepository: MediaRepository
@@ -55,44 +57,23 @@ export class SourceMediaService extends BaseService {
 	 * @param homepage
 	 * @param overview
 	 */
-	createMediaWithOriginalTitle({
-		media,
-		title,
-		country,
-		language,
-		runtime = 0,
-		tagline = null,
-		homepage = null,
-		overview = null
-	}: Pick<TranslatedModel, 'country' | 'language'> & {
-		media: PartialMedia,
-		title: Translate['title']
-		homepage?: Translate['homepage']
-		tagline?: Translate['tagline']
-		runtime?: Translate['runtime']
-		overview?: Translate['overview']
-	}) {
+	createMediaWithOriginalTitle(
+		media: PartialMedia
+	): MediaModel {
 		const mediaModel = new MediaModel(pickExistingByType(media, ['mediaType', 'isAdult', 'isVideo', 'external_id']))
 		this.uow.registerOperation('insert', this.mediaRepository, {
 			media: mediaModel,
 			sourceId: this.sourceId
 		})
-		this.translateService.addTranslateByMedia({
-			title,
-			country,
-			tagline,
-			runtime,
-			language,
-			homepage,
-			overview,
-			isOriginal: true,
-			media: mediaModel
-		})
 		return mediaModel
 	}
 
-	findMediaByExternalId(externalId: string) {
+	findMediaByExternalId(externalId: string): Promise<MediaModel|undefined> {
 		return this.mediaRepository.findByExternalId(externalId, this.sourceId)
+	}
+
+	updateMedia(media: MediaModel) {
+		this.uow.registerOperation('update', this.mediaRepository, media)
 	}
 
 	async commit() {

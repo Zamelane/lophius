@@ -13,7 +13,11 @@ export class MediaModel implements OptionalMedia {
 	external_id!: OptionalMedia['external_id'];
 
 	constructor(data: OptionalMedia) {
-		Object.assign(this, data);
+		this.set(data)
+	}
+
+	set(data: OptionalMedia) {
+		Object.assign(this, data)
 	}
 
 	validateRequiredIds(): asserts this is WithRequired<OptionalMedia, 'id'> {

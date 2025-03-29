@@ -1,8 +1,12 @@
-import { run, logger, pluginManager } from "./src";
+import { run, pluginManager } from "./src";
+export * from './src'
 
 run().then(
   (p) => {
-    logger.info(`Server listening at 127.0.0.1:${p}`)
-    pluginManager.startMaintenance()
+    const message = `🌐 HTTP server started: http://127.0.0.1:${p}`
+    console.log('='.repeat(message.length))
+    console.info(message)
+    console.log('='.repeat(message.length))
+    //pluginManager.startMaintenance()
   }
 )
