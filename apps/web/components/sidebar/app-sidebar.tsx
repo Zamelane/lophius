@@ -97,9 +97,9 @@ const publicNav: NavMainMenuType = [
         icon: Clapperboard,
         menu: [
           {
-            url: '/1',
             icon: Sparkles,
-            title: 'Каталог 1'
+            url: '/tv/catalog',
+            title: 'Каталог фильмов'
           },
           {
             url: '/2',

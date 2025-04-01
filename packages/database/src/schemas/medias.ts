@@ -1,9 +1,10 @@
-import { WithOptional } from "../../../apps/web/interfaces";
-import { InferSelectModel } from "drizzle-orm";
+import { WithOptional } from "src/utils";
+import { InferSelectModel, relations } from "drizzle-orm";
 import { unique, pgTable, integer, boolean, varchar, bigserial } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";
 import { media_types } from "./media_types";
+import { translates } from "./translates";
 
 export const medias = pgTable('medias', {
   isVideo: boolean(),
@@ -18,3 +19,7 @@ export const medias = pgTable('medias', {
 
 export type MediasTableType = InferSelectModel<typeof medias>
 export type Media = WithOptional<MediasTableType, 'id'>
+
+export const mediasRealtions = relations(medias, ({ many }) => ({
+  translates: many(translates)
+}))

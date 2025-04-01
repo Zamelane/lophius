@@ -5,7 +5,6 @@ import {CountryService} from "./CountryService";
 import {CompanyService} from "./CompanyService";
 import {LanguageService} from "./LanguageService";
 import {TranslateService} from "./TranslateService";
-import {Translate, TranslatedModel} from "../models/Translate/type";
 import {ExternalBackdropService} from "./ExternalBackdropService";
 import {CountryTranslationService} from "./CountryTranslationService";
 import {
@@ -17,8 +16,8 @@ import {
 	MediaRepository,
 	pickExistingByType,
 } from "../index";
-import {CountryModel} from "../models/Country/model.ts";
-import {LanguageModel} from "../models/Language/model.ts";
+import { ExternalDomainService } from "./ExternalDomainService";
+import { ExternalImageService } from "./ExternalImageService";
 
 export class SourceMediaService extends BaseService {
 	private readonly mediaRepository: MediaRepository
@@ -29,6 +28,8 @@ export class SourceMediaService extends BaseService {
 	public  readonly countryTranslationService: CountryTranslationService
 	public  readonly companyService: CompanyService
 	public  readonly externalBackdropService: ExternalBackdropService
+	public  readonly externalDomainService: ExternalDomainService
+	public  readonly externalImageService: ExternalImageService
 
 	constructor(
 		protected sourceId: SourceId,
@@ -44,6 +45,8 @@ export class SourceMediaService extends BaseService {
 		this.countryTranslationService = new CountryTranslationService(tx, this.uow)
 		this.companyService = new CompanyService(tx, this.uow)
 		this.externalBackdropService = new ExternalBackdropService(tx, this.uow)
+		this.externalDomainService = new ExternalDomainService(tx, this.uow)
+		this.externalImageService = new ExternalImageService(sourceId, tx, this.uow)
 	}
 
 	/**
