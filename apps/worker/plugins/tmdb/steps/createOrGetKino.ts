@@ -9,8 +9,12 @@ export async function createOrGetKino(ctx: Context): Promise<Context> {
 	} = ctx.fetchedData
 
 
-	if (!id || !adult || !video || !original_language) {
-		throw new Error(`Id or another fields not provided`)
+	if (
+		!id
+		|| adult === undefined
+		|| video === undefined
+		|| !original_language) {
+		throw new Error(`Id or another fields not provided: ${JSON.stringify(ctx.fetchedData)}`)
 	}
 
 	const stringId = id.toString()

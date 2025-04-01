@@ -1,9 +1,12 @@
 import {DiscoverMovieResponse} from "@plugins/tmdb/client";
-import {Pipeline} from "../../src/lib/pipeline.ts";
+import {Pipeline} from "../../../src/lib/pipeline.ts";
 import {Context} from "@plugins/tmdb/types.ts";
-import {PluginStorage} from "../../src/plugin-storage.ts";
+import {PluginStorage} from "../../../src/plugin-storage.ts";
 import {createOrGetKino} from "@plugins/tmdb/steps/createOrGetKino.ts";
 import {SourceMediaService} from "database/src/services/SourceMediaService.ts";
+import {getTranslations} from "@plugins/tmdb/steps/getTranslations.ts";
+import {setTranslations} from "@plugins/tmdb/steps/setTranslations.ts";
+import {commitStep} from "@plugins/tmdb/steps/commit.ts";
 
 export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: number, token: string, storage: PluginStorage) {
 	if (!moviesData.results)
@@ -15,9 +18,13 @@ export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: nu
 		const pipeline = new Pipeline<Context>({
 			storage,
 			sourceMediaService: new SourceMediaService(sourceId),
-			fetchedData: movie
+			fetchedData: movie,
+			token
 		})
 			.addStep(createOrGetKino)
+			.addStep(getTranslations)
+			.addStep(setTranslations)
+			.addStep(commitStep)
 
 		await pipeline.execute()
 	}
