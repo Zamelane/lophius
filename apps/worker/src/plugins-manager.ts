@@ -34,7 +34,7 @@ export class PluginsManager {
 				}
 
 				this.plugins[plugin.name] = plugin;
-				console.info(`✅  Plugin loaded: ${plugin.name}`);
+				console.info(`✅ Plugin loaded: ${plugin.name}`);
 			} catch (err) {
 				console.error(`❌ Plugin loading error (${entry}):`, err);
 			}
