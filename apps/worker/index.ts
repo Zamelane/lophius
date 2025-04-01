@@ -7,6 +7,6 @@ run().then(
     console.log('='.repeat(message.length))
     console.info(message)
     console.log('='.repeat(message.length))
-    //pluginManager.startMaintenance()
+    pluginManager.startMaintenance()
   }
 )
