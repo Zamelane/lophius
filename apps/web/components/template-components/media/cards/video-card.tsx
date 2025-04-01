@@ -16,7 +16,7 @@ type Props = {
 export function VideoCard(props: Props) {
   const { img, link, title, subText } = props
   return (
-    <Link href={link} className="flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]">
+    <Link href={link} className="flex flex-col gap-[8px] text-start no-underline select-none w-full min-w-full relative">
       <Image
         src={img.src}
         alt={img.alt}
