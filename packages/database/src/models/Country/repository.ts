@@ -1,4 +1,4 @@
-import {Transaction, DBConnection} from "../../index";
+import {Transaction, DBConnection} from "@/index.ts";
 import {insertCountry, findCountryByISO} from "./methods";
 /**
  * @description Репозиторий для работы с моделью стран

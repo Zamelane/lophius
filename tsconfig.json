@@ -13,8 +13,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "web-server/*": ["apps/web-server/*"],
-      "@/*": ["apps/web-server/*"]
+      "@/*": ["*"],
+      "database/*": ["packages/database/src/*"],
+      "web/*": ["apps/web/*"]
     }
   },
   "exclude": [

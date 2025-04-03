@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-
 // Подключаем интернационализацию
 import path from "path";
 import createNextIntlPlugin from "next-intl/plugin";

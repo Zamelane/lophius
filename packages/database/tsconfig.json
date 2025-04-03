@@ -15,8 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["../web/*"],
-      "@plugins/*": ["./plugins/*"]
+      "database/*": ["./src/*"]
     },
     "baseUrl": ".",
     "typeRoots": []

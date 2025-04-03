@@ -1,6 +1,6 @@
-import { queryOneResult } from "src/utils";
-import { ExternalDomainRepository } from "./repository";
-import { external_domains } from "src/schemas";
+import { queryOneResult } from "database/utils";
+import { ExternalDomainRepository } from "database/models";
+import { external_domains } from "database/schemas";
 import { ExternalDomainModel } from "./model";
 import { ExternalDomain } from "./type";
 import { and, eq } from "drizzle-orm";
