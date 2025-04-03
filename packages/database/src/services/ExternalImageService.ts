@@ -1,8 +1,8 @@
 import {UoW} from "./UnitOfWorks";
 import {BaseService} from "./types";
 import {db, Transaction, DBConnection, SourceId} from "../index";
-import { ExternalImageRepository, PartialExternalImage } from "src/models/ExternalImages";
-import { ExternalImageModel } from "src/models/ExternalImages/model";
+import { ExternalImageRepository, PartialExternalImage } from "@/models/ExternalImages";
+import { ExternalImageModel } from "@/models/ExternalImages/model";
 
 export class ExternalImageService extends BaseService {
   private readonly externalImageRepository: ExternalImageRepository

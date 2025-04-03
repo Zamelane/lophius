@@ -1,4 +1,4 @@
-import {Transaction, DBConnection} from "../../index";
+import {Transaction, DBConnection} from "@/index.ts";
 import { findExternalDomainWithCredentionals, insertExternalDomain } from "./methods";
 
 /**

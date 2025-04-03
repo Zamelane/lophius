@@ -1,7 +1,7 @@
-import { queryOneResult } from "src/utils";
+import { queryOneResult } from "database/utils";
 import { ExternalImageModel } from "./model";
 import { ExternalImageRepository } from "./repository";
-import { external_images } from "src/schemas";
+import { external_images } from "database/schemas";
 import { SourceId } from "../Source";
 import { and, eq } from "drizzle-orm";
 

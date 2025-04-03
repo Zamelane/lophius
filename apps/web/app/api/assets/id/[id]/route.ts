@@ -1,7 +1,7 @@
 import fs from 'fs'
-import { db, eq } from "../../../../../../../packages/database"
-import { files } from "../../../../../../../packages/database/schemas/files"
+import { db, eq } from "database"
 import { NextResponse } from "next/server"
+import { files } from "database/src/schemas"
 import { GetPathByFilename } from '@/lib/utils/upload-file'
 
 export async function GET(

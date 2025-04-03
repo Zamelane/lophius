@@ -1,4 +1,4 @@
-import type {PluginStorage} from "./_DELETE_pluginsManager/pluginStorage.ts";
+import type {PluginStorage} from "./plugin-storage.ts";
 
 export type ParserPlugin = {
 	name: string

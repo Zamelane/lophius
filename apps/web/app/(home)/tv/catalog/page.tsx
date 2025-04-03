@@ -7,13 +7,15 @@ import { Button } from "@/components/shadcn/ui/button";
 import { VideoCard } from "@/components/template-components/media/cards/video-card";
 
 export default async function TVCatalogPage() {
+  console.time('query');
   const medias = await db.query.medias.findMany({
     limit: 10,
     with: {
       translates: true
     }
   })
-  console.log(medias)
+  console.timeEnd('query');
+  //console.log(medias)
   return (
     <div className="w-full max-w-[1920px] min-h-full mx-auto box-border block px-[16px] md:px-[24px] bg-background">
       <div className="flex flex-col py-4 gap-4 min-h-full">

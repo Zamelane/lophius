@@ -1,4 +1,4 @@
-import { WithOptional } from "src/utils";
+import { WithOptional } from "@/utils";
 import { InferSelectModel, relations } from "drizzle-orm";
 import { unique, pgTable, integer, boolean, varchar, bigserial } from "drizzle-orm/pg-core";
 
