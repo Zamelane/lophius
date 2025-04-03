@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import {cn} from "@/lib/utils";
 
 type Props = {
   link: string,
@@ -11,12 +12,19 @@ type Props = {
   },
   title: string
   subText: string
+  staticSize?: boolean
 }
 
 export function VideoCard(props: Props) {
-  const { img, link, title, subText } = props
+  const { img, link, title, subText, staticSize = true } = props
   return (
-    <Link href={link} className="flex flex-col gap-[8px] text-start no-underline select-none w-full min-w-full relative">
+      // flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]
+    <Link href={link}
+          className={cn(
+            "flex flex-col gap-[8px] text-start no-underline select-none",
+            staticSize ? "w-[160px] min-w-[160px]" : "w-full min-w-full relative"
+          )}
+    >
       <Image
         src={img.src}
         alt={img.alt}

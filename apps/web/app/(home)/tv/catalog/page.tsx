@@ -33,6 +33,7 @@ export default async function TVCatalogPage() {
             {
               medias.map((v, i) => (
                 <VideoCard key={v.id}
+                          staticSize={false}
                           link={'/tv/' + v.id}
                           subText="12 фев 2025"
                           title={v.translates.find(v => v.title !== undefined)?.title ?? 'Нету'}
