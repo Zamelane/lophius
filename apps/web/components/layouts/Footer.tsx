@@ -4,7 +4,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 export function Footer() {
   return (
     <footer className="flex justify-center bg-background border-t-[1px] border-border mt-4">
-      <div className="flex flex-col md:flex-row max-w-screen-2xl w-full justify-between items-start gap-4 py-6 px-[16px] md:px-[24px]">
+      <div className="flex flex-col md:flex-row max-w-[1920px] w-full justify-between items-start gap-4 py-6 px-[16px] md:px-[24px]">
         <div className="flex flex-col gap-4">
           <h6 className="font-bold text-lg">lophius.zmln.ru</h6>
           <div className="flex flex-col gap-1">
@@ -15,7 +15,7 @@ export function Footer() {
               Тут можно написать пару шуток, но как-нибудь потом ...
             </p>
             <p className="text-xs text-muted-foreground">
-              Связаться со мной можно по почте — <a href="ailto:example@mail.ru" className="underline text-primary">example@mail.ru</a>
+              Связаться со мной можно по почте — <a href="mailto:example@mail.ru" className="underline text-primary">example@mail.ru</a>
             </p>
           </div>
         </div>

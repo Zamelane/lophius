@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
       },
       {
         hostname: 'www.themoviedb.org'
+      },
+      {
+        hostname: 'media.themoviedb.org'
       }
     ],
   }

@@ -66,7 +66,7 @@ export function NavMain({
                         {item.menu?.map((subItem) => (
                           <Link href={subItem.url} key={'s_' + subItem.title}>
                             <ContextMenuItem key={'ss_' + subItem.title}>
-                              {subItem.title}
+                              <p className={subItem.icon ? "pr-2" : ""}>{subItem.title}</p>
                               {
                                 subItem.icon && 
                                   <ContextMenuShortcut>
