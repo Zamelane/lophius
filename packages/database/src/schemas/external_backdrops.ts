@@ -1,4 +1,4 @@
-import { InferSelectModel } from "drizzle-orm";
+import {InferSelectModel, relations} from "drizzle-orm";
 import { bigint, pgTable, primaryKey } from "drizzle-orm/pg-core";
 
 import { medias } from "./medias";
@@ -12,3 +12,14 @@ export const external_backdrops = pgTable('external_backdrops', {
 ])
 
 export type ExternalBackdropsTableType = InferSelectModel<typeof external_backdrops>
+
+export const externalBackdropsRelations = relations(external_backdrops, ({ one, many }) => ({
+  media: one(medias, {
+    fields: [external_backdrops.mediaId],
+    references: [medias.id]
+  }),
+  externalImage: one(external_images, {
+    fields: [external_backdrops.externalImageId],
+    references: [external_images.id]
+  })
+}))

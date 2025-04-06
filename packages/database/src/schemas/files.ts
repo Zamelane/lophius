@@ -2,6 +2,7 @@ import { relations, InferSelectModel } from "drizzle-orm";
 import { pgTable, varchar, integer, smallint, bigserial, timestamp } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
+import {countryTranslations} from "database/schemas/country_translations.ts";
 
 export const files = pgTable('files', {
   size: integer(),
@@ -15,11 +16,8 @@ export const files = pgTable('files', {
   // updateAt: timestamp({ mode: 'date' }).$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 })
 
-// FIX: похоже в обратную сторону не обязательно указывать ? (а то drizzle studio ошибку кидает)
-// export const filesRelations = relations(
-//   files, ({ many }) => ({
-//     users: many(users)
-//   })
-// )
-
 export type FilesTableType = InferSelectModel<typeof files>
+
+export const filesRelations = relations(files, ({ one, many }) => ({
+
+}))

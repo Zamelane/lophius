@@ -1,4 +1,4 @@
-import { InferSelectModel } from "drizzle-orm";
+import {InferSelectModel, relations} from "drizzle-orm";
 import { text, bigint, unique, pgTable, varchar, integer, bigserial, AnyPgColumn } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";
@@ -20,3 +20,23 @@ export const companies = pgTable('companies', {
 ])
 
 export type CompaniesTableType = InferSelectModel<typeof companies>
+
+export const companiesRelations = relations(companies, ({ one, many }) => ({
+  originCountry: one(countries, {
+    fields: [companies.originCountryId],
+    references: [countries.id]
+  }),
+  source: one(sources, {
+    fields: [companies.sourceId],
+    references: [sources.id]
+  }),
+  logoExternalFile: one(external_images, {
+    fields: [companies.logoExternalFileId],
+    references: [external_images.id]
+  }),
+  parentCompany: one(companies, {
+    fields: [companies.parentCompanyId],
+    references: [companies.id]
+  }),
+  childrenCompanies: many(companies)
+}))
