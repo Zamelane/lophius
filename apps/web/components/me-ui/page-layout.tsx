@@ -6,7 +6,7 @@ interface PageLayoutProps {
 }
 
 export const PageLayout = ({ children, className = '' }: PageLayoutProps) => (
-  <div className={`flex flex-col py-4 gap-4 ${className}`}>
+  <div className={`flex flex-col gap-4 ${className}`}>
     {children}
   </div>
 );

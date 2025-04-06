@@ -6,7 +6,7 @@ interface ContainerProps {
 }
 
 export const PageContainer = ({ children, className = '' }: ContainerProps) => (
-  <div className={`w-full max-w-[1920px] mx-auto box-border block px-[16px] md:px-[24px] bg-background ${className}`}>
+  <div className={`w-full h-full max-w-[1920px] mx-auto box-border block px-[16px] md:px-[24px] bg-background ${className}`}>
     {children}
   </div>
 );
