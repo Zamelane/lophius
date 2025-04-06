@@ -10,3 +10,5 @@ export const mediaGenres = pgTable('media_genres', {
 })
 
 export type MediaGenresTableType = InferSelectModel<typeof mediaGenres>
+
+// TODO: ТУТ СВЯЗИ ДОДЕЛАТЬ И ДАЛЬШЕ

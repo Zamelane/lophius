@@ -1,9 +1,12 @@
-import { InferSelectModel } from "drizzle-orm";
+import {InferSelectModel, relations} from "drizzle-orm";
 import { unique, bigint, integer, pgTable, varchar, decimal, bigserial } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";
 import { languages } from "./languages";
 import { external_domains } from "./external_domains";
+import {companies} from "database/schemas/companies.ts";
+import {external_backdrops} from "database/schemas/external_backdrops.ts";
+import {external_posters} from "database/schemas/external_posters.ts";
 
 export const external_images = pgTable('external_images', {
   width: integer(),
@@ -20,3 +23,21 @@ export const external_images = pgTable('external_images', {
 ])
 
 export type ExternalImagesTableType = InferSelectModel<typeof external_images>
+
+export const externalImagesRelations = relations(external_images, ({ one, many }) => ({
+  companies: many(companies),
+  externalBackdrops: many(external_backdrops),
+  externalPosters: many(external_posters),
+  language: one(languages, {
+    fields: [external_images.languageId],
+    references: [languages.id]
+  }),
+  externalDomain: one(external_domains, {
+    fields: [external_images.externalDomainId],
+    references: [external_domains.id]
+  }),
+  source: one(sources, {
+    fields: [external_images.sourceId],
+    references: [sources.id]
+  })
+}))

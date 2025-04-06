@@ -1,7 +1,7 @@
-import { InferSelectModel } from "drizzle-orm";
+import {InferSelectModel, relations} from "drizzle-orm";
 import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
 
-import { languages } from "./index";
+import {languages} from "./index";
 
 export const language_translations = pgTable('language_translations', {
   value: varchar({ length: 30 }).notNull(),                                     // Перевод названия языка
@@ -10,3 +10,14 @@ export const language_translations = pgTable('language_translations', {
 })
 
 export type LanguageTranslationsTableType = InferSelectModel<typeof language_translations>
+
+export const languageTranslationsRelations = relations(language_translations, ({ one, many }) => ({
+  language: one(languages, {
+    fields: [language_translations.languageId],
+    references: [languages.id]
+  }),
+  translateValueLanguage: one(languages, {
+    fields: [language_translations.translateValueLanguageId],
+    references: [languages.id]
+  })
+}))
