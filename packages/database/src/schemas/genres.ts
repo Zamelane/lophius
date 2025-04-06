@@ -4,6 +4,7 @@ import { serial, bigint, pgTable, varchar, integer, primaryKey } from "drizzle-o
 import { sources } from "./sources";
 import {genres_combining} from "database/schemas/genres_combining.ts";
 import {genre_translations} from "database/schemas/genre_translations.ts";
+import {media_genres} from "database/schemas/media_genres.ts";
 
 export const genres = pgTable('genres', {
   id: serial().primaryKey(),
@@ -18,13 +19,14 @@ export const sourceGenres = pgTable('source_genres', {
   primaryKey({ columns: [table.genreId, table.sourceId, table.external_id] })
 ])
 
-export type GenresTableType = InferSelectModel<typeof genres>
-export type SourceGenresTableType = InferSelectModel<typeof sourceGenres>
+export type GenresTableType = typeof genres.$inferSelect
+export type SourceGenresTableType = typeof sourceGenres.$inferSelect
 
 export const genresRelations = relations(genres, ({ one, many }) => ({
   sourceGenres: many(sourceGenres),
   genreCombining: many(genres_combining),
-  genreTranslations: many(genre_translations)
+  genreTranslations: many(genre_translations),
+  mediaGenres: many(media_genres),
 }))
 
 export const sourceGenresRelations = relations(sourceGenres, ({ one, many }) => ({

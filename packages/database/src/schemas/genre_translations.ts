@@ -12,7 +12,7 @@ export const genre_translations = pgTable('genres_translations', {
   primaryKey({ columns: [table.languageId, table.genreId] })
 ])
 
-export type GenresTranslationsTableType = InferSelectModel<typeof genre_translations>
+export type GenresTranslationsTableType = typeof genre_translations.$inferSelect
 
 export const genresTranslationsRelations = relations(genre_translations, ({ one, many }) => ({
   genre: one(genres, {

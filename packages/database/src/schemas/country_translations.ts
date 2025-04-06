@@ -12,6 +12,8 @@ export const countryTranslations = pgTable('country_translations', {
   primaryKey({ columns: [table.countryId, table.languageId] })
 ])
 
+export type CountryTranslationsTableType = typeof countryTranslations.$inferSelect
+
 export const countryTranslationsRelations = relations(countryTranslations, ({ one, many }) => ({
   country: one(countries, {
     fields: [countryTranslations.countryId],

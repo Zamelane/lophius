@@ -8,7 +8,7 @@ export const external_domains = pgTable('external_domains', {
   domain: varchar({ length: 255 }).notNull().unique()
 })
 
-export type ExternalDomainsTableType = InferSelectModel<typeof external_domains>
+export type ExternalDomainsTableType = typeof external_domains.$inferSelect
 
 export const externalDomainsRelations = relations(external_domains, ({ one, many }) => ({
   externalImages: many(external_images)

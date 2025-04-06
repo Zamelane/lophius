@@ -18,9 +18,17 @@ export const translates = pgTable('translates', {
   mediaId: bigint({ mode: 'number' }).notNull().references(() => medias.id)
 })
 
-export type TranslatesTableType = InferSelectModel<typeof translates>
+export type TranslatesTableType = typeof translates.$inferSelect
 
 export const translatesRelations = relations(translates, ({ one }) => ({
+  country: one(countries, {
+    fields: [translates.countryId],
+    references: [countries.id]
+  }),
+  language: one(languages, {
+    fields: [translates.languageId],
+    references: [languages.id]
+  }),
   media: one(medias, {
     fields: [translates.mediaId],
     references: [medias.id]

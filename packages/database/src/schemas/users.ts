@@ -14,6 +14,8 @@ export const users = pgTable('users', {
   backgroundImageId: bigint({ mode: 'number' }).references(() => files.id)
 })
 
+export type UsersTableType = typeof users.$inferSelect
+
 export const usersRelations = relations(
   users, ({ one }) => ({
     avatar: one(files, {
@@ -26,5 +28,3 @@ export const usersRelations = relations(
     })
   })
 )
-
-export type UsersTableType = InferSelectModel<typeof users>

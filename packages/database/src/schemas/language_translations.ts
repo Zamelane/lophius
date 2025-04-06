@@ -9,7 +9,7 @@ export const language_translations = pgTable('language_translations', {
   translateValueLanguageId: integer().references(() => languages.id).notNull()  // Сам перевод
 })
 
-export type LanguageTranslationsTableType = InferSelectModel<typeof language_translations>
+export type LanguageTranslationsTableType = typeof language_translations.$inferSelect
 
 export const languageTranslationsRelations = relations(language_translations, ({ one, many }) => ({
   language: one(languages, {

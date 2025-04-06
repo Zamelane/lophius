@@ -22,7 +22,7 @@ export const external_images = pgTable('external_images', {
   unique().on(table.sourceId, table.path, table.externalDomainId)
 ])
 
-export type ExternalImagesTableType = InferSelectModel<typeof external_images>
+export type ExternalImagesTableType = typeof external_images.$inferSelect
 
 export const externalImagesRelations = relations(external_images, ({ one, many }) => ({
   companies: many(companies),

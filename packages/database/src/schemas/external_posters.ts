@@ -11,7 +11,7 @@ export const external_posters = pgTable('external_posters', {
   primaryKey({ columns: [table.externalImageId, table.mediaId] })
 ])
 
-export type ExternalPostersTableType = InferSelectModel<typeof external_posters>
+export type ExternalPostersTableType = typeof external_posters.$inferSelect
 
 export const externalPostersRelations = relations(external_posters, ({ one, many }) => ({
   media: one(medias, {
