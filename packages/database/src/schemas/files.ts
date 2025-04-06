@@ -16,7 +16,7 @@ export const files = pgTable('files', {
   // updateAt: timestamp({ mode: 'date' }).$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 })
 
-export type FilesTableType = InferSelectModel<typeof files>
+export type FilesTableType = typeof files.$inferSelect
 
 export const filesRelations = relations(files, ({ one, many }) => ({
 

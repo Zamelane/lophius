@@ -1,4 +1,4 @@
-import { InferSelectModel } from "drizzle-orm";
+import {InferSelectModel, relations} from "drizzle-orm";
 import { bigint, integer, pgTable, primaryKey } from "drizzle-orm/pg-core";
 
 import { medias } from "./medias";
@@ -13,4 +13,15 @@ export const media_production_countries = pgTable('media_production_countries', 
   })
 ])
 
-export type MediaProductionCountriesTableType = InferSelectModel<typeof media_production_countries>
+export type MediaProductionCountriesTableType = typeof media_production_countries.$inferSelect
+
+export const mediaProductionCountriesRelations = relations(media_production_countries, ({ one, many }) => ({
+  country: one(countries, {
+    fields: [media_production_countries.countryId],
+    references: [countries.id]
+  }),
+  media: one(medias, {
+    fields: [media_production_countries.mediaId],
+    references: [medias.id]
+  })
+}))

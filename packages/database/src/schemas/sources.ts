@@ -2,6 +2,7 @@ import { pgEnum, pgTable, bigserial } from "drizzle-orm/pg-core";
 import {relations} from "drizzle-orm";
 import {companies} from "database/schemas/companies.ts";
 import {external_images} from "database/schemas/external_images.ts";
+import {origin_countries} from "database/schemas/origin_countries.ts";
 
 export const sourceType = pgEnum('source_type', ['user', 'parser'])
 

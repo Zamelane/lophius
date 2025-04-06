@@ -4,6 +4,7 @@ import { text, bigint, unique, pgTable, varchar, integer, bigserial, AnyPgColumn
 import { sources } from "./sources";
 import { countries } from "./countries";
 import { external_images } from "./external_images";
+import {media_production_companies} from "database/schemas/media_production_companies.ts";
 
 export const companies = pgTable('companies', {
   description: text(),
@@ -19,7 +20,7 @@ export const companies = pgTable('companies', {
   unique().on(table.external_id, table.sourceId)
 ])
 
-export type CompaniesTableType = InferSelectModel<typeof companies>
+export type CompaniesTableType = typeof companies.$inferSelect
 
 export const companiesRelations = relations(companies, ({ one, many }) => ({
   originCountry: one(countries, {
@@ -38,5 +39,6 @@ export const companiesRelations = relations(companies, ({ one, many }) => ({
     fields: [companies.parentCompanyId],
     references: [companies.id]
   }),
-  childrenCompanies: many(companies)
+  childrenCompanies: many(companies),
+  mediaProductionCompanies: many(media_production_companies)
 }))

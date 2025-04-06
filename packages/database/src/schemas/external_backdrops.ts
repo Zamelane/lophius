@@ -11,7 +11,7 @@ export const external_backdrops = pgTable('external_backdrops', {
   primaryKey({ columns: [table.externalImageId, table.mediaId] })
 ])
 
-export type ExternalBackdropsTableType = InferSelectModel<typeof external_backdrops>
+export type ExternalBackdropsTableType = typeof external_backdrops.$inferSelect
 
 export const externalBackdropsRelations = relations(external_backdrops, ({ one, many }) => ({
   media: one(medias, {

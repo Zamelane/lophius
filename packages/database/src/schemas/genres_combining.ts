@@ -8,7 +8,7 @@ export const genres_combining = pgTable('genres_combinings', {
   analogGenreId: integer().notNull().references(() => genres.id)
 })
 
-export type GenresCombiningTableType = InferSelectModel<typeof genres_combining>
+export type GenresCombiningTableType = typeof genres_combining.$inferSelect
 
 export const genresCombiningRelations = relations(genres_combining, ({ one, many }) => ({
   genre: one(genres, {

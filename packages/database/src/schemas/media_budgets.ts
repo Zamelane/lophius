@@ -8,7 +8,7 @@ export const media_budgets = pgTable('media_budgets', {
   mediaId: bigint({ mode: 'number' }).references(() => medias.id).notNull().primaryKey()
 })
 
-export type MediaBudgetsTableType = InferSelectModel<typeof media_budgets>
+export type MediaBudgetsTableType = typeof media_budgets.$inferSelect
 
 export const mediaBudgetsRelations = relations(media_budgets, ({ one, many }) => ({
   media: one(medias, {
