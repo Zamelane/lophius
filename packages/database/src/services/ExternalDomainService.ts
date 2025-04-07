@@ -1,8 +1,8 @@
 import {UoW} from "./UnitOfWorks";
 import {BaseService} from "./types";
 import {db, Transaction, DBConnection} from "../index";
-import { ExternalDomain, ExternalDomainRepository } from "@/models/ExternalDomain";
-import { ExternalDomainModel } from "@/models/ExternalDomain/model";
+import { ExternalDomain, ExternalDomainRepository } from "database/models/ExternalDomain";
+import { ExternalDomainModel } from "database/models/ExternalDomain/model";
 
 export class ExternalDomainService extends BaseService {
   private readonly externalDomainRepository: ExternalDomainRepository

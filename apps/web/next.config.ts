@@ -11,11 +11,11 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true
   },
-  /* config options here */
+  outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
     nodeMiddleware: true,
+    viewTransition: true
   },
-  outputFileTracingRoot: path.join(__dirname, '../../'),
   images: {
     remotePatterns: [
       {

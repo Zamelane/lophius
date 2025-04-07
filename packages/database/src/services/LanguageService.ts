@@ -1,7 +1,7 @@
 import {UoW} from "./UnitOfWorks";
 import {BaseService} from "./types";
 import {LanguageModel} from "../models/Language/model";
-import {db, Transaction, DBConnection, PartialLanguage, LanguageRepository, OptionalNamesLanguage} from "../index";
+import {db, Transaction, DBConnection, LanguageRepository, OptionalNamesLanguage} from "../index";
 
 export class LanguageService extends BaseService {
 	private readonly languageRepository: LanguageRepository
