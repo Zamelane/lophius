@@ -2,7 +2,7 @@
   "name": "lophius-monorepo",
   "private": true,
   "scripts": {
-    "prepare:full":"bun install:all && bun scripts/check-env-exists.ts && bun env:sync && bun db:full",
+    "prepare:full": "bun install:all && bun scripts/check-env-exists.ts && bun env:sync && bun db:full",
     "install:all": "cd apps/web && bun i && cd ../worker && bun i && cd ../../packages/database && bun i",
     "env:sync": "cp .env apps/web/.env && cp .env apps/worker/.env && cp .env packages/database/.env",
     "web:dev": "bun env:sync && cd apps/web && bun dev",
