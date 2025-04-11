@@ -1,6 +1,6 @@
 "use client"
 
-import {redirect} from "next/navigation";
+import Link from "next/link";
 import { UserLogout } from "@/actions/client/user"
 import {
   LogOut,
@@ -20,12 +20,10 @@ import {
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import Link from "next/link";
 
 export function NavUser({
   user,
