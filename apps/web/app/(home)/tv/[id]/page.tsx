@@ -10,7 +10,7 @@ type Props = {
 export default async function TVDetailedPage({ params }: Props) {
   const { id } = await params
   return (
-    <PageContainer className="px-[0] max-w-[1200px]">
+    <PageContainer className="px-[0] max-w-[1920px]">
       {/* Мобильная версия */}
       <div className="relative md:hidden h-[450px]">
         <Image
