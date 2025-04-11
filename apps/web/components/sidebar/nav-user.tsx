@@ -1,19 +1,16 @@
 "use client"
 
+import {redirect} from "next/navigation";
 import { UserLogout } from "@/actions/client/user"
+import {
+  LogOut,
+  ChevronsUpDown,
+} from "lucide-react"
 import {
   Avatar,
   AvatarImage,
   AvatarFallback,
 } from "@/components/ui/avatar"
-import {
-  Bell,
-  LogOut,
-  Sparkles,
-  BadgeCheck,
-  CreditCard,
-  ChevronsUpDown,
-} from "lucide-react"
 import {
   useSidebar,
   SidebarMenu,
@@ -23,12 +20,12 @@ import {
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -67,40 +64,42 @@ export function NavUser({
             side={isMobile ? "bottom" : "right"}
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage alt={user.name} src={user.avatar} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+            <Link href={`/user/${user.name}`}>
+              <DropdownMenuItem className="p-0 font-normal">
+                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage alt={user.name} src={user.avatar}/>
+                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="truncate text-xs">{user.email}</span>
+                  </div>
                 </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
+            </Link>
+            {/*<DropdownMenuSeparator />*/}
+            {/*<DropdownMenuGroup>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <Sparkles />*/}
+            {/*    My profile*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*</DropdownMenuGroup>*/}
+            {/*<DropdownMenuSeparator />*/}
+            {/*<DropdownMenuGroup>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <BadgeCheck />*/}
+            {/*    Account*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <CreditCard />*/}
+            {/*    Billing*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <Bell />*/}
+            {/*    Notifications*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*</DropdownMenuGroup>*/}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={UserLogout}>
               <LogOut />
