@@ -4,13 +4,19 @@ import {OptionalExternalBackdrop} from "./type";
 export class ExternalBackdropModel implements OptionalExternalBackdrop {
 	externalImageId?: OptionalExternalBackdrop['externalImageId'];
 	mediaId?: OptionalExternalBackdrop['mediaId'];
+	media!: OptionalExternalBackdrop['media'];
+	externalImage!: OptionalExternalBackdrop['externalImage'];
 
 	constructor(data: OptionalExternalBackdrop) {
 		Object.assign(this, data);
 	}
 
 	validateRequiredIds(): asserts this is WithRequired<OptionalExternalBackdrop, 'externalImageId' | 'mediaId'> {
-		if (!this.externalImageId || !this.mediaId)
-			throw new Error('Missing required externalImageId and mediaId: ' + this.constructor.name);
+		// Валидация ключей у внешних моделей
+		this.media.validateRequiredIds()
+		this.externalImage.validateRequiredIds()
+		// Копируем ключи внешних моделей
+		this.mediaId = this.media.id
+		this.externalImageId = this.externalImage.id
 	}
 }

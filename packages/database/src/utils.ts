@@ -1,4 +1,5 @@
 import { createConsola } from "consola";
+import * as process from "node:process";
 
 /**
  * Возвращает первую запись из выборки запроса к базе данных
@@ -51,7 +52,7 @@ export function pickExistingByType<T, K extends keyof T>(obj: T, keys: K[]): Pic
  * Логгер
  */
 export const logger = createConsola({
-	level: 4, // 4 = debug, 3 = info, 2 = warn, 1 = error
+	level: Number(process.env.DEBUG_LEVEL ?? 4), // 4 = debug, 3 = info, 2 = warn, 1 = error
 	formatOptions: {
 		colors: true,
 		compact: false

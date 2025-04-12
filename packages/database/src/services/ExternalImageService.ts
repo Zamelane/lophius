@@ -21,7 +21,10 @@ export class ExternalImageService extends BaseService {
     let model = await this.externalImageRepository.findByCredentials(data.path, this.sourceId)
 
     if (!model) {
-      model = new ExternalImageModel(data)
+      model = new ExternalImageModel({
+        ...data,
+        sourceId: this.sourceId
+      })
       this.uow.registerOperation('insert', this.externalImageRepository, model, this.sourceId)
     }
 

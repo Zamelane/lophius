@@ -48,13 +48,20 @@ export async function insertExternalImage(
   model: ExternalImageModel,
   sourceId: SourceId
 ): Promise<ExternalImageModel|undefined> {
-  model.validateRequiredIds()
+  model.validateRequiredModels()
   queryOneResult(
     await this.tx.insert(external_images)
       .values({
         ...model,
         sourceId
-      }).returning(),
+      })
+      .onConflictDoUpdate({
+        target: [external_images.sourceId, external_images.externalDomainId, external_images.path],
+        set: {
+          ...model
+        }
+      })
+      .returning(),
       v => model.id = v.id
   )
 

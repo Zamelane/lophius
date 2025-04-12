@@ -15,7 +15,9 @@ export class Pipeline<T extends object> {
 
 	async execute(): Promise<T> {
 		for (const step of this.steps) {
+			console.time(`${step.name}`);
 			this.context = await step(this.context);
+			console.timeEnd(`${step.name}`);
 		}
 		return this.context;
 	}

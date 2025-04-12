@@ -14,10 +14,13 @@ import {
 	DBConnection,
 	PartialMedia,
 	MediaRepository,
-	pickExistingByType,
-} from "../index";
+	pickExistingByType, PartialExternalImage
+} from "database";
 import { ExternalDomainService } from "./ExternalDomainService";
 import { ExternalImageService } from "./ExternalImageService";
+import {ExternalPosterService} from "database/services/ExternalPosterService.ts";
+import {ExternalPosterModel} from "database/models/ExternalPoster/model.ts";
+import {ExternalBackdropModel} from "database/models/ExternalBackdrop/model.ts";
 
 export class SourceMediaService extends BaseService {
 	private readonly mediaRepository: MediaRepository
@@ -30,6 +33,7 @@ export class SourceMediaService extends BaseService {
 	public  readonly externalBackdropService: ExternalBackdropService
 	public  readonly externalDomainService: ExternalDomainService
 	public  readonly externalImageService: ExternalImageService
+	public  readonly externalPosterService: ExternalPosterService
 
 	constructor(
 		protected sourceId: SourceId,
@@ -45,8 +49,9 @@ export class SourceMediaService extends BaseService {
 		this.countryTranslationService = new CountryTranslationService(tx, this.uow)
 		this.companyService = new CompanyService(tx, this.uow)
 		this.externalBackdropService = new ExternalBackdropService(tx, this.uow)
-		this.externalDomainService = new ExternalDomainService(tx, this.uow)
+		this.externalDomainService = new ExternalDomainService(sourceId, tx, this.uow)
 		this.externalImageService = new ExternalImageService(sourceId, tx, this.uow)
+		this.externalPosterService = new ExternalPosterService(tx, this.uow)
 	}
 
 	/**
@@ -77,6 +82,42 @@ export class SourceMediaService extends BaseService {
 
 	updateMedia(media: MediaModel) {
 		this.uow.registerOperation('update', this.mediaRepository, media)
+	}
+
+	async createPoster(
+		media: MediaModel,
+		image: PartialExternalImage
+	): Promise<ExternalPosterModel> {
+		const externalDomain = await this.externalDomainService.findOrCreate({
+			...image.externalDomain
+		})
+		const externalImage = await this.externalImageService.findOrCreate({
+			...image,
+			externalDomain
+		})
+		const externalPosterModel = this.externalPosterService.insert({
+			media,
+			externalImage
+		})
+		return externalPosterModel
+	}
+
+	async createBackdrop(
+		media: MediaModel,
+		image: PartialExternalImage
+	): Promise<ExternalBackdropModel> {
+		const externalDomain = await this.externalDomainService.findOrCreate({
+			...image.externalDomain
+		})
+		const externalImage = await this.externalImageService.findOrCreate({
+			...image,
+			externalDomain
+		})
+		const externalBackdropModel = this.externalBackdropService.insert({
+			media,
+			externalImage
+		})
+		return externalBackdropModel
 	}
 
 	async commit() {
