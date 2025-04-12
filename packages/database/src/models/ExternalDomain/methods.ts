@@ -5,17 +5,17 @@ import { ExternalDomainModel } from "./model";
 import { ExternalDomain } from "./type";
 import { and, eq } from "drizzle-orm";
 
-export async function findExternalDomainWithCredentionals(
+export async function findExternalDomainWithCredentials(
   this: ExternalDomainRepository,
-  credentionals: Omit<ExternalDomain, 'id'>
+  credentials: Omit<ExternalDomain, 'id'>
 ) {
   const result = queryOneResult(
     await this.tx.select()
       .from(external_domains)
       .where(
         and(
-          eq(external_domains.domain, credentionals.domain),
-          eq(external_domains.https, credentionals.https)
+          eq(external_domains.domain, credentials.domain),
+          eq(external_domains.https, credentials.https)
         )
       ).limit(1)
   )

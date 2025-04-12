@@ -4,6 +4,8 @@ import {OptionalExternalPoster} from "./type";
 export class ExternalPosterModel implements OptionalExternalPoster {
 	externalImageId?: OptionalExternalPoster['externalImageId']
 	mediaId?: OptionalExternalPoster['mediaId']
+	media!: OptionalExternalPoster['media']
+	externalImage!: OptionalExternalPoster['externalImage']
 
 	constructor(data: OptionalExternalPoster) {
 		this.setData(data)
@@ -14,7 +16,11 @@ export class ExternalPosterModel implements OptionalExternalPoster {
 	}
 
 	validateRequiredIds(): asserts this is WithRequired<OptionalExternalPoster, 'externalImageId' | 'mediaId'> {
-		if (!this.externalImageId || !this.mediaId)
-			throw new Error('Missing required fields: ' + this.constructor.name);
+		// Валидация внешних моделей
+		this.media.validateRequiredIds()
+		this.externalImage.validateRequiredIds()
+		// Перенос свойств (id'шников)
+		this.mediaId = this.media.id
+		this.externalImageId = this.externalImage.id
 	}
 }

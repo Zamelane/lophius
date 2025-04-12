@@ -1,4 +1,9 @@
-import {DiscoverMovieResponse, type MovieTranslationsData, type MovieTranslationsResponse} from "./client";
+import {
+	DiscoverMovieResponse,
+	MovieImagesResponse,
+	type MovieTranslationsData,
+	type MovieTranslationsResponse
+} from "./client";
 import {PluginStorage} from "../../src/plugin-storage.ts";
 import {ArrayElementType} from "@/interfaces";
 import {MediaModel} from "database/src/models/Media/model.ts";
@@ -7,6 +12,7 @@ import {SourceMediaService} from "database/src/services/SourceMediaService.ts";
 export interface Context {
 	fetchedData: ArrayElementType<DiscoverMovieResponse['results']>
 	fetchedTranslatesData?: MovieTranslationsResponse
+	fetchedImagesData?: MovieImagesResponse
 	storage: PluginStorage
 	sourceMediaService: SourceMediaService
 	mediaModel?: MediaModel

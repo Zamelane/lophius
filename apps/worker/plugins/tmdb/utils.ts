@@ -9,3 +9,9 @@ export async function getDataByStorage(storage: PluginStorage){
 
 	return data
 }
+
+export function defaultValue<T>(data: T|undefined|null, valueByDefault: T): T {
+	if (!data)
+		return valueByDefault
+	return data
+}

@@ -7,6 +7,8 @@ import {SourceMediaService} from "database/src/services/SourceMediaService.ts";
 import {getTranslations} from "@plugins/tmdb/steps/getTranslations.ts";
 import {setTranslations} from "@plugins/tmdb/steps/setTranslations.ts";
 import {commitStep} from "@plugins/tmdb/steps/commit.ts";
+import {getImages} from "@plugins/tmdb/steps/getImages.ts";
+import {setImages} from "@plugins/tmdb/steps/setImages.ts";
 
 export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: number, token: string, storage: PluginStorage) {
 	if (!moviesData.results)
@@ -23,7 +25,9 @@ export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: nu
 		})
 			.addStep(createOrGetKino)
 			.addStep(getTranslations)
+			.addStep(getImages)
 			.addStep(setTranslations)
+			.addStep(setImages)
 			.addStep(commitStep)
 
 		await pipeline.execute()
