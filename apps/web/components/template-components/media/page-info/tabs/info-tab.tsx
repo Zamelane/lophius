@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import { LocaleLink } from "@/hooks/locale-link";
 import {Tag} from "@/components/template-components/media/page-info/tags/tag";
 import {TagContainer} from "@/components/template-components/media/page-info/tags/tag-container";
 
@@ -31,7 +31,7 @@ export function CinemaInfoTab({ overview }: Props) {
 						Телесеть
 					</h6>
 					<div className="flex flex-wrap gap-1">
-						<Link href="/tv-network/123"
+						<LocaleLink href="/tv-network/123"
 									className="rounded-full inline-flex gap-1 items-center border transition-colors focus:outline-none border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs font-medium pr-1.5">
 							<Image
 								alt="ATX"
@@ -41,7 +41,7 @@ export function CinemaInfoTab({ overview }: Props) {
 								src="https://media.themoviedb.org/t/p/h50_filter(negate,000,666)/fERjndErEpveJmQZccJbJDi93rj.png"
 							/>
 							{" AT-X"}
-						</Link>
+						</LocaleLink>
 					</div>
 				</div>
 				<div className="flex flex-col gap-2">
@@ -49,7 +49,7 @@ export function CinemaInfoTab({ overview }: Props) {
 						Трекеры
 					</h6>
 					<div className="flex flex-wrap gap-1">
-						<Link href="/trackers/123"
+						<LocaleLink href="/trackers/123"
 									className="rounded-full inline-flex gap-1 items-center border transition-colors focus:outline-none border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs font-medium pr-1.5">
 							<Image
 								alt="TMDB"
@@ -59,7 +59,7 @@ export function CinemaInfoTab({ overview }: Props) {
 								src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
 							/>
 							{" TMDB"}
-						</Link>
+						</LocaleLink>
 					</div>
 				</div>
 			</div>

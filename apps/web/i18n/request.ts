@@ -1,20 +1,22 @@
-import {cookies, headers} from "next/headers";
-import {getRequestConfig} from "next-intl/server";
+import { headers } from "next/headers";
+import { getRequestConfig } from "next-intl/server";
 
-const localesSupported = ['ru', 'en'];
-const defaultLocalse = 'ru'
+import { defaultLocale, localesSupported } from "./config";
 
 export default getRequestConfig(async () => {
+  // 1. Получаем URL из заголовков
+  const headersList = await headers();
+  const pathname = headersList.get('x-url')|| '';
+  
+  // 2. Извлекаем локаль из пути
+  let localeFromPath = defaultLocale;
+  const pathParts = (new URL(pathname)).pathname.split('/')
+  if (pathParts.length > 1 && localesSupported.includes(pathParts[1])) {
+    localeFromPath = pathParts[1];
+  }
 
-	const { get: getHeader } = await headers();
-	const { value: cookieLocale } = (await cookies()).get("NEXT_LOCALE") || {};
-	const acceptLanguage = getHeader("accept-language") || defaultLocalse;
-	const detectedLocale = (cookieLocale || acceptLanguage).split(",")[0];
-
-	const locale = localesSupported.includes(detectedLocale) ? detectedLocale : defaultLocalse;
-
-	return {
-		locale,
-		messages: (await import(`./messages/${locale}.json`)).default
-	};
+  return {
+    locale: localeFromPath,
+    messages: (await import(`./messages/${localeFromPath}.json`)).default
+  };
 });

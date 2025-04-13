@@ -1,8 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import * as React from "react"
 import { usePathname } from "next/navigation"
+import { LocaleLink } from "@/hooks/locale-link"
 import { NavUser } from "@/components/sidebar/nav-user"
 import { ModeSwitcher } from "@/components/sidebar/team-switcher"
 import {
@@ -215,7 +215,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { content: auth } = useAuth()
   const path = usePathname()
 
-  const activeMedia = ['/admin'].find(v => path.startsWith(v)) ?? "/"
+  const activeMedia = ['/admin'].find(v => path.startsWith('/' + path.split('/')[1] + v)) ?? "/"
   let navMain = publicNav
   let lightMenu = publicMenu
 
@@ -247,13 +247,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 name: auth.nickname
               }}
             />
-            : <Link href='/login'>
+            : <LocaleLink href='/login'>
                 <SidebarMenuButton className="w-full bg-primary text-primary-foreground">
                   <LogIn/>
                   <span className="text-center w-full">Войти</span>
                   <LogIn className="opacity-0"/> {/* Костыль :))) */}
                 </SidebarMenuButton>
-              </Link>
+              </LocaleLink>
         }
       </SidebarFooter>
       <SidebarRail />

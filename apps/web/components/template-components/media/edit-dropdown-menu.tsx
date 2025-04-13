@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { LocaleLink } from "@/hooks/locale-link"
 import {
   Pencil,
   CatIcon,
@@ -50,7 +50,7 @@ export function EditDropdownMenu() {
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <Link href="/create/kino">
+                <LocaleLink href="/create/kino">
                   <DropdownMenuItem>
                     <ClapperboardIcon/>
                     <div className="flex flex-col">
@@ -58,7 +58,7 @@ export function EditDropdownMenu() {
                       <span className="text-xs opacity-85">Фильм, сериал, дорама</span>
                     </div>
                   </DropdownMenuItem>
-                </Link>
+                </LocaleLink>
                 <DropdownMenuItem>
                   <CatIcon/>
                   <div className="flex flex-col">

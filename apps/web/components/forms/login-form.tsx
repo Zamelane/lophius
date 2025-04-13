@@ -1,11 +1,11 @@
 'use client'
 
 import {toast} from "sonner";
-import Link from "next/link";
 import {redirect} from "next/navigation";
 import {useTranslations} from "next-intl";
 import {Label} from "@/components/ui/label";
 import {login} from "@/actions/server/login";
+import { LocaleLink } from "@/hooks/locale-link";
 import React, {useState, useActionState} from "react";
 import {InputCustom} from "@/components/ui/input-custom";
 import LoadingButton from "@/components/ui/loading-button";
@@ -102,9 +102,9 @@ export default function LoginForm() {
               </div>
               <div className="text-center text-sm">
                 {t('dont_have_account')}{" "}
-                <Link href="/signup" className="underline underline-offset-4">
+                <LocaleLink href="/signup" className="underline underline-offset-4">
                   {t('sign_up')}
-                </Link>
+                </LocaleLink>
               </div>
             </div>
           </form>

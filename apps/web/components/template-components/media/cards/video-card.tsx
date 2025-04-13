@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
 import {ImageOffIcon} from "lucide-react";
+import { LocaleLink } from "@/hooks/locale-link";
 
 type Props = {
   link: string,
@@ -20,7 +20,7 @@ export function VideoCard(props: Props) {
   const { img, link, title, subText, staticSize = true } = props
   return (
       // flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]
-    <Link href={link}
+    <LocaleLink href={link}
           className={cn(
             "flex flex-col gap-[8px] text-start no-underline select-none",
             "transition-all duration-300 ease-in-out", // Плавный переход
@@ -59,6 +59,6 @@ export function VideoCard(props: Props) {
         <p className="text-xs opacity-85">{subText}</p>
         <p className="text-sm line-clamp-2">{title}</p>
       </div>
-    </Link>
+    </LocaleLink>
   )
 }

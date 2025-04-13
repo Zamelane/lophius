@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { db } from "database";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { LocaleLink } from "@/hooks/locale-link";
 import {PageContainer} from "@/components/me-ui/container";
 import {FilmInfo} from "@/components/template-components/media/page-info/film-info";
 
@@ -149,18 +149,18 @@ export default async function TVDetailedPage({ params }: Props) {
             <div className="flex flex-col gap-2">
               <div>
                 <p className="text-sm font-semibold opacity-80">Год выпуска</p>
-                <Link className="text-sm hover:underline"
+                <LocaleLink className="text-sm hover:underline"
                       href="/tv/catalog?yearMin=2018&yearMax=2018">
                   2018
-                </Link>
+                </LocaleLink>
               </div>
               <div className="shrink-0 bg-border h-[1px] w-full"/>
               <div>
                 <p className="text-sm font-semibold opacity-80">Страна оригинала</p>
-                <Link href="/tv/catalog?country=123"
+                <LocaleLink href="/tv/catalog?country=123"
                       className="text-sm hover:underline">
                   Япония
-                </Link>
+                </LocaleLink>
               </div>
             </div>
           </div>

@@ -1,9 +1,9 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { type LucideIcon } from "lucide-react"
 
+import { LocaleLink } from "../../hooks/locale-link"
 import { useSidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "../ui/sidebar"
 
 
@@ -30,10 +30,10 @@ export function LightNavMain({
               hidden: open,
               children: item.title
             }}>
-            <Link href={item.url}>
+            <LocaleLink href={item.url}>
               <item.icon />
               <span>{item.title}</span>
-            </Link>
+            </LocaleLink>
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))}
