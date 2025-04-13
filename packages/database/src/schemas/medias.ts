@@ -17,6 +17,7 @@ import {media_votes} from "database/schemas/media_votes.ts";
 import {origin_countries} from "database/schemas/origin_countries.ts";
 import {release_dates} from "database/schemas/release_dates.ts";
 import {spoken_languages} from "database/schemas/spoken_languages.ts";
+import { external_logos } from "./external_logos";
 
 export const medias = pgTable('medias', {
   isVideo: boolean(),
@@ -34,6 +35,7 @@ export type Media = WithOptional<MediasTableType, 'id'>
 
 export const mediasRelations = relations(medias, ({ one, many }) => ({
   translates: many(translates),
+  externalLogos: many(external_logos),
   externalBackdrops: many(external_backdrops),
   mediaProductionCompanies: many(media_production_companies),
   mediaProductionCountries: many(media_production_countries),

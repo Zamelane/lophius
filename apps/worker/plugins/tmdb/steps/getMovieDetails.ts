@@ -1,12 +1,12 @@
 import { Context } from "@plugins/tmdb/types.ts";
-import {movieImages} from "@plugins/tmdb/client";
+import { movieDetails } from "@plugins/tmdb/client";
 
-export async function getImages(ctx: Context): Promise<Context> {
+export async function getMovieDetails(ctx: Context): Promise<Context> {
   if (!ctx.mediaModel) throw new Error("Media model missing");
 
   if (!ctx.fetchedData.id) throw new Error("Id is missing");
 
-  const { data, error } = await movieImages({
+  const { data, error } = await movieDetails({
     auth: ctx.token,
     path: {
       movie_id: ctx.fetchedData.id,
@@ -21,7 +21,7 @@ export async function getImages(ctx: Context): Promise<Context> {
       })
     );
 
-  ctx.fetchedImagesData = data;
+  ctx.fetchedMovieDetails = data;
 
   return ctx;
 }

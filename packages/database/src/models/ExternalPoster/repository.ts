@@ -1,5 +1,5 @@
 import {Transaction, DBConnection} from "../../index";
-import {insertPoster} from "database/models/ExternalPoster/methods.ts";
+import {deleteNotInPoster, insertPoster} from "database/models/ExternalPoster/methods.ts";
 
 /**
  * @description Репозиторий для работы с моделью внешних изображений
@@ -7,5 +7,6 @@ import {insertPoster} from "database/models/ExternalPoster/methods.ts";
 export class ExternalPosterRepository {
 	constructor(protected tx: DBConnection | Transaction) {}
 
+	deleteNotIn = deleteNotInPoster
 	insert = insertPoster
 }

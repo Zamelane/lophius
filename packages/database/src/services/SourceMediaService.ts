@@ -14,13 +14,17 @@ import {
 	DBConnection,
 	PartialMedia,
 	MediaRepository,
-	pickExistingByType, PartialExternalImage
+	pickExistingByType, PartialExternalImage,
+	PartialGenre
 } from "database";
 import { ExternalDomainService } from "./ExternalDomainService";
 import { ExternalImageService } from "./ExternalImageService";
 import {ExternalPosterService} from "database/services/ExternalPosterService.ts";
 import {ExternalPosterModel} from "database/models/ExternalPoster/model.ts";
 import {ExternalBackdropModel} from "database/models/ExternalBackdrop/model.ts";
+import { ExternalLogoService } from "./ExternalLogoService";
+import { ExternalLogoModel } from "database/models/ExternalLogo/model";
+import { GenreService } from "./GenreService";
 
 export class SourceMediaService extends BaseService {
 	private readonly mediaRepository: MediaRepository
@@ -34,6 +38,8 @@ export class SourceMediaService extends BaseService {
 	public  readonly externalDomainService: ExternalDomainService
 	public  readonly externalImageService: ExternalImageService
 	public  readonly externalPosterService: ExternalPosterService
+	public  readonly externalLogoService: ExternalLogoService
+	public  readonly genreService: GenreService
 
 	constructor(
 		protected sourceId: SourceId,
@@ -52,6 +58,8 @@ export class SourceMediaService extends BaseService {
 		this.externalDomainService = new ExternalDomainService(sourceId, tx, this.uow)
 		this.externalImageService = new ExternalImageService(sourceId, tx, this.uow)
 		this.externalPosterService = new ExternalPosterService(tx, this.uow)
+		this.externalLogoService = new ExternalLogoService(tx, this.uow)
+		this.genreService = new GenreService(tx, this.uow)
 	}
 
 	/**
@@ -102,6 +110,13 @@ export class SourceMediaService extends BaseService {
 		return externalPosterModel
 	}
 
+	deleteNotInPosters(
+		media: MediaModel,
+		posters: ExternalPosterModel[]
+	) {
+		this.externalPosterService.deleteNotIn(media, posters)
+	}
+
 	async createBackdrop(
 		media: MediaModel,
 		image: PartialExternalImage
@@ -118,6 +133,42 @@ export class SourceMediaService extends BaseService {
 			externalImage
 		})
 		return externalBackdropModel
+	}
+
+	deleteNotInBackdrops(
+		media: MediaModel,
+		backdrops: ExternalBackdropModel[]
+	) {
+		this.externalBackdropService.deleteNotIn(media, backdrops)
+	}
+
+	async createLogo(
+		media: MediaModel,
+		image: PartialExternalImage
+	): Promise<ExternalBackdropModel> {
+		const externalDomain = await this.externalDomainService.findOrCreate({
+			...image.externalDomain
+		})
+		const externalImage = await this.externalImageService.findOrCreate({
+			...image,
+			externalDomain
+		})
+		const externalLogoModel = this.externalLogoService.insert({
+			media,
+			externalImage
+		})
+		return externalLogoModel
+	}
+
+	deleteNotInLogos(
+		media: MediaModel,
+		logos: ExternalLogoModel[]
+	) {
+		this.externalLogoService.deleteNotIn(media, logos)
+	}
+
+	createIfNotExistGenre(genre: PartialGenre) {
+		this.genreService.createIfNotExists(genre)
 	}
 
 	async commit() {

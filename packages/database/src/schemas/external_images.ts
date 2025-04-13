@@ -7,6 +7,7 @@ import { external_domains } from "./external_domains";
 import {companies} from "database/schemas/companies.ts";
 import {external_backdrops} from "database/schemas/external_backdrops.ts";
 import {external_posters} from "database/schemas/external_posters.ts";
+import { external_logos } from "./external_logos";
 
 export const external_images = pgTable('external_images', {
   width: integer(),
@@ -28,6 +29,7 @@ export const externalImagesRelations = relations(external_images, ({ one, many }
   companies: many(companies),
   externalBackdrops: many(external_backdrops),
   externalPosters: many(external_posters),
+  externalLogos: many(external_logos),
   language: one(languages, {
     fields: [external_images.languageId],
     references: [languages.id]

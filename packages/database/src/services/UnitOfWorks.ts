@@ -1,6 +1,6 @@
 import {logger} from "../utils.ts";
 
-type AllowedOperations = 'delete' | 'deleteAll' | 'insert' | 'set' | 'update';
+type AllowedOperations = 'delete' | 'deleteAll' | 'deleteNotIn' | 'insert' | 'set' | 'update';
 
 export class UoW {
 	private changes: Array<{
