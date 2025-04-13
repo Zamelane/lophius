@@ -1,10 +1,8 @@
-
 'use server'
 
 import { db } from "database";
-import {ArrowDownUp, Funnel} from "lucide-react";
+import {Funnel, ArrowDownUp} from "lucide-react";
 import { Input } from "@/components/shadcn/ui/input";
-import { Button } from "@/components/shadcn/ui/button";
 import {PageLayout} from "@/components/me-ui/page-layout";
 import {PageHeader} from "@/components/me-ui/page-header";
 import {GridLayout} from "@/components/me-ui/grid-layout";
@@ -14,13 +12,46 @@ import { VideoCard } from "@/components/template-components/media/cards/video-ca
 export default async function TVCatalogPage() {
   console.time('query');
   const medias = await db.query.medias.findMany({
-    limit: 10,
+    limit: 1000,
+    where: (medias, { eq, and }) => and(
+      eq(medias.mediaType, 'kino'),
+      eq(medias.isAdult, false),
+      eq(medias.isVideo, false)
+    ),
     with: {
-      translates: true
+      translates: {
+        with: {
+          language: true
+        }
+      },
+      externalPosters: {
+        with: {
+          externalImage: {
+            with: {
+              externalDomain: true
+            }
+          }
+        }
+      }
     }
   })
   console.timeEnd('query');
-  //console.log(medias)
+
+  console.log(medias.length)
+
+
+  function getPosterUrl(media: typeof medias[number]) {
+    let path: string|undefined = undefined
+    for (const poster of media.externalPosters) {
+      const externalImage = poster.externalImage
+      path = `${(externalImage.externalDomain.https ? 'https': 'http')}://${externalImage.externalDomain.domain}${externalImage.path}`
+      if (path)
+        break
+    }
+
+    return path
+  }
+
   return (
     <PageContainer>
       <PageLayout>
@@ -47,7 +78,7 @@ export default async function TVCatalogPage() {
                 alt: 'alt',
                 width: 1400,
                 height: 2100,
-                src: 'https://image.tmdb.org/t/p/w600_and_h900_bestv2/cd7k10Ym8kggNoqzpVOCgElfQj3.jpg'
+                src: getPosterUrl(v) ?? ""
               }}
             />
           ))}
