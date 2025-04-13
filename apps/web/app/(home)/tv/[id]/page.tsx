@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { db } from "database";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import {PageContainer} from "@/components/me-ui/container";
 import {FilmInfo} from "@/components/template-components/media/page-info/film-info";
 
@@ -8,7 +10,105 @@ type Props = {
 }
 
 export default async function TVDetailedPage({ params }: Props) {
-  const { id } = await params
+  const id = Number((await params).id)
+
+  if (!id) {
+    notFound()
+  }
+
+  const mediaInfo = await db.query.medias.findFirst({
+    where: (medias, { eq }) => eq(medias.id, id),
+    with: {
+      translates: {
+        with: {
+          country: true,
+          language: true
+        }
+      },
+      externalPosters: {
+        with: {
+          externalImage: {
+            with: {
+              language: true,
+              externalDomain: true
+            }
+          }
+        }
+      }
+    }
+  })
+
+  if (!mediaInfo) {
+    notFound()
+  }
+
+  function getDefaultPoster() {
+    const posters = mediaInfo!.externalPosters
+
+    if (!posters.length) {
+      return undefined
+    }
+
+    return posters[0].externalImage
+  }
+
+  function getPrimaryTitle() {
+    const translates = mediaInfo!.translates
+
+    if (!translates.length)
+      return undefined
+
+    return translates[0].title
+  }
+
+  function getAnotherTitles() {
+    const translates = mediaInfo!.translates
+
+    if (!translates.length)
+      return undefined
+
+    return translates.slice(1, translates.length - 1 > 3 ? 3 : translates.length - 1).map(v => v.title).join(' / ')
+  }
+
+  function getPrimaryTagline() {
+    const translates = mediaInfo!.translates
+
+    if (!translates.length)
+      return undefined
+
+    return translates[0].tagline
+  }
+
+  function getOverview() {
+    const translates = mediaInfo!.translates
+
+    if (!translates.length)
+      return undefined
+
+    return translates[0].overview
+  }
+
+  const defaultPoster = getDefaultPoster()
+  const defaultPosterToView = defaultPoster ? {
+    ...(
+      defaultPoster.width && defaultPoster.height
+      ? {
+        width: defaultPoster.width,
+        height: defaultPoster.height,
+      }
+      : { fill: true }
+    ),
+    src: 'http'
+      + (defaultPoster.externalDomain.https ? 's' : '')
+      + '://'
+      + defaultPoster.externalDomain.domain
+      + defaultPoster.path
+  } : undefined
+
+  const primaryTitle = getPrimaryTitle()
+  const primaryTagline = getPrimaryTagline() || getAnotherTitles()
+  const overview = getOverview()
+
   return (
     <PageContainer className="px-[0] max-w-[1920px]">
       {/* Мобильная версия */}
@@ -27,14 +127,15 @@ export default async function TVDetailedPage({ params }: Props) {
         <div className="hidden md:flex flex-col gap-2 h-full sticky top-4 min-w-[250px] max-w-[250px]">
           <div className="relative aspect-[5/7] rounded-[4px]">
             <div className="inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full absolute top-1 right-1 z-10"> {/* Добавлен z-10 */}
-              4 обложки
+              {mediaInfo.externalPosters.length} обложек
             </div>
-            <Image
-              fill
-              alt="Обложка"
-              className="object-cover rounded-[4px] cursor-pointer"
-              src="https://image.tmdb.org/t/p/original/az0jQSgRLezKw5uHaEjPH20NexD.jpg"
-            />
+            {
+              defaultPosterToView && <Image
+                alt="Обложка"
+                className="object-cover rounded-[4px] cursor-pointer"
+                {...defaultPosterToView}
+              />
+            }
           </div>
           <div className="flex flex-col gap-2 max-w-[250px]">
             <button className="inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3 [&_svg]:size-4 justify-center">
@@ -71,21 +172,22 @@ export default async function TVDetailedPage({ params }: Props) {
                 className="inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full absolute top-1 right-1 z-10"> {/* Добавлен z-10 */}
                 4 обложки
               </div>
-              <Image
-                fill
-                alt="Обложка"
-                className="object-cover rounded-[4px] cursor-pointer"
-                src="https://image.tmdb.org/t/p/original/az0jQSgRLezKw5uHaEjPH20NexD.jpg"
-              />
+              {
+                defaultPosterToView && <Image
+                  alt="Обложка"
+                  className="object-cover rounded-[4px] cursor-pointer"
+                  {...defaultPosterToView}
+                />
+              }
             </div>
           </div>
           <div className="z-40 flex justify-center md:justify-between items-start">
             <div className="flex flex-col text-center md:text-start">
               <h1 className="text-center md:text-start text-2xl font-semibold line-clamp-2">
-                Начало после конца
+                { primaryTitle }
               </h1>
               <p className="text-center md:text-start text-sm text-secondary-foreground opacity-80 line-clamp-2">
-                The Beginning After the End / 最強の王様、二度目の人生は何をする？
+                { primaryTagline || <i>Без tagline ...</i> }
               </p>
             </div>
             <div className="hidden md:flex flex-col justify-end text-end">
@@ -120,7 +222,7 @@ export default async function TVDetailedPage({ params }: Props) {
             </button>
           </div>
           <div className="flex flex-grow flex-col max-w-full">
-            <FilmInfo/>
+            <FilmInfo overview={overview ?? undefined} />
           </div>
         </div>
       </div>

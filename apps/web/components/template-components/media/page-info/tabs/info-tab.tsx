@@ -3,7 +3,11 @@ import Image from "next/image";
 import {Tag} from "@/components/template-components/media/page-info/tags/tag";
 import {TagContainer} from "@/components/template-components/media/page-info/tags/tag-container";
 
-export function CinemaInfoTab() {
+export type Props = {
+	overview?: string
+}
+
+export function CinemaInfoTab({ overview }: Props) {
 	return (
 		<div className="flex flex-col gap-4 pt-2 min-w-0 max-w-full">
 
@@ -17,7 +21,7 @@ export function CinemaInfoTab() {
 					Описание
 				</h6>
 				<p className="text-sm">
-					После загадочной смерти король Грей снова родился на свет уже в другом мире — на магическом материке Дикатен под именем Артур Лейвин. Впрочем, пусть и запертый в теле младенца, свою мудрость король не растерял. Потихоньку обучаясь в магии и прокладывая путь в светлое будущее, теперь уже Артур вознамерился исправить ошибки, совершённые в прошлой жизни.
+					{ overview || <i>Без описания ...</i> }
 				</p>
 			</div>
 
