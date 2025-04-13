@@ -4,6 +4,7 @@ import {db, Transaction, DBConnection} from "../index";
 import { MediaModel } from "database/models/Media/model";
 import { MediaStatusRepository } from "database/models/MediaStatus";
 import { MediaStatusModel } from "database/models/MediaStatus/model";
+import { StatusModel } from "database/models/Status/model";
 
 export class MediaStatusService extends BaseService {
 	private readonly mediaStatusRepository: MediaStatusRepository
@@ -17,10 +18,10 @@ export class MediaStatusService extends BaseService {
 		this.mediaStatusRepository = new MediaStatusRepository(tx)
 	}
 
-	saveStatus(media: MediaModel, status: string | undefined) {
+	saveStatus(media: MediaModel, status: StatusModel | undefined) {
 		if (status) {
-			const mediaStatusModel = new MediaStatusModel({ status })
-			this.uow.registerOperation('insert', this.mediaStatusRepository, mediaStatusModel, media)
+			const mediaStatusModel = new MediaStatusModel({})
+			this.uow.registerOperation('insert', this.mediaStatusRepository, mediaStatusModel, status, media)
 			return mediaStatusModel
 		}
 

@@ -30,6 +30,9 @@ import { MediaGenreService } from "./MediaGenreService";
 import { GenreModel } from "database/models/Genre/model";
 import { MediaBudgetService } from "./MediaBudgetService";
 import { MediaStatusService } from "./MediaStatusService";
+import { StatusService } from "./StatusService";
+import { MediaRevenueService } from "./MediaRevenueService";
+import { MediaRevenue } from "database/models/MediaRevenue";
 
 export class SourceMediaService extends BaseService {
 	private readonly mediaRepository: MediaRepository
@@ -48,6 +51,8 @@ export class SourceMediaService extends BaseService {
 	public  readonly mediaGenreService: MediaGenreService
 	public  readonly mediaBudgetService: MediaBudgetService
 	public  readonly mediaStatusService: MediaStatusService
+	public  readonly statusService: StatusService
+	public  readonly mediaRevenueService: MediaRevenueService
 
 	constructor(
 		protected sourceId: SourceId,
@@ -71,6 +76,8 @@ export class SourceMediaService extends BaseService {
 		this.mediaGenreService = new MediaGenreService(tx, this.uow)
 		this.mediaBudgetService = new MediaBudgetService(tx, this.uow)
 		this.mediaStatusService = new MediaStatusService(tx, this.uow)
+		this.statusService = new StatusService(tx, this.uow)
+		this.mediaRevenueService = new MediaRevenueService(tx, this.uow)
 	}
 
 	/**
@@ -194,8 +201,12 @@ export class SourceMediaService extends BaseService {
 		this.mediaBudgetService.saveBudget(media, budget ?? undefined)
 	}
 
+	setMediaRevenue(media: MediaModel, revenue: MediaRevenue['revenue'] | undefined | null) {
+		this.mediaRevenueService.saveRevenue(media, revenue ?? undefined)
+	}
+
 	setMediaStatus(media: MediaModel, status: string | undefined | null) {
-		this.mediaStatusService.saveStatus(media, status ?? undefined)
+		this.mediaStatusService.saveStatus(media, status ? this.statusService.saveStatus(status) : undefined)
 	}
 
 	async commit() {

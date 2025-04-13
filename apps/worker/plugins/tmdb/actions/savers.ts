@@ -13,6 +13,7 @@ import { getMovieDetails } from "../steps/getMovieDetails.ts";
 import { setGenres } from "../steps/setGenres.ts";
 import { setMediaBudget } from "../steps/setMediaBudget.ts";
 import { setMediaStatus } from "../steps/setMediaStatus.ts";
+import { setMediaRevenue } from "../steps/setMediaRevenue.ts";
 
 export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: number, token: string, storage: PluginStorage) {
 	if (!moviesData.results)
@@ -35,9 +36,10 @@ export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: nu
 			.addStep(setImages)
 			.addStep(setGenres)
 			.addStep(setMediaBudget)
+			.addStep(setMediaRevenue)
 			.addStep(setMediaStatus)
 			.addStep(commitStep)
 
-		pipeline.execute()
+		await pipeline.execute()
 	}
 }

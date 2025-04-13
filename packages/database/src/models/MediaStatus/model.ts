@@ -1,11 +1,9 @@
 import {WithRequired} from "../../index";
-import {OptionalMediaRevenue} from "database/models/MediaRevenue/type.ts";
 import {OptionalMediaStatus} from "database/models/MediaStatus/type.ts";
 
 export class MediaStatusModel implements OptionalMediaStatus {
 	mediaId?: OptionalMediaStatus['mediaId'];
-	status!: OptionalMediaStatus['status'];
-
+	statusId?: OptionalMediaStatus['statusId'];
 
 	constructor(data: OptionalMediaStatus) {
 		Object.assign(this, data);
