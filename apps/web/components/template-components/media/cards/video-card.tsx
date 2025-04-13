@@ -1,11 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
+import {ImageOffIcon} from "lucide-react";
 
 type Props = {
   link: string,
   img: {
-    src: string
+    src?: string
     width: number
     height: number
     alt: string
@@ -28,17 +29,32 @@ export function VideoCard(props: Props) {
             staticSize ? "w-[160px] min-w-[160px]" : "w-full min-w-full relative"
           )}
     >
-      <Image
-        src={img.src}
-        alt={img.alt}
-        width={img.width}
-        height={img.height}
-        className={cn(
-          "aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] max-h-[320px]",
-          "transition-all duration-300 ease-in-out", // Анимация только для изображения
-          "group-hover:scale-[1.03]"                                                // Увеличение изображения чуть сильнее
-        )}
-      />
+      {
+        img.src
+          ? <Image
+            src={img.src}
+            alt={img.alt}
+            width={img.width}
+            height={img.height}
+            className={cn(
+              "aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] max-h-[320px]",
+              "border",
+              "transition-all duration-300 ease-in-out", // Анимация только для изображения
+              "group-hover:scale-[1.03]"                 // Увеличение изображения чуть сильнее
+            )}
+          />
+          : <div
+            className={cn(
+              "aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] max-h-[320px]",
+              "border",
+              "flex justify-center items-center",
+              "transition-all duration-300 ease-in-out", // Анимация только для изображения
+              "group-hover:scale-[1.03]"                 // Увеличение изображения чуть сильнее
+            )}
+          >
+            <ImageOffIcon className="w-1/3 h-1/3 stroke-red-500"/>
+          </div>
+      }
       <div className="flex flex-col">
         <p className="text-xs opacity-85">{subText}</p>
         <p className="text-sm line-clamp-2">{title}</p>
