@@ -12,10 +12,13 @@ export async function setGenres(ctx: Context): Promise<Context> {
       for (const genre of ctx.fetchedMovieDetails.genres) {
         if (!genre.name)
           continue
-        genres.push(ctx.sourceMediaService.createIfNotExistGenre({
+        const savedGenre = ctx.sourceMediaService.createIfNotExistGenre({
           english_name: genre.name
-        }))
+        })
+        ctx.sourceMediaService.linkGenreByMedia(ctx.mediaModel, savedGenre)
+        genres.push(savedGenre)
       }
+      ctx.sourceMediaService.deleteGenresIfNotInArray(ctx.mediaModel, genres)
     }
 
     return ctx

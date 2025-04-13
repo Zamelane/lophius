@@ -11,6 +11,8 @@ import {getImages} from "@plugins/tmdb/steps/getImages.ts";
 import {setImages} from "@plugins/tmdb/steps/setImages.ts";
 import { getMovieDetails } from "../steps/getMovieDetails.ts";
 import { setGenres } from "../steps/setGenres.ts";
+import { setMediaBudget } from "../steps/setMediaBudget.ts";
+import { setMediaStatus } from "../steps/setMediaStatus.ts";
 
 export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: number, token: string, storage: PluginStorage) {
 	if (!moviesData.results)
@@ -32,8 +34,10 @@ export async function saveMovies(moviesData: DiscoverMovieResponse, sourceId: nu
 			.addStep(setTranslations)
 			.addStep(setImages)
 			.addStep(setGenres)
+			.addStep(setMediaBudget)
+			.addStep(setMediaStatus)
 			.addStep(commitStep)
 
-		await pipeline.execute()
+		pipeline.execute()
 	}
 }

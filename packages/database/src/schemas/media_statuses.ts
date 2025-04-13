@@ -1,11 +1,10 @@
-import { integer, pgTable } from "drizzle-orm/pg-core";
+import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
 
 import { medias } from "./medias";
-import { statuses } from "./statuses";
 import {relations} from "drizzle-orm";
 
 export const media_statuses = pgTable('media_statuses', {
-  status: statuses().notNull(),
+  status: varchar().notNull(),
   mediaId: integer().notNull().references(() => medias.id).primaryKey()
 })
 

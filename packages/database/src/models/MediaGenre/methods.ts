@@ -4,23 +4,21 @@ import { MediaModel } from "../Media/model"
 import { MediaGenreRepository } from "./repository"
 import { media_genres } from "database/schemas"
 import { and, eq, notInArray } from "drizzle-orm"
+import { MediaGenreModel } from "./model"
 
 /**
  * Операция Insert для модели UoW
  */
 export async function insertMediaGenre(
 	this: MediaGenreRepository,
-	genre: GenreModel,
-  media: MediaModel
+	data: MediaGenreModel
 ) {
-  genre.validateRequiredIds()
-  media.validateRequiredIds()
+  data.validateRequiredIds()
 
 	queryOneResult(
 		await this.tx.insert(media_genres)
 			.values({
-        genreId: genre.id,
-        mediaId: media.id
+				...data
       })
 			.onConflictDoNothing()
 			.returning()
@@ -30,7 +28,7 @@ export async function insertMediaGenre(
 /**
  * Операция DeleteNotIn для модели UoW
  */
-export async function deleteNotInPoster(
+export async function deleteNotInGenres(
 	this: MediaGenreRepository,
 	genres: GenreModel[],
 	media: MediaModel

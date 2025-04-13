@@ -10,12 +10,18 @@ export async function insertGenre(
 	this: GenreRepository,
 	data: GenreModel
 ) {
+	const english_name = data.english_name.toLocaleLowerCase()
 	queryOneResult(
 		await this.tx.insert(genres)
 			.values({
-        english_name: data.english_name.toLocaleLowerCase()
+        english_name
       })
-			.onConflictDoNothing()
+			.onConflictDoUpdate({
+				target: genres.english_name,
+				set: {
+					english_name
+				}
+			})
 			.returning(),
       v => data.id = v.id
 	)
