@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { LocaleLink } from "@/hooks/locale-link";
 
 type Props = {
 	href?: string
@@ -14,9 +14,9 @@ export function Tag(props: Props) {
 		<>
 			{
 				props.href ?
-					<Link href={props.href} className={className}>
+					<LocaleLink href={props.href} className={className}>
 						{props.text}
-					</Link>
+					</LocaleLink>
 					: <div className={className}>
 						{props.text}
 					</div>

@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link";
+import { LocaleLink } from "@/hooks/locale-link";
 import { UserLogout } from "@/actions/client/user"
 import {
   LogOut,
@@ -62,7 +62,7 @@ export function NavUser({
             side={isMobile ? "bottom" : "right"}
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
           >
-            <Link href={`/user/${user.name}`}>
+            <LocaleLink href={`/user/${user.name}`}>
               <DropdownMenuItem className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
@@ -75,7 +75,7 @@ export function NavUser({
                   </div>
                 </div>
               </DropdownMenuItem>
-            </Link>
+            </LocaleLink>
             {/*<DropdownMenuSeparator />*/}
             {/*<DropdownMenuGroup>*/}
             {/*  <DropdownMenuItem>*/}

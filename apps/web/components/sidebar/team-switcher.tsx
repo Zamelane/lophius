@@ -35,7 +35,7 @@ export function ModeSwitcher({
   const [open, setOpen] = useState(false);
   const { isMobile } = useSidebar()
   const [activeTeam, setVisibleActiveTeam] = React.useState(
-    teams.find(v => v.path.startsWith(path)) ??
+    teams.find(v => v.path.startsWith('/' + v.path.split('/')[1] + path)) ??
     teams[0]
   )
 

@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { LocaleLink } from "@/hooks/locale-link"
 import { ChevronRight, type LucideIcon } from "lucide-react"
 import {
   Collapsible,
@@ -56,15 +56,15 @@ export function NavMain({
                     <ContextMenu>
                       <ContextMenuTrigger>
                         <SidebarMenuButton asChild tooltip={item.title} isActive={path === item.url}>
-                          <Link href={item.url}>
+                          <LocaleLink href={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
-                          </Link>
+                          </LocaleLink>
                         </SidebarMenuButton>
                       </ContextMenuTrigger>
                       <ContextMenuContent>
                         {item.menu?.map((subItem) => (
-                          <Link href={subItem.url} key={'s_' + subItem.title}>
+                          <LocaleLink href={subItem.url} key={'s_' + subItem.title}>
                             <ContextMenuItem key={'ss_' + subItem.title}>
                               <p className={subItem.icon ? "pr-2" : ""}>{subItem.title}</p>
                               {
@@ -74,7 +74,7 @@ export function NavMain({
                                   </ContextMenuShortcut>
                               }
                             </ContextMenuItem>
-                          </Link>
+                          </LocaleLink>
                         ))}
                       </ContextMenuContent>
                     </ContextMenu>
@@ -91,10 +91,10 @@ export function NavMain({
                             {item.menu?.map((subItem) => (
                               <SidebarMenuSubItem key={'sm_' + subItem.title}>
                                 <SidebarMenuSubButton asChild>
-                                  <Link href={subItem.url}>
+                                  <LocaleLink href={subItem.url}>
                                     {subItem.icon && <subItem.icon/>}
                                     <span>{subItem.title}</span>
-                                  </Link>
+                                  </LocaleLink>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             ))}

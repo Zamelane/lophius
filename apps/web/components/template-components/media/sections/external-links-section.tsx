@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "next/link";
+import { LocaleLink } from "@/hooks/locale-link";
 import { Input } from "@/components/shadcn/ui/input";
 import { Button } from "@/components/shadcn/ui/button";
 import { ExternalLinksInfoDataType } from "@/interfaces/edit-types";
@@ -32,11 +32,11 @@ export function ExternalLinksSection({ links: {get, set} }: Props) {
             <EditSectionItem key={'el_' + i}>
               <EditSectionGroup>
                 <Input value={v} placeholder="Внешняя ссылка" onChange={e => onChangeHadler(e.target.value, i)}/>
-                <Link href={v} target="_blank">
+                <LocaleLink href={v} target="_blank">
                   <Button variant='ghost' className="w-9 h-9">
                     <SquareArrowOutUpRightIcon />
                   </Button>
-                </Link>
+                </LocaleLink>
                 <Button variant='ghost' onClick={() => remove(i)} className="w-9 h-9 hover:bg-destructive hover:text-white">
                   <TrashIcon />
                 </Button>

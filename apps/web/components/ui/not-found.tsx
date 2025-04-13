@@ -1,7 +1,7 @@
 'use client'
 
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { LocaleLink } from "@/hooks/locale-link"
 
 interface NotFoundProps {
   title?: string
@@ -51,7 +51,7 @@ export function NotFoundComponent({
           </div>
         </Button> */}
         <Button asChild className="-order-1 sm:order-none">
-          <Link href="/">Take me home</Link>
+          <LocaleLink href="/">Take me home</LocaleLink>
         </Button>
       </div>
     </div>
