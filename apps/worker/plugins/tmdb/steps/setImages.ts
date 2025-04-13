@@ -12,13 +12,16 @@ export async function setImages(ctx: Context): Promise<Context> {
     if (!ctx.fetchedImagesData)
         throw new Error('Fetched ImagesData missing');
 
-    const images = []
     const mediaModel = ctx.mediaModel
 
     if (ctx.fetchedImagesData) {
       const posters = defaultValue(ctx.fetchedImagesData.posters, [])
       const logos = defaultValue(ctx.fetchedImagesData.logos, [])
       const backdrops = defaultValue(ctx.fetchedImagesData.backdrops, [])
+      
+      const referencePosters = []
+      const referenceLogos = []
+      const referenceBackdrops = []
 
       // Постеры
       for (const image of posters) {
@@ -40,16 +43,16 @@ export async function setImages(ctx: Context): Promise<Context> {
                   : null
             }
           )
-        images.push(externalPoster.externalImage)
+        referencePosters.push(externalPoster)
       }
 
       // Задники
-      for (const image of posters) {
+      for (const image of backdrops) {
         if (!image.file_path) {
           logger.debug('Пропускаю изображение, т.к. нет пути')
           continue
         }
-        const externalPoster = await ctx.sourceMediaService.createBackdrop(
+        const externalBackdrop = await ctx.sourceMediaService.createBackdrop(
           ctx.mediaModel,
           {
             externalDomain: getDomainByUrl(imageCDN),
@@ -63,8 +66,35 @@ export async function setImages(ctx: Context): Promise<Context> {
               : null
           }
         )
-        images.push(externalPoster.externalImage)
+        referenceBackdrops.push(externalBackdrop)
       }
+
+      // Логотипы
+      for (const image of logos) {
+        if (!image.file_path) {
+          logger.debug('Пропускаю изображение, т.к. нет пути')
+          continue
+        }
+        const externalBackdrop = await ctx.sourceMediaService.createLogo(
+          ctx.mediaModel,
+          {
+            externalDomain: getDomainByUrl(imageCDN),
+            language: null,
+            path: subPath + image.file_path,
+            height: image.height ?? null,
+            width: image.width ?? null,
+            vote_count: image.vote_count ?? null,
+            vote_avg: typeof image.vote_average === 'number' && !isNaN(image.vote_average)
+              ? image.vote_average.toString()
+              : null
+          }
+        )
+        referenceLogos.push(externalBackdrop)
+      }
+
+      ctx.sourceMediaService.deleteNotInBackdrops(ctx.mediaModel, referenceBackdrops)
+      ctx.sourceMediaService.deleteNotInLogos(ctx.mediaModel, referenceLogos)
+      ctx.sourceMediaService.deleteNotInPosters(ctx.mediaModel, referencePosters)
     }
 
     return ctx

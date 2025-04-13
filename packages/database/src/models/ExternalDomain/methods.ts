@@ -35,6 +35,7 @@ export async function insertExternalDomain(
       .values({
         ...model
       })
+      .onConflictDoNothing()
       .returning(),
       v => model.id = v.id
   )
