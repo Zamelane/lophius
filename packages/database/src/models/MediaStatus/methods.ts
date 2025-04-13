@@ -3,6 +3,7 @@ import { MediaModel } from "../Media/model"
 import { MediaStatusModel } from "./model"
 import { MediaStatusRepository } from "./repository"
 import { eq } from "drizzle-orm"
+import { StatusModel } from "../Status/model"
 
 /**
  * Операция Insert для модели UoW
@@ -10,14 +11,16 @@ import { eq } from "drizzle-orm"
 export async function insertMediaStatus(
 	this: MediaStatusRepository,
 	data: MediaStatusModel,
+	status: StatusModel,
   media: MediaModel
 ) {
   media.validateRequiredIds()
+	status.validateRequiredIds()
 
 	await this.tx.insert(media_statuses)
 		.values({
 			...data,
-      status: data.status.toLocaleLowerCase(),
+      statusId: status.id,
       mediaId: media.id
     })
 		.onConflictDoNothing()
