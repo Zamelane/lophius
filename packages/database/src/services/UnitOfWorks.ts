@@ -28,10 +28,8 @@ export class UoW {
 
 		this.changes.push({
 			execute: async () => {
-				console.time(`	${operation}_${repo.constructor.name}`);
 				logger.debug(args, `Выполняю ${operation} в ${repo.constructor.name}`);
 				await method.call(repo, ...args)
-				console.timeEnd(`	${operation}_${repo.constructor.name}`);
 			}
 		});
 	}

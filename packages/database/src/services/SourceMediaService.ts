@@ -15,7 +15,8 @@ import {
 	PartialMedia,
 	MediaRepository,
 	pickExistingByType, PartialExternalImage,
-	PartialGenre
+	PartialGenre,
+	MediaBudget
 } from "database";
 import { ExternalDomainService } from "./ExternalDomainService";
 import { ExternalImageService } from "./ExternalImageService";
@@ -25,6 +26,10 @@ import {ExternalBackdropModel} from "database/models/ExternalBackdrop/model.ts";
 import { ExternalLogoService } from "./ExternalLogoService";
 import { ExternalLogoModel } from "database/models/ExternalLogo/model";
 import { GenreService } from "./GenreService";
+import { MediaGenreService } from "./MediaGenreService";
+import { GenreModel } from "database/models/Genre/model";
+import { MediaBudgetService } from "./MediaBudgetService";
+import { MediaStatusService } from "./MediaStatusService";
 
 export class SourceMediaService extends BaseService {
 	private readonly mediaRepository: MediaRepository
@@ -40,6 +45,9 @@ export class SourceMediaService extends BaseService {
 	public  readonly externalPosterService: ExternalPosterService
 	public  readonly externalLogoService: ExternalLogoService
 	public  readonly genreService: GenreService
+	public  readonly mediaGenreService: MediaGenreService
+	public  readonly mediaBudgetService: MediaBudgetService
+	public  readonly mediaStatusService: MediaStatusService
 
 	constructor(
 		protected sourceId: SourceId,
@@ -60,6 +68,9 @@ export class SourceMediaService extends BaseService {
 		this.externalPosterService = new ExternalPosterService(tx, this.uow)
 		this.externalLogoService = new ExternalLogoService(tx, this.uow)
 		this.genreService = new GenreService(tx, this.uow)
+		this.mediaGenreService = new MediaGenreService(tx, this.uow)
+		this.mediaBudgetService = new MediaBudgetService(tx, this.uow)
+		this.mediaStatusService = new MediaStatusService(tx, this.uow)
 	}
 
 	/**
@@ -168,7 +179,23 @@ export class SourceMediaService extends BaseService {
 	}
 
 	createIfNotExistGenre(genre: PartialGenre) {
-		this.genreService.createIfNotExists(genre)
+		return this.genreService.createIfNotExists(genre)
+	}
+
+	linkGenreByMedia(media: MediaModel, genre: GenreModel) {
+		this.mediaGenreService.insert(media, genre)
+	}
+
+	deleteGenresIfNotInArray(media: MediaModel, genres: GenreModel[]) {
+		this.mediaGenreService.deleteNotIn(media, genres)
+	}
+
+	setMediaBudget(media: MediaModel, budget: MediaBudget['budget'] | undefined | null) {
+		this.mediaBudgetService.saveBudget(media, budget ?? undefined)
+	}
+
+	setMediaStatus(media: MediaModel, status: string | undefined | null) {
+		this.mediaStatusService.saveStatus(media, status ?? undefined)
 	}
 
 	async commit() {
