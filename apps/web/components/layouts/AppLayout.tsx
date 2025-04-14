@@ -13,7 +13,11 @@ export default function AppLayout({ children }: LayoutProps) {
       <AppSidebar />
       <SidebarInset className="ml-[2px] overflow-hidden">
 				<SiteHeader />
-				{children}
+				<div className="flex flex-grow justify-center">
+					<div className="w-full max-w-[1920px]">
+						{children}
+					</div>
+				</div>
 				<Footer/>
       </SidebarInset>
     </SidebarProvider>

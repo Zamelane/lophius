@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
   // Пропускаем статические файлы и favicon
-  if (path.startsWith('/_next/') || path.startsWith('/favicon.ico')) {
+  if (path.startsWith('/fonts/') || path.startsWith('/images/') || path.startsWith('/_next/') || path.startsWith('/favicon.ico')) {
     return NextResponse.next()
   }
 

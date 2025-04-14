@@ -4,7 +4,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 export function Footer() {
   return (
     <footer className="flex justify-center bg-background border-t-[1px] border-border mt-4">
-      <div className="flex flex-col md:flex-row max-w-[1920px] w-full justify-between items-start gap-4 py-6 px-[16px] md:px-[24px]">
+      <div className="flex flex-col md:flex-row max-w-[1920px] w-full justify-between items-start gap-4 py-6 px-[16px] md:px-[16px]">
         <div className="flex flex-col gap-4">
           <h6 className="font-bold text-lg">lophius.zmln.ru</h6>
           <div className="flex flex-col gap-1">
