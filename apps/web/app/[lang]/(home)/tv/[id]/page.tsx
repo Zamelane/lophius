@@ -2,8 +2,8 @@ import { db } from "database";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LocaleLink } from "@/hooks/locale-link";
-import {PageContainer} from "@/components/me-ui/container";
 import {FilmInfo} from "@/components/template-components/media/page-info/film-info";
+import { ContentLayout } from "@/components/template-components/other/content-layout";
 
 type Props = {
   params: Promise<{ id: string }>
@@ -110,15 +110,18 @@ export default async function TVDetailedPage({ params }: Props) {
   const overview = getOverview()
 
   return (
-    <PageContainer className="px-[0] max-w-[1920px]">
+    <ContentLayout className="px-0">
       {/* Мобильная версия */}
-      <div className="relative md:hidden h-[450px]">
-        <Image
-          fill
-          alt="Задник"
-          className="object-cover object-top"
-          src="https://image.tmdb.org/t/p/original/u42yAt7tZVMizlei8zF6mJUSx2Q.jpg"
-        />
+      <div className="relative md:hidden h-[450px] blur-lg opacity-80 object-cover">
+        {
+          defaultPosterToView &&
+            <Image
+              fill
+              alt="Задник"
+              src={defaultPosterToView.src}
+              className="object-cover object-top"
+            />
+        }
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-80% to-background"/>
       </div>
 
@@ -167,7 +170,7 @@ export default async function TVDetailedPage({ params }: Props) {
         </div>
         <div className="flex flex-col gap-4 flex-grow min-w-0 max-w-full">
           <div className="z-40 flex md:hidden justify-center mt-[-425px]">
-            <div className="relative aspect-[5/7] rounded-[4px] h-[350px]">
+            <div className="relative aspect-[5/7] rounded-[4px] h-[350px] overflow-clip">
               <div
                 className="inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full absolute top-1 right-1 z-10"> {/* Добавлен z-10 */}
                 4 обложки
@@ -226,6 +229,6 @@ export default async function TVDetailedPage({ params }: Props) {
           </div>
         </div>
       </div>
-    </PageContainer>
+    </ContentLayout>
   )
 }

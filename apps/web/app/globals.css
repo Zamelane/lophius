@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face{
+  font-family: Geist;
+  src: url(/fonts/Geist.ttf)
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Geist, Arial, Helvetica, sans-serif;
 }
 
 @layer base {

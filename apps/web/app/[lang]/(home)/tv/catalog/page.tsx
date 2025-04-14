@@ -6,8 +6,8 @@ import { Input } from "@/components/shadcn/ui/input";
 import {PageLayout} from "@/components/me-ui/page-layout";
 import {PageHeader} from "@/components/me-ui/page-header";
 import {GridLayout} from "@/components/me-ui/grid-layout";
-import {PageContainer} from "@/components/me-ui/container";
 import { VideoCard } from "@/components/template-components/media/cards/video-card";
+import { ContentLayout } from "@/components/template-components/other/content-layout";
 
 export default async function TVCatalogPage() {
   console.time('query');
@@ -53,7 +53,7 @@ export default async function TVCatalogPage() {
   }
 
   return (
-    <PageContainer>
+    <ContentLayout>
       <PageLayout>
         <PageHeader title="Каталог" actions={
           <>
@@ -84,6 +84,6 @@ export default async function TVCatalogPage() {
           ))}
         </GridLayout>
       </PageLayout>
-    </PageContainer>
+    </ContentLayout>
   )
 }

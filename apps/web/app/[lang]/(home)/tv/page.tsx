@@ -4,7 +4,7 @@ import { TitleList } from "@/components/template-components/media/containers/tit
 
 export default async function Page() {
   return (
-    <ContentLayout>
+    <ContentLayout className="px-0 md:px-0">
       <TitleList px={4} title="В тренде">
         <VideoCard
           link="/"
