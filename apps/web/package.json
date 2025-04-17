@@ -63,6 +63,7 @@
     "react-dom": "^19.0.0",
     "react-indiana-drag-scroll": "^2.2.1",
     "react-medium-image-zoom": "^5.2.14",
+    "react-photo-view": "^1.2.7",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.1",
     "sharp": "^0.33.5",
