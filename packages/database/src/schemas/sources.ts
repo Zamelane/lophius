@@ -3,6 +3,7 @@ import {relations} from "drizzle-orm";
 import {companies} from "database/schemas/companies.ts";
 import {external_images} from "database/schemas/external_images.ts";
 import {origin_countries} from "database/schemas/origin_countries.ts";
+import {plugin_storage} from "database/schemas/plugin_storage.ts";
 
 export const sourceType = pgEnum('source_type', ['user', 'parser'])
 
@@ -13,5 +14,6 @@ export const sources = pgTable('sources', {
 
 export const sourcesRelations = relations(sources, ({ one, many }) => ({
   companies: many(companies),
-  externalImages: many(external_images)
+  externalImages: many(external_images),
+  pluginStorage: one(plugin_storage)
 }))
