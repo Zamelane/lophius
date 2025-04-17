@@ -37,7 +37,9 @@ export default function Photo({
 
   function handleImageLoaded(e: React.SyntheticEvent<HTMLImageElement>) {
     const { naturalWidth, naturalHeight } = e.target as HTMLImageElement;
-    setSizes({ width: naturalWidth, height: naturalHeight });
+    if (!sizes) {
+      setSizes({width: naturalWidth, height: naturalHeight});
+    }
     if (mountedRef.current) {
       onPhotoLoad({
         loaded: true,

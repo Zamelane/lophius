@@ -1,8 +1,8 @@
 import {
 	Transaction,
 	DBConnection,
-	insertTranslate
 } from "../../index";
+import {insertTranslate} from "database/models/Translate/methods.ts";
 
 /**
  * @description Репозиторий для работы с моделью переводов

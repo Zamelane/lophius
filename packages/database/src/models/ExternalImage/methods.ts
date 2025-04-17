@@ -4,6 +4,7 @@ import { ExternalImageRepository } from "./repository";
 import { external_images } from "database/schemas";
 import { SourceId } from "../Source";
 import { and, eq } from "drizzle-orm";
+import {PartialExternalImage} from "database/models";
 
 export async function findExternalImageByCredentials(
   this: ExternalImageRepository,

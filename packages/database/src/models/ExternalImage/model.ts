@@ -35,6 +35,9 @@ export class ExternalImageModel implements OptionalExternalImage {
 	}
 
 	validateRequiredIds(): asserts this is WithRequired<OptionalExternalImage, 'id' | 'externalDomainId'> {
+		if (this.language) {
+			this.languageId = this.language.id
+		}
 		if (!this.id || !this.externalDomainId)
 			throw new Error('Missing required id and sourceId: ' + this.constructor.name + JSON.stringify([
 				this.id,
