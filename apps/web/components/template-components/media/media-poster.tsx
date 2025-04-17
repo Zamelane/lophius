@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { PhotoSlider } from "react-photo-view";
-import 'react-photo-view/dist/react-photo-view.css';
+import { PhotoSlider } from "react-photo-view/src";
 
 type MediaPosterProps = {
 	posters: Array<{
@@ -44,7 +43,7 @@ export function MediaPoster({ posters, postersCount, className = "" }: MediaPost
 
 			<PhotoSlider
 				index={index}
-				speed={() => 100}
+				speed={() => 500}
 				visible={visible}
 				onIndexChange={setIndex}
 				onClose={() => setVisible(false)}
