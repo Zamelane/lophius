@@ -1,3 +1,5 @@
+'use server'
+
 import { getRequestConfig } from "next-intl/server";
 import {getCurrentLocale} from "@/i18n/current-locale";
 

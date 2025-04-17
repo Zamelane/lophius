@@ -1,3 +1,5 @@
+'use server'
+
 import Image from "next/image";
 import {notFound} from "next/navigation";
 import {Button} from "@/components/me-ui/button";
