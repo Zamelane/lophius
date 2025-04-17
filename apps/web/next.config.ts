@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
     ppr: true,
+    useCache: true,
     nodeMiddleware: true
   },
   images: {
