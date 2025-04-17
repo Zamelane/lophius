@@ -1,11 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { type DialogProps } from "@radix-ui/react-dialog"
-import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
-
 import { cn } from "@/lib/utils"
+import { Search } from "lucide-react"
+import { Command as CommandPrimitive } from "cmdk"
+import { type DialogProps } from "@radix-ui/react-dialog"
 import { Dialog, DialogContent } from "@/components/shadcn/ui/dialog"
 
 const Command = React.forwardRef<
@@ -39,7 +38,7 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
+  <div cmdk-input-wrapper="" className="flex items-center border-b px-3">
     <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
@@ -142,12 +141,12 @@ CommandShortcut.displayName = "CommandShortcut"
 
 export {
   Command,
-  CommandDialog,
-  CommandInput,
   CommandList,
+  CommandItem,
+  CommandInput,
   CommandEmpty,
   CommandGroup,
-  CommandItem,
+  CommandDialog,
   CommandShortcut,
   CommandSeparator,
 }

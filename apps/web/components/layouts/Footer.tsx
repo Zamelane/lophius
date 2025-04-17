@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react";
+import {LocaleLink} from "@/hooks/locale-link";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export function Footer() {
@@ -23,12 +24,12 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <h6 className="font-bold text-sm">Документы</h6>
             <div className="flex flex-col gap-1">
-              <a href="/document/terms-of-use" className="text-xs text-secondary-foreground hover:underline">
+              <LocaleLink href="/document/terms-of-use" className="text-xs text-secondary-foreground hover:underline">
                 Пользовательское соглашение
-              </a>
-              <a href="/document/subscription-agreement" className="text-xs text-secondary-foreground hover:underline">
+              </LocaleLink>
+              <LocaleLink href="/document/subscription-agreement" className="text-xs text-secondary-foreground hover:underline">
                 Политика конфиденциальности
-              </a>
+              </LocaleLink>
             </div>
           </div>
           <div className="flex flex-col gap-2">

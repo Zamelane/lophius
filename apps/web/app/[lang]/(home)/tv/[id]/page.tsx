@@ -1,12 +1,12 @@
 import {db} from "database";
 import Image from "next/image";
 import {notFound} from "next/navigation";
+import {Button} from "@/components/me-ui/button";
 import {InfoBlock} from "@/components/template-components/media/info-block";
 import {MediaPoster} from "@/components/template-components/media/media-poster";
 import {RatingBadge} from "@/components/template-components/media/rating-badge";
 import {FilmInfo} from "@/components/template-components/media/page-info/film-info";
 import {ContentLayout} from "@/components/template-components/other/content-layout";
-import {Button} from "@/components/me-ui/button";
 
 type Props = {
   params: Promise<{ id: string }>

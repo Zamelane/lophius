@@ -1,4 +1,4 @@
-import {InferSelectModel, relations} from "drizzle-orm";
+import {relations} from "drizzle-orm";
 import { bigint, pgTable, primaryKey } from "drizzle-orm/pg-core";
 
 import { medias } from "./medias";

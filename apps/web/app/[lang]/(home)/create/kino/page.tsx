@@ -5,7 +5,7 @@ import { InfoIcon, LanguagesIcon } from "lucide-react";
 import { Tab, CustomMenu } from "@/components/me-ui/custom-menu";
 import { Centrize } from "@/components/template-components/other/centrize";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
-import { KinoType, GenreTranslation, KinoCategoryType, SerialStatusType, CountryTranslation, LanguageTranslation, KinoTranslateType } from "@/interfaces";
+import { KinoType, GenreTranslation, KinoCategoryType, SerialStatusType, KinoTranslateType, CountryTranslation, LanguageTranslation } from "@/interfaces";
 
 import { TranslateTab } from "./(tabs)/translate";
 import { DefaultInfoTab } from "./(tabs)/default-info";

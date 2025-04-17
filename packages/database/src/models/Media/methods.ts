@@ -29,7 +29,7 @@ export async function findMediaById(
 
 /**
  * Возвращает медиа по его внешнему id и id источника
- * @param mediaId
+ * @param externalId
  * @param sourceId
  */
 export async function findMediaByExternalId(

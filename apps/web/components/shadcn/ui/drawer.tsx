@@ -1,9 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
-
 import { cn } from "@/lib/utils"
+import { Drawer as DrawerPrimitive } from "vaul"
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -37,7 +36,7 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
@@ -106,13 +105,13 @@ DrawerDescription.displayName = DrawerPrimitive.Description.displayName
 
 export {
   Drawer,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerTrigger,
   DrawerClose,
-  DrawerContent,
+  DrawerTitle,
+  DrawerPortal,
   DrawerHeader,
   DrawerFooter,
-  DrawerTitle,
+  DrawerOverlay,
+  DrawerTrigger,
+  DrawerContent,
   DrawerDescription,
 }

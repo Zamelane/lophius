@@ -1,4 +1,4 @@
-import {InferSelectModel, relations} from "drizzle-orm";
+import {relations} from "drizzle-orm";
 import { text, bigint, unique, pgTable, varchar, integer, bigserial, AnyPgColumn } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";

@@ -1,6 +1,6 @@
-import {WithOptional} from "@/utils.ts";
+import {WithOptional} from "database/utils.ts";
 import {InferSelectModel} from "drizzle-orm";
-import {companies} from "@/schemas";
+import {companies} from "database/schemas";
 
 export type Company = InferSelectModel<typeof companies>
 export type OptionalCompany = WithOptional<Company, 'id' | 'sourceId'>

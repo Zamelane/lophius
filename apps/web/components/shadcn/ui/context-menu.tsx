@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
-import { Check, ChevronRight, Circle } from "lucide-react"
-
 import { cn } from "@/lib/utils"
+import { Check, Circle, ChevronRight } from "lucide-react"
+import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
 
 const ContextMenu = ContextMenuPrimitive.Root
 
@@ -20,10 +19,10 @@ const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup
 
 const ContextMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger> & {
+  {
     inset?: boolean
-  }
->(({ className, inset, children, ...props }, ref) => (
+  } & React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger>
+>(({ inset, children, className, ...props }, ref) => (
   <ContextMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
@@ -73,10 +72,10 @@ ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName
 
 const ContextMenuItem = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item> & {
+  {
     inset?: boolean
-  }
->(({ className, inset, ...props }, ref) => (
+  } & React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item>
+>(({ inset, className, ...props }, ref) => (
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
@@ -92,14 +91,14 @@ ContextMenuItem.displayName = ContextMenuPrimitive.Item.displayName
 const ContextMenuCheckboxItem = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.CheckboxItem>
->(({ className, children, checked, ...props }, ref) => (
+>(({ checked, children, className, ...props }, ref) => (
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
+    checked={checked}
     className={cn(
       "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
-    checked={checked}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -116,7 +115,7 @@ ContextMenuCheckboxItem.displayName =
 const ContextMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>
->(({ className, children, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
@@ -137,10 +136,10 @@ ContextMenuRadioItem.displayName = ContextMenuPrimitive.RadioItem.displayName
 
 const ContextMenuLabel = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & {
+  {
     inset?: boolean
-  }
->(({ className, inset, ...props }, ref) => (
+  } & React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label>
+>(({ inset, className, ...props }, ref) => (
   <ContextMenuPrimitive.Label
     ref={ref}
     className={cn(
@@ -183,18 +182,18 @@ ContextMenuShortcut.displayName = "ContextMenuShortcut"
 
 export {
   ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuContent,
+  ContextMenuSub,
   ContextMenuItem,
-  ContextMenuCheckboxItem,
-  ContextMenuRadioItem,
   ContextMenuLabel,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
   ContextMenuGroup,
   ContextMenuPortal,
-  ContextMenuSub,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuShortcut,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
+  ContextMenuCheckboxItem,
 }
