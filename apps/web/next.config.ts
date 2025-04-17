@@ -14,8 +14,7 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
     ppr: true,
-    nodeMiddleware: true,
-    viewTransition: true
+    nodeMiddleware: true
   },
   images: {
     remotePatterns: [

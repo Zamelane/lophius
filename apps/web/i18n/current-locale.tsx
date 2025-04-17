@@ -1,3 +1,5 @@
+'use server'
+
 import {headers} from "next/headers";
 import {defaultLocale, localesSupported} from "@/i18n/config";
 

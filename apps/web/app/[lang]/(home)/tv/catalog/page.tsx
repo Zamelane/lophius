@@ -11,24 +11,31 @@ import { VideoCard } from "@/components/template-components/media/cards/video-ca
 import { ContentLayout } from "@/components/template-components/other/content-layout";
 
 export default async function TVCatalogPage() {
-  console.time('query');
   const query_result = await db.query.medias.findMany({
-    limit: 1000,
+    limit: 30,
     where: (medias, { eq, and }) => and(
       eq(medias.mediaType, 'kino'),
       eq(medias.isAdult, false),
       eq(medias.isVideo, false)
     ),
     with: {
-      source: {
-        with: {
-          pluginStorage: true
-        }
-      },
       translates: {
+        columns: {
+          title: true,
+        },
         with: {
           country: true,
           language: true
+        }
+      },
+      source: {
+        with: {
+          pluginStorage: {
+            columns: {
+              sourceId: true,
+              pluginName: true
+            }
+          }
         }
       },
       externalPosters: {
@@ -43,7 +50,8 @@ export default async function TVCatalogPage() {
       }
     }
   })
-  console.timeEnd('query');
+
+  //console.log(`Символов: ${JSON.stringify(query_result).length}`)
 
   const medias = []
 
