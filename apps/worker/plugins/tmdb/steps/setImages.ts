@@ -29,20 +29,25 @@ export async function setImages(ctx: Context): Promise<Context> {
           logger.debug('Пропускаю изображение, т.к. нет пути')
           continue
         }
-          const externalPoster = await ctx.sourceMediaService.createPoster(
-            ctx.mediaModel,
-            {
-                externalDomain: getDomainByUrl(imageCDN),
-                language: null,
-                path: subPath + image.file_path,
-                height: image.height ?? null,
-                width: image.width ?? null,
-                vote_count: image.vote_count ?? null,
-                vote_avg: typeof image.vote_average === 'number' && !isNaN(image.vote_average)
-                  ? image.vote_average.toString()
-                  : null
-            }
-          )
+        const language = !image.iso_639_1
+          ? null
+          : ctx.sourceMediaService.languageService.createLanguage({
+            iso_639_1: image.iso_639_1
+          })
+        const externalPoster = await ctx.sourceMediaService.createPoster(
+          ctx.mediaModel,
+          {
+              externalDomain: getDomainByUrl(imageCDN),
+              language,
+              path: subPath + image.file_path,
+              height: image.height ?? null,
+              width: image.width ?? null,
+              vote_count: image.vote_count ?? null,
+              vote_avg: typeof image.vote_average === 'number' && !isNaN(image.vote_average)
+                ? image.vote_average.toString()
+                : null
+          }
+        )
         referencePosters.push(externalPoster)
       }
 

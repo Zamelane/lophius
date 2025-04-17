@@ -1,13 +1,14 @@
 import Image from "next/image";
 import { LocaleLink } from "@/hooks/locale-link";
 import {Tag} from "@/components/template-components/media/page-info/tags/tag";
+import {GetTvDetailedInfoResult} from "@/actions/server/media/tv/get-tv-detailed-info";
 import {TagContainer} from "@/components/template-components/media/page-info/tags/tag-container";
 
 export type Props = {
-	overview?: string
+	mediaInfo: GetTvDetailedInfoResult
 }
 
-export function CinemaInfoTab({ overview }: Props) {
+export function CinemaInfoTab({ mediaInfo }: Props) {
 	return (
 		<div className="flex flex-col gap-4 pt-2 min-w-0 max-w-full">
 
@@ -21,7 +22,9 @@ export function CinemaInfoTab({ overview }: Props) {
 					Описание
 				</h6>
 				<p className="text-sm">
-					{ overview || <i>Без описания ...</i> }
+					{ mediaInfo.translates.overviews.length
+						? mediaInfo.translates.overviews[0]
+						: <i>Без описания ...</i> }
 				</p>
 			</div>
 

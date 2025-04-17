@@ -6,12 +6,13 @@ import { Input } from "@/components/shadcn/ui/input";
 import {PageLayout} from "@/components/me-ui/page-layout";
 import {PageHeader} from "@/components/me-ui/page-header";
 import {GridLayout} from "@/components/me-ui/grid-layout";
+import {getTvDetailedInfo} from "@/actions/server/media/tv/get-tv-detailed-info";
 import { VideoCard } from "@/components/template-components/media/cards/video-card";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
 
 export default async function TVCatalogPage() {
   console.time('query');
-  const medias = await db.query.medias.findMany({
+  const query_result = await db.query.medias.findMany({
     limit: 1000,
     where: (medias, { eq, and }) => and(
       eq(medias.mediaType, 'kino'),
@@ -19,8 +20,14 @@ export default async function TVCatalogPage() {
       eq(medias.isVideo, false)
     ),
     with: {
+      source: {
+        with: {
+          pluginStorage: true
+        }
+      },
       translates: {
         with: {
+          country: true,
           language: true
         }
       },
@@ -28,6 +35,7 @@ export default async function TVCatalogPage() {
         with: {
           externalImage: {
             with: {
+              language: true,
               externalDomain: true
             }
           }
@@ -37,20 +45,18 @@ export default async function TVCatalogPage() {
   })
   console.timeEnd('query');
 
-  console.log(medias.length)
+  const medias = []
 
 
-  function getPosterUrl(media: typeof medias[number]) {
-    let path: string|undefined = undefined
-    for (const poster of media.externalPosters) {
-      const externalImage = poster.externalImage
-      path = `${(externalImage.externalDomain.https ? 'https': 'http')}://${externalImage.externalDomain.domain}${externalImage.path}`
-      if (path)
-        break
-    }
-
-    return path
+  for (const mediaData of query_result) {
+    const loadedData = await getTvDetailedInfo({
+      alreadyLoadedData: mediaData
+    })
+    if (loadedData)
+      medias.push(loadedData)
   }
+
+  console.log(medias.length)
 
   return (
     <ContentLayout>
@@ -73,12 +79,12 @@ export default async function TVCatalogPage() {
               staticSize={false}
               link={'/tv/' + v.id}
               subText="12 фев 2025"
-              title={v.translates.find(v => v.title !== undefined)?.title ?? 'Нету'}
+              title={v.translates.titles.length ? v.translates.titles[0] : 'Нету'}
               img={{
                 alt: 'alt',
                 width: 1400,
                 height: 2100,
-                src: getPosterUrl(v) ?? ""
+                src: v.posters.length ? v.posters[0].imgSrc : undefined
               }}
             />
           ))}

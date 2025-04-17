@@ -1,10 +1,10 @@
-import {db} from "database";
 import Image from "next/image";
 import {notFound} from "next/navigation";
 import {Button} from "@/components/me-ui/button";
 import {InfoBlock} from "@/components/template-components/media/info-block";
 import {MediaPoster} from "@/components/template-components/media/media-poster";
 import {RatingBadge} from "@/components/template-components/media/rating-badge";
+import {getTvDetailedInfo} from "@/actions/server/media/tv/get-tv-detailed-info";
 import {FilmInfo} from "@/components/template-components/media/page-info/film-info";
 import {ContentLayout} from "@/components/template-components/other/content-layout";
 
@@ -19,103 +19,21 @@ export default async function TVDetailedPage({params}: Props) {
     notFound()
   }
 
-  const mediaInfo = await db.query.medias.findFirst({
-    where: (medias, {eq}) => eq(medias.id, id),
-    with: {
-      translates: {
-        with: {
-          country: true,
-          language: true
-        }
-      },
-      externalPosters: {
-        with: {
-          externalImage: {
-            with: {
-              language: true,
-              externalDomain: true
-            }
-          }
-        }
-      }
-    }
-  })
+  const mediaInfo = await getTvDetailedInfo({id})
 
   if (!mediaInfo) {
     notFound()
   }
-
-  function getPosters() {
-    const posters = mediaInfo!.externalPosters
-
-    return posters
-  }
-
-  function getPrimaryTitle() {
-    const translates = mediaInfo!.translates
-
-    if (!translates.length)
-      return undefined
-
-    return translates[0].title
-  }
-
-  function getAnotherTitles() {
-    const translates = mediaInfo!.translates
-
-    if (!translates.length)
-      return undefined
-
-    return translates.slice(1, translates.length - 1 > 3 ? 3 : translates.length - 1).map(v => v.title).join(' / ')
-  }
-
-  function getPrimaryTagline() {
-    const translates = mediaInfo!.translates
-
-    if (!translates.length)
-      return undefined
-
-    return translates[0].tagline
-  }
-
-  function getOverview() {
-    const translates = mediaInfo!.translates
-
-    if (!translates.length)
-      return undefined
-
-    return translates[0].overview
-  }
-
-  const posters = getPosters().map(poster => ({
-      ...(
-        poster.externalImage.width && poster.externalImage.height
-          ? {
-            width: poster.externalImage.width,
-            height: poster.externalImage.height,
-          }
-          : {fill: true}
-      ),
-      src: 'http'
-        + (poster.externalImage.externalDomain.https ? 's' : '')
-        + '://'
-        + poster.externalImage.externalDomain.domain
-        + poster.externalImage.path
-    }))
-
-  const primaryTitle = getPrimaryTitle()
-  const primaryTagline = getPrimaryTagline() || getAnotherTitles()
-  const overview = getOverview()
-
+  
   return (
     <ContentLayout className="px-0">
       {/* Мобильная версия */}
       <div className="relative md:hidden h-[450px] blur-lg opacity-80 object-cover">
-        {posters.length > 0 && (
+        {mediaInfo.posters.length > 0 && (
           <Image
             fill
             alt="Задник"
-            src={posters[0].src}
+            src={mediaInfo.posters[0].imgSrc}
             className="object-cover object-top"
           />
         )}
@@ -126,8 +44,7 @@ export default async function TVDetailedPage({params}: Props) {
         {/* Десктопная версия */}
         <div className="hidden md:flex flex-col gap-2 h-full sticky top-4 min-w-[250px] max-w-[250px]">
           <MediaPoster
-            posters={posters}
-            postersCount={mediaInfo.externalPosters.length}
+            posters={mediaInfo.posters}
           />
           <div className="flex flex-col gap-2 max-w-[250px]">
             <Button isPrimary>Смотреть</Button>
@@ -152,18 +69,25 @@ export default async function TVDetailedPage({params}: Props) {
         <div className="flex flex-col gap-4 flex-grow min-w-0 max-w-full">
           <div className="z-40 flex md:hidden justify-center mt-[-425px]">
             <MediaPoster
-              posters={posters}
+              posters={mediaInfo.posters}
               className="h-[350px] overflow-clip"
-              postersCount={mediaInfo.externalPosters.length}
             />
           </div>
           <div className="z-40 flex justify-center md:justify-between items-start">
             <div className="flex flex-col text-center md:text-start">
               <h1 className="text-center md:text-start text-2xl font-semibold line-clamp-2">
-                {primaryTitle}
+                {
+                  mediaInfo.translates.titles.length
+                    ? mediaInfo.translates.titles[0]
+                    : <i>[Без заголовка]</i>
+                }
               </h1>
               <p className="text-center md:text-start text-sm text-secondary-foreground opacity-80 line-clamp-2">
-                {primaryTagline || <i>Без tagline ...</i>}
+                {
+                  mediaInfo.translates.taglines.length
+                    ? mediaInfo.translates.taglines[0]
+                    : <i>Без tagline ...</i>
+                }
               </p>
             </div>
             <div className="hidden md:flex flex-col justify-end text-end">
@@ -175,7 +99,7 @@ export default async function TVDetailedPage({params}: Props) {
             <Button>Добавить в список</Button>
           </div>
           <div className="flex flex-grow flex-col max-w-full">
-            <FilmInfo overview={overview ?? undefined}/>
+            <FilmInfo mediaInfo={mediaInfo}/>
           </div>
         </div>
       </div>

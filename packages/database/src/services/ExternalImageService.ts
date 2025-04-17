@@ -28,6 +28,19 @@ export class ExternalImageService extends BaseService {
       this.uow.registerOperation('insert', this.externalImageRepository, model, this.sourceId)
     }
 
+    if (
+      data.path != model.path ||
+      data.language && !model.language ||
+      data.vote_count != model.vote_count ||
+      data.vote_avg != model.vote_avg
+    ) {
+      model.setData({
+        ...data,
+        sourceId: this.sourceId
+      })
+      this.uow.registerOperation('update', this.externalImageRepository, model)
+    }
+
     return model
   }
 }

@@ -1,5 +1,5 @@
 import {Transaction, DBConnection} from "../../index";
-import { findExternalImageByCredentials, insertExternalImage } from "./methods";
+import {findExternalImageByCredentials, insertExternalImage, updateExternalImage} from "./methods";
 
 /**
  * @description Репозиторий для работы с моделью внешних изображений
@@ -9,5 +9,5 @@ export class ExternalImageRepository {
 
 	findByCredentials = findExternalImageByCredentials
 	insert = insertExternalImage
-	
+	update = updateExternalImage
 }
