@@ -1,4 +1,4 @@
-import {InferSelectModel, relations} from "drizzle-orm";
+import {relations} from "drizzle-orm";
 import { serial, pgTable, varchar } from "drizzle-orm/pg-core";
 import {companies} from "database/schemas/companies.ts";
 import {countryTranslations} from "database/schemas/country_translations.ts";

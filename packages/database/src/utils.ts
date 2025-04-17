@@ -4,6 +4,7 @@ import * as process from "node:process";
 /**
  * Возвращает первую запись из выборки запроса к базе данных
  * @param rows
+ * @param callback
  */
 export function queryOneResult<T>(
 	rows: null | T | T[] | undefined,

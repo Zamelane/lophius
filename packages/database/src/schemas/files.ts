@@ -1,8 +1,5 @@
-import { relations, InferSelectModel } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { pgTable, varchar, integer, smallint, bigserial, timestamp } from "drizzle-orm/pg-core";
-
-import { users } from "./users";
-import {countryTranslations} from "database/schemas/country_translations.ts";
 
 export const files = pgTable('files', {
   size: integer(),

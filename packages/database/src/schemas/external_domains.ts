@@ -1,4 +1,4 @@
-import {InferSelectModel, relations} from "drizzle-orm";
+import {relations} from "drizzle-orm";
 import { serial, boolean, pgTable, varchar } from "drizzle-orm/pg-core";
 import {external_images} from "database/schemas/external_images.ts";
 

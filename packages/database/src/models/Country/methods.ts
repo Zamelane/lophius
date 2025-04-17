@@ -5,7 +5,7 @@ import {Country, queryOneResult, CountryRepository} from "../../index";
 
 /**
  * Метод получения страны по ISO_3166_1 из базы
- * @param iso_639_1
+ * @param iso_3166_1
  */
 export async function findCountryByISO(
 	this: CountryRepository,

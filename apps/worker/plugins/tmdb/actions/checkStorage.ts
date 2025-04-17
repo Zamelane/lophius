@@ -1,4 +1,3 @@
-import {getDataByStorage} from "@plugins/tmdb/utils.ts";
 import {PluginStorage} from "../../../src/plugin-storage.ts";
 import {StorageData} from "@plugins/tmdb/types.ts";
 import * as process from "node:process";

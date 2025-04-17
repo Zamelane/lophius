@@ -83,13 +83,6 @@ export class SourceMediaService extends BaseService {
 	/**
 	 * Создаёт медиа с переданным заголовком
 	 * @param media
-	 * @param title
-	 * @param country
-	 * @param language
-	 * @param runtime
-	 * @param tagline
-	 * @param homepage
-	 * @param overview
 	 */
 	createMediaWithOriginalTitle(
 		media: PartialMedia
