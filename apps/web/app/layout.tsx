@@ -44,8 +44,8 @@ export default async function MyApp({children}: LayoutProps) {
     <body>
       <AppProgressBar
         shadow={false}
-        color="#FAFAFA"
         showSpinner={false}
+        color="hsl(var(--foreground))"
       />
       <NextIntlClientProvider
         locale={locale}
