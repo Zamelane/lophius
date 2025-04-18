@@ -38,34 +38,34 @@ export default async function MyApp({children}: LayoutProps) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=device-width, user-scalable=no"/>
-      </head>
-      <body>
-        <AppProgressBar
-          shadow={false}
-          color="#FAFAFA"
-          showSpinner={false}
-        />
-        <NextIntlClientProvider
-          locale={locale}
-          messages={messages}
+    <head>
+      <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    </head>
+    <body>
+      <AppProgressBar
+        shadow={false}
+        color="#FAFAFA"
+        showSpinner={false}
+      />
+      <NextIntlClientProvider
+        locale={locale}
+        messages={messages}
+      >
+        <ThemeProvider
+          enableSystem
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
         >
-          <ThemeProvider
-            enableSystem
-            attribute="class"
-            defaultTheme="system"
-            disableTransitionOnChange
-          >
-            <AuthProvider initialData={auth}>
-              {children}
-            </AuthProvider>
-          </ThemeProvider>
-          <Toaster richColors
-                   closeButton
-                   duration={8000}
-          />
-        </NextIntlClientProvider>
+          <AuthProvider initialData={auth}>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
+        <Toaster richColors
+                 closeButton
+                 duration={8000}
+        />
+      </NextIntlClientProvider>
       </body>
     </html>
   )
