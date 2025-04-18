@@ -1,5 +1,6 @@
 "use client"
 
+import {use} from "react";
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { PanelLeft } from "lucide-react"
@@ -24,7 +25,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet"
 
-const SIDEBAR_COOKIE_NAME = "sidebar_state"
+export const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
@@ -55,7 +56,7 @@ function useSidebar() {
 const SidebarProvider = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    defaultOpen?: boolean
+    defaultOpen?: Promise<boolean>
     open?: boolean
     onOpenChange?: (open: boolean) => void
   }
@@ -65,8 +66,8 @@ const SidebarProvider = React.forwardRef<
       style,
       children,
       className,
+      defaultOpen,
       open: openProp,
-      defaultOpen = false,
       onOpenChange: setOpenProp,
       ...props
     },
@@ -77,7 +78,7 @@ const SidebarProvider = React.forwardRef<
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen)
+    const [_open, _setOpen] = React.useState(defaultOpen ? use(defaultOpen) : false)
     const open = openProp ?? _open
     const setOpen = React.useCallback(
       (value: ((value: boolean) => boolean) | boolean) => {
