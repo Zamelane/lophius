@@ -9,6 +9,16 @@ import { defaultLocale, localesSupported } from './i18n/config';
 const protectedRoutes = ['/dashboard']
 //const publicRoutes = ['/login', '/signup', '/']
 const apiProtectedRoutes = [''] // Роуты, которые требуют авторизацию
+const staticRoutes = [
+  '/fonts/',
+  '/images/',
+  '/api/',
+  '/_next/',
+  '/favicon.ico'
+];
+const staticNames = [
+  'opengraph-image.png'
+]
 
 function getLocale(request: NextRequest) {
   const languages = new Negotiator({ 
@@ -22,7 +32,8 @@ export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
   // Пропускаем статические файлы и favicon
-  if (path.startsWith('/fonts/') || path.startsWith('/images/') || path.startsWith('/api/') || path.startsWith('/_next/') || path.startsWith('/favicon.ico')) {
+  if (staticRoutes.some(prefix => path.startsWith(prefix)) || staticNames.some(suffix => path.includes(suffix)))
+  {
     return NextResponse.next()
   }
 
