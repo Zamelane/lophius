@@ -30,6 +30,12 @@ type MediaWithRelations = MediasTableType & {
 			externalDomain: ExternalDomainsTableType;
 		};
 	})[];
+	externalBackdrops?: (ExternalPostersTableType & {
+		externalImage: ExternalImagesTableType & {
+			language: LanguagesTableType | null;
+			externalDomain: ExternalDomainsTableType;
+		};
+	})[];
 };
 
 type Props = {
@@ -60,6 +66,16 @@ export async function getTvDetailedInfo({ id, alreadyLoadedData }: Props): Promi
 				}
 			},
 			externalPosters: {
+				with: {
+					externalImage: {
+						with: {
+							language: true,
+							externalDomain: true
+						}
+					}
+				}
+			},
+			externalBackdrops: {
 				with: {
 					externalImage: {
 						with: {
@@ -116,6 +132,33 @@ export async function getTvDetailedInfo({ id, alreadyLoadedData }: Props): Promi
 				.filter(v => v.homepage != null && v.homepage.length > 0)
 				.map(v => v.homepage!)
 		},
+		backdrops: (query_result.externalBackdrops ?? []).map(v => {
+			const image = v.externalImage
+			const language = image.language
+			const domain = image.externalDomain
+
+			return {
+				width: image.width,
+				height: image.height,
+				imgSrc: (domain.https ? 'https' : 'http') + `://${domain.domain}${image.path.startsWith('/') ? image.path : `/${image.path}`}`,
+				lang: language ? {
+					id: language.id,
+					nativeName: language.native_name,
+					englishName: language.english_name
+				} : undefined
+			}
+		}).sort((a, b) => {
+			const aTotal = a.width && a.height ? a.width * a.height : 0
+			const bTotal = b.width && b.height ? b.width * b.height : 0
+			
+			if (aTotal > bTotal)
+				return -1
+			
+			if (aTotal < bTotal)
+				return 1
+			
+			return 0
+		}),
 		posters: query_result.externalPosters
 			.sort((a, b) =>
 				prioritizationByLanguage(
@@ -163,16 +206,8 @@ export type GetTvDetailedInfoResult = {
 		name: string
 		id: number
 	}>
-	posters: Array<{
-		lang?: {
-			id: number,
-			englishName?: null | string
-			nativeName?: null | string
-		}
-		imgSrc: string
-		width?: null | number
-		height?: null | number
-	}>
+	posters: ImagesType
+	backdrops: ImagesType
 	translates: {
 		titles: string[]
 		taglines: string[]
@@ -181,3 +216,14 @@ export type GetTvDetailedInfoResult = {
 		runtimes: number[]
 	}
 }
+
+type ImagesType = Array<{
+	lang?: {
+		id: number,
+		englishName?: null | string
+		nativeName?: null | string
+	}
+	imgSrc: string
+	width?: null | number
+	height?: null | number
+}>
