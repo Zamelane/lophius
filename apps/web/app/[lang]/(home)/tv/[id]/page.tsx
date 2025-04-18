@@ -1,5 +1,3 @@
-'use server'
-
 import Image from "next/image";
 import {notFound} from "next/navigation";
 import {Button} from "@/components/me-ui/button";
@@ -9,6 +7,8 @@ import {RatingBadge} from "@/components/template-components/media/rating-badge";
 import {getTvDetailedInfo} from "@/actions/server/media/tv/get-tv-detailed-info";
 import {FilmInfo} from "@/components/template-components/media/page-info/film-info";
 import {ContentLayout} from "@/components/template-components/other/content-layout";
+
+export const revalidate = 3600
 
 type Props = {
   params: Promise<{ id: string }>
@@ -26,7 +26,7 @@ export default async function TVDetailedPage({params}: Props) {
   if (!mediaInfo) {
     notFound()
   }
-  
+
   return (
     <ContentLayout className="px-0">
       {/* Мобильная версия */}
@@ -58,6 +58,17 @@ export default async function TVDetailedPage({params}: Props) {
                 value="2018"
                 title="Год выпуска"
                 href="/tv/catalog?yearMin=2018&yearMax=2018"
+              />
+              <InfoBlock
+                title="Переводов"
+                href="?modal=translates"
+                value={
+                  Math.max(
+                    mediaInfo.translates.titles.length,
+                    mediaInfo.translates.taglines.length,
+                    mediaInfo.translates.overviews.length
+                  ).toString()
+                }
               />
               <InfoBlock
                 isLast

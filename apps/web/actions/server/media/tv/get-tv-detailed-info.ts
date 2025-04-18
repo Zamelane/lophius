@@ -76,7 +76,7 @@ export async function getTvDetailedInfo({ id, alreadyLoadedData }: Props): Promi
 		return undefined
 	}
 
-	console.log(query_result.external_id)
+	//console.log(query_result.external_id)
 	
 	const translates = query_result.translates.sort(
 		(a, b) =>

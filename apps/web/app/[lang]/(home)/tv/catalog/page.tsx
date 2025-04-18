@@ -1,5 +1,3 @@
-'use server'
-
 import { db } from "database";
 import {Funnel, ArrowDownUp} from "lucide-react";
 import { Input } from "@/components/shadcn/ui/input";
@@ -9,6 +7,8 @@ import {GridLayout} from "@/components/me-ui/grid-layout";
 import {getTvDetailedInfo} from "@/actions/server/media/tv/get-tv-detailed-info";
 import { VideoCard } from "@/components/template-components/media/cards/video-card";
 import { ContentLayout } from "@/components/template-components/other/content-layout";
+
+export const revalidate = 3600
 
 export default async function TVCatalogPage() {
   const query_result = await db.query.medias.findMany({
@@ -63,8 +63,6 @@ export default async function TVCatalogPage() {
     if (loadedData)
       medias.push(loadedData)
   }
-
-  console.log(medias.length)
 
   return (
     <ContentLayout>
