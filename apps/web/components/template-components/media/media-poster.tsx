@@ -24,7 +24,7 @@ export function MediaPoster({ posters, className = "" }: MediaPosterProps) {
 				onClick={() => setVisible(true)}
 				className={`relative aspect-[5/7] rounded-[4px] ${className}`}
 			>
-				<div className="inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full absolute top-1 right-1 z-10">
+				<div className="inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full absolute top-1 right-1 z-10 cursor-pointer">
 					{posters.length} обложек
 				</div>
 				<div className="cursor-pointer">

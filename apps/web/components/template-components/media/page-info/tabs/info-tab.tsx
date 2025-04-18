@@ -9,11 +9,33 @@ export type Props = {
 }
 
 export function CinemaInfoTab({ mediaInfo }: Props) {
+	let mediaType = undefined
+	
+	switch (mediaInfo.mediaType) {
+		case 'anime':
+			mediaType = 'фильм';
+			break;
+		case 'book':
+			mediaType = 'фильм';
+			break;
+		case 'comic':
+			mediaType = 'фильм';
+			break;
+		case 'kino':
+			mediaType = 'фильм';
+			break;
+		case 'music':
+			mediaType = 'фильм';
+			break;
+	}
+	
 	return (
 		<div className="flex flex-col gap-4 pt-2 min-w-0 max-w-full">
 
 			<TagContainer>
-				<Tag accent text="фильм" href="/tv/catalog?type=cinema"/>
+				{
+					mediaType && <Tag accent text={mediaType} href={`/tv/catalog?type=${mediaInfo.mediaType}`}/>
+				}
 				<Tag text="комедия" href="/tv/catalog?genre=comedy"/>
 			</TagContainer>
 

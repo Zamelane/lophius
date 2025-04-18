@@ -31,12 +31,12 @@ export default async function TVDetailedPage({params}: Props) {
     <ContentLayout className="px-0">
       {/* Мобильная версия */}
       <div className="relative md:hidden h-[450px] blur-lg opacity-80 object-cover">
-        {mediaInfo.posters.length > 0 && (
+        {(mediaInfo.backdrops.length > 0 || mediaInfo.posters.length > 0) && (
           <Image
             fill
             alt="Задник"
-            src={mediaInfo.posters[0].imgSrc}
             className="object-cover object-top"
+            src={mediaInfo.backdrops.length > 0 ? mediaInfo.backdrops[0].imgSrc : mediaInfo.posters[0].imgSrc}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-80% to-background" />
