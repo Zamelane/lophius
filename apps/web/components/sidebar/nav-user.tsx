@@ -24,17 +24,20 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import {loadUserAvatar} from "@/actions/server/logics/load-user-avatar";
 
 export function NavUser({
   user,
 }: {
   user: {
+    id: number
     name: string
     email: string
-    avatar: string
+    avatarId?: number | null
   }
 }) {
   const { isMobile } = useSidebar()
+  const fallback = user.name.substring(0, 2).toUpperCase()
 
   return (
     <SidebarMenu>
@@ -46,8 +49,8 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage alt={user.name} src={user.avatar} />
-                <AvatarFallback className="rounded-lg">{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarImage alt={user.name} src={user.avatarId ? `/api/assets/id/${user.avatarId}` : ''} />
+                <AvatarFallback className="rounded-lg">{fallback}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
@@ -66,8 +69,8 @@ export function NavUser({
               <DropdownMenuItem className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage alt={user.name} src={user.avatar}/>
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                    <AvatarImage alt={user.name} src={user.avatarId ? `/api/assets/id/${user.avatarId}` : ''}/>
+                    <AvatarFallback className="rounded-lg">{fallback}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
