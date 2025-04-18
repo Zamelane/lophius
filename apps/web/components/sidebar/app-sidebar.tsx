@@ -242,9 +242,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           auth ?
             <NavUser
               user={{
-                avatar: '',
+                id: auth.id,
                 email: auth.email!,
-                name: auth.nickname
+                name: auth.nickname,
+                avatarId: auth.avatarId
               }}
             />
             : <LocaleLink href='/login'>

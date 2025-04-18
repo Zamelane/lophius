@@ -13,6 +13,7 @@ export default async function AppLayout({ children }: LayoutProps) {
 		const loadedState = r.get("sidebar_state")
 		return loadedState ? loadedState.value === "true" : false
 	})
+
 	return (
 		<SidebarProvider defaultOpen={state}>
       <AppSidebar />
