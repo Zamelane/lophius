@@ -28,9 +28,9 @@
 
 ## Demo
 
-You can view the demo version at [lophius.zmln.ru](https://lophius.zmln.ru)
+You can view the demo version at [lophius.ru](https://lophius.ru)
 
-![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.zmln.ru
+![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.ru
 )
 ## Run Locally
 
