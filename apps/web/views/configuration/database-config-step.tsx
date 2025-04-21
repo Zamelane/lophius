@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Field} from "@/views/configuration/ui/field";
 import {Button} from "@/components/shadcn/ui/button";
-import {DatabaseIcon, LockIcon, ServerIcon, UserIcon} from "lucide-react";
+import {LockIcon, UserIcon, ServerIcon, DatabaseIcon} from "lucide-react";
 
 type ExternalFormData = Partial<{
 	dbHost: string

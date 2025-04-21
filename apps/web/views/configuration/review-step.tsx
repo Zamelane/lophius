@@ -1,8 +1,6 @@
-import {Separator} from "@/components/ui/separator";
-import {Card, CardContent} from "@/components/shadcn/ui/card";
 import {Button} from "@/components/shadcn/ui/button";
+import {UserIcon, ServerIcon, DatabaseIcon} from "lucide-react";
 import {ValidateCard} from "@/views/configuration/ui/validate-card";
-import {DatabaseIcon, ServerIcon, UserIcon} from "lucide-react";
 
 type ExternalFormData = Partial<{
 	//
