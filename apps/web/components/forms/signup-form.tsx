@@ -34,7 +34,7 @@ export default function SignupForm() {
 	}, [state, t_api]);
 
 	return (
-		<div className={"flex flex-col gap-6"}>
+		<div className="flex flex-col gap-6 max-w-sm">
 			<Card>
 				<CardHeader className="text-center">
 					<CardTitle className="text-xl">{t('welcome_title')}</CardTitle>

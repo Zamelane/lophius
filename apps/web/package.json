@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.6.1",
+    "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
@@ -61,8 +62,10 @@
     "react": "^19.0.0",
     "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.0",
     "react-indiana-drag-scroll": "^2.2.1",
     "react-medium-image-zoom": "^5.2.14",
+    "react-photo-view": "workspace:*",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.1",
     "sharp": "^0.33.5",
@@ -72,7 +75,6 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
     "worker": "workspace:*",
-    "react-photo-view": "workspace:*",
     "xxh3-ts": "^2.0.1",
     "zod": "^3.24.2",
     "zod-i18n-map": "^2.27.0"

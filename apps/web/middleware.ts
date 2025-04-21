@@ -1,5 +1,6 @@
 import Negotiator from 'negotiator'
 import {getCurrentUser} from "@/lib/dal";
+import {isConfigured} from "@/lib/config";
 import { match } from '@formatjs/intl-localematcher'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -35,6 +36,13 @@ export async function middleware(req: NextRequest) {
   if (staticRoutes.some(prefix => path.startsWith(prefix)) || staticNames.some(suffix => path.includes(suffix)))
   {
     return NextResponse.next()
+  }
+
+  if (!isConfigured && !path.startsWith('/configuration')) {
+    const pathSegments = path.split('/')
+    if (pathSegments.length <= 2 || pathSegments[2] != 'configuration') {
+      return NextResponse.redirect(new URL('/configuration', req.url))
+    }
   }
 
   // Проверяем наличие локали в пути
