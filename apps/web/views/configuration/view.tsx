@@ -5,8 +5,10 @@ import {Step, Stepper} from "@/views/configuration/stepper";
 import {ReviewStep} from "@/views/configuration/review-step";
 import {DatabaseConfigStep} from "@/views/configuration/database-config-step";
 import {AccountCreationStep} from "@/views/configuration/account-creation-step";
-import {UserIcon, ServerIcon, DatabaseIcon, ClipboardCheckIcon} from "lucide-react";
 import {ServerConfigurationStep} from "@/views/configuration/server-configuration-step";
+import {UserIcon, ServerIcon, DatabaseIcon, ClipboardCheckIcon, HardDriveDownloadIcon} from "lucide-react";
+
+import { SaveStep } from "./save-step";
 
 export function ConfigurationView() {
 	const [currentStep, setCurrentStep] = useState(0)
@@ -79,12 +81,30 @@ export function ConfigurationView() {
 		},
 		{
 			component: <ReviewStep
+				onNext={goToNextStep}
 				configData={configData}
 				onPrevious={goToPreviousStep}
 			/>,
 			icon: ClipboardCheckIcon,
 			title: "Подтверждение",
 			description: "Проверьте данные и сохранитесь"
+		},
+		{
+			component: <SaveStep
+				onPrevious={goToPreviousStep}
+				env={{
+					'DB_HOST': configData.dbHost,
+					'DB_NAME': configData.dbName,
+					'DB_PASSWORD': configData.dbPassword,
+					'DB_PORT': configData.dbPort,
+					'DB_USER': configData.dbUsername,
+					'MAX_FILE_SIZE': configData.maxUploadFileSize,
+					'PUBLIC_URL': configData.publicUrl
+				}}
+			/>,
+			title: "Сохранение",
+			description: "Создание базы данных и заполнение",
+			icon: HardDriveDownloadIcon
 		}
 	]
 

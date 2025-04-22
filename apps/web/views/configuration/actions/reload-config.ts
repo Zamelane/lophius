@@ -1,0 +1,29 @@
+"use server";
+import { ApiResponse } from "@/interfaces";
+import { env, loadConfig } from "@/lib/config";
+import { buildConnectUrl, updateDatabaseCredentials } from "database";
+
+export async function ReloadConfig(newEnv?: { [key: string]: string }): Promise<ApiResponse<undefined>> {
+  try {
+    loadConfig(newEnv)
+    updateDatabaseCredentials(buildConnectUrl({
+      dbName: env.DB_NAME!,
+      host: env.DB_HOST!,
+      password: env.DB_PASSWORD!,
+      port: env.DB_PORT!,
+      user: env.DB_USER!
+    }))
+    return {
+      success: true,
+      data: undefined,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: {
+        i18n: "",
+        message: err instanceof Error ? err.message : `${err}`,
+      },
+    };
+  }
+}

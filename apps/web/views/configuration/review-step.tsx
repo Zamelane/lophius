@@ -23,10 +23,12 @@ type ExternalFormData = Partial<{
 type Props = {
 	configData: ExternalFormData
 	onPrevious: () => void,
+	onNext: () => void,
 }
 
 export function ReviewStep({
 	onPrevious,
+	onNext,
 	configData
 }: Props) {
 	return (
@@ -92,6 +94,7 @@ export function ReviewStep({
 				]}
 			/>
 
+			
 			<div className="flex flex-row">
 				<Button variant="outline"
 								onClick={onPrevious}
@@ -99,7 +102,7 @@ export function ReviewStep({
 				>
 					Назад
 				</Button>
-				<Button type="submit"
+				<Button onClick={() => onNext()}
 								className="max-w-min ml-auto"
 				>
 					Сохранить

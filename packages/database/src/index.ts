@@ -4,7 +4,16 @@ import { drizzle, NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 
 import * as schema from './schemas'
 
-export const db = drizzle(process.env.DB_URL!, { schema });
+export let db = drizzle(
+  buildConnectUrl({
+    dbName: process.env.DB_NAME!,
+    host: process.env.DB_HOST!,
+    password: process.env.DB_PASSWORD!,
+    port: process.env.DB_PORT!,
+    user: process.env.DB_USER!
+  }),
+  { schema }
+);
 
 export * from './utils'
 export * from './models'
@@ -20,3 +29,26 @@ export type TransactionParam = {
 
 // Для плагинов
 export * from 'drizzle-orm'
+export { Client } from 'pg'
+
+// Прочее
+
+export function buildConnectUrl({
+  user,
+  password,
+  host,
+  port,
+  dbName
+}: {
+  host: string
+  port: string | number
+  user: string
+  password: string
+  dbName: string
+}) {
+  return `postgresql://${user}:${password}@${host}:${port}/${dbName}`
+}
+
+export function updateDatabaseCredentials(connectUrl: string) {
+  db = drizzle(connectUrl, { schema })
+}
