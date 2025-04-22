@@ -33,7 +33,7 @@ export const getCurrentUser = cache(async (): Promise<undefined|UserInfo> => {
   if (!session?.userId) return
 
   try {
-    return db.select()
+    return await db.select()
       .from(users)
       .where(eq(users.id, session.userId))
       .then(r => {

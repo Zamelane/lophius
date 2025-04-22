@@ -1,4 +1,6 @@
 import {Metadata} from "next";
+import { redirect } from "next/navigation";
+import { isConfigured } from "@/lib/config";
 import {ConfigurationView} from "@/views/configuration/view";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -8,6 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ServerConfigPage() {
+	if (isConfigured) {
+		return redirect('/')
+	}
 	return (
 		<ConfigurationView/>
 	)

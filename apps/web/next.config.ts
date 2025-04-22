@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
-    ppr: true,
+    //ppr: true,
     useCache: true,
     nodeMiddleware: true
   },

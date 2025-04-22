@@ -37,7 +37,7 @@ export async function middleware(req: NextRequest) {
   {
     return NextResponse.next()
   }
-
+console.log(isConfigured)
   if (!isConfigured && !path.startsWith('/configuration')) {
     const pathSegments = path.split('/')
     if (pathSegments.length <= 2 || pathSegments[2] != 'configuration') {
