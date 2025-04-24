@@ -83,14 +83,14 @@ body {
   }
 }
 
-@layer base {
+/* @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
 
 
 
@@ -104,7 +104,7 @@ body {
 }
 
 /* Zoomable image */
-@layer utilities {
+/* @layer utilities {
   .image-rendering-high-quality {
     image-rendering: high-quality;
   }
@@ -148,7 +148,7 @@ body {
   [data-rmiz-modal-img] {
     transition-duration: 0.01ms !important;
   }
-}
+} */
 
 @layer utilities {
   .children-h-full > * {

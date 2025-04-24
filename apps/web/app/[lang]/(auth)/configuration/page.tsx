@@ -10,7 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ServerConfigPage() {
-	if (getIsConfigured()) {
+	const isConfigured = getIsConfigured()
+	if (isConfigured) {
 		return redirect('/')
 	}
 	return (
