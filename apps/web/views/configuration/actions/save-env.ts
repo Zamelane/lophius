@@ -1,6 +1,8 @@
 "use server";
 import fs from 'fs';
 import path from 'path';
+import { promisify } from 'util';
+import { exec } from 'child_process';
 import { ApiResponse } from "@/interfaces";
 
 type Props = {
@@ -66,6 +68,9 @@ export async function SaveEnv({ values }: Props): Promise<ApiResponse<undefined>
     const newEnvContent = updatedLines.join('\n');
 
     fs.writeFileSync(targetPath, newEnvContent);
+
+    await (promisify(exec))(`cd ${process.cwd()} && cd ../.. && bun env:sync`);
+
     return {
       success: true,
       data: undefined,
