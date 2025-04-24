@@ -1,11 +1,12 @@
 "use server";
 import { ApiResponse } from "@/interfaces";
-import { env, loadConfig } from "@/lib/config";
+import { getEnv, loadConfig } from "@/lib/config";
 import { buildConnectUrl, updateDatabaseCredentials } from "database";
 
 export async function ReloadConfig(newEnv?: { [key: string]: string }): Promise<ApiResponse<undefined>> {
   try {
     loadConfig(newEnv)
+    const env = getEnv()
     updateDatabaseCredentials(buildConnectUrl({
       dbName: env.DB_NAME!,
       host: env.DB_HOST!,

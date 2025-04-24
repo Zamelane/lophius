@@ -46,11 +46,11 @@ export function SaveStep({ onPrevious, env }: Props) {
       setDescription("Шаг 2. Пересоздание схемы.")
       setProgress(15)
       const step_2 = await removeSchemaExecute({
-        database: 'lophius',
-        host: '127.0.0.1',
-        password: 'postgres',
-        user: 'postgres',
-        port: 5432
+        database: env.DB_DATABASE,
+        host: env.DB_HOST,
+        password: env.DB_PASSWORD,
+        user: env.DB_USER,
+        port: Number(env.DB_PORT)
       })
       if (!step_2.success) {
         throw new Error(step_2.error.message)
@@ -89,8 +89,7 @@ export function SaveStep({ onPrevious, env }: Props) {
     process().then(() => {
       setIsSuccess(true)
     }).catch((err) => {
-      setError(JSON.stringify(err))
-    }).finally(() => {
+      setError(`${err}: ` + JSON.stringify(err))
       setIsExecuted(false)
     })
     return

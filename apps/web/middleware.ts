@@ -1,9 +1,9 @@
 import Negotiator from 'negotiator'
 import {getCurrentUser} from "@/lib/dal";
-import {isConfigured} from "@/lib/config";
 import { match } from '@formatjs/intl-localematcher'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { getIsConfigured } from './lib/config';
 import { defaultLocale, localesSupported } from './i18n/config';
 
 // 1. Specify protected and public routes
@@ -37,7 +37,8 @@ export async function middleware(req: NextRequest) {
   {
     return NextResponse.next()
   }
-console.log(isConfigured)
+
+  const isConfigured = getIsConfigured()
   if (!isConfigured && !path.startsWith('/configuration')) {
     const pathSegments = path.split('/')
     if (pathSegments.length <= 2 || pathSegments[2] != 'configuration') {
