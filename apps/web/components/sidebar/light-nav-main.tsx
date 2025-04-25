@@ -26,10 +26,12 @@ export function LightNavMain({
           <SidebarMenuButton
             asChild
             isActive={path === item.url}
+            className="transition-all duration-200"
             tooltip={{
               hidden: open,
               children: item.title
-            }}>
+            }}
+          >
             <LocaleLink href={item.url}>
               <item.icon />
               <span>{item.title}</span>

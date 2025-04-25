@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import {cookies} from "next/headers";
 import {LayoutProps} from "@/interfaces";
+import { getCurrentLocale } from "@/i18n/current-locale";
 
 import { Footer } from "./Footer";
 import { SiteHeader } from "../sidebar/site-header";
@@ -14,6 +15,7 @@ export default async function AppLayout({ children }: LayoutProps) {
 		const loadedState = r.get("sidebar_state")
 		return loadedState ? loadedState.value === "true" : false
 	})
+	const lang = await getCurrentLocale()
 
 	return (
 		<SidebarProvider defaultOpen={state}>
@@ -27,7 +29,7 @@ export default async function AppLayout({ children }: LayoutProps) {
 						</Suspense>
 					</div>
 				</div>
-				<Footer/>
+				<Footer lang={lang} />
       </SidebarInset>
     </SidebarProvider>
 	)
