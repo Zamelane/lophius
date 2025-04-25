@@ -4,6 +4,9 @@ import { drizzle, NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 
 import * as schema from './schemas'
 
+// Логировать запросы ?
+const logger = true
+
 export let db = drizzle(
   buildConnectUrl({
     dbName: process.env.DB_DATABASE!,
@@ -12,7 +15,7 @@ export let db = drizzle(
     port: process.env.DB_PORT!,
     user: process.env.DB_USER!
   }),
-  { schema }
+  { schema, logger }
 );
 
 export * from './utils'
@@ -50,5 +53,5 @@ export function buildConnectUrl({
 }
 
 export function updateDatabaseCredentials(connectUrl: string) {
-  db = drizzle(connectUrl, { schema })
+  db = drizzle(connectUrl, { schema, logger })
 }

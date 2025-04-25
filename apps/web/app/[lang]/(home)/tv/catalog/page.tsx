@@ -11,6 +11,7 @@ import { ContentLayout } from "@/components/template-components/other/content-la
 export const revalidate = 3600
 
 export default async function TVCatalogPage() {
+  console.time('drizzle')
   const query_result = await db.query.medias.findMany({
     limit: 30,
     where: (medias, { eq, and }) => and(
@@ -51,7 +52,11 @@ export default async function TVCatalogPage() {
     }
   })
 
-  //console.log(`Символов: ${JSON.stringify(query_result).length}`)
+  console.timeEnd('drizzle')
+
+  console.time('JSON-serialize')
+  console.log(`Символов: ${JSON.stringify(query_result).length}`)
+  console.timeEnd('JSON-serialize')
 
   const medias = []
 

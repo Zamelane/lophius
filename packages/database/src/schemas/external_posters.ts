@@ -8,7 +8,7 @@ export const external_posters = pgTable('external_posters', {
   mediaId: bigint({ mode: 'number' }).notNull().references(() => medias.id),
   externalImageId: bigint({ mode: 'number' }).notNull().references(() => external_images.id)
 }, (table) => [
-  primaryKey({ columns: [table.externalImageId, table.mediaId] })
+  primaryKey({ columns: [table.externalImageId, table.mediaId] }),
 ])
 
 export type ExternalPostersTableType = typeof external_posters.$inferSelect
