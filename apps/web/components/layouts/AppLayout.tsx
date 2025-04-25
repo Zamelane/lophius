@@ -1,5 +1,6 @@
 'use server'
 
+import { Suspense } from "react";
 import {cookies} from "next/headers";
 import {LayoutProps} from "@/interfaces";
 
@@ -21,7 +22,9 @@ export default async function AppLayout({ children }: LayoutProps) {
 				<SiteHeader />
 				<div className="flex flex-grow justify-center">
 					<div className="w-full max-w-[1920px]">
-						{children}
+						<Suspense fallback={<p>Загрузка ...</p>}>
+							{children}
+						</Suspense>
 					</div>
 				</div>
 				<Footer/>
