@@ -9,10 +9,10 @@ import {LockIcon, UserIcon, ServerIcon, DatabaseIcon} from "lucide-react";
 
 type ExternalFormData = Partial<{
 	dbHost: string
-	dbName: string
+	dbDatabase: string
 	dbPassword: string
 	dbPort: string
-	dbUsername: string
+	dbUser: string
 }>
 
 type Props = {
@@ -28,18 +28,18 @@ export function DatabaseConfigStep({ configData, onNext, onPrevious, updateFormD
 	const databaseConnectSchema = z.object({
 		dbHost: z.string()
 			.min(1, "Адрес подключения обязателен"),
-		dbName: z.string()
+		dbDatabase: z.string()
 			.min(1, "Название базы данных обязательно"),
 		dbPassword: z.string()
 			.min(1, "Пароль для подключения обязателен"),
 		dbPort: z.string()
 			.min(1, "Порт подключения обязателен")
 			.regex(/^\d+$/, "Должно быть числом"),
-		dbUsername: z.string()
+		dbUser: z.string()
 			.min(1, "Имя пользователя для подключения обязательно"),
 	})
 	type FormData = z.infer<typeof databaseConnectSchema>
-
+	
 	const {
 		formState: { errors },
 		handleSubmit,
@@ -47,10 +47,10 @@ export function DatabaseConfigStep({ configData, onNext, onPrevious, updateFormD
 	} = useForm<FormData>({
 		defaultValues: {
 			dbHost: configData.dbHost,
-			dbName: configData.dbName,
+			dbDatabase: configData.dbDatabase,
 			dbPassword: configData.dbPassword,
 			dbPort: configData.dbPort,
-			dbUsername: configData.dbUsername
+			dbUser: configData.dbUser
 		},
 		resolver: zodResolver(databaseConnectSchema),
 	})
@@ -84,8 +84,8 @@ export function DatabaseConfigStep({ configData, onNext, onPrevious, updateFormD
 						 icon={UserIcon}
 						 label="Пользователь"
 						 placeholder="postgres"
-						 error={errors.dbUsername?.message}
-						 {...register("dbUsername")}
+						 error={errors.dbUser?.message}
+						 {...register("dbUser")}
 			/>
 
 			<Field label="Пароль"
@@ -100,8 +100,8 @@ export function DatabaseConfigStep({ configData, onNext, onPrevious, updateFormD
 						 icon={DatabaseIcon}
 						 label="База данных"
 						 placeholder="lophius"
-						 error={errors.dbName?.message}
-						 {...register("dbName")}
+						 error={errors.dbDatabase?.message}
+						 {...register("dbDatabase")}
 			/>
 
 			<div className="flex flex-row">

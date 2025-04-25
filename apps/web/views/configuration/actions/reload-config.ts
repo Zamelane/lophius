@@ -8,7 +8,7 @@ export async function ReloadConfig(newEnv?: { [key: string]: string }): Promise<
     loadConfig(newEnv)
     const env = getEnv()
     updateDatabaseCredentials(buildConnectUrl({
-      dbName: env.DB_NAME!,
+      dbName: env.DB_DATABASE!,
       host: env.DB_HOST!,
       password: env.DB_PASSWORD!,
       port: env.DB_PORT!,

@@ -1,3 +1,5 @@
+"use server"
+
 import {Metadata} from "next";
 import { redirect } from "next/navigation";
 import { getIsConfigured } from "@/lib/config";

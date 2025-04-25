@@ -1,22 +1,29 @@
 import { Capacity } from "@geist-ui/core"
+import { ApiResponse } from "@/interfaces"
 import { useState, useEffect } from "react"
 import { LocaleLink } from "@/hooks/locale-link"
 import { Button } from "@/components/shadcn/ui/button"
 import { useApiRequest } from "@/hooks/use-api-request"
 
 import { SaveEnv } from "./actions/save-env"
+import { CreateAdmin } from "./actions/create-admin"
 import { DatabasePush } from "./actions/database-push"
 import { ReloadConfig } from "./actions/reload-config"
-import { RecreateSchema } from "./actions/recreate-schema"
+import { RecreateDatabase } from "./actions/recreate-database"
 
 type Props = {
   onPrevious: () => void,
   env: {
     [key: string]: string
+  },
+  adminCredentials: {
+    nickname: string,
+    email: string
+    password: string
   }
 }
 
-export function SaveStep({ onPrevious, env }: Props) {
+export function SaveStep({ onPrevious, env, adminCredentials }: Props) {
   const [progress, setProgress] = useState(0);
   const [description, setDescription] = useState("Ожидание запуска");
   const [error, setError] = useState("");
@@ -24,75 +31,91 @@ export function SaveStep({ onPrevious, env }: Props) {
   const [isSuccess, setIsSuccess] = useState(false)
 
 	const { execute: saveEnvExecute } = useApiRequest(SaveEnv)
-	const { execute: removeSchemaExecute } = useApiRequest(RecreateSchema)
+	const { execute: recreateDatabaseExecute } = useApiRequest(RecreateDatabase)
 	const { execute: dbFullExecute } = useApiRequest(DatabasePush)
+  const { execute: createAdminExecute } = useApiRequest(CreateAdmin)
 	const { execute: reloadConfigExecute } = useApiRequest(ReloadConfig)
 
-  useEffect(() => {
-    if (isExecuted) return; // Если уже выполнялся, выходим
-    setIsExecuted(true); // Помечаем как выполненный
-
-    setError("")
-
-    async function process() {
-      setDescription("Шаг 1. Сохранение .env")
-      const step_1 = await saveEnvExecute({
-        values: env
-      })
-      if (!step_1.success) {
-        throw new Error(step_1.error.message)
-      }
-
-      setDescription("Шаг 2. Пересоздание схемы.")
-      setProgress(15)
-      const step_2 = await removeSchemaExecute({
+  const steps: {
+    execute: () => Promise<ApiResponse<string|undefined>>,
+    description: string
+  }[] = [
+    {
+      execute: () => saveEnvExecute({ values: env }),
+      description: "Сохранение .env"
+    },
+    {
+      execute: () => recreateDatabaseExecute({
         database: env.DB_DATABASE,
         host: env.DB_HOST,
         password: env.DB_PASSWORD,
         user: env.DB_USER,
         port: Number(env.DB_PORT)
-      })
-      if (!step_2.success) {
-        throw new Error(step_2.error.message)
-      }
-
-      setDescription("Шаг 3. Создание таблиц")
-      setProgress(35)
-      const step_3 = await dbFullExecute()
-      if (!step_3.success) {
-        throw new Error(step_3.error.message)
-      }
-
-      setDescription("Шаг 4. Подтверждение изменений")
-      setProgress(65)
-      const step_4 = await saveEnvExecute({
+      }),
+      description: "Пересоздание базы данных"
+    },
+    {
+      execute: () => dbFullExecute(),
+      description: "Создание таблиц"
+    },
+    {
+      execute: () => reloadConfigExecute({
+        ...env
+      }),
+      description: "Перезагрузка конфига ..."
+    },
+    {
+      execute: () => createAdminExecute(adminCredentials),
+      description: "Создание профиля администратора"
+    },
+    {
+      execute: () => saveEnvExecute({
         values: {
           'CONFIGURED': 'true'
         }
-      })
-      if (!step_4.success) {
-        throw new Error(step_4.error.message)
-      }
-
-      setDescription("Шаг 5. Перезагрузка конфига")
-      setProgress(85)
-      const step_5 = await reloadConfigExecute({
+      }),
+      description: "Подтверждение изменений"
+    },
+    {
+      execute: () => reloadConfigExecute({
         ...env,
         'CONFIGURED': 'true'
-      })
-      if (!step_5.success) {
-        throw new Error(step_5.error.message)
+      }),
+      description: "Финальная перезагрузка конфига..."
+    }
+  ]
+
+  useEffect(() => {
+    if (isExecuted) return; // Если уже выполнялся, выходим
+    setIsExecuted(true); // Помечаем как выполненный
+console.log(5555)
+    setError("")
+
+    async function process() {
+      console.log("START =>")
+      let i = 1
+      for (const step of steps) {
+        console.log("STEP => " + i)
+        setDescription(`Шаг ${i}. ${step.description}`)
+        const result = await step.execute()
+        if (!result.success) {
+          throw new Error(result.error.message)
+        }
+        setProgress(100 / steps.length * i)
+        i++
+        console.log(i + " <= STEP")
       }
 
       setProgress(100)
+      console.log("<= END")
     }
+    
     process().then(() => {
       setIsSuccess(true)
     }).catch((err) => {
-      setError(`${err}: ` + JSON.stringify(err))
+      setError(`${err}`)
       setIsExecuted(false)
     })
-    return
   }, [])
 
   return (
