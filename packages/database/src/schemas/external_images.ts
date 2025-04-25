@@ -1,5 +1,5 @@
 import {relations} from "drizzle-orm";
-import { unique, bigint, integer, pgTable, varchar, decimal, bigserial } from "drizzle-orm/pg-core";
+import { unique, bigint, integer, pgTable, varchar, decimal, bigserial, index } from "drizzle-orm/pg-core";
 
 import { sources } from "./sources";
 import { languages } from "./languages";
@@ -20,7 +20,10 @@ export const external_images = pgTable('external_images', {
   externalDomainId: integer().notNull().references(() => external_domains.id),
   sourceId: bigint({ mode: 'number' }).references(() => sources.id).notNull()
 }, (table) => [
-  unique().on(table.sourceId, table.path, table.externalDomainId)
+  unique().on(table.sourceId, table.path, table.externalDomainId),
+  index("external_images_language_idx").on(table.languageId),
+  index("external_images_source_idx").on(table.sourceId),
+  index("external_images_language_id_idx").on(table.languageId),
 ])
 
 export type ExternalImagesTableType = typeof external_images.$inferSelect

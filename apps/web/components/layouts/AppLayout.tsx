@@ -9,6 +9,7 @@ import { Footer } from "./Footer";
 import { SiteHeader } from "../sidebar/site-header";
 import { AppSidebar } from "../sidebar/app-sidebar";
 import {SidebarInset, SidebarProvider} from "../ui/sidebar";
+import { GlobalSearch } from "../template-components/global-search";
 
 export default async function AppLayout({ children }: LayoutProps) {
 	const state = cookies().then(r => {
@@ -19,6 +20,7 @@ export default async function AppLayout({ children }: LayoutProps) {
 
 	return (
 		<SidebarProvider defaultOpen={state}>
+			<GlobalSearch/>
       <AppSidebar />
       <SidebarInset className="ml-[2px] overflow-hidden">
 				<SiteHeader />
