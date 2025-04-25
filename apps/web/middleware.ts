@@ -48,7 +48,7 @@ export async function middleware(req: NextRequest) {
 
   // Проверяем наличие локали в пути
   const { pathname } = req.nextUrl
-  const pathnameHasLocale = ['ru', 'en'].some(
+  const pathnameHasLocale = localesSupported.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   )
 

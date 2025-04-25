@@ -1,10 +1,10 @@
-import {InferSelectModel, relations} from "drizzle-orm"
-import { bigint, integer, pgTable } from "drizzle-orm/pg-core"
+import {relations} from "drizzle-orm"
+import { bigint, pgTable } from "drizzle-orm/pg-core"
 
 import { medias } from "./medias"
 
 export const media_revenues = pgTable('media_revenues', {
-  revenue: integer().notNull(),
+  revenue: bigint({ mode: 'number' }).notNull(),
   mediaId: bigint({ mode: 'number' }).references(() => medias.id).notNull().primaryKey()
 })
 
