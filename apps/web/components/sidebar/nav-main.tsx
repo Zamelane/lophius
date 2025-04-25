@@ -55,7 +55,7 @@ export function NavMain({
                   <SidebarMenuItem>
                     <ContextMenu>
                       <ContextMenuTrigger>
-                        <SidebarMenuButton asChild tooltip={item.title} isActive={path === item.url}>
+                        <SidebarMenuButton asChild tooltip={item.title} isActive={path === item.url} className="transition-all duration-200">
                           <LocaleLink href={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
@@ -65,7 +65,7 @@ export function NavMain({
                       <ContextMenuContent>
                         {item.menu?.map((subItem) => (
                           <LocaleLink href={subItem.url} key={'s_' + subItem.title}>
-                            <ContextMenuItem key={'ss_' + subItem.title}>
+                            <ContextMenuItem key={'ss_' + subItem.title} className="transition-all duration-200">
                               <p className={subItem.icon ? "pr-2" : ""}>{subItem.title}</p>
                               {
                                 subItem.icon && 
@@ -80,7 +80,7 @@ export function NavMain({
                     </ContextMenu>
                     {item.menu?.length ? (
                       <>
-                        <CollapsibleTrigger asChild>
+                        <CollapsibleTrigger asChild className="transition-all duration-200">
                           <SidebarMenuAction className="data-[state=open]:rotate-90">
                             <ChevronRight />
                             <span className="sr-only">Toggle</span>
@@ -90,7 +90,7 @@ export function NavMain({
                           <SidebarMenuSub>
                             {item.menu?.map((subItem) => (
                               <SidebarMenuSubItem key={'sm_' + subItem.title}>
-                                <SidebarMenuSubButton asChild>
+                                <SidebarMenuSubButton asChild className="transition-all duration-200">
                                   <LocaleLink href={subItem.url}>
                                     {subItem.icon && <subItem.icon/>}
                                     <span>{subItem.title}</span>

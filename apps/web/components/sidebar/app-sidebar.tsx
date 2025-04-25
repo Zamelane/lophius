@@ -249,7 +249,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               }}
             />
             : <LocaleLink href='/login'>
-                <SidebarMenuButton className="w-full bg-primary text-primary-foreground">
+                <SidebarMenuButton className="w-full bg-primary text-primary-foreground transition-all duration-200">
                   <LogIn/>
                   <span className="text-center w-full">Войти</span>
                   <LogIn className="opacity-0"/> {/* Костыль :))) */}
