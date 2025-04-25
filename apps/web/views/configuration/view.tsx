@@ -15,10 +15,10 @@ export function ConfigurationView() {
 	const [configData, setConfigData] = useState({
 		//
 		dbHost: process.env.DB_HOST ?? "127.0.0.1",
-		dbName: process.env.DB_NAME ?? "lophius",
+		dbDatabase: process.env.DB_DATABASE ?? "lophius",
 		dbPassword: process.env.DB_PASSWORD ?? "",
 		dbPort: process.env.DB_PORT ?? "5432",
-		dbUsername: process.env.DB_USER ?? "",
+		dbUser: process.env.DB_USER ?? "",
 
 		//
 		email: "",
@@ -92,12 +92,17 @@ export function ConfigurationView() {
 		{
 			component: <SaveStep
 				onPrevious={goToPreviousStep}
+				adminCredentials={{
+					email: configData.email,
+					nickname: configData.nickname,
+					password: configData.password
+				}}
 				env={{
 					'DB_HOST': configData.dbHost,
-					'DB_NAME': configData.dbName,
+					'DB_DATABASE': configData.dbDatabase,
 					'DB_PASSWORD': configData.dbPassword,
 					'DB_PORT': configData.dbPort,
-					'DB_USER': configData.dbUsername,
+					'DB_USER': configData.dbUser,
 					'MAX_FILE_SIZE': configData.maxUploadFileSize,
 					'PUBLIC_URL': configData.publicUrl
 				}}

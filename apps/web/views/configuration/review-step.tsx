@@ -5,10 +5,10 @@ import {ValidateCard} from "@/views/configuration/ui/validate-card";
 type ExternalFormData = Partial<{
 	//
 	dbHost: string
-	dbName: string
+	dbDatabase: string
 	dbPassword: string
 	dbPort: string
-	dbUsername: string
+	dbUser: string
 
 	//
 	nickname: string
@@ -66,7 +66,7 @@ export function ReviewStep({
 					},
 					{
 						title: "Пользователь",
-						value: configData.dbUsername ?? ""
+						value: configData.dbUser ?? ""
 					},
 					{
 						title: "Пароль",
@@ -74,7 +74,7 @@ export function ReviewStep({
 					},
 					{
 						title: "Имя базы данных",
-						value: configData.dbName ?? ""
+						value: configData.dbDatabase ?? ""
 					}
 				]}
 			/>

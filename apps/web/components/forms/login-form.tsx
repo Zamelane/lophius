@@ -33,14 +33,22 @@ export default function LoginForm() {
     if (!state)
       return;
 
+    console.log(state)
+
     if (state.success && state.content)
     {
       setAuth(state)
       redirect('/')
     }
 
-    if (state?.message)
+    if (state?.errors && Object.keys(state.errors).length) {
+      for (const key of Object.keys(state.errors))
+        if (state.errors[key]?.length)
+          for (const message of state.errors[key])
+            toast.error(t_api(message))
+    } else if (state?.message) {
       toast.error(t_api(state.message))
+    }
   }, [state, t_api]);
 
   return (
