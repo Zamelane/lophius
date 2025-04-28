@@ -1,10 +1,30 @@
 {
   "name": "lophius-monorepo",
   "private": true,
+  "scripts": {
+    "prepare:full": "bun install:all && bun scripts/check-env-exists.ts && bun env:sync && bun db:full",
+    "install:all": "cd apps/web && bun i && cd ../worker && bun i && cd ../../packages/database && bun i",
+    "env:sync": "cp .env apps/web/.env && cp .env apps/worker/.env && cp .env packages/database/.env",
+    "web:dev": "bun env:sync && cd apps/web && bun dev",
+    "web:build": "bun env:sync && cd apps/web && bun run build",
+    "web:start": "bun env:sync && cd apps/web && bun start",
+    "worker:dev": "bun env:sync && cd apps/worker && bun dev",
+    "db:generate": "cd packages/database && bun generate",
+    "db:migrate": "cd packages/database && bun migrate",
+    "db:push": "cd packages/database && bun push",
+    "db:full": "cd packages/database && bun full",
+    "db:studio": "cd packages/database && bun studio"
+  },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "dependencies": {
+    "drizzle-orm": "^0.40.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.5",
+    "less": "^4.3.0",
     "typescript": "^5.8.2"
   }
 }

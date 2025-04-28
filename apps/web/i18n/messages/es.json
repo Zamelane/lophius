@@ -1,0 +1,73 @@
+{
+  "HomePage": {
+    "title": "Inicio"
+  },
+  "Test": {
+    "title": "Página de Prueba"
+  },
+  "LoginPage": {
+    "title": "Página de Inicio de Sesión",
+    "welcome_title": "Bienvenido",
+    "welcome_description": "Inicia sesión con tu correo electrónico y contraseña",
+    "email_field_title": "Correo Electrónico",
+    "password_field_title": "Contraseña",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "login": "Iniciar Sesión",
+    "dont_have_account": "¿No tienes una cuenta?",
+    "sign_up": "Crear Cuenta",
+    "by_clicking_continue": "Al continuar, aceptas nuestros",
+    "terms_of_service": "Términos de Servicio",
+    "and": "y",
+    "privacy_policy": "Política de Privacidad"
+  },
+  "SignupPage": {
+    "title": "Página de Registro",
+    "welcome_title": "Regístrate",
+    "welcome_description": "Crea tu cuenta en el mundo de los medios",
+    "nickname_field_title": "Apodo",
+    "email_field_title": "Correo Electrónico",
+    "password_field_title": "Contraseña",
+    "at_least_8_characters": "Al menos 8 caracteres",
+    "at_least_1_number": "Al menos un número",
+    "at_least_1_lowercase": "Al menos una letra minúscula",
+    "at_least_1_uppercase": "Al menos una letra mayúscula",
+    "must_contain": "Debe contener:",
+    "enter_a_password": "Introduce una contraseña",
+    "weak_password": "Contraseña Débil",
+    "medium_password": "Contraseña Media",
+    "strong_password": "Contraseña Fuerte",
+    "signup": "Registrarse",
+    "have_account": "¿Ya tienes una cuenta?",
+    "sign_in": "Iniciar Sesión",
+    "by_clicking_continue": "Al continuar, aceptas nuestros",
+    "terms_of_service": "Términos de Servicio",
+    "and": "y",
+    "privacy_policy": "Política de Privacidad"
+  },
+  "ProfilePage": {
+    "edit_button_text": "Editar",
+    "edit_profile": "Editar Perfil",
+    "nickname": "Apodo",
+    "email": "Correo Electrónico",
+    "about_me": "Sobre Mí",
+    "about_me_placeholder": "Escribe algunas frases sobre ti mismo",
+    "characters_left": "caracteres restantes",
+    "cancel": "Cancelar",
+    "save_changes": "Guardar Cambios"
+  },
+  "Api": {
+    "password_at_least_8_characters": "La contraseña debe tener al menos 8 caracteres",
+    "password_at_least_1_number": "La contraseña debe incluir al menos un dígito",
+    "password_at_least_1_lowercase": "La contraseña debe incluir al menos una letra minúscula",
+    "password_at_least_1_uppercase": "La contraseña debe incluir al menos una letra mayúscula",
+    "nickname_must_be_at_least_2_characters_long": "El apodo debe tener al menos dos caracteres",
+    "please_enter_a_valid_email": "Por favor ingresa una dirección de correo electrónico válida",
+    "use_by_a_different_user": "Ya está siendo utilizado por otro usuario",
+    "error": "Error desconocido",
+    "invalid_authentication_data": "Correo electrónico o contraseña inválidos"
+  },
+  "Public": {
+    "close": "Cerrar",
+    "ok": "Aceptar"
+  }
+}

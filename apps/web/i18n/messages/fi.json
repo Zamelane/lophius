@@ -1,0 +1,73 @@
+{
+  "HomePage": {
+    "title": "Kotisivu"
+  },
+  "Test": {
+    "title": "Testisivu"
+  },
+  "LoginPage": {
+    "title": "Kirjautumissivu",
+    "welcome_title": "Tervetuloa",
+    "welcome_description": "Kirjaudu sähköpostiosoitettasi ja salasanasi käyttämällä",
+    "email_field_title": "Sähköposti",
+    "password_field_title": "Salasana",
+    "forgot_password": "Unohtuiko salasana?",
+    "login": "Kirjaudu sisään",
+    "dont_have_account": "Sinulla ei ole tiliä?",
+    "sign_up": "Luo tili",
+    "by_clicking_continue": "Jatkamalla hyväksyt meidän",
+    "terms_of_service": "Palveluehdot",
+    "and": "ja",
+    "privacy_policy": "Yksityisyyspolitiikka"
+  },
+  "SignupPage": {
+    "title": "Rekisteröitymissivu",
+    "welcome_title": "Rekisteröidy",
+    "welcome_description": "Luo tili mediamaailmassa",
+    "nickname_field_title": "Herkunimi",
+    "email_field_title": "Sähköposti",
+    "password_field_title": "Salasana",
+    "at_least_8_characters": "Vähintään 8 merkkiä",
+    "at_least_1_number": "Vähintään yksi numero",
+    "at_least_1_lowercase": "Vähintään yksi pieni kirjain",
+    "at_least_1_uppercase": "Vähintään yksi iso kirjain",
+    "must_contain": "On oltava mukana:",
+    "enter_a_password": "Syötä salasana",
+    "weak_password": "Heikko salasana",
+    "medium_password": "Kohtalaisen vahva salasana",
+    "strong_password": "Vaikea salasana",
+    "signup": "Rekisteröidy",
+    "have_account": "Onko sinulla jo tili?",
+    "sign_in": "Kirjaudu sisään",
+    "by_clicking_continue": "Jatkamalla hyväksyt meidän",
+    "terms_of_service": "Palveluehdot",
+    "and": "ja",
+    "privacy_policy": "Yksityisyyspolitiikka"
+  },
+  "ProfilePage": {
+    "edit_button_text": "Muokkaa",
+    "edit_profile": "Muokkaa profilia",
+    "nickname": "Herkunimi",
+    "email": "Sähköposti",
+    "about_me": "Tietoa minusta",
+    "about_me_placeholder": "Kirjoita muutamia lauseita itsestäsi",
+    "characters_left": "merkkejä jäljellä",
+    "cancel": "Peruuta",
+    "save_changes": "Tallenna muutokset"
+  },
+  "Api": {
+    "password_at_least_8_characters": "Salasanan täytyy olla vähintään 8 merkkiä pitkä",
+    "password_at_least_1_number": "Salasanassa on oltava vähintään yksi numero",
+    "password_at_least_1_lowercase": "Salasanassa on oltava vähintään yksi pieni kirjain",
+    "password_at_least_1_uppercase": "Salasanassa on oltava vähintään yksi iso kirjain",
+    "nickname_must_be_at_least_2_characters_long": "Herkunimen täytyy olla vähintään kaksi merkkiä pitkä",
+    "please_enter_a_valid_email": "Ole hyvä ja syötä kelvollinen sähköpostiosoite",
+    "use_by_a_different_user": "Jo käytössä erillisenä käyttäjänä",
+    "error": "Tuntematon virhe",
+    "invalid_authentication_data": "Virheellinen sähköpostiosoite tai salasana"
+  },
+  "Public": {
+    "close": "Sulje",
+    "ok": "OK"
+  }
+}
