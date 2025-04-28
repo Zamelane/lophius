@@ -1,0 +1,9 @@
+{
+  "name": "plugins",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "parser-server": "workspace:*",
+    "web-server": "workspace:*"
+  }
+}

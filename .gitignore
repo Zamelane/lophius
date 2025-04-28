@@ -1,7 +1,2 @@
 /.idea
 /node_modules
-.env*
-!.env.example*
-
-# Database
-drizzle

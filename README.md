@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Lophius logo" height="150" src="docs/logo.png" width="150">
+  <img alt="Lophius logo" height="150" src="./_docs/logo.png" width="150">
   <h1 align="center"><b>Lophius</b></h1>
   <p align="center">🏭 A system for automating the collection, tracking, curation of media, and much more.</p>
 </div>
@@ -28,9 +28,9 @@
 
 ## Demo
 
-You can view the demo version at [lophius.ru](https://lophius.ru)
+You can view the demo version at [lophius.zmln.ru](https://lophius.zmln.ru)
 
-![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.ru
+![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.zmln.ru
 )
 ## Run Locally
 
@@ -43,7 +43,7 @@ You can view the demo version at [lophius.ru](https://lophius.ru)
 2. Navigate to the project server directory
 
 ```bash
-  cd lophius/apps/web
+  cd lophius/apps/web-server
 ```
 
 3. Install dependencies
