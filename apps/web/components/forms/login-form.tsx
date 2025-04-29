@@ -90,9 +90,9 @@ export default function LoginForm() {
                     <div className='ml-auto'>
                       <Popover>
                         <PopoverTrigger>
-                          <a className='text-sm underline-offset-4 hover:underline'>
+                          <p className='text-sm underline-offset-4 hover:underline'>
                             {t('forgot_password')}
-                          </a>
+                          </p>
                         </PopoverTrigger>
                         <PopoverContent>
                           <Label>Извините, не сделал :/</Label>
@@ -131,8 +131,12 @@ export default function LoginForm() {
         </CardContent>
       </Card>
       <div className='text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  '>
-        {t('by_clicking_continue')} <a href='#'>{t('terms_of_service')}</a>{' '}
-        {t('and')} <a href='#'>{t('privacy_policy')}</a>.
+        {t('by_clicking_continue')}{' '}
+        <LocaleLink href='/terms-of-service'>
+          {t('terms_of_service')}
+        </LocaleLink>{' '}
+        {t('and')}{' '}
+        <LocaleLink href='/privacy-policy'>{t('privacy_policy')}</LocaleLink>.
       </div>
     </div>
   )

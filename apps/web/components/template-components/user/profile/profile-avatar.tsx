@@ -29,7 +29,7 @@ export const ProfileAvatar = (props: PropsType) => {
         />
       )}
       <AvatarFallback className='text-4xl'>
-        {isLoading && (avatarImage?.length ?? 0 > 0) ? (
+        {isLoading && (avatarImage?.length ?? 0) > 0 ? (
           <Skeleton className='w-full h-full' />
         ) : minUserName ? (
           minUserName.substring(0, 2).toUpperCase()

@@ -3,7 +3,7 @@ export function RatingBadge({
   rating
 }: { rating: string; votes: string }) {
   return (
-    <button className='flex flex-col gap-1 items-end'>
+    <button type='button' className='flex flex-col gap-1 items-end'>
       <div className='flex gap-1 text-md font-semibold items-center'>
         {rating}
         <svg

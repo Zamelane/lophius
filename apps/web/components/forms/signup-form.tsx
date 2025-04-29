@@ -122,8 +122,12 @@ export default function SignupForm() {
         </CardContent>
       </Card>
       <div className='text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  '>
-        {t('by_clicking_continue')} <a href='#'>{t('terms_of_service')}</a>{' '}
-        {t('and')} <a href='#'>{t('privacy_policy')}</a>.
+        {t('by_clicking_continue')}{' '}
+        <LocaleLink href='/terms-of-service'>
+          {t('terms_of_service')}
+        </LocaleLink>{' '}
+        {t('and')}{' '}
+        <LocaleLink href='/privacy-policy'>{t('privacy_policy')}</LocaleLink>.
       </div>
     </div>
   )

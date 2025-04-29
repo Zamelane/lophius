@@ -47,7 +47,7 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
     page++
 
     const { data, error } = await discoverMovie({
-      auth: token!,
+      auth: token,
       query: {
         page,
         sort_by: 'primary_release_date.asc',
@@ -78,7 +78,7 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
     date_gte = lastItemReleaseDate ?? null
 
     // Сохраняем результаты страниц
-    await saveMovies(data, await storage.GetSourceId(), token!, storage)
+    await saveMovies(data, await storage.GetSourceId(), token, storage)
     const rs = await storage.update<StorageData>({
       ...storageData,
       movies: {

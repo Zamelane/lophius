@@ -89,6 +89,9 @@ export function SaveStep({ onPrevious, env, adminCredentials }: Props) {
     }
   ]
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies(steps): <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies(isExecuted): <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies(steps.length): <explanation>
   useEffect(() => {
     if (isExecuted) return // Если уже выполнялся, выходим
     setIsExecuted(true) // Помечаем как выполненный

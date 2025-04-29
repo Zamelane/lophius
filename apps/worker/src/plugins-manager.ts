@@ -65,7 +65,9 @@ export class PluginsManager {
           .execute({
             storage: new PluginStorage(pluginKey)
           })
-          .then(() => (config.promise = undefined))
+          .then(() => {
+            config.promise = undefined
+          })
       }
       await Bun.sleep(60000)
     }

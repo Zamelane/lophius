@@ -28,8 +28,7 @@ export const ProfileMenu = () => {
   )
 }
 
-{
-  /* <Tabs className="w-full" defaultValue="tab-1">
+/* <Tabs className="w-full" defaultValue="tab-1">
       <ScrollArea>
         <TabsList className="w-full mb-3 h-auto -space-x-px bg-background p-0 shadow-sm shadow-black/5 rtl:space-x-reverse">
           <TabsTrigger
@@ -81,10 +80,8 @@ export const ProfileMenu = () => {
         <p className="p-4 pt-1 text-center text-xs text-muted-foreground">Content for Tab 3</p>
       </TabsContent>
     </Tabs> */
-}
 
-{
-  /* <Menubar className="flex justify-center">
+/* <Menubar className="flex justify-center">
       <MenubarMenu>
         <MenubarTrigger>
           <LayoutGrid className="mr-2 size-4" />
@@ -148,4 +145,3 @@ export const ProfileMenu = () => {
         </MenubarContent>
       </MenubarMenu>
     </Menubar> */
-}
