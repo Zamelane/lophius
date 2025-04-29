@@ -1,5 +1,5 @@
-import PhotoProvider from './PhotoProvider';
-import PhotoView from './PhotoView';
-import PhotoSlider from './PhotoSlider';
+import PhotoProvider from './PhotoProvider'
+import PhotoSlider from './PhotoSlider'
+import PhotoView from './PhotoView'
 
-export { PhotoProvider, PhotoView, PhotoSlider };
+export { PhotoProvider, PhotoView, PhotoSlider }

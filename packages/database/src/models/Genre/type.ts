@@ -1,6 +1,6 @@
-import {WithOptional} from "../../index";
-import {InferSelectModel} from "drizzle-orm";
-import {genres} from "../../schemas";
+import type { InferSelectModel } from 'drizzle-orm'
+import type { WithOptional } from '../../index'
+import type { genres } from '../../schemas'
 
 export type Genre = InferSelectModel<typeof genres>
 export type OptionalGenre = WithOptional<Genre, 'id'>

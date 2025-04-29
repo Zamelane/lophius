@@ -1,13 +1,17 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import '../styles.css';
+import type React from 'react'
+import { createPortal } from 'react-dom'
+import '../styles.css'
 
-export interface ISliderPortalProps extends React.HTMLAttributes<HTMLDivElement> {
-  container?: HTMLElement;
+export interface ISliderPortalProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  container?: HTMLElement
 }
 
-function SlidePortal({ container = document.body, ...rest }: ISliderPortalProps) {
-  return createPortal(<div {...rest} />, container);
+function SlidePortal({
+  container = document.body,
+  ...rest
+}: ISliderPortalProps) {
+  return createPortal(<div {...rest} />, container)
 }
 
-export default SlidePortal;
+export default SlidePortal

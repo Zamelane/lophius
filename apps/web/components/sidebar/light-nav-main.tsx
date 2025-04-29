@@ -1,14 +1,18 @@
-"use client"
+'use client'
 
-import { usePathname } from "next/navigation"
-import { type LucideIcon } from "lucide-react"
+import type { LucideIcon } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
-import { LocaleLink } from "../../hooks/locale-link"
-import { useSidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "../ui/sidebar"
-
+import { LocaleLink } from '../../hooks/locale-link'
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar
+} from '../ui/sidebar'
 
 export function LightNavMain({
-  items,
+  items
 }: {
   items: {
     title: string
@@ -26,7 +30,7 @@ export function LightNavMain({
           <SidebarMenuButton
             asChild
             isActive={path === item.url}
-            className="transition-all duration-200"
+            className='transition-all duration-200'
             tooltip={{
               hidden: open,
               children: item.title

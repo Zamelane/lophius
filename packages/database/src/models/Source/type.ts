@@ -1,6 +1,6 @@
-import {WithOptional} from "../../index";
-import {InferSelectModel} from "drizzle-orm";
-import {sources} from "../../schemas/sources";
+import type { InferSelectModel } from 'drizzle-orm'
+import type { WithOptional } from '../../index'
+import type { sources } from '../../schemas/sources'
 
 export type Source = InferSelectModel<typeof sources>
 export type PartialSource = Omit<Source, 'id'>

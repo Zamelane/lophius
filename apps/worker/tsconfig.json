@@ -19,9 +19,7 @@
       "@plugins/*": ["./plugins/*"]
     },
     "baseUrl": ".",
-    "typeRoots": [
-      "../web/interfaces"
-    ]
+    "typeRoots": ["../web/interfaces"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],

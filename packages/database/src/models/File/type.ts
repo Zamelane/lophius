@@ -1,6 +1,6 @@
-import {WithOptional} from "../../index";
-import {InferSelectModel} from "drizzle-orm";
-import {external_images, files} from "../../schemas";
+import type { InferSelectModel } from 'drizzle-orm'
+import type { WithOptional } from '../../index'
+import type { files } from '../../schemas'
 
 export type File = InferSelectModel<typeof files>
 export type OptionalFile = WithOptional<File, 'id'>

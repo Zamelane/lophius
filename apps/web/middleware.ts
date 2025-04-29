@@ -1,31 +1,23 @@
-import Negotiator from 'negotiator'
-import {getCurrentUser} from "@/lib/dal";
+import { getCurrentUser } from '@/lib/dal'
 import { match } from '@formatjs/intl-localematcher'
-import { NextRequest, NextResponse } from 'next/server'
+import Negotiator from 'negotiator'
+import { type NextRequest, NextResponse } from 'next/server'
 
-import { getIsConfigured } from './lib/config';
-import { defaultLocale, localesSupported } from './i18n/config';
+import { defaultLocale, localesSupported } from './i18n/config'
+import { getIsConfigured } from './lib/config'
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard']
 //const publicRoutes = ['/login', '/signup', '/']
 const apiProtectedRoutes = [''] // Роуты, которые требуют авторизацию
-const staticRoutes = [
-  '/fonts/',
-  '/images/',
-  '/api/',
-  '/_next/',
-  '/favicon.ico'
-];
-const staticNames = [
-  'opengraph-image.png'
-]
+const staticRoutes = ['/fonts/', '/images/', '/api/', '/_next/', '/favicon.ico']
+const staticNames = ['opengraph-image.png']
 
 function getLocale(request: NextRequest) {
-  const languages = new Negotiator({ 
+  const languages = new Negotiator({
     headers: Object.fromEntries(request.headers.entries())
-   }).languages()
- 
+  }).languages()
+
   return match(languages, localesSupported, defaultLocale) // -> 'en-US'
 }
 
@@ -33,15 +25,17 @@ export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
   // Пропускаем статические файлы и favicon
-  if (staticRoutes.some(prefix => path.startsWith(prefix)) || staticNames.some(suffix => path.includes(suffix)))
-  {
+  if (
+    staticRoutes.some((prefix) => path.startsWith(prefix)) ||
+    staticNames.some((suffix) => path.includes(suffix))
+  ) {
     return NextResponse.next()
   }
 
   const isConfigured = getIsConfigured()
   if (!isConfigured && !path.startsWith('/configuration')) {
     const pathSegments = path.split('/')
-    if (pathSegments.length <= 2 || pathSegments[2] != 'configuration') {
+    if (pathSegments.length <= 2 || pathSegments[2] !== 'configuration') {
       return NextResponse.redirect(new URL('/configuration', req.url))
     }
   }
@@ -59,8 +53,8 @@ export async function middleware(req: NextRequest) {
     const isApiProtectedRoute = apiProtectedRoutes.includes(path)
     const user = await getCurrentUser()
 
-    const requestHeaders = new Headers(req.headers);
-    requestHeaders.set('x-url', req.url);
+    const requestHeaders = new Headers(req.headers)
+    requestHeaders.set('x-url', req.url)
 
     // 4. Redirect to /login if the user is not authenticated
     if (isProtectedRoute && !user) {
@@ -92,5 +86,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  runtime: 'nodejs',
-};
+  runtime: 'nodejs'
+}

@@ -1,3 +1,3 @@
-import { headers } from "next/headers";
+import { headers } from 'next/headers'
 
-export const getCurrentUrl = async () => (await headers()).get('x-url') || "";
+export const getCurrentUrl = async () => (await headers()).get('x-url') || ''

@@ -1,6 +1,6 @@
-import {WithOptional} from "../../index";
-import {InferSelectModel} from "drizzle-orm";
-import {medias} from "../../schemas/medias";
+import type { InferSelectModel } from 'drizzle-orm'
+import type { WithOptional } from '../../index'
+import type { medias } from '../../schemas/medias'
 
 export type Media = InferSelectModel<typeof medias>
 export type OptionalMedia = WithOptional<Media, 'id' | 'sourceId'>

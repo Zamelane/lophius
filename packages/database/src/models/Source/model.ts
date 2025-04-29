@@ -1,19 +1,14 @@
-import {
-	WithRequired,
-	OptionalMediaId,
-	type OptionalSource
-} from "../../index";
+import type { OptionalMediaId, OptionalSource, WithRequired } from '../../index'
 
 export class SourceModel implements OptionalSource {
-	id?: OptionalMediaId;
-	type!: OptionalSource['type'];
+  id?: OptionalMediaId
+  type!: OptionalSource['type']
 
-	constructor(data: OptionalSource) {
-		Object.assign(this, data);
-	}
+  constructor(data: OptionalSource) {
+    Object.assign(this, data)
+  }
 
-	validateRequiredIds(): asserts this is WithRequired<OptionalSource, 'id'> {
-		if (!this.id)
-			throw new Error('Missing required id');
-	}
+  validateRequiredIds(): asserts this is WithRequired<OptionalSource, 'id'> {
+    if (!this.id) throw new Error('Missing required id')
+  }
 }

@@ -1,23 +1,30 @@
 'use server'
 
-import {api_t_keys} from "@/i18n";
-import {createSession} from "@/lib/session";
-import FindUser from "@/actions/server/logics/find-user";
-import {LoginFormSchema} from "@/validates/schemas/LoginFormSchema";
-import {ErrorResponse, ServerResponse, CurrentUserInfo} from "@/interfaces";
+import FindUser from '@/actions/server/logics/find-user'
+import { api_t_keys } from '@/i18n'
+import type {
+  CurrentUserInfo,
+  ErrorResponse,
+  ServerResponse
+} from '@/interfaces'
+import { createSession } from '@/lib/session'
+import { LoginFormSchema } from '@/validates/schemas/LoginFormSchema'
 
-export async function login (state: ErrorResponse & ServerResponse<CurrentUserInfo>|void, formData: FormData): Promise<ErrorResponse & ServerResponse<CurrentUserInfo>|void> {
+export async function login(
+  state: (ErrorResponse & ServerResponse<CurrentUserInfo>) | undefined,
+  formData: FormData
+): Promise<(ErrorResponse & ServerResponse<CurrentUserInfo>) | undefined> {
   // Валидация полей
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
-    password: formData.get('password'),
+    password: formData.get('password')
   })
 
   // Если какие-то поля не прошли валидацию, выкидываем описание ошибок
   if (!validatedFields.success) {
     return {
       success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
+      errors: validatedFields.error.flatten().fieldErrors
     }
   }
 

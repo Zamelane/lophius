@@ -1,5 +1,5 @@
-import {WithOptional} from "../../index";
-import {statuses} from "../../schemas";
+import type { WithOptional } from '../../index'
+import type { statuses } from '../../schemas'
 
 export type Status = typeof statuses.$inferSelect
 export type OptionalStatus = WithOptional<Status, 'id'>

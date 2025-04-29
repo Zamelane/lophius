@@ -1,7 +1,7 @@
-import { verifySession } from "@/lib/dal"
-import { MakeResponse } from "@/lib/make-response"
+import { verifySession } from '@/lib/dal'
+import { MakeResponse } from '@/lib/make-response'
 
-import { MakeUserInfoById } from "../user-info"
+import { MakeUserInfoById } from '../user-info'
 
 export async function GetUserByIdApiHandler(id: string) {
   const session = await verifySession()
@@ -12,7 +12,7 @@ export async function GetUserByIdApiHandler(id: string) {
       user = await MakeUserInfoById(session.userId, session.userId)
   } else {
     const numberId = Number(id)
-    if (!isNaN(numberId))
+    if (!Number.isNaN(numberId))
       user = await MakeUserInfoById(numberId, session.userId)
   }
 

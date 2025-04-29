@@ -1,45 +1,47 @@
-import {eq} from "drizzle-orm";
-import {languages} from "../../schemas";
-import {LanguageModel} from "./model";
-import {Language, queryOneResult, LanguageRepository} from "../../index";
+import { eq } from 'drizzle-orm'
+import {
+  type Language,
+  type LanguageRepository,
+  queryOneResult
+} from '../../index'
+import { languages } from '../../schemas'
+import type { LanguageModel } from './model'
 
 /**
  * Метод получения языка по ISO_639_1 из базы
  * @param iso_639_1
  */
 export async function findLanguageByISO(
-	this: LanguageRepository,
-	iso_639_1: string
-): Promise<Language|undefined> {
-	return queryOneResult(
-		await this.tx.select()
-			.from(languages)
-			.where(eq(languages.iso_639_1, iso_639_1))
-			.limit(1)
-	)
+  this: LanguageRepository,
+  iso_639_1: string
+): Promise<Language | undefined> {
+  return queryOneResult(
+    await this.tx
+      .select()
+      .from(languages)
+      .where(eq(languages.iso_639_1, iso_639_1))
+      .limit(1)
+  )
 }
 
 /**
  * Операция Insert для модели UoW
  */
 export async function insertLanguage(
-	this: LanguageRepository,
-	data: LanguageModel
+  this: LanguageRepository,
+  data: LanguageModel
 ) {
-	// Проверяем на существование
-	const exist = queryOneResult(
-		await this.findByISO_639_1(data.iso_639_1),
-		r => data.id = r.id // Действие, если запись найдена
-	)
+  // Проверяем на существование
+  const exist = queryOneResult(
+    await this.findByISO_639_1(data.iso_639_1),
+    (r) => (data.id = r.id) // Действие, если запись найдена
+  )
 
-	// Если существует, то не создаём
-	if (exist)
-		return exist
+  // Если существует, то не создаём
+  if (exist) return exist
 
-	return queryOneResult(
-		await this.tx.insert(languages)
-			.values(data)
-			.returning(),
-		r => data.id = r.id
-	)!
+  return queryOneResult(
+    await this.tx.insert(languages).values(data).returning(),
+    (r) => (data.id = r.id)
+  )!
 }

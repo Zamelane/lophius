@@ -1,21 +1,23 @@
 'use server'
 
-import { db, eq } from "database"
-import { api_t_keys } from "@/i18n"
-import { verifySession } from "@/lib/dal"
-import { users } from "database/src/schemas"
-import { UserInfo, ApiResponse } from "@/interfaces"
-import { UpdateProfileSchema } from "@/validates/schemas/UpdateProfileSchema"
+import { api_t_keys } from '@/i18n'
+import type { ApiResponse, UserInfo } from '@/interfaces'
+import { verifySession } from '@/lib/dal'
+import { UpdateProfileSchema } from '@/validates/schemas/UpdateProfileSchema'
+import { db, eq } from 'database'
+import { users } from 'database/src/schemas'
 
 type Params = {
   nickname?: string
   email?: string
   avatarId?: null | number
-  backgroundId?: null | number,
+  backgroundId?: null | number
   bio?: string
 }
 
-export default async function UpdateUser(params: Params): Promise<ApiResponse<UserInfo>> {
+export default async function UpdateUser(
+  params: Params
+): Promise<ApiResponse<UserInfo>> {
   const session = await verifySession()
 
   // Валидация полей
@@ -34,7 +36,7 @@ export default async function UpdateUser(params: Params): Promise<ApiResponse<Us
       validateErrors: validatedFields.error.flatten().fieldErrors,
       error: {
         message: 'Validation error',
-        i18n: api_t_keys.validation_error,
+        i18n: api_t_keys.validation_error
       }
     }
   }
@@ -48,7 +50,8 @@ export default async function UpdateUser(params: Params): Promise<ApiResponse<Us
     backgroundId: validatedBackgroundId
   } = validatedFields.data
 
-  const [data] = await db.update(users)
+  const [data] = await db
+    .update(users)
     .set({
       bio: validatedBio,
       email: validatedEmail,
@@ -59,7 +62,8 @@ export default async function UpdateUser(params: Params): Promise<ApiResponse<Us
     .where(eq(users.id, session.userId ?? -1))
     .returning()
 
-  const { id, bio, email, isAdmin, nickname, avatarId, backgroundImageId } = data
+  const { id, bio, email, isAdmin, nickname, avatarId, backgroundImageId } =
+    data
 
   return {
     success: true,
@@ -70,7 +74,7 @@ export default async function UpdateUser(params: Params): Promise<ApiResponse<Us
       isAdmin,
       nickname,
       avatarId,
-      backgroundImageId,
+      backgroundImageId
     }
   }
 }

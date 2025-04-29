@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { GetUserByIdApiHandler } from "@/actions/api/user/[id]/route";
+import { GetUserByIdApiHandler } from '@/actions/api/user/[id]/route'
+import { NextResponse } from 'next/server'
 
 export async function GET(
   req: Request,
@@ -9,8 +9,7 @@ export async function GET(
 
   let response
 
-  if (id)
-    response = await GetUserByIdApiHandler(id)
+  if (id) response = await GetUserByIdApiHandler(id)
 
   return NextResponse.json(response)
 }

@@ -1,5 +1,5 @@
-import {fastify} from "fastify";
-import {PluginsManager} from "./plugins-manager.ts";
+import { fastify } from 'fastify'
+import { PluginsManager } from './plugins-manager.ts'
 
 export * from './utils'
 
@@ -18,13 +18,13 @@ app.get('/', (req, res) => {
 /**
  * Run the server!
  */
-export const run = async (port: number = 3001) => {
+export const run = async (port = 3001) => {
   try {
     await pluginManager.loadPlugins()
     await app.listen({ port })
     return port
   } catch (err) {
-    console.error("Server didn't started. Reason: " + err)
+    console.error(`Server didn't started. Reason: ${err}`)
     process.exit(1)
   }
 }

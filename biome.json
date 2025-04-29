@@ -1,32 +1,32 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": {
-		"enabled": false,
-		"clientKind": "git",
-		"useIgnoreFile": false
-	},
-	"files": {
-		"ignoreUnknown": false,
-		"ignore": [],
-		"maxSize": 4096000
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "space",
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": [],
+    "maxSize": 4096000
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
     "indentWidth": 2,
     "ignore": [
       "node_modules",
-			"./apps/web/node_modules",
+      "./apps/web/node_modules",
       "./apps/web/.next",
       "./drizzle",
       "bun.lockb"
     ]
-	},
-	"organizeImports": {
-		"enabled": true
-	},
-	"linter": {
-		"enabled": true,
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
     "rules": {
       "style": {
         "noParameterAssign": "off"
@@ -34,22 +34,25 @@
       "suspicious": {
         "noArrayIndexKey": "off"
       },
+      "correctness": {
+        "noUnusedImports": "error"
+      },
       "recommended": true
     },
     "ignore": [
       "node_modules",
-			"./apps/web/node_modules",
+      "./apps/web/node_modules",
       "./apps/web/.next",
       "./drizzle",
       "bun.lockb"
     ]
-	},
-	"javascript": {
-		"formatter": {
+  },
+  "javascript": {
+    "formatter": {
       "semicolons": "asNeeded",
       "quoteStyle": "single",
       "jsxQuoteStyle": "single",
       "trailingCommas": "none"
     }
-	}
+  }
 }

@@ -1,38 +1,36 @@
 'use server'
 
-import { Suspense } from "react";
-import {cookies} from "next/headers";
-import {LayoutProps} from "@/interfaces";
-import { getCurrentLocale } from "@/i18n/current-locale";
+import { getCurrentLocale } from '@/i18n/current-locale'
+import type { LayoutProps } from '@/interfaces'
+import { cookies } from 'next/headers'
+import { Suspense } from 'react'
 
-import { Footer } from "./Footer";
-import { SiteHeader } from "../sidebar/site-header";
-import { AppSidebar } from "../sidebar/app-sidebar";
-import {SidebarInset, SidebarProvider} from "../ui/sidebar";
-import { GlobalSearch } from "../template-components/global-search";
+import { AppSidebar } from '../sidebar/app-sidebar'
+import { SiteHeader } from '../sidebar/site-header'
+import { GlobalSearch } from '../template-components/global-search'
+import { SidebarInset, SidebarProvider } from '../ui/sidebar'
+import { Footer } from './Footer'
 
 export default async function AppLayout({ children }: LayoutProps) {
-	const state = cookies().then(r => {
-		const loadedState = r.get("sidebar_state")
-		return loadedState ? loadedState.value === "true" : false
-	})
-	const lang = await getCurrentLocale()
+  const state = cookies().then((r) => {
+    const loadedState = r.get('sidebar_state')
+    return loadedState ? loadedState.value === 'true' : false
+  })
+  const lang = await getCurrentLocale()
 
-	return (
-		<SidebarProvider defaultOpen={state}>
-			<GlobalSearch/>
+  return (
+    <SidebarProvider defaultOpen={state}>
+      <GlobalSearch />
       <AppSidebar />
-      <SidebarInset className="ml-[2px] overflow-hidden">
-				<SiteHeader />
-				<div className="flex flex-grow justify-center">
-					<div className="w-full max-w-[1920px]">
-						<Suspense fallback={<p>Загрузка ...</p>}>
-							{children}
-						</Suspense>
-					</div>
-				</div>
-				<Footer lang={lang} />
+      <SidebarInset className='ml-[2px] overflow-hidden'>
+        <SiteHeader />
+        <div className='flex flex-grow justify-center'>
+          <div className='w-full max-w-[1920px]'>
+            <Suspense fallback={<p>Загрузка ...</p>}>{children}</Suspense>
+          </div>
+        </div>
+        <Footer lang={lang} />
       </SidebarInset>
     </SidebarProvider>
-	)
+  )
 }

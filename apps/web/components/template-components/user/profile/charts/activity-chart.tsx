@@ -1,71 +1,70 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Bar, XAxis, BarChart, CartesianGrid } from "recharts"
 import {
   Card,
-  CardTitle,
-  CardHeader,
   CardContent,
   CardDescription,
-} from "@/components/ui/card"
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 import {
-  ChartConfig,
-  ChartLegend,
-  ChartTooltip,
+  type ChartConfig,
   ChartContainer,
+  ChartLegend,
   ChartLegendContent,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
+  ChartTooltip,
+  ChartTooltipContent
+} from '@/components/ui/chart'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 const chartData = [
-  { mobile: 80, desktop: 10, month: "January" },
-  { desktop: 0, mobile: 200, month: "February" },
-  { mobile: 120, desktop: 237, month: "March" },
-  { desktop: 73, mobile: 190, month: "April" },
-  { mobile: 0, desktop: 209, month: "May" },
-  { desktop: 0, mobile: 140, month: "June" },
-  { mobile: 80, desktop: 10, month: "January" },
-  { mobile: 0, desktop: 0, month: "February" },
-  { mobile: 54, desktop: 12, month: "March" },
-  { mobile: 0, desktop: 0, month: "April" },
-  { mobile: 0, desktop: 0, month: "May" },
-  { desktop: 0, mobile: 140, month: "June" },
-  { mobile: 80, desktop: 10, month: "January" },
-  { desktop: 0, mobile: 200, month: "February" },
-  { mobile: 120, desktop: 237, month: "March" },
-  { desktop: 73, mobile: 190, month: "April" },
-  { mobile: 0, desktop: 209, month: "May" },
-  { desktop: 0, mobile: 140, month: "June" },
-  { mobile: 80, desktop: 10, month: "January" },
-  { mobile: 0, desktop: 0, month: "February" },
-  { mobile: 54, desktop: 12, month: "March" },
-  { mobile: 0, desktop: 0, month: "April" },
-  { mobile: 0, desktop: 0, month: "May" },
-  { desktop: 0, mobile: 140, month: "June" },
-  { desktop: 0, mobile: 140, month: "June" },
-  { mobile: 80, desktop: 10, month: "January" },
-  { desktop: 0, mobile: 200, month: "February" },
-  { mobile: 120, desktop: 237, month: "March" },
-  { desktop: 73, mobile: 190, month: "April" },
-  { mobile: 0, desktop: 209, month: "May" },
-  { desktop: 0, mobile: 140, month: "June" },
-  { mobile: 80, desktop: 10, month: "January" },
-  { mobile: 0, desktop: 0, month: "February" },
-  { mobile: 54, desktop: 12, month: "March" },
-  { mobile: 0, desktop: 0, month: "April" },
-  { mobile: 0, desktop: 0, month: "May" },
-  { desktop: 0, mobile: 140, month: "June" },
+  { mobile: 80, desktop: 10, month: 'January' },
+  { desktop: 0, mobile: 200, month: 'February' },
+  { mobile: 120, desktop: 237, month: 'March' },
+  { desktop: 73, mobile: 190, month: 'April' },
+  { mobile: 0, desktop: 209, month: 'May' },
+  { desktop: 0, mobile: 140, month: 'June' },
+  { mobile: 80, desktop: 10, month: 'January' },
+  { mobile: 0, desktop: 0, month: 'February' },
+  { mobile: 54, desktop: 12, month: 'March' },
+  { mobile: 0, desktop: 0, month: 'April' },
+  { mobile: 0, desktop: 0, month: 'May' },
+  { desktop: 0, mobile: 140, month: 'June' },
+  { mobile: 80, desktop: 10, month: 'January' },
+  { desktop: 0, mobile: 200, month: 'February' },
+  { mobile: 120, desktop: 237, month: 'March' },
+  { desktop: 73, mobile: 190, month: 'April' },
+  { mobile: 0, desktop: 209, month: 'May' },
+  { desktop: 0, mobile: 140, month: 'June' },
+  { mobile: 80, desktop: 10, month: 'January' },
+  { mobile: 0, desktop: 0, month: 'February' },
+  { mobile: 54, desktop: 12, month: 'March' },
+  { mobile: 0, desktop: 0, month: 'April' },
+  { mobile: 0, desktop: 0, month: 'May' },
+  { desktop: 0, mobile: 140, month: 'June' },
+  { desktop: 0, mobile: 140, month: 'June' },
+  { mobile: 80, desktop: 10, month: 'January' },
+  { desktop: 0, mobile: 200, month: 'February' },
+  { mobile: 120, desktop: 237, month: 'March' },
+  { desktop: 73, mobile: 190, month: 'April' },
+  { mobile: 0, desktop: 209, month: 'May' },
+  { desktop: 0, mobile: 140, month: 'June' },
+  { mobile: 80, desktop: 10, month: 'January' },
+  { mobile: 0, desktop: 0, month: 'February' },
+  { mobile: 54, desktop: 12, month: 'March' },
+  { mobile: 0, desktop: 0, month: 'April' },
+  { mobile: 0, desktop: 0, month: 'May' },
+  { desktop: 0, mobile: 140, month: 'June' }
 ]
 
 const chartConfig = {
   mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    label: 'Mobile',
+    color: 'hsl(var(--chart-2))'
   },
   desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
+    label: 'Desktop',
+    color: 'hsl(var(--chart-1))'
+  }
 } satisfies ChartConfig
 
 export function ProfileActivityChart() {
@@ -76,11 +75,11 @@ export function ProfileActivityChart() {
         <CardDescription>За последние 3 месяца</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="max-h-96 w-full">
+        <ChartContainer config={chartConfig} className='max-h-96 w-full'>
           <BarChart data={chartData} accessibilityLayer>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey='month'
               tickMargin={10}
               tickLine={false}
               axisLine={false}
@@ -90,15 +89,15 @@ export function ProfileActivityChart() {
             <ChartLegend content={<ChartLegendContent />} />
             <Bar
               radius={0}
-              stackId="a"
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              stackId='a'
+              dataKey='desktop'
+              fill='var(--color-desktop)'
             />
             <Bar
               radius={0}
-              stackId="a"
-              dataKey="mobile"
-              fill="var(--color-mobile)"
+              stackId='a'
+              dataKey='mobile'
+              fill='var(--color-mobile)'
             />
           </BarChart>
         </ChartContainer>

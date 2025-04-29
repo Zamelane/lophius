@@ -1,6 +1,6 @@
-import {WithOptional} from "../../index";
-import {InferSelectModel} from "drizzle-orm";
-import {countries} from "../../schemas";
+import type { InferSelectModel } from 'drizzle-orm'
+import type { WithOptional } from '../../index'
+import type { countries } from '../../schemas'
 
 export type Country = InferSelectModel<typeof countries>
 export type OptionalCountry = WithOptional<Country, 'id'>

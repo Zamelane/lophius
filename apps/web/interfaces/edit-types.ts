@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction } from "react"
-import {
-  KinoType,
-  SerialStatusType,
+import type {
+  CountryTranslation,
   GenreTranslation,
   KinoCategoryType,
   KinoTranslateType,
-  CountryTranslation,
-  LanguageTranslation
-} from "@/interfaces"
+  KinoType,
+  LanguageTranslation,
+  SerialStatusType
+} from '@/interfaces'
+import type { Dispatch, SetStateAction } from 'react'
 
-export type WithInfoDataType <T> = {
+export type WithInfoDataType<T> = {
   get: T
   set: Dispatch<SetStateAction<T>>
 }
@@ -22,11 +22,13 @@ export type GenreInfoDataType = WithInfoDataType<GenreTranslation[]>
 
 export type ExternalLinksInfoDataType = WithInfoDataType<string[]>
 
-export type KinoTypeInfoDataType = WithInfoDataType<KinoType|null>
-export type KinoCategoryInfoDataType = WithInfoDataType<KinoCategoryType|null>
-export type SerialProductionStatusInfoDataType = WithInfoDataType<null|SerialStatusType>
+export type KinoTypeInfoDataType = WithInfoDataType<KinoType | null>
+export type KinoCategoryInfoDataType = WithInfoDataType<KinoCategoryType | null>
+export type SerialProductionStatusInfoDataType =
+  WithInfoDataType<null | SerialStatusType>
 export type KinoTranslateInfoDataType = WithInfoDataType<KinoTranslateType[]>
-export type OriginalLanguageInfoDataType = WithInfoDataType<LanguageTranslation | null>
+export type OriginalLanguageInfoDataType =
+  WithInfoDataType<LanguageTranslation | null>
 
 export type KinoDetailedInfoDataType = {
   languages: LanguageInfoDataType

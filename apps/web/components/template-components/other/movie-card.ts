@@ -1,3 +1,1 @@
-export const MovieCard = () => {
-  
-}
+export const MovieCard = () => {}

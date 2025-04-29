@@ -1,12 +1,18 @@
-import {WithOptional} from "../../index";
-import {InferSelectModel} from "drizzle-orm";
-import {countryTranslations} from "../../schemas";
-import {CountryModel} from "../Country/model";
-import {LanguageModel} from "../Language/model";
+import type { InferSelectModel } from 'drizzle-orm'
+import type { WithOptional } from '../../index'
+import type { countryTranslations } from '../../schemas'
+import type { CountryModel } from '../Country/model'
+import type { LanguageModel } from '../Language/model'
 
 export type CountryTranslation = InferSelectModel<typeof countryTranslations>
-export type OptionalCountryTranslation = WithOptional<CountryTranslation, 'countryId' | 'languageId'>
-export type PartialCountryTranslation = Omit<CountryTranslation, 'countryId' | 'languageId'> & {
-	language: LanguageModel
-	country: CountryModel
+export type OptionalCountryTranslation = WithOptional<
+  CountryTranslation,
+  'countryId' | 'languageId'
+>
+export type PartialCountryTranslation = Omit<
+  CountryTranslation,
+  'countryId' | 'languageId'
+> & {
+  language: LanguageModel
+  country: CountryModel
 }

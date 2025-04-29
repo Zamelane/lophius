@@ -1,7 +1,13 @@
-import { relations, InferSelectModel } from "drizzle-orm";
-import {bigint, pgTable, varchar, boolean, bigserial} from "drizzle-orm/pg-core";
+import { relations } from 'drizzle-orm'
+import {
+  bigint,
+  bigserial,
+  boolean,
+  pgTable,
+  varchar
+} from 'drizzle-orm/pg-core'
 
-import { files } from "./files";
+import { files } from './files'
 
 export const users = pgTable('users', {
   bio: varchar({ length: 255 }),
@@ -16,15 +22,13 @@ export const users = pgTable('users', {
 
 export type UsersTableType = typeof users.$inferSelect
 
-export const usersRelations = relations(
-  users, ({ one }) => ({
-    avatar: one(files, {
-      references: [files.id],
-      fields: [users.avatarId]
-    }),
-    backgroundImage: one(files, {
-      references: [files.id],
-      fields: [users.backgroundImageId]
-    })
+export const usersRelations = relations(users, ({ one }) => ({
+  avatar: one(files, {
+    references: [files.id],
+    fields: [users.avatarId]
+  }),
+  backgroundImage: one(files, {
+    references: [files.id],
+    fields: [users.backgroundImageId]
   })
-)
+}))

@@ -1,12 +1,12 @@
-import {Transaction, DBConnection} from "../../index";
-import { deleteMediaRevenue, insertMediaRevenue } from "./methods";
+import type { DBConnection, Transaction } from '../../index'
+import { deleteMediaRevenue, insertMediaRevenue } from './methods'
 
 /**
  * @description Репозиторий для работы с моделью дохода медиа
  */
 export class MediaRevenueRepository {
-	constructor(protected tx: DBConnection | Transaction) {}
+  constructor(protected tx: DBConnection | Transaction) {}
 
-	delete = deleteMediaRevenue
-	insert = insertMediaRevenue
+  delete = deleteMediaRevenue
+  insert = insertMediaRevenue
 }

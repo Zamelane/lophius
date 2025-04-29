@@ -1,6 +1,6 @@
-import { PgTransaction } from 'drizzle-orm/pg-core';
-import { ExtractTablesWithRelations } from 'drizzle-orm';
-import { drizzle, NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
+import type { ExtractTablesWithRelations } from 'drizzle-orm'
+import { type NodePgQueryResultHKT, drizzle } from 'drizzle-orm/node-postgres'
+import type { PgTransaction } from 'drizzle-orm/pg-core'
 
 import * as schema from './schemas'
 
@@ -16,14 +16,15 @@ export let db = drizzle(
     user: process.env.DB_USER!
   }),
   { schema, logger }
-);
+)
 
 export * from './utils'
 export * from './models'
 
 export type Transaction = PgTransaction<
   NodePgQueryResultHKT,
-  typeof schema, ExtractTablesWithRelations<typeof schema>
+  typeof schema,
+  ExtractTablesWithRelations<typeof schema>
 >
 export type DBConnection = typeof db
 export type TransactionParam = {
