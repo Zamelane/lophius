@@ -30,8 +30,7 @@
 
 You can view the demo version at [lophius.ru](https://lophius.ru)
 
-![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.ru
-)
+![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.ru/en)
 ## Run Locally
 
 1. Clone the repository
