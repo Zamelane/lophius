@@ -7,7 +7,8 @@ export async function GET(
 ) {
   const id = (await params).id as string | undefined
 
-  let response
+  let response: Awaited<ReturnType<typeof GetUserByIdApiHandler>> | undefined =
+    undefined
 
   if (id) response = await GetUserByIdApiHandler(id)
 

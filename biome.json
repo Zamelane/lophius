@@ -18,7 +18,9 @@
       "node_modules",
       "./apps/web/node_modules",
       "./apps/web/.next",
+      "./packages/react-photo-view",
       "./drizzle",
+      "./apps/web/bun.lockb",
       "bun.lockb"
     ]
   },
@@ -29,13 +31,25 @@
     "enabled": true,
     "rules": {
       "style": {
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "info"
       },
       "suspicious": {
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "noSelfCompare": "warn",
+        "noExplicitAny": "off"
       },
       "correctness": {
         "noUnusedImports": "error"
+      },
+      "a11y": {
+        "useSemanticElements": "off",
+        "noSvgWithoutTitle": "off",
+        "useKeyWithClickEvents": "off",
+        "useFocusableInteractive": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       },
       "recommended": true
     },
@@ -43,7 +57,9 @@
       "node_modules",
       "./apps/web/node_modules",
       "./apps/web/.next",
+      "./packages/react-photo-view",
       "./drizzle",
+      "./apps/web/bun.lockb",
       "bun.lockb"
     ]
   },

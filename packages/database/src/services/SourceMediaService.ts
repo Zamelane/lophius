@@ -218,6 +218,8 @@ export class SourceMediaService extends BaseService {
         this.tx = tx
         await this.uow.commit()
       })
-      .finally(() => (this.tx = db))
+      .finally(() => {
+        this.tx = db
+      })
   }
 }

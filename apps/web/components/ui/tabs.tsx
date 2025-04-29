@@ -87,9 +87,9 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
               <div
                 key={tab.id}
                 onMouseLeave={() => setHoveredIndex(null)}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                ref={(el) => (tabRefs.current[index] = el)}
+                ref={(el) => {
+                  tabRefs.current[index] = el
+                }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onClick={() => {
                   setActiveIndex(index)

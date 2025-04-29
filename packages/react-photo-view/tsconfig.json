@@ -18,12 +18,12 @@
     "noUnusedLocals": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
-    "suppressImplicitAnyIndexErrors": true,
     "isolatedModules": true,
     "declaration": true,
     "noEmitOnError": true,
     "jsx": "react"
   },
   "include": ["src", "typings.d.ts"],
-  "exclude": ["__tests__"]
+  "exclude": ["__tests__"],
+  "extends": "../../tsconfig.json"
 }

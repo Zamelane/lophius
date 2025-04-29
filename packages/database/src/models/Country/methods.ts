@@ -33,13 +33,17 @@ export async function insertCountry(
 ) {
   const exist = queryOneResult(
     await this.findByISO_3166_1(data.iso_3166_1),
-    (r) => (data.id = r.id)
+    (r) => {
+      data.id = r.id
+    }
   )
 
   if (exist) return exist
 
   return queryOneResult(
     await this.tx.insert(countries).values(data).returning(),
-    (r) => (data.id = r.id)
+    (r) => {
+      data.id = r.id
+    }
   )!
 }

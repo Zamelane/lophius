@@ -38,13 +38,13 @@ export function loadConfig(configToSet?: EnvType) {
   const currentEnv = getEnv()
 
   if (configToSet) {
-    Object.keys(configToSet).forEach((key) => {
+    for (const key of Object.keys(configToSet)) {
       currentEnv[key] = configToSet[key]
-    })
+    }
   } else {
-    Object.keys(process.env).forEach((key) => {
+    for (const key of Object.keys(process.env)) {
       currentEnv[key] = process.env[key]
-    })
+    }
   }
 
   loadConfiguredStatus()

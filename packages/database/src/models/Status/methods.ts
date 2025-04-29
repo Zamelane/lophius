@@ -21,6 +21,8 @@ export async function insertStatus(this: StatusRepository, data: StatusModel) {
         }
       })
       .returning(),
-    (v) => (data.id = v.id)
+    (v) => {
+      data.id = v.id
+    }
   )
 }

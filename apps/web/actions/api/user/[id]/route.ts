@@ -5,7 +5,7 @@ import { MakeUserInfoById } from '../user-info'
 
 export async function GetUserByIdApiHandler(id: string) {
   const session = await verifySession()
-  let user
+  let user: Awaited<ReturnType<typeof MakeUserInfoById>>
 
   if (id === 'me') {
     if (session.userId)
