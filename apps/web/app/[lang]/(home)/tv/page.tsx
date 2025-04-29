@@ -1,15 +1,15 @@
-import { VideoCard } from "@/components/template-components/media/cards/video-card";
-import { ContentLayout } from "@/components/template-components/other/content-layout";
-import { TitleList } from "@/components/template-components/media/containers/title-list";
+import { VideoCard } from '@/components/template-components/media/cards/video-card'
+import { TitleList } from '@/components/template-components/media/containers/title-list'
+import { ContentLayout } from '@/components/template-components/other/content-layout'
 
 export default async function Page() {
   return (
-    <ContentLayout className="px-0 md:px-0">
-      <TitleList px={4} title="В тренде">
+    <ContentLayout className='px-0 md:px-0'>
+      <TitleList px={4} title='В тренде'>
         <VideoCard
-          link="/"
-          title="Бруталист"
-          subText="12 фев 2025"
+          link='/'
+          title='Бруталист'
+          subText='12 фев 2025'
           img={{
             alt: 'alt',
             width: 1400,
@@ -18,9 +18,9 @@ export default async function Page() {
           }}
         />
         <VideoCard
-          link="/"
-          subText="13 мар 2025"
-          title="Переходный возраст"
+          link='/'
+          subText='13 мар 2025'
+          title='Переходный возраст'
           img={{
             alt: 'alt',
             width: 1400,
@@ -29,9 +29,9 @@ export default async function Page() {
           }}
         />
         <VideoCard
-          link="/"
-          subText="07 янв 2024"
-          title="Solo Leveling: Поднятие уровня в одиночку"
+          link='/'
+          subText='07 янв 2024'
+          title='Solo Leveling: Поднятие уровня в одиночку'
           img={{
             alt: 'alt',
             width: 1400,
@@ -40,9 +40,9 @@ export default async function Page() {
           }}
         />
         <VideoCard
-          link="/"
-          subText="07 янв 2025"
-          title="Переродившись аристократом-неудачником, я стал великим магом!"
+          link='/'
+          subText='07 янв 2025'
+          title='Переродившись аристократом-неудачником, я стал великим магом!'
           img={{
             alt: 'alt',
             width: 1400,
@@ -51,9 +51,9 @@ export default async function Page() {
           }}
         />
         <VideoCard
-          link="/"
-          title="Разделение"
-          subText="17 фев 2022"
+          link='/'
+          title='Разделение'
+          subText='17 фев 2022'
           img={{
             alt: 'alt',
             width: 1400,
@@ -62,9 +62,9 @@ export default async function Page() {
           }}
         />
         <VideoCard
-          link="/"
-          subText="27 авг 2018"
-          title="Место под солнцем"
+          link='/'
+          subText='27 авг 2018'
+          title='Место под солнцем'
           img={{
             alt: 'alt',
             width: 1400,
@@ -73,9 +73,9 @@ export default async function Page() {
           }}
         />
         <VideoCard
-          link="/"
-          title="Пиксели"
-          subText="22 июл 2015"
+          link='/'
+          title='Пиксели'
+          subText='22 июл 2015'
           img={{
             alt: 'alt',
             width: 1400,

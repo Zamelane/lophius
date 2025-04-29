@@ -1,16 +1,16 @@
-import { Dispatch } from "react"
-import { SWRConfiguration } from "swr"
-import { FilesTableType } from "database/schemas/files"
-import { TranslatesTableType } from "database/schemas/translates"
-import {
-  UsersTableType,
+import type {
+  CompaniesTableType,
+  CountriesTableType,
+  ExternalImagesTableType,
   GenresTableType,
   LanguagesTableType,
-  CountriesTableType,
-  CompaniesTableType,
   SourceGenresTableType,
-  ExternalImagesTableType
-} from "database/schemas"
+  UsersTableType
+} from 'database/schemas'
+import type { FilesTableType } from 'database/schemas/files'
+import type { TranslatesTableType } from 'database/schemas/translates'
+import type { Dispatch } from 'react'
+import type { SWRConfiguration } from 'swr'
 
 // Для типизации страниц
 export type IdType = {
@@ -27,9 +27,11 @@ export type FallbackType<T> = {
 }
 
 // Вспомогательные
-export type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
-export type WithRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
-export type SetState<T> =  Dispatch<T>
+export type WithOptional<T, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>
+export type WithRequired<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>
+export type SetState<T> = Dispatch<T>
 
 // Вспомогательная типизация сущностей
 export type Translate = {
@@ -46,23 +48,22 @@ export type Country = WithOptional<CountriesTableType, 'id'>
 export type TranslateItem = WithOptional<TranslatesTableType, 'id'>
 export type Company = WithOptional<CompaniesTableType, 'id'>
 export type ExternalImage = {
-    domain: string
-    https: boolean
-  }
-  & WithOptional<ExternalImagesTableType, 'externalDomainId' | 'id' | 'languageId' | 'sourceId'>
+  domain: string
+  https: boolean
+} & WithOptional<
+  ExternalImagesTableType,
+  'externalDomainId' | 'id' | 'languageId' | 'sourceId'
+>
 export type Genre = WithOptional<GenresTableType, 'id'>
 export type SourceGenre = WithOptional<SourceGenresTableType, 'genreId'>
 
 // Сущности переводов
-export type LanguageTranslation = 
-  WithOptional<Language, 'id'>
-  & WithOptional<{translates: Translate[]}, 'translates'>
-export type CountryTranslation =
-  WithOptional<CountriesTableType, 'id'>
-  & WithOptional<{translates: Translate[]}, 'translates'>
-export type GenreTranslation =
-  WithOptional<GenresTableType, 'id'>
-  & WithOptional<{translates: Translate[]}, 'translates'>
+export type LanguageTranslation = WithOptional<Language, 'id'> &
+  WithOptional<{ translates: Translate[] }, 'translates'>
+export type CountryTranslation = WithOptional<CountriesTableType, 'id'> &
+  WithOptional<{ translates: Translate[] }, 'translates'>
+export type GenreTranslation = WithOptional<GenresTableType, 'id'> &
+  WithOptional<{ translates: Translate[] }, 'translates'>
 
 // Объединения сущностей
 export type UserInfo = User & {
@@ -74,7 +75,13 @@ export type UserInfo = User & {
 // Прочее
 export type KinoType = 'film' | 'serial'
 export type KinoCategoryType = 'anime' | 'cinema'
-export type SerialStatusType = 'canceled' | 'coming out' | 'completed' | 'in production' | 'ongoing' | 'planned'
+export type SerialStatusType =
+  | 'canceled'
+  | 'coming out'
+  | 'completed'
+  | 'in production'
+  | 'ongoing'
+  | 'planned'
 export type KinoTranslateType = {
   language: LanguageTranslation
   overview: string
@@ -83,4 +90,4 @@ export type KinoTranslateType = {
 export type PartialStatusType = {
   isPartial: boolean
 }
-export type NonEmptyArray<T> = [T, ...T[]];
+export type NonEmptyArray<T> = [T, ...T[]]

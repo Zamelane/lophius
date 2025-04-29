@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
+import type { LayoutProps } from '@/interfaces'
 import { SWRConfig } from 'swr'
-import {LayoutProps} from "@/interfaces";
 
 export const SWRProvider = ({ children }: LayoutProps) => {
-	return <SWRConfig>{children}</SWRConfig>
-};
+  return <SWRConfig>{children}</SWRConfig>
+}

@@ -17,15 +17,12 @@
     "db:push": "cd packages/database && bun push",
     "db:full": "cd packages/database && bun full",
     "db:studio": "cd packages/database && bun studio",
-    
+
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --write --unsafe"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "dependencies": {
     "drizzle-orm": "^0.40.0"
   },

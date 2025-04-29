@@ -1,16 +1,16 @@
+import { CachedMakeUserInfoByNickname } from '@/actions/api/user/user-info'
+import { UserProfilePageComponent } from '@/components/template-components/user/profile'
+import { NotFound } from '@/components/ui/not-found'
+import { verifySession } from '@/lib/dal'
 //import { ResolvingMetadata } from "next"
-import { Metadata } from "next"
-import { verifySession } from "@/lib/dal"
-import { NotFound } from "@/components/ui/not-found"
-import { CachedMakeUserInfoByNickname } from "@/actions/api/user/user-info"
-import { UserProfilePageComponent } from "@/components/template-components/user/profile"
+import type { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ nickname: string }>
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: Props
   //parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { nickname } = await params
@@ -21,21 +21,21 @@ export async function generateMetadata(
     return {
       title: 'User not found'
     }
-  
+
   return {
     title: user.nickname,
     description: user.bio,
     verification: {
       other: {
-        "lophius": `@${user.nickname}`
+        lophius: `@${user.nickname}`
       }
     },
     openGraph: {
       type: 'profile',
       title: user.nickname,
-      description: user.bio ?? "",
-      images: '/api/og/user/' + user.id,
-      //url: 
+      description: user.bio ?? '',
+      images: `/api/og/user/${user.id}`
+      //url:
     }
   }
 }
@@ -46,8 +46,12 @@ export default async function UserPage({ params }: Props) {
 
   const user = await CachedMakeUserInfoByNickname(nickname, session?.userId)
 
-  if (!user)
-    return <NotFound title="User not found"/>
-  
-  return <UserProfilePageComponent isAuth={session.isAuth} data={{ ...user, isMe: user.id === session?.userId }} />
+  if (!user) return <NotFound title='User not found' />
+
+  return (
+    <UserProfilePageComponent
+      isAuth={session.isAuth}
+      data={{ ...user, isMe: user.id === session?.userId }}
+    />
+  )
 }

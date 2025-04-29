@@ -1,6 +1,6 @@
-import {MetadataProps} from "@/interfaces";
-import {getTranslations} from "next-intl/server";
-import SignupForm from "@/components/forms/signup-form";
+import SignupForm from '@/components/forms/signup-form'
+import type { MetadataProps } from '@/interfaces'
+import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: MetadataProps) {
   const t = await getTranslations({
@@ -14,5 +14,5 @@ export async function generateMetadata(props: MetadataProps) {
 }
 
 export default function SignupPage() {
-  return <SignupForm/>
+  return <SignupForm />
 }

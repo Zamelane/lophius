@@ -1,6 +1,6 @@
-import { relations } from "drizzle-orm";
-import { pgTable, serial, varchar } from "drizzle-orm/pg-core";
-import { medias } from "./medias";
+import { relations } from 'drizzle-orm'
+import { pgTable, serial, varchar } from 'drizzle-orm/pg-core'
+import { medias } from './medias'
 
 // export const statuses = pgEnum('statuses', [
 //   'canceled',

@@ -1,13 +1,16 @@
-import {InferSelectModel, relations} from "drizzle-orm";
-import { decimal, integer, pgTable, bigserial } from "drizzle-orm/pg-core";
+import { relations } from 'drizzle-orm'
+import { bigserial, decimal, integer, pgTable } from 'drizzle-orm/pg-core'
 
-import { medias } from "./medias";
+import { medias } from './medias'
 
 export const media_votes = pgTable('media_votes', {
   count: integer(),
   avg: decimal().notNull(),
   avg_max: decimal().notNull(),
-  mediaId: bigserial({ mode: 'number' }).references(() => medias.id).notNull().primaryKey()
+  mediaId: bigserial({ mode: 'number' })
+    .references(() => medias.id)
+    .notNull()
+    .primaryKey()
 })
 
 export type MediaVotesTableType = typeof media_votes.$inferSelect

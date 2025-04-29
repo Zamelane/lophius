@@ -1,11 +1,11 @@
-import {relations} from "drizzle-orm";
-import { serial, pgTable, varchar } from "drizzle-orm/pg-core";
-import {companies} from "database/schemas/companies.ts";
-import {countryTranslations} from "database/schemas/country_translations.ts";
-import {media_production_countries} from "database/schemas/media_production_countries.ts";
-import {origin_countries} from "database/schemas/origin_countries.ts";
-import {release_dates} from "database/schemas/release_dates.ts";
-import {translates} from "database/schemas/translates.ts";
+import { companies } from 'database/schemas/companies.ts'
+import { countryTranslations } from 'database/schemas/country_translations.ts'
+import { media_production_countries } from 'database/schemas/media_production_countries.ts'
+import { origin_countries } from 'database/schemas/origin_countries.ts'
+import { release_dates } from 'database/schemas/release_dates.ts'
+import { translates } from 'database/schemas/translates.ts'
+import { relations } from 'drizzle-orm'
+import { pgTable, serial, varchar } from 'drizzle-orm/pg-core'
 
 export const countries = pgTable('countries', {
   id: serial().primaryKey(),
@@ -21,5 +21,5 @@ export const countriesRelations = relations(countries, ({ one, many }) => ({
   countryTranslations: many(countryTranslations),
   mediaProductionCountries: many(media_production_countries),
   originCountries: many(origin_countries),
-  releaseDates: many(release_dates),
+  releaseDates: many(release_dates)
 }))

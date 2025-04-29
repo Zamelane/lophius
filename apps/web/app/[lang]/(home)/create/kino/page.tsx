@@ -1,26 +1,34 @@
 'use client'
-import { useState } from "react";
-import { Title } from "@/components/me-ui/title";
-import { InfoIcon, LanguagesIcon } from "lucide-react";
-import { Tab, CustomMenu } from "@/components/me-ui/custom-menu";
-import { Centrize } from "@/components/template-components/other/centrize";
-import { ContentLayout } from "@/components/template-components/other/content-layout";
-import { KinoType, GenreTranslation, KinoCategoryType, SerialStatusType, KinoTranslateType, CountryTranslation, LanguageTranslation } from "@/interfaces";
+import { CustomMenu, type Tab } from '@/components/me-ui/custom-menu'
+import { Title } from '@/components/me-ui/title'
+import { Centrize } from '@/components/template-components/other/centrize'
+import { ContentLayout } from '@/components/template-components/other/content-layout'
+import type {
+  CountryTranslation,
+  GenreTranslation,
+  KinoCategoryType,
+  KinoTranslateType,
+  KinoType,
+  LanguageTranslation,
+  SerialStatusType
+} from '@/interfaces'
+import { InfoIcon, LanguagesIcon } from 'lucide-react'
+import { useState } from 'react'
 
-import { TranslateTab } from "./(tabs)/translate";
-import { DefaultInfoTab } from "./(tabs)/default-info";
+import { DefaultInfoTab } from './(tabs)/default-info'
+import { TranslateTab } from './(tabs)/translate'
 
 const tabs: Tab[] = [
   {
-    id: "info",
+    id: 'info',
     icon: InfoIcon,
-    title: "Основная информация"
+    title: 'Основная информация'
   },
   {
-    id: "translate",
-    title: "Переводы",
+    id: 'translate',
+    title: 'Переводы',
     icon: LanguagesIcon
-  },
+  }
   // {
   //   id: "production",
   //   title: "Производство"
@@ -55,47 +63,51 @@ export default function KinoCreatePage() {
   const [selected, setSelected] = useState<Tab>(tabs[0])
 
   // Списочные значения
-  const [languages,              setLanguages             ] = useState<LanguageTranslation[]>([])
-  const [countries,              setCountries             ] = useState<CountryTranslation[]>([])
-  const [genres,                 setGenres                ] = useState<GenreTranslation[]>([])
-  const [links,                  setLinks                 ] = useState<string[]>([])
-  const [translates,             setTranslates            ] = useState<KinoTranslateType[]>([])
+  const [languages, setLanguages] = useState<LanguageTranslation[]>([])
+  const [countries, setCountries] = useState<CountryTranslation[]>([])
+  const [genres, setGenres] = useState<GenreTranslation[]>([])
+  const [links, setLinks] = useState<string[]>([])
+  const [translates, setTranslates] = useState<KinoTranslateType[]>([])
 
-  // Выбранные значения     
-  const [kinoType,               setKinoType              ] = useState<KinoType | null>(null)
-  const [kinoCategory,           setKinoCategory          ] = useState<KinoCategoryType | null>(null)
-  const [serialProductionStatus, setSerialProductionStatus] = useState<null | SerialStatusType>(null)
-  const [originalLanguage,       setOriginalLanguage      ] = useState<LanguageTranslation|null>(null)
+  // Выбранные значения
+  const [kinoType, setKinoType] = useState<KinoType | null>(null)
+  const [kinoCategory, setKinoCategory] = useState<KinoCategoryType | null>(
+    null
+  )
+  const [serialProductionStatus, setSerialProductionStatus] =
+    useState<null | SerialStatusType>(null)
+  const [originalLanguage, setOriginalLanguage] =
+    useState<LanguageTranslation | null>(null)
 
   return (
-    <ContentLayout className="px-4">
-      <Title className="text-center md:text-left">Создание кино</Title>
-      <CustomMenu
-        tabs={tabs}
-        selected={selected}
-        setSelected={setSelected}
-      />
-      <Centrize className="p-0">
-        {
-          selected.id === 'info'
-          && <DefaultInfoTab 
-                links={{get: links, set: setLinks}}
-                genres={{get: genres, set: setGenres}}
-                kinoType={{get: kinoType, set: setKinoType}}
-                languages={{get: languages, set: setLanguages}}
-                countries={{get: countries, set: setCountries}}
-                kinoCategory={{get: kinoCategory, set: setKinoCategory}}
-                originalLanguage={{get: originalLanguage, set: setOriginalLanguage}}
-                serialStatus={{get: serialProductionStatus, set: setSerialProductionStatus}}
-              />
-        }
-        {
-          selected.id === 'translate'
-          && <TranslateTab
-            languages={{get: languages, set: setLanguages}}
-            translates={{get: translates, set: setTranslates}}
+    <ContentLayout className='px-4'>
+      <Title className='text-center md:text-left'>Создание кино</Title>
+      <CustomMenu tabs={tabs} selected={selected} setSelected={setSelected} />
+      <Centrize className='p-0'>
+        {selected.id === 'info' && (
+          <DefaultInfoTab
+            links={{ get: links, set: setLinks }}
+            genres={{ get: genres, set: setGenres }}
+            kinoType={{ get: kinoType, set: setKinoType }}
+            languages={{ get: languages, set: setLanguages }}
+            countries={{ get: countries, set: setCountries }}
+            kinoCategory={{ get: kinoCategory, set: setKinoCategory }}
+            originalLanguage={{
+              get: originalLanguage,
+              set: setOriginalLanguage
+            }}
+            serialStatus={{
+              get: serialProductionStatus,
+              set: setSerialProductionStatus
+            }}
           />
-        }
+        )}
+        {selected.id === 'translate' && (
+          <TranslateTab
+            languages={{ get: languages, set: setLanguages }}
+            translates={{ get: translates, set: setTranslates }}
+          />
+        )}
       </Centrize>
     </ContentLayout>
   )
@@ -110,17 +122,30 @@ type KinoInfo = {
     title: string
     primaryCountries: number[] // Исходная страна
     procutionCountries: number[] // Кто учавствовал в производстве (кто попал в фильм) ?
-    status: 'canceled' | 'coming out' | 'completed' | 'in production' | 'ongoing' | 'planned'
+    status:
+      | 'canceled'
+      | 'coming out'
+      | 'completed'
+      | 'in production'
+      | 'ongoing'
+      | 'planned'
     isAdult: boolean // Для извращенцев ?
     creators: number[] // personId (персоны) авторы/создатели
     homepage: string
     spokenLanguages: number[] // languageId (разговорыне языки)
-    ageRatings: number[]      // ageRatingId (возрастные категории)
+    ageRatings: number[] // ageRatingId (возрастные категории)
     releases: {
       ageRatingId: number
       date: Date
       languageId: number
-      type: 'digital' | 'physical' | 'premiere' | 'theatrical' | 'theatrical (limited)' | 'TV' | 'unknown'
+      type:
+        | 'digital'
+        | 'physical'
+        | 'premiere'
+        | 'theatrical'
+        | 'theatrical (limited)'
+        | 'TV'
+        | 'unknown'
     }[]
     genres: number[]
     budget: {
@@ -130,7 +155,8 @@ type KinoInfo = {
     productionCompanies: number[] // Продакшн-компании и студии (нужно хранить тип)
   }
   // Переводы
-  titles: {             // Альтернативные названия
+  titles: {
+    // Альтернативные названия
     languageId: number
     value: string
   }[]
@@ -143,7 +169,13 @@ type KinoInfo = {
     value: string
   }[]
   trailers: {
-    type: 'behind the scenes' | 'bloopers' | 'excerpt' | 'short film' | 'teaser' | 'trailer'
+    type:
+      | 'behind the scenes'
+      | 'bloopers'
+      | 'excerpt'
+      | 'short film'
+      | 'teaser'
+      | 'trailer'
     quality: '4K-2160' | 'HD-1080' | 'HD-720' | 'HQ' | 'standard'
     url: string
   }[]
@@ -155,7 +187,7 @@ type KinoInfo = {
   /* Прочее */
   animePersonages: {
     personageId: number // personId
-    isPrimary: boolean  // ГГ ???
+    isPrimary: boolean // ГГ ???
     voiceActor: {
       personId: number
       languageId: number
@@ -169,12 +201,11 @@ type FilmInfo = KinoInfo & {
     personId: number
     type: 'cast' | 'crew' // съёмочный и актёрский составы
     castRoleId: number
-    personage: {          // Кого актёр играл
+    personage: {
+      // Кого актёр играл
       personId: number
     }
   }[]
 }
 
-type SerialInfo = {
-
-} & KinoInfo
+type SerialInfo = {} & KinoInfo

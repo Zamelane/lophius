@@ -1,23 +1,21 @@
+import type { DBConnection, Transaction } from '../../index'
 import {
-	Transaction,
-	DBConnection
-} from "../../index";
-import {
-	insertMedia,
-	findMediaById,
-	findMediaByExternalId, updateMedia
-} from "./methods";
+  findMediaByExternalId,
+  findMediaById,
+  insertMedia,
+  updateMedia
+} from './methods'
 
 /**
  * @description Репозиторий для работы с моделью медиа
  */
 export class MediaRepository {
-	constructor(protected tx: DBConnection | Transaction) {}
+  constructor(protected tx: DBConnection | Transaction) {}
 
-	findById = findMediaById
+  findById = findMediaById
 
-	findByExternalId = findMediaByExternalId
+  findByExternalId = findMediaByExternalId
 
-	insert = insertMedia
-	update = updateMedia
+  insert = insertMedia
+  update = updateMedia
 }

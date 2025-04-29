@@ -1,26 +1,34 @@
-'use client';
+'use client'
 
-import {UserInfo, ContentResponse} from "@/interfaces";
-import {useState, Dispatch, useContext, createContext, SetStateAction} from 'react';
+import type { ContentResponse, UserInfo } from '@/interfaces'
+import {
+  type Dispatch,
+  type SetStateAction,
+  createContext,
+  useContext,
+  useState
+} from 'react'
 
-const AuthContext = createContext<ContentResponse<UserInfo>>({content: undefined});
+const AuthContext = createContext<ContentResponse<UserInfo>>({
+  content: undefined
+})
 let _setAuth: Dispatch<SetStateAction<ContentResponse<UserInfo>>>
 export const AuthProvider = ({
-	children,
-	initialData
+  children,
+  initialData
 }: { children: React.ReactNode; initialData: ContentResponse<UserInfo> }) => {
-	const [auth, setAuth] = useState<ContentResponse<UserInfo>>(initialData)
-	_setAuth = setAuth
-	return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-};
+  const [auth, setAuth] = useState<ContentResponse<UserInfo>>(initialData)
+  _setAuth = setAuth
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)
 export const clearAuth = () => {
-	console.log('clearAuth')
-	_setAuth({content: undefined})
+  console.log('clearAuth')
+  _setAuth({ content: undefined })
 }
 export const setAuth = (auth: ContentResponse<UserInfo>) => {
-	console.log('setAuth')
-	console.log(auth)
-	_setAuth(auth)
+  console.log('setAuth')
+  console.log(auth)
+  _setAuth(auth)
 }

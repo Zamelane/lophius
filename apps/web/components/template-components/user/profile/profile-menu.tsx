@@ -1,36 +1,35 @@
 'use client'
-import { Tabs } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
+import { Separator } from '@/components/ui/separator'
+import { Tabs } from '@/components/ui/tabs'
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 const tabs = [
-  { id: "overview", label: "Информация" },
-  { id: "friends", label: "Друзья" },
-  { id: "folders", label: "Папки" },
-  { id: "collections", label: "Коллекции" },
-  { id: "comments", label: "Комментарии" },
+  { id: 'overview', label: 'Информация' },
+  { id: 'friends', label: 'Друзья' },
+  { id: 'folders', label: 'Папки' },
+  { id: 'collections', label: 'Коллекции' },
+  { id: 'comments', label: 'Комментарии' }
 ]
 
 export const ProfileMenu = () => {
   // https://www.npmjs.com/package/react-indiana-drag-scroll
   return (
-    
-    <div className="relative">
-      <Separator className="absolute bottom-[2px] h-[2px] w-full"/>
-      <ScrollContainer
-        vertical={false}
-        className="w-full pb-2"
-      >
+    <div className='relative'>
+      <Separator className='absolute bottom-[2px] h-[2px] w-full' />
+      <ScrollContainer vertical={false} className='w-full pb-2'>
         <Tabs
           tabs={tabs}
-          onTabChange={(tabId: string) => console.log(`Tab changed to: ${tabId}`)}
+          onTabChange={(tabId: string) =>
+            console.log(`Tab changed to: ${tabId}`)
+          }
         />
       </ScrollContainer>
     </div>
   )
 }
 
-{/* <Tabs className="w-full" defaultValue="tab-1">
+{
+  /* <Tabs className="w-full" defaultValue="tab-1">
       <ScrollArea>
         <TabsList className="w-full mb-3 h-auto -space-x-px bg-background p-0 shadow-sm shadow-black/5 rtl:space-x-reverse">
           <TabsTrigger
@@ -81,9 +80,11 @@ export const ProfileMenu = () => {
       <TabsContent value="tab-3">
         <p className="p-4 pt-1 text-center text-xs text-muted-foreground">Content for Tab 3</p>
       </TabsContent>
-    </Tabs> */}
+    </Tabs> */
+}
 
-{/* <Menubar className="flex justify-center">
+{
+  /* <Menubar className="flex justify-center">
       <MenubarMenu>
         <MenubarTrigger>
           <LayoutGrid className="mr-2 size-4" />
@@ -146,4 +147,5 @@ export const ProfileMenu = () => {
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
-    </Menubar> */}
+    </Menubar> */
+}

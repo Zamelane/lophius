@@ -1,25 +1,26 @@
-import { MediaModel } from "../Media/model"
-import { MediaBudgetModel } from "./model"
-import { MediaBudgetRepository } from "./repository"
-import { media_budgets } from "database/schemas"
-import { eq } from "drizzle-orm"
+import { media_budgets } from 'database/schemas'
+import { eq } from 'drizzle-orm'
+import type { MediaModel } from '../Media/model'
+import type { MediaBudgetModel } from './model'
+import type { MediaBudgetRepository } from './repository'
 
 /**
  * Операция Insert для модели UoW
  */
 export async function insertMediaBudget(
-	this: MediaBudgetRepository,
-	data: MediaBudgetModel,
+  this: MediaBudgetRepository,
+  data: MediaBudgetModel,
   media: MediaModel
 ) {
   media.validateRequiredIds()
 
-	await this.tx.insert(media_budgets)
-		.values({
-			...data,
+  await this.tx
+    .insert(media_budgets)
+    .values({
+      ...data,
       mediaId: media.id
     })
-		.onConflictDoNothing()
+    .onConflictDoNothing()
 
   data.mediaId = media.id
 }
@@ -28,11 +29,10 @@ export async function insertMediaBudget(
  * Операция Delete для модели UoW
  */
 export async function deleteMediaBudget(
-	this: MediaBudgetRepository,
+  this: MediaBudgetRepository,
   media: MediaModel
 ) {
   media.validateRequiredIds()
 
-	await this.tx.delete(media_budgets)
-		.where(eq(media_budgets.mediaId, media.id))
+  await this.tx.delete(media_budgets).where(eq(media_budgets.mediaId, media.id))
 }

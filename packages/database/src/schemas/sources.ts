@@ -1,8 +1,8 @@
-import {pgEnum, pgTable, serial} from "drizzle-orm/pg-core";
-import {relations} from "drizzle-orm";
-import {companies} from "database/schemas/companies.ts";
-import {external_images} from "database/schemas/external_images.ts";
-import {plugin_storage} from "database/schemas/plugin_storage.ts";
+import { companies } from 'database/schemas/companies.ts'
+import { external_images } from 'database/schemas/external_images.ts'
+import { plugin_storage } from 'database/schemas/plugin_storage.ts'
+import { relations } from 'drizzle-orm'
+import { pgEnum, pgTable, serial } from 'drizzle-orm/pg-core'
 
 export const sourceType = pgEnum('source_type', ['user', 'parser'])
 

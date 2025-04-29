@@ -1,7 +1,7 @@
-"use server";
+'use server'
 
-import { ApiResponse } from "@/interfaces";
-import CreateUser from "@/actions/server/logics/create-user";
+import CreateUser from '@/actions/server/logics/create-user'
+import type { ApiResponse } from '@/interfaces'
 
 type Props = {
   nickname: string
@@ -9,7 +9,9 @@ type Props = {
   password: string
 }
 
-export async function CreateAdmin(props: Props): Promise<ApiResponse<undefined>> {
+export async function CreateAdmin(
+  props: Props
+): Promise<ApiResponse<undefined>> {
   try {
     CreateUser({
       ...props,
@@ -17,15 +19,15 @@ export async function CreateAdmin(props: Props): Promise<ApiResponse<undefined>>
     })
     return {
       success: true,
-      data: undefined,
-    };
+      data: undefined
+    }
   } catch (err) {
     return {
       success: false,
       error: {
-        i18n: "",
-        message: err instanceof Error ? err.message : `${err}`,
-      },
-    };
+        i18n: '',
+        message: err instanceof Error ? err.message : `${err}`
+      }
+    }
   }
 }

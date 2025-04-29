@@ -1,11 +1,11 @@
-import {Transaction, DBConnection} from "../../index";
-import { insertStatus } from "./methods";
+import type { DBConnection, Transaction } from '../../index'
+import { insertStatus } from './methods'
 
 /**
  * @description Репозиторий для работы с моделью статусов
  */
 export class StatusRepository {
-	constructor(protected tx: DBConnection | Transaction) {}
+  constructor(protected tx: DBConnection | Transaction) {}
 
-	insert = insertStatus
+  insert = insertStatus
 }

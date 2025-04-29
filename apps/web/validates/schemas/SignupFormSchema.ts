@@ -1,9 +1,10 @@
-import {z} from "zod";
-import {api_t_keys} from "@/i18n";
-import {CheckEmailExists, CheckNicknameExists} from "@/validates";
+import { api_t_keys } from '@/i18n'
+import { CheckEmailExists, CheckNicknameExists } from '@/validates'
+import { z } from 'zod'
 
 export const SignupFormSchema = z.object({
-  email: z.string()
+  email: z
+    .string()
     .trim()
     .email({ message: api_t_keys.please_enter_a_valid_email })
     .max(255)
@@ -19,5 +20,5 @@ export const SignupFormSchema = z.object({
     .min(8, { message: api_t_keys.password_at_least_8_characters })
     .regex(/[a-z]/, { message: api_t_keys.password_at_least_1_lowercase })
     .regex(/[A-Z]/, { message: api_t_keys.password_at_least_1_uppercase })
-    .regex(/[0-9]/, { message: api_t_keys.password_at_least_1_number }),
+    .regex(/[0-9]/, { message: api_t_keys.password_at_least_1_number })
 })

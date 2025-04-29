@@ -1,8 +1,8 @@
-import type { NextConfig } from "next";
 // Подключаем интернационализацию
-import path from "path";
-import createNextIntlPlugin from "next-intl/plugin";
-const withNextIntl = createNextIntlPlugin();
+import path from 'node:path'
+import type { NextConfig } from 'next'
+import createNextIntlPlugin from 'next-intl/plugin'
+const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
   eslint: {
@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
         search: '',
         pathname: '/**',
         protocol: 'https',
-        hostname: 'files.zmln.ru',
+        hostname: 'files.zmln.ru'
       },
       {
         hostname: 'image.tmdb.org'
@@ -35,8 +35,8 @@ const nextConfig: NextConfig = {
       {
         hostname: 'media.themoviedb.org'
       }
-    ],
+    ]
   }
-};
+}
 
-export default withNextIntl(nextConfig);
+export default withNextIntl(nextConfig)

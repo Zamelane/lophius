@@ -1,18 +1,26 @@
-import {WithRequired,OptionalCountryId, OptionalLanguageId} from "../../index";
-import {OptionalCountryTranslation} from "./type";
+import type {
+  OptionalCountryId,
+  OptionalLanguageId,
+  WithRequired
+} from '../../index'
+import type { OptionalCountryTranslation } from './type'
 
 export class CountryTranslationModel implements OptionalCountryTranslation {
-	countryId?: OptionalCountryId;
-	languageId?: OptionalLanguageId;
-	value!: OptionalCountryTranslation['value'];
+  countryId?: OptionalCountryId
+  languageId?: OptionalLanguageId
+  value!: OptionalCountryTranslation['value']
 
+  constructor(data: OptionalCountryTranslation) {
+    Object.assign(this, data)
+  }
 
-	constructor(data: OptionalCountryTranslation) {
-		Object.assign(this, data);
-	}
-
-	validateRequiredIds(): asserts this is WithRequired<OptionalCountryTranslation, 'countryId' | 'languageId'> {
-		if (!this.countryId || !this.languageId)
-			throw new Error('Missing required countryId and languageId: ' + this.constructor.name);
-	}
+  validateRequiredIds(): asserts this is WithRequired<
+    OptionalCountryTranslation,
+    'countryId' | 'languageId'
+  > {
+    if (!this.countryId || !this.languageId)
+      throw new Error(
+        `Missing required countryId and languageId: ${this.constructor.name}`
+      )
+  }
 }

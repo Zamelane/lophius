@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face{
+@font-face {
   font-family: Geist;
-  src: url(/fonts/Geist.ttf)
+  src: url(/fonts/Geist.ttf);
 }
 
 body {
@@ -100,8 +100,6 @@ body {
     @apply bg-background text-foreground;
   }
 } */
-
-
 
 /* @layer base {
   * {

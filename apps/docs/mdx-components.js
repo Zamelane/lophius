@@ -5,8 +5,8 @@ const themeComponents = getThemeComponents()
 
 // Merge components
 export function useMDXComponents(components) {
-    return {
-        ...themeComponents,
-        ...components
-    }
+  return {
+    ...themeComponents,
+    ...components
+  }
 }

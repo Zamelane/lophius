@@ -1,7 +1,6 @@
-import {MetadataProps} from "@/interfaces";
-import {getTranslations} from "next-intl/server";
-import LoginForm from "@/components/forms/login-form";
-
+import LoginForm from '@/components/forms/login-form'
+import type { MetadataProps } from '@/interfaces'
+import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: MetadataProps) {
   const t = await getTranslations({
@@ -15,5 +14,5 @@ export async function generateMetadata(props: MetadataProps) {
 }
 
 export default function LoginPage() {
-  return <LoginForm/>
+  return <LoginForm />
 }
