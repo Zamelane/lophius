@@ -23,6 +23,7 @@
     "drizzle-orm": "^0.40.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "drizzle-kit": "^0.30.5",
     "less": "^4.3.0",
     "typescript": "^5.8.2"
