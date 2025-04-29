@@ -7,24 +7,49 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": []
+		"ignore": [],
+		"maxSize": 4096000
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "space",
+    "indentWidth": 2,
+    "ignore": [
+      "node_modules",
+			"./apps/web/node_modules",
+      "./apps/web/.next",
+      "./drizzle",
+      "bun.lockb"
+    ]
 	},
 	"organizeImports": {
 		"enabled": true
 	},
 	"linter": {
 		"enabled": true,
-		"rules": {
-			"recommended": true
-		}
+    "rules": {
+      "style": {
+        "noParameterAssign": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
+      "recommended": true
+    },
+    "ignore": [
+      "node_modules",
+			"./apps/web/node_modules",
+      "./apps/web/.next",
+      "./drizzle",
+      "bun.lockb"
+    ]
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
-		}
+      "semicolons": "asNeeded",
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single",
+      "trailingCommas": "none"
+    }
 	}
 }
