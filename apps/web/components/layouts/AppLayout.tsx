@@ -7,7 +7,10 @@ import { Suspense } from 'react'
 
 import { AppSidebar } from '../sidebar/app-sidebar'
 import { SiteHeader } from '../sidebar/site-header'
-import { GlobalSearch } from '../template-components/global-search'
+import {
+  GlobalSearch,
+  GlobalSearchProvider
+} from '../template-components/global-search'
 import { SidebarInset, SidebarProvider } from '../ui/sidebar'
 import { Footer } from './Footer'
 
@@ -19,18 +22,20 @@ export default async function AppLayout({ children }: LayoutProps) {
   const lang = await getCurrentLocale()
 
   return (
-    <SidebarProvider defaultOpen={state}>
-      <GlobalSearch />
-      <AppSidebar />
-      <SidebarInset className='ml-[2px] overflow-hidden'>
-        <SiteHeader />
-        <div className='flex flex-grow justify-center'>
-          <div className='w-full max-w-[1920px]'>
-            <Suspense fallback={<p>Загрузка ...</p>}>{children}</Suspense>
+    <GlobalSearchProvider>
+      <SidebarProvider defaultOpen={state}>
+        <GlobalSearch />
+        <AppSidebar />
+        <SidebarInset className='ml-[2px] overflow-hidden'>
+          <SiteHeader />
+          <div className='flex flex-grow justify-center'>
+            <div className='w-full max-w-[1920px]'>
+              <Suspense fallback={<p>Загрузка ...</p>}>{children}</Suspense>
+            </div>
           </div>
-        </div>
-        <Footer lang={lang} />
-      </SidebarInset>
-    </SidebarProvider>
+          <Footer lang={lang} />
+        </SidebarInset>
+      </SidebarProvider>
+    </GlobalSearchProvider>
   )
 }

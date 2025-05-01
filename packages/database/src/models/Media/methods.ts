@@ -72,7 +72,9 @@ export async function insertMedia(
         sourceId: data.sourceId
       })
       .returning(),
-    (r) => (data.media.id = r.id)
+    (r) => {
+      data.media.id = r.id
+    }
   )!
 }
 

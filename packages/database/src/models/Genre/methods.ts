@@ -21,6 +21,8 @@ export async function insertGenre(this: GenreRepository, data: GenreModel) {
         }
       })
       .returning(),
-    (v) => (data.id = v.id)
+    (v) => {
+      data.id = v.id
+    }
   )
 }

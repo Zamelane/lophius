@@ -34,7 +34,9 @@ export async function insertLanguage(
   // Проверяем на существование
   const exist = queryOneResult(
     await this.findByISO_639_1(data.iso_639_1),
-    (r) => (data.id = r.id) // Действие, если запись найдена
+    (r) => {
+      data.id = r.id
+    } // Действие, если запись найдена
   )
 
   // Если существует, то не создаём
@@ -42,6 +44,8 @@ export async function insertLanguage(
 
   return queryOneResult(
     await this.tx.insert(languages).values(data).returning(),
-    (r) => (data.id = r.id)
+    (r) => {
+      data.id = r.id
+    }
   )!
 }
