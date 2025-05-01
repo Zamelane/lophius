@@ -1,30 +1,17 @@
 'use client'
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User
-} from 'lucide-react'
-import React from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
+import type { LayoutProps } from '@/interfaces'
 import { Button } from '../shadcn/ui/button'
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut
-} from '../shadcn/ui/command'
+import { CommandDialog, CommandInput } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
 
-export function GlobalSearch() {
-  const [open, setOpen] = React.useState(false)
+const Separator = () => <div className='-mx-1 h-px bg-border' />
 
+export function GlobalSearch() {
+  const { isOpen: open, setIsOpen: setOpen } = useGlobalSearchContext()
+
+  // Регируем на сочитание клавиш для открытия модалки
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
@@ -34,49 +21,20 @@ export function GlobalSearch() {
     }
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [setOpen])
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <DialogTitle className='hidden'>Окно поиск</DialogTitle>
       <CommandInput placeholder='Введите для поиска...' />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading='Suggestions'>
-          <CommandItem>
-            <Calendar />
-            <span>Calendar</span>
-          </CommandItem>
-          <CommandItem>
-            <Smile />
-            <span>Search Emoji</span>
-          </CommandItem>
-          <CommandItem>
-            <Calculator />
-            <span>Calculator</span>
-          </CommandItem>
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading='Settings'>
-          <CommandItem>
-            <User />
-            <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            <CreditCard />
-            <span>Billing</span>
-            <CommandShortcut>⌘B</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            <Settings />
-            <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
 
-      <CommandSeparator />
+      <p className='text-center p-4'>Ничего не найдено</p>
+
+      <div className='px-4 py-2 hidden'>
+        <p>fsdfsd</p>
+      </div>
+
+      <Separator />
 
       <div className='py-2 px-4 flex justify-between items-center'>
         <div>
@@ -106,4 +64,33 @@ export function GlobalSearch() {
       </div>
     </CommandDialog>
   )
+}
+
+// Доступ к состоянию открытия из вне
+type GlobalSearchContextType = {
+  isOpen: boolean
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const GlobalSearchContext = createContext<GlobalSearchContextType | undefined>(
+  undefined
+)
+
+export const GlobalSearchProvider = ({ children }: LayoutProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <GlobalSearchContext.Provider value={{ isOpen, setIsOpen }}>
+      {children}
+    </GlobalSearchContext.Provider>
+  )
+}
+
+export const useGlobalSearchContext = () => {
+  const context = useContext(GlobalSearchContext)
+  if (context === undefined) {
+    throw new Error(
+      'useGlobalSearchContext must be used within a GlobalSearchProvider'
+    )
+  }
+  return context
 }

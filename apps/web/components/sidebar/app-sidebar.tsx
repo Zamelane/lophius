@@ -38,7 +38,7 @@ import { usePathname } from 'next/navigation'
 import type * as React from 'react'
 
 import { useAuth } from '../helps/auth-context'
-import { LightNavMain } from './light-nav-main'
+import { type LightMenuItemType, LightNavMain } from './light-nav-main'
 import { NavMain, type NavMainMenuType } from './nav-main'
 
 const modes = [
@@ -75,11 +75,13 @@ const adminNav: NavMainMenuType = [
   }
 ]
 
-const publicMenu = [
+const publicMenu: LightMenuItemType[] = [
   {
-    url: '#',
+    url: '',
     icon: Search,
-    title: 'Поиск'
+    title: 'Поиск',
+    type: 'search',
+    kbd: 'K'
   },
   {
     url: '/',
