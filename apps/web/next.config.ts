@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
   experimental: {
     //ppr: true,
+
+    webpackBuildWorker: true,
+    parallelServerBuildTraces: true,
+    parallelServerCompiles: true,
+    
     useCache: true,
     nodeMiddleware: true
   },
@@ -39,4 +44,8 @@ const nextConfig: NextConfig = {
   }
 }
 
-export default withNextIntl(nextConfig)
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+export default withBundleAnalyzer(withNextIntl(nextConfig))
