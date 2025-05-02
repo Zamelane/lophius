@@ -10,7 +10,7 @@ import { getIsConfigured } from './lib/config'
 const protectedRoutes = ['/dashboard']
 //const publicRoutes = ['/login', '/signup', '/']
 const apiProtectedRoutes = [''] // Роуты, которые требуют авторизацию
-const staticRoutes = ['/fonts/', '/images/', '/api/', '/_next/', '/favicon.ico']
+const staticRoutes = ['/fonts/', '/images/', '/manifest/', '/api/', '/_next/', '/favicon.ico', '/manifest.webmanifest']
 const staticNames = ['opengraph-image.png']
 
 function getLocale(request: NextRequest) {
