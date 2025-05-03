@@ -1,5 +1,5 @@
 import type { WithOptional } from 'database/utils'
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   bigserial,
   boolean,
@@ -38,7 +38,10 @@ export const medias = pgTable(
       .references(() => sources.id)
       .notNull()
   },
-  (table) => [unique().on(table.sourceId, table.external_id)]
+  (table) => [
+    unique().on(table.sourceId, table.external_id),
+    sql`CREATE EXTENSION IF NOT EXISTS pg_trgm`
+  ]
 )
 
 export type MediasTableType = typeof medias.$inferSelect
