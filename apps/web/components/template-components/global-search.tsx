@@ -1,18 +1,35 @@
 'use client'
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 import type { LayoutProps } from '@/interfaces'
 import { Button } from '../shadcn/ui/button'
 import { CommandDialog, CommandInput } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
+import { MediaType, ObjectType, PlaceType, Search, SearchResultType } from '@/actions/server/media/other/search'
+import { useDebounce } from '@/hooks/debounce'
+import { cn } from '@/lib/utils'
 
 const Separator = () => <div className='-mx-1 h-px bg-border' />
 
 export function GlobalSearch() {
   const { isOpen: open, setIsOpen: setOpen } = useGlobalSearchContext()
 
+  // Конфигурация запроса
+  const [searchQuery, setSearchQuery] = useState('')
+  const [place, setPlace] = useState<PlaceType>('local')
+  const [objectType, setObjectType] = useState<ObjectType>('media')
+  const [mediaType, setMediaType] = useState<MediaType>('all')
+
+  // Состояния
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [results, setResults] = useState<SearchResultType[]>([])
+
+  // Хуки
+  const debouncedQuery = useDebounce(searchQuery.trim(), 400);
+
   // Регируем на сочитание клавиш для открытия модалки
-  React.useEffect(() => {
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
@@ -23,15 +40,65 @@ export function GlobalSearch() {
     return () => document.removeEventListener('keydown', down)
   }, [setOpen])
 
+  // Регистрируем функционал поиска
+  const fetchResults = useCallback(async (query: string) => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      setResults([])
+
+      if (!query) {
+        return
+      }
+      
+      const results = await Search({
+        search: query,
+        place,
+        objectType,
+        mediaType
+      })
+
+      if (results) {
+        setResults(results)
+      }
+    } catch (err) {
+      setError(`${err}`)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  // Эффект для выполнения поиска
+  useEffect(() => {
+    fetchResults(debouncedQuery);
+  }, [debouncedQuery, fetchResults]);
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <DialogTitle className='hidden'>Окно поиск</DialogTitle>
-      <CommandInput placeholder='Введите для поиска...' />
+      <CommandInput placeholder='Введите для поиска...' value={searchQuery} onValueChange={setSearchQuery} />
 
-      <p className='text-center p-4'>Ничего не найдено</p>
+      {
+        !results.length ? (
+          <p className='text-center p-4'>Ничего не найдено</p>
+        ) : (
+          <p className='text-center p-4'>{results.length}</p>
+        )
+      }
 
-      <div className='px-4 py-2 hidden'>
-        <p>fsdfsd</p>
+      <div className={cn('px-4 py-2', !results.length && 'hidden')}>
+        {
+          results.map(g => (
+            <div key={g.id + g.name}>
+              <p>{g.name}</p>
+              {
+                g.medias.map(m => (
+                  <p key={m.title + m.id}>{m.title}</p>
+                ))
+              }
+            </div>
+          ))
+        }
       </div>
 
       <Separator />
