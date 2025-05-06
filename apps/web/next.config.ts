@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
-    
+
     useCache: true,
     nodeMiddleware: true
   },
@@ -45,7 +45,7 @@ const nextConfig: NextConfig = {
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: process.env.ANALYZE === 'true'
 })
 
 export default withBundleAnalyzer(withNextIntl(nextConfig))

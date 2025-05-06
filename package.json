@@ -4,20 +4,20 @@
   "scripts": {
     "prepare": "bun scripts/check-env-exists.ts && bun env:sync",
     "env:sync": "cp .env apps/web/.env && cp .env apps/worker/.env && cp .env packages/database/.env",
-    
+
     "web:dev": "bun prepare && cd apps/web && bun dev",
     "web:build": "bun prepare && cd apps/web && bun run build",
     "web:start": "bun prepare && cd apps/web && bun start",
     "web:analyze": "bun prepare && cd apps/web && bun run analyze",
-    
+
     "worker:dev": "bun prepare && cd apps/worker && bun dev",
-    
+
     "db:generate": "cd packages/database && bun generate",
     "db:migrate": "cd packages/database && bun migrate",
     "db:push": "cd packages/database && bun push",
     "db:full": "cd packages/database && bun full",
     "db:studio": "cd packages/database && bun studio",
-    
+
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --write --unsafe"
