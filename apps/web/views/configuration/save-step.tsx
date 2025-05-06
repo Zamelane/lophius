@@ -140,7 +140,7 @@ export function SaveStep({ onPrevious, env, adminCredentials }: Props) {
       ) : isSuccess ? (
         <div className='flex flex-col gap-2 items-center justify-center animate-fadeIn'>
           <p>Поздравляем, всё настроено!</p>
-          <LocaleLink href='/'>
+          <LocaleLink href='/' prefetch={false}>
             <Button>На главную</Button>
           </LocaleLink>
         </div>

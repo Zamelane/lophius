@@ -39,8 +39,7 @@ export const medias = pgTable(
       .notNull()
   },
   (table) => [
-    unique().on(table.sourceId, table.external_id),
-    sql`CREATE EXTENSION IF NOT EXISTS pg_trgm`
+    unique().on(table.sourceId, table.external_id)
   ]
 )
 
