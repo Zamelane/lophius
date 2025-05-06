@@ -19,8 +19,10 @@ import { useDebounce } from '@/hooks/debounce'
 import type { LayoutProps } from '@/interfaces'
 import { cn } from '@/lib/utils'
 import { Button } from '../shadcn/ui/button'
-import { CommandDialog, CommandInput } from '../shadcn/ui/command'
+import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
+import Image from 'next/image'
+import { Spinner } from '../shadcn/ui/spinner'
 
 const Separator = () => <div className='-mx-1 h-px bg-border' />
 
@@ -87,7 +89,7 @@ export function GlobalSearch() {
   }, [debouncedQuery, fetchResults])
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
       <DialogTitle className='hidden'>Окно поиск</DialogTitle>
       <CommandInput
         placeholder='Введите для поиска...'
@@ -95,22 +97,39 @@ export function GlobalSearch() {
         onValueChange={setSearchQuery}
       />
 
-      {!results.length ? (
-        <p className='text-center p-4'>Ничего не найдено</p>
-      ) : (
-        <p className='text-center p-4'>{results.length}</p>
-      )}
-
-      <div className={cn('px-4 py-2', !results.length && 'hidden')}>
-        {results.map((g) => (
-          <div key={g.id + g.name}>
-            <p>{g.name}</p>
-            {g.medias.map((m) => (
-              <p key={m.title + m.id}>{m.title}</p>
-            ))}
+      {
+        isLoading && (
+          <div className='flex justify-center items-center p-2'>
+            <Spinner size="lg" className="bg-black dark:bg-white" />
           </div>
+        )
+      }
+
+      {!results.length && !isLoading && <p className='text-center p-4'>Ничего не найдено</p>}
+
+      <CommandList className={cn('px-4 py-2', !results.length && 'hidden')}>
+        {results.map((g) => (
+          <CommandGroup key={g.id + g.name} heading={<p>{g.name}</p>}>
+            {g.medias.map((m) => (
+              <CommandItem key={`media_item_${m.id}`} className="grid grid-cols-[auto,1fr] gap-x-2 h-[100px]">
+                <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
+                  <Image
+                    className='object-cover aspect-[5/7] max-w-fit max-h-fit'
+                    src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                    alt='avatar'
+                    fill
+                  />
+                </div>
+                <div className='flex flex-col justify-center'>
+                  <p className='text-xs text-secondary-foreground'>Завершён</p>
+                  <p className='text-base mb-1'>{m.title}</p>
+                  <p className='text-xs text-secondary-foreground opacity-80 mt-1'>Фильм, 2020 г.</p>
+                </div>
+              </CommandItem>
+            ))}
+          </CommandGroup>
         ))}
-      </div>
+      </CommandList>
 
       <Separator />
 

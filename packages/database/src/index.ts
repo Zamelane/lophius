@@ -1,25 +1,13 @@
 import type { ExtractTablesWithRelations } from 'drizzle-orm'
-import { type NodePgQueryResultHKT, drizzle } from 'drizzle-orm/node-postgres'
+import {type NodePgQueryResultHKT } from 'drizzle-orm/node-postgres'
 import type { PgTransaction } from 'drizzle-orm/pg-core'
 
 import * as schema from './schemas'
-
-// Логировать запросы ?
-const logger = true
-
-export let db = drizzle(
-  buildConnectUrl({
-    dbName: process.env.DB_DATABASE!,
-    host: process.env.DB_HOST!,
-    password: process.env.DB_PASSWORD!,
-    port: process.env.DB_PORT!,
-    user: process.env.DB_USER!
-  }),
-  { schema, logger }
-)
+import { db } from './configuration'
 
 export * from './utils'
 export * from './models'
+export * from './configuration'
 
 export type Transaction = PgTransaction<
   NodePgQueryResultHKT,
@@ -34,25 +22,3 @@ export type TransactionParam = {
 // Для плагинов
 export * from 'drizzle-orm'
 export { Client } from 'pg'
-
-// Прочее
-
-export function buildConnectUrl({
-  user,
-  password,
-  host,
-  port,
-  dbName
-}: {
-  host: string
-  port: string | number
-  user: string
-  password: string
-  dbName: string
-}) {
-  return `postgresql://${user}:${password}@${host}:${port}/${dbName}`
-}
-
-export function updateDatabaseCredentials(connectUrl: string) {
-  db = drizzle(connectUrl, { schema, logger })
-}

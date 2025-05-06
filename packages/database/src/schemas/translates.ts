@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   bigint,
   bigserial,
@@ -36,7 +36,9 @@ export const translates = pgTable(
   (table) => [
     index('translates_country_id_idx').on(table.countryId),
     index('translates_language_id_idx').on(table.languageId),
-    index('translates_media_id_idx').on(table.mediaId)
+    index('translates_media_id_idx').on(table.mediaId),
+    //index('index_translates_on_title_trgm').using('gin', sql`${table.title} gin_trgm_ops`)
+    //CREATE INDEX CONCURRENTLY index_translates_on_title_trgm ON translates USING gin (title gin_trgm_ops);
   ]
 )
 
