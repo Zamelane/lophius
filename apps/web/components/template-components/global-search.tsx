@@ -1,13 +1,26 @@
 'use client'
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import type React from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 
+import {
+  type MediaType,
+  type ObjectType,
+  type PlaceType,
+  Search,
+  type SearchResultType
+} from '@/actions/server/media/other/search'
+import { useDebounce } from '@/hooks/debounce'
 import type { LayoutProps } from '@/interfaces'
+import { cn } from '@/lib/utils'
 import { Button } from '../shadcn/ui/button'
 import { CommandDialog, CommandInput } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
-import { MediaType, ObjectType, PlaceType, Search, SearchResultType } from '@/actions/server/media/other/search'
-import { useDebounce } from '@/hooks/debounce'
-import { cn } from '@/lib/utils'
 
 const Separator = () => <div className='-mx-1 h-px bg-border' />
 
@@ -26,7 +39,7 @@ export function GlobalSearch() {
   const [results, setResults] = useState<SearchResultType[]>([])
 
   // Хуки
-  const debouncedQuery = useDebounce(searchQuery.trim(), 400);
+  const debouncedQuery = useDebounce(searchQuery.trim(), 400)
 
   // Регируем на сочитание клавиш для открытия модалки
   useEffect(() => {
@@ -50,7 +63,7 @@ export function GlobalSearch() {
       if (!query) {
         return
       }
-      
+
       const results = await Search({
         search: query,
         place,
@@ -70,35 +83,33 @@ export function GlobalSearch() {
 
   // Эффект для выполнения поиска
   useEffect(() => {
-    fetchResults(debouncedQuery);
-  }, [debouncedQuery, fetchResults]);
+    fetchResults(debouncedQuery)
+  }, [debouncedQuery, fetchResults])
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <DialogTitle className='hidden'>Окно поиск</DialogTitle>
-      <CommandInput placeholder='Введите для поиска...' value={searchQuery} onValueChange={setSearchQuery} />
+      <CommandInput
+        placeholder='Введите для поиска...'
+        value={searchQuery}
+        onValueChange={setSearchQuery}
+      />
 
-      {
-        !results.length ? (
-          <p className='text-center p-4'>Ничего не найдено</p>
-        ) : (
-          <p className='text-center p-4'>{results.length}</p>
-        )
-      }
+      {!results.length ? (
+        <p className='text-center p-4'>Ничего не найдено</p>
+      ) : (
+        <p className='text-center p-4'>{results.length}</p>
+      )}
 
       <div className={cn('px-4 py-2', !results.length && 'hidden')}>
-        {
-          results.map(g => (
-            <div key={g.id + g.name}>
-              <p>{g.name}</p>
-              {
-                g.medias.map(m => (
-                  <p key={m.title + m.id}>{m.title}</p>
-                ))
-              }
-            </div>
-          ))
-        }
+        {results.map((g) => (
+          <div key={g.id + g.name}>
+            <p>{g.name}</p>
+            {g.medias.map((m) => (
+              <p key={m.title + m.id}>{m.title}</p>
+            ))}
+          </div>
+        ))}
       </div>
 
       <Separator />

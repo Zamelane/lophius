@@ -12,7 +12,9 @@ import { getLocale, getMessages } from 'next-intl/server'
 
 export const metadata: Metadata = {
   applicationName: 'Lophius',
-  metadataBase: process.env.PUBLIC_URL ? new URL(process.env.PUBLIC_URL) : undefined,
+  metadataBase: process.env.PUBLIC_URL
+    ? new URL(process.env.PUBLIC_URL)
+    : undefined,
   title: {
     default: 'Home',
     template: '%s | Lophius'

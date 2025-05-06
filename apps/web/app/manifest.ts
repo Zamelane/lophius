@@ -9,20 +9,18 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#000000',
-    display_override: [
-      "window-controls-overlay"
-    ],
+    display_override: ['window-controls-overlay'],
     icons: [
       {
         src: '/manifest/icon-192x192.png',
         sizes: '192x192',
-        type: 'image/png',
+        type: 'image/png'
       },
       {
         src: '/manifest/icon-512x512.png',
         sizes: '512x512',
-        type: 'image/png',
-      },
-    ],
+        type: 'image/png'
+      }
+    ]
   }
 }
