@@ -33,8 +33,8 @@ export async function RecreateDatabase(
     await adminClient.query(`CREATE DATABASE ${config.database} WITH `
                           + `TEMPLATE = template0 ` // ВАЖНО !!!
                           + `ENCODING = 'UTF8' `
-                          + `LC_COLLATE = 'ru_RU.UTF-8' `
-                          + `LC_CTYPE = 'ru_RU.UTF-8';`
+                          + `LC_COLLATE = 'en_US.UTF-8' `
+                          + `LC_CTYPE = 'en_US.UTF-8';`
     )
 
     // 4. Закрываем соединение с системной БД
