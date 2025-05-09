@@ -65,7 +65,7 @@
   },
   "javascript": {
     "formatter": {
-      "semicolons": "always",
+      "semicolons": "asNeeded",
       "quoteStyle": "single",
       "jsxQuoteStyle": "single",
       "trailingCommas": "none"

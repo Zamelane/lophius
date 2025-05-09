@@ -1,6 +1,6 @@
-import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
+import { sql } from 'drizzle-orm'
+import { type NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schemas'
-import { sql } from "drizzle-orm";
 
 // конфигурация global
 declare global {
@@ -21,7 +21,7 @@ let db: NodePgDatabase<typeof schema> = drizzle(
   { schema, logger }
 )
 
-if (!global.isStartConfigured){
+if (!global.isStartConfigured) {
   global.isStartConfigured = true
   await autoConfigure(db).catch(() => {
     global.isStartConfigured = false
@@ -40,7 +40,9 @@ async function autoConfigure(db: NodePgDatabase<typeof schema>) {
   console.log('Auto configured is started ...')
 
   await db.execute(sql`CREATE EXTENSION IF NOT EXISTS pg_trgm`)
-  await db.execute(sql`CREATE INDEX CONCURRENTLY IF NOT EXISTS index_translates_on_title_trgm ON translates USING gin (title gin_trgm_ops)`)
+  await db.execute(
+    sql`CREATE INDEX CONCURRENTLY IF NOT EXISTS index_translates_on_title_trgm ON translates USING gin (title gin_trgm_ops)`
+  )
 }
 
 // Переподключение к базе

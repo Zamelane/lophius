@@ -5,17 +5,15 @@ import type { LayoutProps } from '@/interfaces'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 
+import dynamic from 'next/dynamic'
 import { AppSidebar } from '../sidebar/app-sidebar'
 import { SiteHeader } from '../sidebar/site-header'
-import {
-  GlobalSearchProvider
-} from '../template-components/global-search'
+import { GlobalSearchProvider } from '../template-components/global-search'
 import { SidebarInset, SidebarProvider } from '../ui/sidebar'
 import { Footer } from './Footer'
-import dynamic from 'next/dynamic'
 
-const GlobalSearch = dynamic(
-  () => import('../template-components/global-search').then(gs => gs.GlobalSearch)
+const GlobalSearch = dynamic(() =>
+  import('../template-components/global-search').then((gs) => gs.GlobalSearch)
 )
 
 export default async function AppLayout({ children }: LayoutProps) {

@@ -1,19 +1,18 @@
-import { PUBLIC_URL } from "@/env/env.server";
-import { defaultLocale, locale, localesSupported } from "@/i18n/config";
-import { MetadataRoute } from "next";
+import { PUBLIC_URL } from '@/env/env.server'
+import { defaultLocale, type locale, localesSupported } from '@/i18n/config'
+import type { MetadataRoute } from 'next'
 
-function languageHref(href: string = '', lang: string = defaultLocale) {
+function languageHref(href = '', lang: string = defaultLocale) {
   return `${PUBLIC_URL}${lang ? `/${lang}` : ''}${href ? `/${href}` : ''}`
 }
 
-function alternativeHrefs(href: string = '') {
-  let alternatives: {
+function alternativeHrefs(href = '') {
+  const alternatives: {
     [key in locale]?: string
   } = {}
 
   for (const locale of localesSupported) {
-    if (locale === defaultLocale)
-      continue
+    if (locale === defaultLocale) continue
     alternatives[locale] = languageHref(href, locale)
   }
 

@@ -30,11 +30,8 @@ export async function RecreateDatabase(
     await adminClient.query(`DROP DATABASE IF EXISTS ${config.database};`)
 
     // 2. Создаем новую базу (здесь IF NOT EXISTS уже не нужно, т.к. мы только что удалили)
-    await adminClient.query(`CREATE DATABASE ${config.database} WITH `
-                          + `TEMPLATE = template0 ` // ВАЖНО !!!
-                          + `ENCODING = 'UTF8' `
-                          + `LC_COLLATE = 'en_US.UTF-8' `
-                          + `LC_CTYPE = 'en_US.UTF-8';`
+    await adminClient.query(
+      `CREATE DATABASE ${config.database} WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';`
     )
 
     // 4. Закрываем соединение с системной БД
