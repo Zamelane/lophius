@@ -1,5 +1,5 @@
 import { PUBLIC_URL } from '@/env/env.server'
-import { defaultLocale, type locale, localesSupported } from '@/i18n/config'
+import { defaultLocale, type LocaleKeysType, localesSupported } from '@/i18n/config'
 import type { MetadataRoute } from 'next'
 
 function languageHref(href = '', lang: string = defaultLocale) {
@@ -8,7 +8,7 @@ function languageHref(href = '', lang: string = defaultLocale) {
 
 function alternativeHrefs(href = '') {
   const alternatives: {
-    [key in locale]?: string
+    [key in LocaleKeysType]?: string
   } = {}
 
   for (const locale of localesSupported) {

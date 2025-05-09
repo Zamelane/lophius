@@ -1,8 +1,8 @@
 import type { Languages } from 'next/dist/lib/metadata/types/alternative-urls-types'
 
-export type locale = keyof Languages<string>
+export type LocaleKeysType = keyof Languages<string>
 
-export const localesSupported: locale[] = [
+export const localesSupported: LocaleKeysType[] = [
   'ru',
   'en',
   'zh',
@@ -12,4 +12,4 @@ export const localesSupported: locale[] = [
   'de',
   'fi'
 ]
-export const defaultLocale: locale = 'ru'
+export const defaultLocale: LocaleKeysType = 'ru'

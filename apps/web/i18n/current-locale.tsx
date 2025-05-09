@@ -1,6 +1,6 @@
 'use server'
 
-import { defaultLocale, type locale, localesSupported } from '@/i18n/config'
+import { defaultLocale, type LocaleKeysType, localesSupported } from '@/i18n/config'
 import { headers } from 'next/headers'
 
 export async function getCurrentLocale() {
@@ -15,9 +15,9 @@ export async function getCurrentLocale() {
     const pathParts = new URL(pathname).pathname.split('/')
     if (
       pathParts.length > 1 &&
-      localesSupported.includes(pathParts[1] as locale)
+      localesSupported.includes(pathParts[1] as LocaleKeysType)
     ) {
-      localeFromPath = pathParts[1] as locale
+      localeFromPath = pathParts[1] as LocaleKeysType
     }
   } catch (err) {
     console.log(`Error detecting the language along the way, more: ${err}`)
