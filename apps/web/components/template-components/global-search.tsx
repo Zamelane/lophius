@@ -18,10 +18,17 @@ import {
 import { useDebounce } from '@/hooks/debounce'
 import type { LayoutProps } from '@/interfaces'
 import { cn } from '@/lib/utils'
-import { Button } from '../shadcn/ui/button'
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../shadcn/ui/command'
-import { DialogTitle } from '../shadcn/ui/dialog'
 import Image from 'next/image'
+import { Button } from '../shadcn/ui/button'
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '../shadcn/ui/command'
+import { DialogTitle } from '../shadcn/ui/dialog'
 import { Spinner } from '../shadcn/ui/spinner'
 
 const Separator = () => <div className='-mx-1 h-px bg-border' />
@@ -99,20 +106,24 @@ export function GlobalSearch() {
 
       <CommandList className={cn('px-4 py-2')}>
         <CommandEmpty>
-          {
-            isLoading && (
-              <div className='flex justify-center items-center'>
-                <Spinner size="lg" className="bg-black dark:bg-white" />
-              </div>
-            )
-          }
+          {isLoading && (
+            <div className='flex justify-center items-center'>
+              <Spinner size='lg' className='bg-black dark:bg-white' />
+            </div>
+          )}
 
-          {!results.length && !isLoading && <p className='text-center'>Ничего не найдено</p>}
+          {!results.length && !isLoading && (
+            <p className='text-center'>Ничего не найдено</p>
+          )}
         </CommandEmpty>
         {results.map((g) => (
           <CommandGroup key={`media_group_${g.id}`} heading={<p>{g.name}</p>}>
             {g.medias.map((m) => (
-              <CommandItem value={`${m.id}`} key={`media_item_${m.id}`} className="grid grid-cols-[auto,1fr] gap-x-2 h-[100px]">
+              <CommandItem
+                value={`${m.id}`}
+                key={`media_item_${m.id}`}
+                className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+              >
                 <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
                   <Image
                     className='object-cover aspect-[5/7] max-w-fit max-h-fit'
@@ -124,7 +135,9 @@ export function GlobalSearch() {
                 <div className='flex flex-col justify-center'>
                   <p className='text-xs text-secondary-foreground'>Завершён</p>
                   <p className='text-base mb-1'>{m.title}</p>
-                  <p className='text-xs text-secondary-foreground opacity-80 mt-1'>Фильм, 2020 г.</p>
+                  <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
+                    Фильм, 2020 г.
+                  </p>
                 </div>
               </CommandItem>
             ))}
