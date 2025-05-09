@@ -17,7 +17,8 @@ const staticRoutes = [
   '/api/',
   '/_next/',
   '/favicon.ico',
-  '/manifest.webmanifest'
+  '/manifest.webmanifest',
+  '/sitemap.xml'
 ]
 const staticNames = ['opengraph-image.png']
 
@@ -30,35 +31,34 @@ function getLocale(request: NextRequest) {
 }
 
 export async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname
+  const { pathname } = req.nextUrl
 
   // Пропускаем статические файлы и favicon
   if (
-    staticRoutes.some((prefix) => path.startsWith(prefix)) ||
-    staticNames.some((suffix) => path.includes(suffix))
+    staticRoutes.some((prefix) => pathname.startsWith(prefix)) ||
+    staticNames.some((suffix) => pathname.includes(suffix))
   ) {
     return NextResponse.next()
   }
 
   const isConfigured = getIsConfigured()
-  if (!isConfigured && !path.startsWith('/configuration')) {
-    const pathSegments = path.split('/')
+  if (!isConfigured && !pathname.startsWith('/configuration')) {
+    const pathSegments = pathname.split('/')
     if (pathSegments.length <= 2 || pathSegments[2] !== 'configuration') {
       return NextResponse.redirect(new URL('/configuration', req.url))
     }
   }
 
   // Проверяем наличие локали в пути
-  const { pathname } = req.nextUrl
   const pathnameHasLocale = localesSupported.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   )
 
   // Если локаль уже есть, продолжаем обработку запроса
   if (pathnameHasLocale) {
-    // Здесь оставляем вашу существующую логику проверки защищенных роутов
-    const isProtectedRoute = protectedRoutes.includes(path)
-    const isApiProtectedRoute = apiProtectedRoutes.includes(path)
+    // Здесь логика проверки защищенных роутов
+    const isProtectedRoute = protectedRoutes.includes(pathname)
+    const isApiProtectedRoute = apiProtectedRoutes.includes(pathname)
     const user = await getCurrentUser()
 
     const requestHeaders = new Headers(req.headers)

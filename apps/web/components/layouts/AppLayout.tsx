@@ -8,11 +8,15 @@ import { Suspense } from 'react'
 import { AppSidebar } from '../sidebar/app-sidebar'
 import { SiteHeader } from '../sidebar/site-header'
 import {
-  GlobalSearch,
   GlobalSearchProvider
 } from '../template-components/global-search'
 import { SidebarInset, SidebarProvider } from '../ui/sidebar'
 import { Footer } from './Footer'
+import dynamic from 'next/dynamic'
+
+const GlobalSearch = dynamic(
+  () => import('../template-components/global-search').then(gs => gs.GlobalSearch)
+)
 
 export default async function AppLayout({ children }: LayoutProps) {
   const state = cookies().then((r) => {
