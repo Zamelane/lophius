@@ -14,8 +14,9 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/components/ui/sidebar'
+import { cn } from '@/lib/utils'
 import { ChevronsUpDown } from 'lucide-react'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import * as React from 'react'
 import { useState } from 'react'
 
@@ -23,28 +24,36 @@ type team = {
   name: string
   logo: React.ElementType
   path: string
+  hidden?: boolean
 }
 
 export function ModeSwitcher({
-  path,
-  teams
+  modes: mode
 }: {
-  teams: team[]
-  path: string
+  modes: team[]
 }) {
   const [open, setOpen] = useState(false)
   const { isMobile } = useSidebar()
-  const [activeTeam, setVisibleActiveTeam] = React.useState(
-    teams.find((v) => v.path.startsWith(`/${v.path.split('/')[1]}${path}`)) ??
-      teams[0]
-  )
+  const path = usePathname()
+
+  function getActiveTeam() {
+    return (
+      mode.findLast((v) =>
+        path.startsWith(`/${path.split('/')[1]}${v.path}`)
+      ) ?? mode[0]
+    )
+  }
+
+  const [activeTeam, setVisibleActiveMode] = React.useState(getActiveTeam())
 
   if (!activeTeam) {
     return null
   }
 
-  function setActiveTeam(value: team) {
-    setVisibleActiveTeam(value)
+  React.useEffect(() => setVisibleActiveMode(getActiveTeam()), [path])
+
+  function setActiveMode(value: team) {
+    setVisibleActiveMode(value)
     setOpen(false)
     redirect(value.path)
   }
@@ -77,11 +86,11 @@ export function ModeSwitcher({
             <DropdownMenuLabel className='text-xs text-muted-foreground'>
               Разделы медиа
             </DropdownMenuLabel>
-            {teams.map((team, index) => (
+            {mode.map((team, index) => (
               <DropdownMenuItem
                 key={team.name}
-                className='gap-2 p-2'
-                onClick={() => setActiveTeam(team)}
+                className={cn('gap-2 p-2', team.hidden && 'hidden')}
+                onClick={() => setActiveMode(team)}
               >
                 <div className='flex size-6 items-center justify-center rounded-sm border'>
                   <team.logo className='size-4 shrink-0' />

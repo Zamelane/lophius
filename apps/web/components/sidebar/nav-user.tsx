@@ -16,20 +16,16 @@ import {
   useSidebar
 } from '@/components/ui/sidebar'
 import { LocaleLink } from '@/hooks/locale-link'
-import { ChevronsUpDown, LogOut } from 'lucide-react'
+import type { UserInfo } from '@/interfaces'
+import { ChevronsUpDown, LogOut, ShieldUserIcon } from 'lucide-react'
 
 export function NavUser({
   user
 }: {
-  user: {
-    id: number
-    name: string
-    email: string
-    avatarId?: number | null
-  }
+  user: UserInfo
 }) {
   const { isMobile } = useSidebar()
-  const fallback = user.name.substring(0, 2).toUpperCase()
+  const fallback = user.nickname.substring(0, 2).toUpperCase()
 
   return (
     <SidebarMenu>
@@ -42,7 +38,7 @@ export function NavUser({
             >
               <Avatar className='h-8 w-8 rounded-lg'>
                 <AvatarImage
-                  alt={user.name}
+                  alt={user.nickname}
                   src={user.avatarId ? `/api/assets/id/${user.avatarId}` : ''}
                 />
                 <AvatarFallback className='rounded-lg'>
@@ -50,7 +46,7 @@ export function NavUser({
                 </AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-semibold'>{user.name}</span>
+                <span className='truncate font-semibold'>{user.nickname}</span>
                 <span className='truncate text-xs'>{user.email}</span>
               </div>
               <ChevronsUpDown className='ml-auto size-4' />
@@ -62,12 +58,12 @@ export function NavUser({
             side={isMobile ? 'bottom' : 'right'}
             className='w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg'
           >
-            <LocaleLink href={`/user/${user.name}`}>
+            <LocaleLink href={`/user/${user.nickname}`}>
               <DropdownMenuItem className='p-0 font-normal'>
                 <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                   <Avatar className='h-8 w-8 rounded-lg'>
                     <AvatarImage
-                      alt={user.name}
+                      alt={user.nickname}
                       src={
                         user.avatarId ? `/api/assets/id/${user.avatarId}` : ''
                       }
@@ -77,7 +73,9 @@ export function NavUser({
                     </AvatarFallback>
                   </Avatar>
                   <div className='grid flex-1 text-left text-sm leading-tight'>
-                    <span className='truncate font-semibold'>{user.name}</span>
+                    <span className='truncate font-semibold'>
+                      {user.nickname}
+                    </span>
                     <span className='truncate text-xs'>{user.email}</span>
                   </div>
                 </div>
@@ -105,6 +103,17 @@ export function NavUser({
             {/*    Notifications*/}
             {/*  </DropdownMenuItem>*/}
             {/*</DropdownMenuGroup>*/}
+            {user.isAdmin && (
+              <>
+                <DropdownMenuSeparator />
+                <LocaleLink href='/admin'>
+                  <DropdownMenuItem>
+                    <ShieldUserIcon />
+                    Админка
+                  </DropdownMenuItem>
+                </LocaleLink>
+              </>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={UserLogout}>
               <LogOut />

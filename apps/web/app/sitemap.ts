@@ -1,5 +1,9 @@
 import { PUBLIC_URL } from '@/env/env.server'
-import { defaultLocale, type LocaleKeysType, localesSupported } from '@/i18n/config'
+import {
+  type LocaleKeysType,
+  defaultLocale,
+  localesSupported
+} from '@/i18n/config'
 import type { MetadataRoute } from 'next'
 
 function languageHref(href = '', lang: string = defaultLocale) {
