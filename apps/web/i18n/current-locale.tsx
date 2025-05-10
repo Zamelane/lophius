@@ -1,6 +1,10 @@
 'use server'
 
-import { defaultLocale, type LocaleKeysType, localesSupported } from '@/i18n/config'
+import {
+  type LocaleKeysType,
+  defaultLocale,
+  localesSupported
+} from '@/i18n/config'
 import { headers } from 'next/headers'
 
 export async function getCurrentLocale() {
