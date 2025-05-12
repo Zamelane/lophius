@@ -22,9 +22,13 @@ const nextConfig: NextConfig = {
     parallelServerCompiles: true,
 
     useCache: true,
-    nodeMiddleware: true
+    nodeMiddleware: true,
+    imgOptTimeoutInSeconds: 60
   },
   images: {
+    dangerouslyAllowSVG: true,
+    unoptimized: true,
+    minimumCacheTTL: 2592000,
     remotePatterns: [
       {
         port: '',

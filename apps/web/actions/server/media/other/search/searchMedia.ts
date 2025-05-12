@@ -1,9 +1,30 @@
 import { and, Column, eq, inArray, isNotNull, sql } from "drizzle-orm";
 import { MediaType, PlaceType, SearchResultType } from ".";
-import { external_domains, external_images, external_posters, medias, MediasTableType, translates } from "database/schemas";
+import { external_domains, external_images, external_posters, languages, medias, MediasTableType, translates } from "database/schemas";
 import { db } from "database";
+import { getCurrentLocale } from "@/i18n/current-locale";
 
 const limitResults = 10
+
+const searchOrderBy = (
+  searchColumn: Column,
+  search: string,
+  langColumn?: Column,
+  lang?: string
+) => [
+    ...(langColumn ? (
+      [
+        ...(lang ? [sql`${langColumn} = ${lang}`] : []),
+        sql`${langColumn} = 'en'`,
+      ])
+      : []
+    ),
+    sql`${searchColumn} ILIKE ${search} DESC`,
+    sql`${searchColumn} ILIKE ${`${search}%`} DESC`,
+    sql`${searchColumn} ~* ${`\\y${search}\\y`} DESC`,
+    sql`similarity(${searchColumn}, ${search}) DESC`,
+    sql`length(${searchColumn}) ASC`
+  ]
 
 export async function SearchMedia({
   search,
@@ -14,13 +35,7 @@ export async function SearchMedia({
   place: PlaceType
   mediaType?: MediaType
 }): Promise<SearchResultType> {
-  const searchOrderBy = (column: Column) => [
-    sql`${column} ILIKE ${search} DESC`,
-    sql`${column} ILIKE ${`${search}%`} DESC`,
-    sql`${column} ~* ${`\\y${search}\\y`} DESC`,
-    sql`similarity(${column}, ${search}) DESC`,
-    sql`length(${column}) ASC`
-  ]
+  const locale = await getCurrentLocale()
 
   // Сначала просто ищем кандидатов на поиск
   const byDetail = await db
@@ -39,7 +54,6 @@ export async function SearchMedia({
       .from(medias)
       .innerJoin(translates, eq(translates.mediaId, medias.id))
       .where(sql`${translates.title} % ${search}`)
-      .orderBy(...searchOrderBy(translates.title))
       .as("sorted_media")
   );
 
@@ -67,14 +81,18 @@ export async function SearchMedia({
 
   // Ищем среди переводов
   const translatesSubquery = db
-    .select({
+    .selectDistinctOn([translates.mediaId], {
       mediaId: translates.mediaId,
       translateTitle: translates.title
     })
     .from(translates)
+    .leftJoin(languages, eq(languages.id, translates.languageId))
     .where(sql`${translates.title} % ${search}`)
-    .orderBy(...searchOrderBy(translates.title))
-    .groupBy(translates.mediaId, translates.title)
+    .orderBy(
+      translates.mediaId,
+      ...searchOrderBy(translates.title, search, languages.iso_639_1, locale)
+    )
+    .groupBy(translates.mediaId, languages.iso_639_1, translates.title)
     .as('translates_subquery')
 
   // Ищем среди постеров
@@ -89,20 +107,25 @@ export async function SearchMedia({
   .innerJoin(external_posters, eq(external_posters.mediaId, medias.id))
   .innerJoin(external_images, eq(external_images.id, external_posters.externalImageId))
   .innerJoin(external_domains, eq(external_domains.id, external_images.externalDomainId))
+  .leftJoin(languages, eq(languages.id, external_images.languageId))
+  .orderBy(
+    medias.id,
+    eq(languages.iso_639_1, locale),
+    eq(languages.iso_639_1, 'en')
+  )
   .as('posters_subquery')
 
   let detailedInfo = await db
-    .selectDistinctOn([translatesSubquery.mediaId], {
+    .select({
       id: medias.id,
       title: translatesSubquery.translateTitle,
-      poster: {
-        path: postersSubquery.path,
-        domain: postersSubquery.domain,
-        https: postersSubquery.https
-      },
       // персонализированные для типа медиа поля
-      ...((contains.kino || contains.book || contains.comic) && {
-
+      ...(searchPoster && {
+        poster: {
+          path: postersSubquery.path,
+          domain: postersSubquery.domain,
+          https: postersSubquery.https
+        },
       })
     })
     .from(medias)
@@ -114,6 +137,7 @@ export async function SearchMedia({
         isNotNull(translatesSubquery.translateTitle)
       )
     )
+    .orderBy(...searchOrderBy(translatesSubquery.translateTitle, search))
     .limit(limitResults)
 
     console.log(detailedInfo)
@@ -128,7 +152,7 @@ export async function SearchMedia({
     mediasResult.medias.push({
       id: media.id,
       title: media.title!,
-      poster: media.poster
+      poster: media.poster ?? null
     })
   }
 
