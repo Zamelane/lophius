@@ -30,6 +30,7 @@ import {
 } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
 import { Spinner } from '../shadcn/ui/spinner'
+import { LocaleLink } from '@/hooks/locale-link'
 
 const Separator = () => <div className='-mx-1 h-px bg-border' />
 
@@ -117,34 +118,39 @@ export function GlobalSearch() {
           )}
         </CommandEmpty>
         {results?.medias.map((m) => (
-          <CommandItem
-            value={`${m.id}`}
+          <LocaleLink
             key={`media_item_${m.id}`}
-            className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+            href={'/tv/' + m.id}
+            onClick={() => setOpen(false)}
           >
-            <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
-              {
-                m.poster && (
-                  <Image
-                    className='object-cover aspect-[5/7] max-w-fit max-h-fit'
-                    //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                    src={
-                      (m.poster.https ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
-                    }
-                    alt='avatar'
-                    fill
-                  />
-                )
-              }
-            </div>
-            <div className='flex flex-col justify-center'>
-              <p className='text-xs text-secondary-foreground'>Завершён</p>
-              <p className='text-base mb-1'>{m.title}</p>
-              <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
-                Фильм, 2020 г.
-              </p>
-            </div>
-          </CommandItem>
+            <CommandItem
+              value={`${m.id}`}
+              className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+            >
+              <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
+                {
+                  m.poster && (
+                    <Image
+                      className='object-cover aspect-[5/7] max-w-fit max-h-fit'
+                      //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                      src={
+                        (m.poster.https ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
+                      }
+                      alt='avatar'
+                      fill
+                    />
+                  )
+                }
+              </div>
+              <div className='flex flex-col justify-center'>
+                <p className='text-xs text-secondary-foreground'>Завершён</p>
+                <p className='text-base mb-1'>{m.title}</p>
+                <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
+                  Фильм, 2020 г.
+                </p>
+              </div>
+            </CommandItem>
+          </LocaleLink>
         ))}
       </CommandList>
 
