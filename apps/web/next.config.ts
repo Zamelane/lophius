@@ -23,11 +23,12 @@ const nextConfig: NextConfig = {
 
     useCache: true,
     nodeMiddleware: true,
-    imgOptTimeoutInSeconds: 60
+    imgOptTimeoutInSeconds: 60,
+    imgOptSequentialRead: true,
+    imgOptConcurrency: 15
   },
   images: {
     dangerouslyAllowSVG: true,
-    unoptimized: true,
     minimumCacheTTL: 2592000,
     remotePatterns: [
       {
