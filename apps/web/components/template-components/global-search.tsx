@@ -125,12 +125,19 @@ export function GlobalSearch() {
                 className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
               >
                 <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
-                  <Image
-                    className='object-cover aspect-[5/7] max-w-fit max-h-fit'
-                    src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                    alt='avatar'
-                    fill
-                  />
+                  {
+                    m.poster && (
+                      <Image
+                        className='object-cover aspect-[5/7] max-w-fit max-h-fit'
+                        //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                        src={
+                          (m.poster.isSSL ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
+                        }
+                        alt='avatar'
+                        fill
+                      />
+                    )
+                  }
                 </div>
                 <div className='flex flex-col justify-center'>
                   <p className='text-xs text-secondary-foreground'>Завершён</p>
