@@ -20,6 +20,7 @@ type MediaResultType = {
   medias: {
     id: number
     title: string
+    mediaType: MediasTableType['mediaType']
     poster: {
       path: string
       domain: string
