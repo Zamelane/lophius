@@ -2,7 +2,13 @@
 
 import { type Column, and, db, eq, sql } from 'database'
 import {
+  ExternalDomainsTableType,
+  ExternalImagesTableType,
   type MediasTableType,
+  SourcesTableType,
+  external_domains,
+  external_images,
+  external_posters,
   medias,
   plugin_storage,
   sources,
@@ -28,6 +34,11 @@ type MediaResultType = {
   medias: {
     id: number
     title: string
+    poster: {
+      path: string
+      domain: string
+      isSSL: boolean
+    } | null
   }[]
 }
 
@@ -65,6 +76,7 @@ async function SearchMedia({
     sql`length(${column}) ASC`
   ]
 
+  // Ищем среди переводов
   const translatesSubquery = db
     .select({
       mediaId: translates.mediaId,
@@ -77,12 +89,18 @@ async function SearchMedia({
     .limit(limit)
     .as('translates_subquery')
 
+  // Цепляем медиа по найденным переводам
   const medias_subquery = db
     .selectDistinctOn([medias.id], {
-      source_id: sql`${sources.id}`.as('source_id'),
+      source_id: sql<SourcesTableType['id']>`${sources.id}`.as('source_id'),
       source_name: plugin_storage.pluginName,
-      media_id: sql`${medias.id}`.as('media_id'),
-      media_title: translatesSubquery.translateTitle
+      media_id: sql<MediasTableType['id']>`${medias.id}`.as('media_id'),
+      media_title: translatesSubquery.translateTitle,
+      poster: {
+        path: sql<ExternalImagesTableType['path']>`${external_images.path}`.as('poster_path'),
+        domain: sql<ExternalDomainsTableType['domain']>`${external_domains.domain}`.as('poster_domain'),
+        isSSL: sql<ExternalDomainsTableType['https']>`${external_domains.https}`.as('poster_https')
+      }
     })
     .from(medias)
     .where(
@@ -96,8 +114,12 @@ async function SearchMedia({
     .innerJoin(translatesSubquery, eq(translatesSubquery.mediaId, medias.id))
     .innerJoin(sources, eq(sources.id, medias.sourceId))
     .innerJoin(plugin_storage, eq(sources.id, plugin_storage.sourceId))
+    .leftJoin(external_posters, eq(external_posters.mediaId, medias.id))
+    .leftJoin(external_images, eq(external_images.id, external_posters.externalImageId))
+    .leftJoin(external_domains, eq(external_domains.id, external_images.externalDomainId))
     .as('medias_subquery')
 
+  // Сортируем результаты
   const result = await db
     .select()
     .from(medias_subquery)
@@ -134,14 +156,21 @@ async function SearchMedia({
   } = {}
 
   for (const row of result) {
-    if (!row.media_title) {
+    if (
+      !row.media_title
+    ) {
       continue
     }
 
     const media = {
       id: row.media_id,
-      title: row.media_title
+      title: row.media_title,
+      poster: (
+        row.poster.domain && row.poster.isSSL && row.poster.path
+      ) ? row.poster : null
     }
+
+    console.log(media)
 
     if (!groupped[row.source_id]) {
       groupped[row.source_id] = {
