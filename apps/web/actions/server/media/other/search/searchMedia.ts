@@ -119,6 +119,7 @@ export async function SearchMedia({
     .select({
       id: medias.id,
       title: translatesSubquery.translateTitle,
+      mediaType: medias.mediaType,
       // персонализированные для типа медиа поля
       ...(searchPoster && {
         poster: {
@@ -152,7 +153,8 @@ export async function SearchMedia({
     mediasResult.medias.push({
       id: media.id,
       title: media.title!,
-      poster: media.poster ?? null
+      poster: media.poster ?? null,
+      mediaType: media.mediaType
     })
   }
 

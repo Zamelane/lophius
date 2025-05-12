@@ -149,7 +149,11 @@ export function GlobalSearch() {
                 <p className='text-xs text-secondary-foreground'>Завершён</p>
                 <p className='text-base mb-1'>{m.title}</p>
                 <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
-                  Фильм, 2020 г.
+                  {
+                    [
+                      m.mediaType === 'kino' && 'Фильм'
+                    ].join(',')
+                  }
                 </p>
               </div>
             </CommandItem>
