@@ -45,7 +45,7 @@ export function GlobalSearch() {
   // Состояния
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [results, setResults] = useState<SearchResultType[]>([])
+  const [results, setResults] = useState<SearchResultType | undefined>(undefined)
 
   // Хуки
   const debouncedQuery = useDebounce(searchQuery.trim(), 400)
@@ -67,7 +67,7 @@ export function GlobalSearch() {
     try {
       setIsLoading(true)
       setError(null)
-      setResults([])
+      setResults(undefined)
 
       if (!query) {
         return
@@ -104,7 +104,7 @@ export function GlobalSearch() {
         onValueChange={setSearchQuery}
       />
 
-      <CommandList className={cn('px-4 py-2')}>
+      <CommandList className='px-4 py-2'>
         <CommandEmpty>
           {isLoading && (
             <div className='flex justify-center items-center'>
@@ -112,51 +112,54 @@ export function GlobalSearch() {
             </div>
           )}
 
-          {!results.length && !isLoading && (
+          {!results && !isLoading && (
             <p className='text-center'>Ничего не найдено</p>
           )}
         </CommandEmpty>
-        {results.map((g) => (
-          <CommandGroup key={`media_group_${g.id}`} heading={<p>{g.name}</p>}>
-            {g.medias.map((m) => (
-              <CommandItem
-                value={`${m.id}`}
-                key={`media_item_${m.id}`}
-                className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
-              >
-                <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
-                  {
-                    m.poster && (
-                      <Image
-                        className='object-cover aspect-[5/7] max-w-fit max-h-fit'
-                        //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                        src={
-                          (m.poster.isSSL ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
-                        }
-                        alt='avatar'
-                        fill
-                      />
-                    )
-                  }
-                </div>
-                <div className='flex flex-col justify-center'>
-                  <p className='text-xs text-secondary-foreground'>Завершён</p>
-                  <p className='text-base mb-1'>{m.title}</p>
-                  <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
-                    Фильм, 2020 г.
-                  </p>
-                </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+        {results?.medias.map((m) => (
+          <CommandItem
+            value={`${m.id}`}
+            key={`media_item_${m.id}`}
+            className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+          >
+            <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
+              {
+                m.poster && (
+                  <Image
+                    className='object-cover aspect-[5/7] max-w-fit max-h-fit'
+                    //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                    src={
+                      (m.poster.https ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
+                    }
+                    alt='avatar'
+                    fill
+                  />
+                )
+              }
+            </div>
+            <div className='flex flex-col justify-center'>
+              <p className='text-xs text-secondary-foreground'>Завершён</p>
+              <p className='text-base mb-1'>{m.title}</p>
+              <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
+                Фильм, 2020 г.
+              </p>
+            </div>
+          </CommandItem>
         ))}
       </CommandList>
 
       <Separator />
 
       <div className='py-2 px-4 flex justify-between items-center'>
-        <div>
+        <div className='flex flex-row items-center gap-2'>
           <p>Lophius</p>
+          {
+            results && (
+              <p className='text-muted-foreground text-sm'>
+                {results.total} элементов
+              </p>
+            )
+          }
         </div>
 
         <Button variant='ghost' className='text-sm text-muted-foreground'>
