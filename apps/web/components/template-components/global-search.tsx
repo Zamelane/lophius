@@ -137,6 +137,8 @@ export function GlobalSearch() {
                         (m.poster.https ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
                       }
                       quality={55}
+                      loading='lazy'
+                      decoding='async'
                       alt='avatar'
                       fill
                     />
