@@ -136,6 +136,7 @@ export function GlobalSearch() {
                       src={
                         (m.poster.https ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
                       }
+                      quality={55}
                       alt='avatar'
                       fill
                     />

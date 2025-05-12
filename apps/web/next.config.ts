@@ -23,9 +23,10 @@ const nextConfig: NextConfig = {
 
     useCache: true,
     nodeMiddleware: true,
-    imgOptTimeoutInSeconds: 60,
+    imgOptTimeoutInSeconds: 35,
     imgOptSequentialRead: true,
-    imgOptConcurrency: 15
+    imgOptConcurrency: 15,
+    proxyTimeout: 60
   },
   images: {
     dangerouslyAllowSVG: true,
