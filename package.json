@@ -8,6 +8,7 @@
     "web:dev": "bun prepare && cd apps/web && bun dev",
     "web:build": "bun prepare && cd apps/web && bun run build",
     "web:start": "bun prepare && cd apps/web && bun start",
+    "web:start:bun": "bun prepare && cd apps/web && bun start:bun",
     "web:analyze": "bun prepare && cd apps/web && bun run analyze",
 
     "worker:dev": "bun prepare && cd apps/worker && bun dev",
