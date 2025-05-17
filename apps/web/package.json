@@ -8,7 +8,9 @@
     "start": "next start",
     "analyze": "ANALYZE=true bun run build",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+
+    "start:bun": "NODE_ENV=production bun --bun server.ts"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.6.1",

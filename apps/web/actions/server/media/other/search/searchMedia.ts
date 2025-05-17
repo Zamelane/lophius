@@ -6,25 +6,18 @@ import { getCurrentLocale } from "@/i18n/current-locale";
 
 const limitResults = 10
 
-const searchOrderBy = (
-  searchColumn: Column,
-  search: string,
-  langColumn?: Column,
-  lang?: string
-) => [
-    ...(langColumn ? (
-      [
-        ...(lang ? [sql`${langColumn} = ${lang}`] : []),
-        sql`${langColumn} = 'en'`,
-      ])
-      : []
-    ),
-    sql`${searchColumn} ILIKE ${search} DESC`,
-    sql`${searchColumn} ILIKE ${`${search}%`} DESC`,
-    sql`${searchColumn} ~* ${`\\y${search}\\y`} DESC`,
-    sql`similarity(${searchColumn}, ${search}) DESC`,
-    sql`length(${searchColumn}) ASC`
-  ]
+const languagePriority = (langColumn: Column, locale: string) => [
+  sql`(${langColumn} = ${locale}) DESC`,
+  sql`(${langColumn} = 'en') DESC`
+];
+
+const relevanceOrderBy = (searchColumn: Column, search: string) => [
+  sql`${searchColumn} ILIKE ${search} DESC`,
+  sql`${searchColumn} ILIKE ${`${search}%`} DESC`,
+  sql`${searchColumn} ~* ${`\\y${search}\\y`} DESC`,
+  sql`similarity(${searchColumn}, ${search}) DESC`,
+  sql`length(${searchColumn}) ASC`
+];
 
 export async function SearchMedia({
   search,
@@ -39,23 +32,23 @@ export async function SearchMedia({
 
   // Сначала просто ищем кандидатов на поиск
   const byDetail = await db
-  .select({
-    mediaIds: sql<number[]>`array_agg(distinct ${medias.id})`,
-    mediaTypes: sql<MediasTableType['mediaType'][]>`array_agg(distinct ${medias.mediaType})`,
-    count: sql<number>`count(distinct ${medias.id})`,
-  })
-  .from(
-    db
-      .select({
-        id: medias.id,
-        title: translates.title,
-        mediaType: medias.mediaType
-      })
-      .from(medias)
-      .innerJoin(translates, eq(translates.mediaId, medias.id))
-      .where(sql`${translates.title} % ${search}`)
-      .as("sorted_media")
-  );
+    .select({
+      mediaIds: sql<number[]>`array_agg(distinct ${medias.id})`,
+      mediaTypes: sql<MediasTableType['mediaType'][]>`array_agg(distinct ${medias.mediaType})`,
+      count: sql<number>`count(distinct ${medias.id})`,
+    })
+    .from(
+      db
+        .select({
+          id: medias.id,
+          title: translates.title,
+          mediaType: medias.mediaType
+        })
+        .from(medias)
+        .innerJoin(translates, eq(translates.mediaId, medias.id))
+        .where(sql`${translates.title} % ${search}`)
+        .as("sorted_media")
+    );
 
   if (!byDetail.length || !byDetail[0].mediaTypes.length) {
     return {
@@ -79,21 +72,37 @@ export async function SearchMedia({
 
   const searchPoster = contains.kino || contains.book || contains.comic
 
+  const rankedTranslates = db
+  .select({
+    mediaId: translates.mediaId,
+    translateTitle: translates.title,
+    rank: sql<string>`row_number() over (
+        partition by ${translates.mediaId}
+        order by ${sql.join(
+          [
+            ...languagePriority(languages.iso_639_1, locale),
+            ...relevanceOrderBy(translates.title, search)
+          ],
+          sql`, `
+        )}
+      )`.as('rank')
+  })
+  .from(translates)
+  .leftJoin(languages, eq(languages.id, translates.languageId))
+  .where(
+    inArray(translates.mediaId, result.mediaIds)
+  )
+  .as('ranked_translates');
+//console.log((await rankedTranslates).filter(v => v.rank == '1'))
   // Ищем среди переводов
   const translatesSubquery = db
-    .selectDistinctOn([translates.mediaId], {
-      mediaId: translates.mediaId,
-      translateTitle: translates.title
+    .select({
+      mediaId: rankedTranslates.mediaId,
+      translateTitle: rankedTranslates.translateTitle
     })
-    .from(translates)
-    .leftJoin(languages, eq(languages.id, translates.languageId))
-    .where(sql`${translates.title} % ${search}`)
-    .orderBy(
-      translates.mediaId,
-      ...searchOrderBy(translates.title, search, languages.iso_639_1, locale)
-    )
-    .groupBy(translates.mediaId, languages.iso_639_1, translates.title)
-    .as('translates_subquery')
+    .from(rankedTranslates)
+    .where(eq(rankedTranslates.rank, '1'))
+    .as('translates_subquery');
 
   // Ищем среди постеров
   const postersSubquery = db.selectDistinctOn([medias.id], {
@@ -102,18 +111,18 @@ export async function SearchMedia({
     domain: external_domains.domain,
     https: external_domains.https
   })
-  .from(medias)
-  .innerJoin(translatesSubquery, eq(translatesSubquery.mediaId, medias.id))
-  .innerJoin(external_posters, eq(external_posters.mediaId, medias.id))
-  .innerJoin(external_images, eq(external_images.id, external_posters.externalImageId))
-  .innerJoin(external_domains, eq(external_domains.id, external_images.externalDomainId))
-  .leftJoin(languages, eq(languages.id, external_images.languageId))
-  .orderBy(
-    medias.id,
-    eq(languages.iso_639_1, locale),
-    eq(languages.iso_639_1, 'en')
-  )
-  .as('posters_subquery')
+    .from(medias)
+    .innerJoin(translatesSubquery, eq(translatesSubquery.mediaId, medias.id))
+    .innerJoin(external_posters, eq(external_posters.mediaId, medias.id))
+    .innerJoin(external_images, eq(external_images.id, external_posters.externalImageId))
+    .innerJoin(external_domains, eq(external_domains.id, external_images.externalDomainId))
+    .leftJoin(languages, eq(languages.id, external_images.languageId))
+    .orderBy(
+      medias.id,
+      eq(languages.iso_639_1, locale),
+      eq(languages.iso_639_1, 'en')
+    )
+    .as('posters_subquery')
 
   let detailedInfo = await db
     .select({
@@ -132,16 +141,17 @@ export async function SearchMedia({
     .from(medias)
     .innerJoin(translatesSubquery, eq(translatesSubquery.mediaId, medias.id))
     .innerJoin(postersSubquery, eq(postersSubquery.mediaId, medias.id))
+    .innerJoin(translates, eq(translates.mediaId, medias.id))
     .where(
       and(
         inArray(medias.id, result.mediaIds),
         isNotNull(translatesSubquery.translateTitle)
       )
     )
-    .orderBy(...searchOrderBy(translatesSubquery.translateTitle, search))
+    .orderBy(...relevanceOrderBy(translatesSubquery.translateTitle, search))
     .limit(limitResults)
 
-    console.log(detailedInfo)
+  console.log(detailedInfo)
 
   const mediasResult: SearchResultType = {
     medias: [],
