@@ -103,6 +103,7 @@ export async function SearchMedia({
 
   const results = await db
     .select({
+      rank: rankedTranslations.rank,
       mediaId: rankedTranslations.mediaId,
       mediaType: medias.mediaType,
       title: literalTranslate.title,
@@ -117,7 +118,7 @@ export async function SearchMedia({
     .innerJoin(medias, eq(rankedTranslations.mediaId, medias.id))
     .innerJoinLateral(literalTranslate, sql`true`)
     .innerJoinLateral(literalPosters, sql`true`)
-    .orderBy(rankedTranslations.rank)
+    .orderBy(rankedTranslations.rank, medias.id)
     .limit(limitResults)
 
 
