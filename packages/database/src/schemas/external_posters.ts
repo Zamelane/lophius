@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { bigint, pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import { bigint, index, pgTable, primaryKey } from 'drizzle-orm/pg-core'
 
 import { external_images } from './external_images'
 import { medias } from './medias'
@@ -14,7 +14,11 @@ export const external_posters = pgTable(
       .notNull()
       .references(() => external_images.id)
   },
-  (table) => [primaryKey({ columns: [table.externalImageId, table.mediaId] })]
+  (table) => [
+    primaryKey({ columns: [table.externalImageId, table.mediaId] }),
+    index().on(table.mediaId),
+    index().on(table.externalImageId)
+  ]
 )
 
 export type ExternalPostersTableType = typeof external_posters.$inferSelect

@@ -10,8 +10,8 @@ export const external_domains = pgTable(
     domain: varchar({ length: 255 }).notNull().unique()
   },
   (table) => [
-    index('external_domain_https_idx').on(table.https),
-    index('external_domain_domain_idx').on(table.domain)
+    index().on(table.https),
+    index().on(table.domain)
   ]
 )
 

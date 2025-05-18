@@ -37,9 +37,9 @@ export const external_images = pgTable(
   },
   (table) => [
     unique().on(table.sourceId, table.path, table.externalDomainId),
-    index('external_images_language_idx').on(table.languageId),
-    index('external_images_source_idx').on(table.sourceId),
-    index('external_images_language_id_idx').on(table.languageId)
+    index().on(table.languageId),
+    index().on(table.sourceId),
+    index().on(table.languageId)
   ]
 )
 
