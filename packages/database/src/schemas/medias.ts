@@ -3,6 +3,7 @@ import { relations } from 'drizzle-orm'
 import {
   bigserial,
   boolean,
+  index,
   integer,
   pgTable,
   unique,
@@ -38,7 +39,10 @@ export const medias = pgTable(
       .references(() => sources.id)
       .notNull()
   },
-  (table) => [unique().on(table.sourceId, table.external_id)]
+  (table) => [
+    unique().on(table.sourceId, table.external_id),
+    index().on(table.sourceId)
+  ]
 )
 
 export type MediasTableType = typeof medias.$inferSelect

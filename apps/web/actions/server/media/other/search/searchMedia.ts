@@ -33,10 +33,10 @@ const relevanceOrderBy = (searchColumn: Column, search: string) => {
 
 // Поиск по свопадениям
 const searchBy = (searchColumn: Column, search: string) => [
-  sql`${searchColumn} ILIKE ${`%${search}%`}`,
+  //sql`${searchColumn} ILIKE ${`%${search}%`}`,
   sql`${searchColumn} % ${search}`,
-  sql`${searchColumn} ~* ${`\\y${search}\\y`}`,
-  sql`similarity(${searchColumn}, ${search}) > 0.3`
+  // sql`${searchColumn} ~* ${`\\y${search}\\y`}`,
+  // sql`similarity(${searchColumn}, ${search}) > 0.3`
 ];
 
 export async function SearchMedia({
@@ -103,7 +103,6 @@ export async function SearchMedia({
 
   const results = await db
     .select({
-      rank: rankedTranslations.rank,
       mediaId: rankedTranslations.mediaId,
       mediaType: medias.mediaType,
       title: literalTranslate.title,
