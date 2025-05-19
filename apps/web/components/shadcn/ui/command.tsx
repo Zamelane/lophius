@@ -1,5 +1,6 @@
 'use client'
 
+import { useVisualViewportHeight } from '@/components/me-ui/use-visual-viewport-height'
 import { Dialog, DialogContent } from '@/components/shadcn/ui/dialog'
 import { cn } from '@/lib/utils'
 import type { DialogProps } from '@radix-ui/react-dialog'
@@ -29,12 +30,17 @@ const CommandDialog = ({
 }: DialogProps & {
   shouldFilter?: boolean
 }) => {
+  const viewportHeight = useVisualViewportHeight()
   return (
     <Dialog {...props}>
-      <DialogContent className='overflow-hidden p-0'>
+      <DialogContent
+        className='overflow-hidden p-0 min-h-full w-full max-w-full sm:max-w-lg sm:min-h-min'
+        style={{ maxHeight: viewportHeight }}
+      >
         <Command
           shouldFilter={shouldFilter === undefined ? true : shouldFilter}
-          className='max-h-[calc(80vh-20px)] min-h-[calc(80vh-20px)] [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5'
+          className='min-h-full min-w-full sm:!max-h-[calc(80vh-20px)] sm:min-h-[calc(80vh-20px)] [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5'
+          style={{ maxHeight: viewportHeight }}
         >
           {children}
         </Command>

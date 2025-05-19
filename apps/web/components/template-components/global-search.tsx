@@ -22,8 +22,8 @@ import type { LayoutProps } from '@/interfaces'
 import { cn } from '@/lib/utils'
 import NumberFlow from '@number-flow/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Loader2 } from 'lucide-react'
-import Image from 'next/image'
+import { Loader2, SearchSlashIcon } from 'lucide-react'
+import { Image } from '../me-ui/image'
 import { Button } from '../shadcn/ui/button'
 import {
   CommandDialog,
@@ -33,6 +33,8 @@ import {
 } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
 import { Spinner } from '../shadcn/ui/spinner'
+import { SkewedToggle } from '../me-ui/skewed-toggle'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 export function GlobalSearch() {
   const { isOpen: open, setIsOpen: setOpen } = useGlobalSearchContext()
@@ -42,6 +44,16 @@ export function GlobalSearch() {
   const [place, setPlace] = useState<PlaceType>('local')
   const [objectType, setObjectType] = useState<ObjectType>('media')
   const [mediaType, setMediaType] = useState<MediaType>('all')
+
+  const tabs: {
+    title: string,
+    key: ObjectType
+  }[] = [
+      { title: 'Медиа', key: 'media' },
+      { title: 'Человек', key: 'person' },
+      { title: 'Персонаж', key: 'personage' },
+      { title: 'Пользователь', key: 'user' }
+    ];
 
   // Состояния
   const [isLoading, setIsLoading] = useState(false)
@@ -108,7 +120,7 @@ export function GlobalSearch() {
       setIsLoading(false)
       setIsMoreLoading(false)
     }
-  }, [])
+  }, [place, objectType, mediaType])
 
   // Эффект для выполнения поиска
   useEffect(() => {
@@ -124,6 +136,26 @@ export function GlobalSearch() {
           value={searchQuery}
           onValueChange={setSearchQuery}
         />
+        <div className='border-b border-border'>
+          <ScrollContainer vertical={false} className='h-full'>
+            <div className="flex gap-1 overflow-y-clip px-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.title + tab.key}
+                  onClick={() => setObjectType(tab.key)}
+                  data-state={objectType === tab.key ? "active" : "inactive"}
+                  className={cn(
+                    "relative px-3 pt-3 pb-2 text-sm text-muted-foreground transition-colors",
+                    "after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-primary after:rounded-t-[3px] after:transition-transform after:duration-200 after:ease-out after:translate-y-[4px] after:scale-x-90",
+                    "data-[state=active]:text-foreground data-[state=active]:after:translate-y-0 data-[state=active]:after:scale-x-100"
+                  )}
+                >
+                  {tab.title}
+                </button>
+              ))}
+            </div>
+          </ScrollContainer>
+        </div>
 
         <div className='h-full overflow-hidden'>
           {isLoading && (
@@ -161,7 +193,7 @@ export function GlobalSearch() {
                 <LocaleLink href={`/tv/${m.id}`} onClick={() => setOpen(false)}>
                   <CommandItem
                     value={`${m.id}`}
-                    className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+                    className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px] overflow-clip'
                   >
                     <div
                       className={cn(
@@ -169,25 +201,35 @@ export function GlobalSearch() {
                         'w-[54px] h-[75px]'
                       )}
                     >
-                      {m.poster && (
-                        <Image
-                          className='object-cover aspect-[5/7] max-w-fit max-h-fit'
-                          //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                          src={`${m.poster.https ? 'https' : 'http'}://${m.poster.domain}${m.poster.path}`}
-                          quality={55}
-                          loading='lazy'
-                          decoding='async'
-                          alt='poster'
-                          width={54}
-                          height={75}
-                        />
-                      )}
+                      {
+                        m.poster ? (
+                          <Image
+                            className={cn(
+                              'object-cover aspect-[5/7] max-w-fit max-h-fit',
+                              m.isAdult && 'blur-[8px]'
+                            )}
+                            //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                            src={`${m.poster.https ? 'https' : 'http'}://${m.poster.domain}${m.poster.path}`}
+                            quality={55}
+                            loading='lazy'
+                            decoding='async'
+                            alt='poster'
+                            width={54}
+                            height={75}
+                          />
+                        )
+                          : (
+                            <div className='h-full flex justify-center items-center bg-border'>
+                              <SearchSlashIcon />
+                            </div>
+                          )
+                      }
                     </div>
                     <div className='flex flex-col justify-center'>
                       <p className='text-xs text-secondary-foreground'>
                         Завершён
                       </p>
-                      <p className='text-base mb-1'>{m.title}</p>
+                      <p className='text-base mb-1 truncate'>{m.title}</p>
                       <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
                         {[m.mediaType === 'kino' && 'Фильм'].join(',')}
                       </p>
@@ -225,7 +267,8 @@ export function GlobalSearch() {
             </div>
           </div>
 
-          <Button variant='ghost' className='text-sm text-muted-foreground'>
+          <SkewedToggle />
+          {/* <Button variant='ghost' className='text-sm text-muted-foreground'>
             Открыть{' '}
             <kbd className='pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
               <svg
@@ -244,7 +287,7 @@ export function GlobalSearch() {
                 />
               </svg>
             </kbd>
-          </Button>
+          </Button> */}
         </div>
       </CommandDialog>
     </AnimatePresence>
