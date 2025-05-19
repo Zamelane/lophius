@@ -8,6 +8,7 @@ export type Props = {
   place: PlaceType
   objectType: ObjectType
   mediaType?: MediaType
+  offset?: number
 }
 
 export type PlaceType = 'local' | 'ethernet'
@@ -24,6 +25,7 @@ type MediaResultType = {
       domain: string
       https: boolean
     } | null
+    isAdult: boolean
   }[]
   total: number
   current: number
@@ -35,13 +37,15 @@ export async function Search({
   search,
   place,
   mediaType = 'all',
-  objectType
+  objectType,
+  offset
 }: Props) {
   if (objectType === 'media') {
     return await SearchMedia({
       search,
       place,
-      mediaType
+      mediaType,
+      offset
     })
   }
 }

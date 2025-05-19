@@ -15,22 +15,24 @@ import {
   Search,
   type SearchResultType
 } from '@/actions/server/media/other/search'
+import { limitResults } from '@/actions/server/media/other/search/config'
 import { useDebounce } from '@/hooks/debounce'
 import { LocaleLink } from '@/hooks/locale-link'
 import type { LayoutProps } from '@/interfaces'
+import { cn } from '@/lib/utils'
+import NumberFlow from '@number-flow/react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '../shadcn/ui/button'
 import {
   CommandDialog,
-  CommandEmpty,
   CommandInput,
   CommandItem,
   CommandList
 } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
 import { Spinner } from '../shadcn/ui/spinner'
-
-const Separator = () => <div className='-mx-1 h-px bg-border' />
 
 export function GlobalSearch() {
   const { isOpen: open, setIsOpen: setOpen } = useGlobalSearchContext()
@@ -43,6 +45,7 @@ export function GlobalSearch() {
 
   // Состояния
   const [isLoading, setIsLoading] = useState(false)
+  const [isMoreLoading, setIsMoreLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [results, setResults] = useState<SearchResultType | undefined>(
     undefined
@@ -64,13 +67,17 @@ export function GlobalSearch() {
   }, [setOpen])
 
   // Регистрируем функционал поиска
-  const fetchResults = useCallback(async (query: string) => {
+  const fetchResults = useCallback(async (query: string, offset = 0) => {
     try {
-      setIsLoading(true)
+      if (offset > 0) {
+        setIsMoreLoading(true)
+      } else {
+        setIsLoading(true)
+      }
       setError(null)
-      setResults(undefined)
 
       if (!query) {
+        setResults(undefined)
         return
       }
 
@@ -78,16 +85,28 @@ export function GlobalSearch() {
         search: query,
         place,
         objectType,
-        mediaType
+        mediaType,
+        offset
       })
 
       if (results) {
-        setResults(results)
+        setResults((prev) => {
+          if (offset > 0) {
+            return {
+              ...results,
+              medias: [...(prev?.medias ?? []), ...results.medias]
+            }
+          }
+
+          return results
+        })
       }
     } catch (err) {
       setError(`${err}`)
+      //setResults(undefined)
     } finally {
       setIsLoading(false)
+      setIsMoreLoading(false)
     }
   }, [])
 
@@ -97,96 +116,138 @@ export function GlobalSearch() {
   }, [debouncedQuery, fetchResults])
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
-      <DialogTitle className='hidden'>Окно поиск</DialogTitle>
-      <CommandInput
-        placeholder='Введите для поиска...'
-        value={searchQuery}
-        onValueChange={setSearchQuery}
-      />
+    <AnimatePresence>
+      <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
+        <DialogTitle className='hidden'>Окно поиск</DialogTitle>
+        <CommandInput
+          placeholder='Введите для поиска...'
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+        />
 
-      <CommandList className='px-4 py-2'>
-        <CommandEmpty>
+        <div className='h-full overflow-hidden'>
           {isLoading && (
-            <div className='flex justify-center items-center'>
-              <Spinner size='lg' className='bg-black dark:bg-white' />
-            </div>
-          )}
-
-          {!results && !isLoading && (
-            <p className='text-center'>Ничего не найдено</p>
-          )}
-        </CommandEmpty>
-        {results?.medias.map((m) => (
-          <LocaleLink
-            key={`media_item_${m.id}`}
-            href={`/tv/${m.id}`}
-            onClick={() => setOpen(false)}
-          >
-            <CommandItem
-              value={`${m.id}`}
-              className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+            <motion.div
+              key='loading'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className='h-full flex flex-col justify-center items-center'
             >
-              <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
-                {m.poster && (
-                  <Image
-                    className='object-cover aspect-[5/7] max-w-fit max-h-fit'
-                    //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                    src={`${m.poster.https ? 'https' : 'http'}://${m.poster.domain}${m.poster.path}`}
-                    quality={55}
-                    loading='lazy'
-                    decoding='async'
-                    alt='avatar'
-                    fill
-                  />
-                )}
-              </div>
-              <div className='flex flex-col justify-center'>
-                <p className='text-xs text-secondary-foreground'>Завершён</p>
-                <p className='text-base mb-1'>{m.title}</p>
-                <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
-                  {[m.mediaType === 'kino' && 'Фильм'].join(',')}
-                </p>
-              </div>
-            </CommandItem>
-          </LocaleLink>
-        ))}
-      </CommandList>
-
-      <Separator />
-
-      <div className='py-2 px-4 flex justify-between items-center'>
-        <div className='flex flex-row items-center gap-2'>
-          <p>Lophius</p>
-          {results && (
-            <p className='text-muted-foreground text-sm'>
-              {results.total} элементов
-            </p>
+              <Spinner size='lg' className='bg-black dark:bg-white' />
+            </motion.div>
           )}
+
+          {!results?.current && !isLoading && (
+            <motion.div
+              key='empty'
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className='h-full flex flex-col justify-center items-center'
+            >
+              <p className='text-center'>Ничего не найдено</p>
+            </motion.div>
+          )}
+
+          <CommandList className='px-4 py-2'>
+            {results?.medias.map((m) => (
+              <motion.div
+                key={`media_item_${m.id}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+              >
+                <LocaleLink href={`/tv/${m.id}`} onClick={() => setOpen(false)}>
+                  <CommandItem
+                    value={`${m.id}`}
+                    className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
+                  >
+                    <div
+                      className={cn(
+                        'h-full max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden',
+                        'w-[54px] h-[75px]'
+                      )}
+                    >
+                      {m.poster && (
+                        <Image
+                          className='object-cover aspect-[5/7] max-w-fit max-h-fit'
+                          //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                          src={`${m.poster.https ? 'https' : 'http'}://${m.poster.domain}${m.poster.path}`}
+                          quality={55}
+                          loading='lazy'
+                          decoding='async'
+                          alt='poster'
+                          width={54}
+                          height={75}
+                        />
+                      )}
+                    </div>
+                    <div className='flex flex-col justify-center'>
+                      <p className='text-xs text-secondary-foreground'>
+                        Завершён
+                      </p>
+                      <p className='text-base mb-1'>{m.title}</p>
+                      <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
+                        {[m.mediaType === 'kino' && 'Фильм'].join(',')}
+                      </p>
+                    </div>
+                  </CommandItem>
+                </LocaleLink>
+              </motion.div>
+            ))}
+            {results && results.total - results.current > 0 && (
+              <Button
+                variant='secondary'
+                size='sm'
+                className='ml-1 mt-1'
+                onClick={() => {
+                  fetchResults(searchQuery, results?.current)
+                }}
+                disabled={isMoreLoading}
+              >
+                Ещё{' '}
+                {results.total - results.current > limitResults
+                  ? limitResults
+                  : results.total - results.current}
+                {isMoreLoading && <Loader2 className='animate-spin' />}
+              </Button>
+            )}
+          </CommandList>
         </div>
 
-        <Button variant='ghost' className='text-sm text-muted-foreground'>
-          Открыть{' '}
-          <kbd className='pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
-            <svg
-              width='16'
-              height='16'
-              viewBox='0 0 16 16'
-              className='h-2.5 w-2.5'
-              strokeLinejoin='round'
-              data-testid='geist-icon'
-            >
-              <path
-                fillRule='evenodd'
-                clipRule='evenodd'
-                fill='currentColor'
-                d='M13.5 3V2.25H15V3V10C15 10.5523 14.5523 11 14 11H3.56068L5.53035 12.9697L6.06068 13.5L5.00002 14.5607L4.46969 14.0303L1.39647 10.9571C1.00595 10.5666 1.00595 9.93342 1.39647 9.54289L4.46969 6.46967L5.00002 5.93934L6.06068 7L5.53035 7.53033L3.56068 9.5H13.5V3Z'
-              />
-            </svg>
-          </kbd>
-        </Button>
-      </div>
-    </CommandDialog>
+        <div className='py-2 px-4 flex justify-between items-center border-t border-border'>
+          <div className='flex flex-row items-center gap-2'>
+            <p>Lophius</p>
+            <div className='text-muted-foreground text-sm'>
+              <NumberFlow value={results?.total ?? 'Infinity'} />
+              {results && ' совпадения'}
+            </div>
+          </div>
+
+          <Button variant='ghost' className='text-sm text-muted-foreground'>
+            Открыть{' '}
+            <kbd className='pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
+              <svg
+                width='16'
+                height='16'
+                viewBox='0 0 16 16'
+                className='h-2.5 w-2.5'
+                strokeLinejoin='round'
+                data-testid='geist-icon'
+              >
+                <path
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  fill='currentColor'
+                  d='M13.5 3V2.25H15V3V10C15 10.5523 14.5523 11 14 11H3.56068L5.53035 12.9697L6.06068 13.5L5.00002 14.5607L4.46969 14.0303L1.39647 10.9571C1.00595 10.5666 1.00595 9.93342 1.39647 9.54289L4.46969 6.46967L5.00002 5.93934L6.06068 7L5.53035 7.53033L3.56068 9.5H13.5V3Z'
+                />
+              </svg>
+            </kbd>
+          </Button>
+        </div>
+      </CommandDialog>
+    </AnimatePresence>
   )
 }
 

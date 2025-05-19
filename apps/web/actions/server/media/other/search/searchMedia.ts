@@ -10,8 +10,7 @@ import {
 } from 'database/schemas' // Таблицы и схемы
 import { type Column, eq, or, sql } from 'drizzle-orm' // Импорт необходимых функций
 import type { MediaType, PlaceType, SearchResultType } from '.' // Типы данных для поиска
-
-const limitResults = 10
+import { limitResults } from './config'
 
 // Приоритет для языка
 const languagePriority = (langColumn: Column, locale: string) => [
@@ -26,13 +25,19 @@ const relevanceOrderBy = (searchColumn: Column, search: string) => {
   const contains = `%${search}%`
   const wordMatch = `\\y${search}\\y`
 
+  const tsVector = sql`to_tsvector('russian', ${searchColumn})`
+  const tsQuery = sql`plainto_tsquery('russian', ${search})`
+
   return [
-    sql`${searchColumn} ILIKE ${exact} DESC`,
-    sql`${searchColumn} ILIKE ${prefix} DESC`,
-    sql`${searchColumn} ILIKE ${contains} DESC`,
-    sql`${searchColumn} % ${search} DESC`,
-    sql`${searchColumn} ~* ${wordMatch} DESC`,
-    sql`similarity(${searchColumn}, ${search}) DESC`,
+    sql`${searchColumn} = ${search} DESC`, // Точное совпадение
+    sql`${searchColumn} ILIKE ${exact} DESC`, // Полный ILIKE
+    sql`${tsVector} @@ ${tsQuery} DESC`, // Полнотекстовый матч
+    sql`ts_rank(${tsVector}, ${tsQuery}) DESC`, // Ранжирование по tsvector
+    sql`similarity(${searchColumn}, ${search}) DESC`, // Похожесть
+    sql`${searchColumn} % ${search} DESC`, // Триграмма
+    sql`${searchColumn} ILIKE ${prefix} DESC`, // Начало слова
+    sql`${searchColumn} ILIKE ${contains} DESC`, // Вхождение
+    sql`${searchColumn} ~* ${wordMatch} DESC`, // Регулярное слово
     sql`length(${searchColumn}) = length(${search}) DESC`,
     sql`length(${searchColumn}) DESC`
   ]
@@ -49,17 +54,29 @@ const searchBy = (searchColumn: Column, search: string) => [
 export async function SearchMedia({
   search,
   place,
-  mediaType
+  mediaType,
+  offset = 0
 }: {
   search: string
   place: PlaceType
   mediaType?: MediaType
+  offset?: number
 }): Promise<SearchResultType> {
+  console.log(offset)
   const locale = await getCurrentLocale() // Получаем текущую локаль пользователя
 
+  // Считаем параллельно, сколько всего записей подходят под условие
+  const totalResults = db
+    .select({ count: sql<number>`COUNT(DISTINCT ${translates.mediaId})` })
+    .from(translates)
+    .where(or(...searchBy(translates.title, search)))
+    .execute()
+
+  // Ищем медиа по переводам, которые удовлетваряют запросу
   const rankedTranslations = db
     .selectDistinctOn([translates.mediaId], {
       mediaId: translates.mediaId,
+      // Сохраняем "оценку", которая будет влиять на порядок в выдаче
       rank: sql<string>`row_number() over (
         order by ${sql.join(
           [...relevanceOrderBy(translates.title, search)],
@@ -69,11 +86,12 @@ export async function SearchMedia({
     })
     .from(translates)
     .leftJoin(languages, eq(languages.id, translates.languageId))
-    .where(or(...searchBy(translates.title, search)))
+    .where(or(...searchBy(translates.title, search))) // Условия для поиска/выборки
     .orderBy(translates.mediaId)
-    .limit(limitResults)
+    //.limit(limitResults)
     .as('ranked_translations')
 
+  // Запрос выбора лучшего перевода для каждой строки медиа, которое будет отдавать
   const literalTranslate = db
     .select({
       title: translates.title,
@@ -81,7 +99,7 @@ export async function SearchMedia({
     })
     .from(translates)
     .leftJoin(languages, eq(languages.id, translates.languageId))
-    .where(eq(translates.mediaId, medias.id))
+    .where(eq(translates.mediaId, medias.id)) // Выбираем тот, у которого язык ближе к пользователю
     .orderBy(
       ...languagePriority(languages.iso_639_1, locale),
       ...relevanceOrderBy(translates.title, search)
@@ -89,6 +107,7 @@ export async function SearchMedia({
     .limit(1)
     .as('literal_translate')
 
+  // Запрос выбора лучшего постера для каждой строки медиа, которое будем отдавать
   const literalPosters = db
     .select({
       https: external_domains.https,
@@ -105,11 +124,12 @@ export async function SearchMedia({
       eq(external_domains.id, external_images.externalDomainId)
     )
     .leftJoin(languages, eq(languages.id, external_images.languageId))
-    .where(eq(external_posters.mediaId, medias.id))
+    .where(eq(external_posters.mediaId, medias.id)) // Выбираем тот, у которого язык ближе к пользователю
     .orderBy(...languagePriority(languages.iso_639_1, locale))
     .limit(1)
     .as('literal_posters')
 
+  // Итоговая выборка для отдачи
   const results = await db
     .select({
       mediaId: rankedTranslations.mediaId,
@@ -120,20 +140,22 @@ export async function SearchMedia({
         https: literalPosters.https,
         domain: literalPosters.domain,
         path: literalPosters.path
-      }
+      },
+      isAdult: medias.isAdult
     })
     .from(rankedTranslations)
     .innerJoin(medias, eq(rankedTranslations.mediaId, medias.id))
     .innerJoinLateral(literalTranslate, sql`true`)
-    .innerJoinLateral(literalPosters, sql`true`)
+    .leftJoinLateral(literalPosters, sql`true`)
     .orderBy(rankedTranslations.rank, medias.id)
+    .offset(offset)
     .limit(limitResults)
 
   // Формируем результат
   const mediasResult: SearchResultType = {
     medias: [],
-    total: 0,
-    current: 0
+    total: (await totalResults)[0].count,
+    current: results.length + offset
   }
 
   for (const media of results) {
@@ -141,7 +163,8 @@ export async function SearchMedia({
       id: media.mediaId,
       title: media.title!,
       poster: media.img ?? null,
-      mediaType: media.mediaType
+      mediaType: media.mediaType,
+      isAdult: media.isAdult
     })
   }
 
