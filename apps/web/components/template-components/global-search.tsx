@@ -16,21 +16,19 @@ import {
   type SearchResultType
 } from '@/actions/server/media/other/search'
 import { useDebounce } from '@/hooks/debounce'
+import { LocaleLink } from '@/hooks/locale-link'
 import type { LayoutProps } from '@/interfaces'
-import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { Button } from '../shadcn/ui/button'
 import {
   CommandDialog,
   CommandEmpty,
-  CommandGroup,
   CommandInput,
   CommandItem,
   CommandList
 } from '../shadcn/ui/command'
 import { DialogTitle } from '../shadcn/ui/dialog'
 import { Spinner } from '../shadcn/ui/spinner'
-import { LocaleLink } from '@/hooks/locale-link'
 
 const Separator = () => <div className='-mx-1 h-px bg-border' />
 
@@ -46,7 +44,9 @@ export function GlobalSearch() {
   // Состояния
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [results, setResults] = useState<SearchResultType | undefined>(undefined)
+  const [results, setResults] = useState<SearchResultType | undefined>(
+    undefined
+  )
 
   // Хуки
   const debouncedQuery = useDebounce(searchQuery.trim(), 400)
@@ -120,7 +120,7 @@ export function GlobalSearch() {
         {results?.medias.map((m) => (
           <LocaleLink
             key={`media_item_${m.id}`}
-            href={'/tv/' + m.id}
+            href={`/tv/${m.id}`}
             onClick={() => setOpen(false)}
           >
             <CommandItem
@@ -128,32 +128,24 @@ export function GlobalSearch() {
               className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px]'
             >
               <div className='h-full relative max-w-fit max-h-fit aspect-[5/7] rounded-[4px] text-center overflow-hidden'>
-                {
-                  m.poster && (
-                    <Image
-                      className='object-cover aspect-[5/7] max-w-fit max-h-fit'
-                      //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                      src={
-                        (m.poster.https ? 'https' : 'http') + `://${m.poster.domain}${m.poster.path}`
-                      }
-                      quality={55}
-                      loading='lazy'
-                      decoding='async'
-                      alt='avatar'
-                      fill
-                    />
-                  )
-                }
+                {m.poster && (
+                  <Image
+                    className='object-cover aspect-[5/7] max-w-fit max-h-fit'
+                    //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
+                    src={`${m.poster.https ? 'https' : 'http'}://${m.poster.domain}${m.poster.path}`}
+                    quality={55}
+                    loading='lazy'
+                    decoding='async'
+                    alt='avatar'
+                    fill
+                  />
+                )}
               </div>
               <div className='flex flex-col justify-center'>
                 <p className='text-xs text-secondary-foreground'>Завершён</p>
                 <p className='text-base mb-1'>{m.title}</p>
                 <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
-                  {
-                    [
-                      m.mediaType === 'kino' && 'Фильм'
-                    ].join(',')
-                  }
+                  {[m.mediaType === 'kino' && 'Фильм'].join(',')}
                 </p>
               </div>
             </CommandItem>
@@ -166,13 +158,11 @@ export function GlobalSearch() {
       <div className='py-2 px-4 flex justify-between items-center'>
         <div className='flex flex-row items-center gap-2'>
           <p>Lophius</p>
-          {
-            results && (
-              <p className='text-muted-foreground text-sm'>
-                {results.total} элементов
-              </p>
-            )
-          }
+          {results && (
+            <p className='text-muted-foreground text-sm'>
+              {results.total} элементов
+            </p>
+          )}
         </div>
 
         <Button variant='ghost' className='text-sm text-muted-foreground'>

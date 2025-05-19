@@ -9,10 +9,7 @@ export const external_domains = pgTable(
     https: boolean().notNull().default(true),
     domain: varchar({ length: 255 }).notNull().unique()
   },
-  (table) => [
-    index().on(table.https),
-    index().on(table.domain)
-  ]
+  (table) => [index().on(table.https), index().on(table.domain)]
 )
 
 export type ExternalDomainsTableType = typeof external_domains.$inferSelect

@@ -15,9 +15,7 @@ export const languages = pgTable(
     english_name: varchar({ length: 50 }),
     iso_639_1: varchar({ length: 2 }).notNull().unique()
   },
-  (table) => [
-    index().on(table.iso_639_1)
-  ]
+  (table) => [index().on(table.iso_639_1)]
 )
 
 export type LanguagesTableType = typeof languages.$inferSelect

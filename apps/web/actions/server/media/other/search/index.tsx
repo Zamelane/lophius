@@ -1,8 +1,6 @@
 'use server'
 
-import {
-  type MediasTableType,
-} from 'database/schemas'
+import type { MediasTableType } from 'database/schemas'
 import { SearchMedia } from './searchMedia'
 
 export type Props = {

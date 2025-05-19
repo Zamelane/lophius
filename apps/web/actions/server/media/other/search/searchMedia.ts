@@ -1,23 +1,30 @@
-import { db } from "database"; // Подключение к базе данных
-import { sql, eq, Column, or } from "drizzle-orm"; // Импорт необходимых функций
-import { getCurrentLocale } from "@/i18n/current-locale"; // Для получения локали пользователя
-import { MediaType, SearchResultType, PlaceType } from "."; // Типы данных для поиска
-import { medias, translates, languages, external_posters, external_images, external_domains } from "database/schemas"; // Таблицы и схемы
+import { getCurrentLocale } from '@/i18n/current-locale' // Для получения локали пользователя
+import { db } from 'database' // Подключение к базе данных
+import {
+  external_domains,
+  external_images,
+  external_posters,
+  languages,
+  medias,
+  translates
+} from 'database/schemas' // Таблицы и схемы
+import { type Column, eq, or, sql } from 'drizzle-orm' // Импорт необходимых функций
+import type { MediaType, PlaceType, SearchResultType } from '.' // Типы данных для поиска
 
-const limitResults = 10;
+const limitResults = 10
 
 // Приоритет для языка
 const languagePriority = (langColumn: Column, locale: string) => [
   sql`(${langColumn} = ${locale}) DESC`,
   sql`(${langColumn} = 'en') DESC`
-];
+]
 
 // Сортировка по релевантности
 const relevanceOrderBy = (searchColumn: Column, search: string) => {
-  const exact     = search;
-  const prefix    = `${search}%`;
-  const contains  = `%${search}%`;
-  const wordMatch = `\\y${search}\\y`;
+  const exact = search
+  const prefix = `${search}%`
+  const contains = `%${search}%`
+  const wordMatch = `\\y${search}\\y`
 
   return [
     sql`${searchColumn} ILIKE ${exact} DESC`,
@@ -28,48 +35,44 @@ const relevanceOrderBy = (searchColumn: Column, search: string) => {
     sql`similarity(${searchColumn}, ${search}) DESC`,
     sql`length(${searchColumn}) = length(${search}) DESC`,
     sql`length(${searchColumn}) DESC`
-  ];
-};
+  ]
+}
 
 // Поиск по свопадениям
 const searchBy = (searchColumn: Column, search: string) => [
   //sql`${searchColumn} ILIKE ${`%${search}%`}`,
-  sql`${searchColumn} % ${search}`,
+  sql`${searchColumn} % ${search}`
   // sql`${searchColumn} ~* ${`\\y${search}\\y`}`,
   // sql`similarity(${searchColumn}, ${search}) > 0.3`
-];
+]
 
 export async function SearchMedia({
   search,
   place,
   mediaType
 }: {
-  search: string;
-  place: PlaceType;
-  mediaType?: MediaType;
+  search: string
+  place: PlaceType
+  mediaType?: MediaType
 }): Promise<SearchResultType> {
-  const locale = await getCurrentLocale(); // Получаем текущую локаль пользователя
+  const locale = await getCurrentLocale() // Получаем текущую локаль пользователя
 
   const rankedTranslations = db
-  .selectDistinctOn([translates.mediaId], {
-    mediaId: translates.mediaId,
-    rank: sql<string>`row_number() over (
+    .selectDistinctOn([translates.mediaId], {
+      mediaId: translates.mediaId,
+      rank: sql<string>`row_number() over (
         order by ${sql.join(
-          [
-            ...relevanceOrderBy(translates.title, search)
-          ],
+          [...relevanceOrderBy(translates.title, search)],
           sql`, `
         )}
       )`.as('rank')
-  })
-  .from(translates)
-  .leftJoin(languages, eq(languages.id, translates.languageId))
-  .where(or(
-    ...searchBy(translates.title, search)
-  ))
-  .orderBy(translates.mediaId)
-  .limit(limitResults)
-  .as(`ranked_translations`)
+    })
+    .from(translates)
+    .leftJoin(languages, eq(languages.id, translates.languageId))
+    .where(or(...searchBy(translates.title, search)))
+    .orderBy(translates.mediaId)
+    .limit(limitResults)
+    .as('ranked_translations')
 
   const literalTranslate = db
     .select({
@@ -86,20 +89,26 @@ export async function SearchMedia({
     .limit(1)
     .as('literal_translate')
 
-    const literalPosters = db
-      .select({
-        https: external_domains.https,
-        domain: external_domains.domain,
-        path: external_images.path
-      })
-      .from(external_posters)
-      .innerJoin(external_images, eq(external_images.id, external_posters.externalImageId))
-      .innerJoin(external_domains, eq(external_domains.id, external_images.externalDomainId))
-      .leftJoin(languages, eq(languages.id, external_images.languageId))
-      .where(eq(external_posters.mediaId, medias.id))
-      .orderBy(...languagePriority(languages.iso_639_1, locale))
-      .limit(1)
-      .as('literal_posters')
+  const literalPosters = db
+    .select({
+      https: external_domains.https,
+      domain: external_domains.domain,
+      path: external_images.path
+    })
+    .from(external_posters)
+    .innerJoin(
+      external_images,
+      eq(external_images.id, external_posters.externalImageId)
+    )
+    .innerJoin(
+      external_domains,
+      eq(external_domains.id, external_images.externalDomainId)
+    )
+    .leftJoin(languages, eq(languages.id, external_images.languageId))
+    .where(eq(external_posters.mediaId, medias.id))
+    .orderBy(...languagePriority(languages.iso_639_1, locale))
+    .limit(1)
+    .as('literal_posters')
 
   const results = await db
     .select({
@@ -120,31 +129,12 @@ export async function SearchMedia({
     .orderBy(rankedTranslations.rank, medias.id)
     .limit(limitResults)
 
-
-  // // 1. Находим все переводы, соответствующие запросу
-  // const mediasByQuery = db
-  //   .select({
-  //     mediaId: translates.mediaId,
-  //     translateTitle: translates.title,
-  //     rank: sql<string>`row_number() over (
-  //       partition by ${translates.mediaId}
-  //       order by ${sql.join(
-  //         [
-  //           ...languagePriority(languages.iso_639_1, locale),
-  //           ...relevanceOrderBy(translates.title, search)
-  //         ],
-  //         sql`, `
-  //       )}
-  //     )`.as('rank')
-  //   })
-  //   .from(medias)
-
   // Формируем результат
   const mediasResult: SearchResultType = {
     medias: [],
     total: 0,
     current: 0
-  };
+  }
 
   for (const media of results) {
     mediasResult.medias.push({
@@ -152,8 +142,8 @@ export async function SearchMedia({
       title: media.title!,
       poster: media.img ?? null,
       mediaType: media.mediaType
-    });
+    })
   }
 
-  return mediasResult;
+  return mediasResult
 }
