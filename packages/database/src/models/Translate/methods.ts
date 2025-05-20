@@ -14,7 +14,7 @@ export async function insertTranslate(
   data.media.validateRequiredIds()
   data.language.validateRequiredIds()
   data?.country?.validateRequiredIds()
-
+  
   return queryOneResult(
     await this.tx
       .insert(translates)

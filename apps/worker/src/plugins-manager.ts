@@ -23,6 +23,7 @@ export class PluginsManager {
     this.plugins = {}
 
     if (pluginEntries.length) console.info('📋 Checking plugin structure...')
+
     let i = 0
     for (const entry of pluginEntries) {
       i++
@@ -71,5 +72,9 @@ export class PluginsManager {
       }
       await Bun.sleep(60000)
     }
+  }
+
+  getPlugins() {
+    return Object.keys(this.plugins).map(key => this.plugins[key])
   }
 }

@@ -64,13 +64,13 @@ export type UserType = {
 
 export type MediasType = VideoType | PersonType | PersonageType | UserType
 
-export type MediaResultType = {
+export type MediaOfflineResultType = {
   items: MediasType[]
   total: number
   current: number
 }
 
-export type SearchResultType = MediaResultType
+export type SearchResultType = MediaOfflineResultType
 
 export async function Search({
   search,
