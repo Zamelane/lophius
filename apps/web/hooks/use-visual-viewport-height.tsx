@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 export function useVisualViewportHeight() {
   const [height, setHeight] = useState(
-    typeof window !== 'undefined' ? window.visualViewport?.height ?? window.innerHeight : 0
+    typeof window !== 'undefined'
+      ? (window.visualViewport?.height ?? window.innerHeight)
+      : 0
   )
 
   useEffect(() => {

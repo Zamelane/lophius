@@ -6,14 +6,19 @@ import { cookies } from 'next/headers'
 import { Suspense } from 'react'
 
 import dynamic from 'next/dynamic'
-import { AppSidebar } from '../sidebar/app-sidebar'
 import { SiteHeader } from '../sidebar/site-header'
-import { GlobalSearchProvider } from '../template-components/global-search'
 import { SidebarInset, SidebarProvider } from '../ui/sidebar'
 import { Footer } from './Footer'
+import { AppSidebar } from '../sidebar/app-sidebar'
 
 const GlobalSearch = dynamic(() =>
   import('../template-components/global-search').then((gs) => gs.GlobalSearch)
+)
+
+const GlobalSearchProvider = dynamic(() =>
+  import('../template-components/global-search').then(
+    (gs) => gs.GlobalSearchProvider
+  )
 )
 
 export default async function AppLayout({ children }: LayoutProps) {
