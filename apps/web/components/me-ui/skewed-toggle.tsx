@@ -2,26 +2,24 @@
 
 import { cn } from '@/lib/utils';
 import { DatabaseZapIcon, GlobeIcon } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface SkewedToggleProps {
   onLabel?: string;
   offLabel?: string;
-  defaultChecked?: boolean;
+  checked?: boolean;
   onChange?: (checked: boolean) => void;
 }
 
 export const SkewedToggle: React.FC<SkewedToggleProps> = ({
   onLabel = 'В ИНТЕРНЕТЕ',
   offLabel = 'ЛОКАЛЬНО',
-  defaultChecked = false,
+  checked,
   onChange,
 }) => {
-  const [checked, setChecked] = useState(defaultChecked);
 
   const handleChange = () => {
     const newState = !checked;
-    setChecked(newState);
     onChange?.(newState);
   };
 

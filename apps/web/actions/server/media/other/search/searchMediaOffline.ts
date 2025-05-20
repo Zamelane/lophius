@@ -9,7 +9,7 @@ import {
   translates
 } from 'database/schemas' // Таблицы и схемы
 import { type Column, eq, or, sql } from 'drizzle-orm' // Импорт необходимых функций
-import type { MediaType, PlaceType, SearchResultType } from '.' // Типы данных для поиска
+import type { MediaType, SearchResultType } from '.' // Типы данных для поиска
 import { limitResults } from './config'
 
 // Приоритет для языка
@@ -51,14 +51,12 @@ const searchBy = (searchColumn: Column, search: string) => [
   // sql`similarity(${searchColumn}, ${search}) > 0.3`
 ]
 
-export async function SearchMedia({
+export async function SearchMediaOffline({
   search,
-  place,
   mediaType,
   offset = 0
 }: {
   search: string
-  place: PlaceType
   mediaType?: MediaType
   offset?: number
 }): Promise<SearchResultType> {
@@ -153,18 +151,19 @@ export async function SearchMedia({
 
   // Формируем результат
   const mediasResult: SearchResultType = {
-    medias: [],
+    items: [],
     total: (await totalResults)[0].count,
     current: results.length + offset
   }
 
   for (const media of results) {
-    mediasResult.medias.push({
+    mediasResult.items.push({
       id: media.mediaId,
       title: media.title!,
       poster: media.img ?? null,
       mediaType: media.mediaType,
-      isAdult: media.isAdult
+      isAdult: media.isAdult,
+      objectType: 'media'
     })
   }
 

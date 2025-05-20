@@ -1,6 +1,6 @@
 'use client'
 
-import { useVisualViewportHeight } from '@/components/me-ui/use-visual-viewport-height'
+import { useVisualViewportHeight } from '@/hooks/use-visual-viewport-height'
 import { Dialog, DialogContent } from '@/components/shadcn/ui/dialog'
 import { cn } from '@/lib/utils'
 import type { DialogProps } from '@radix-ui/react-dialog'
