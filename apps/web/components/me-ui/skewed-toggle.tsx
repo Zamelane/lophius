@@ -1,27 +1,26 @@
-'use client';
+'use client'
 
-import { cn } from '@/lib/utils';
-import { DatabaseZapIcon, GlobeIcon } from 'lucide-react';
-import React from 'react';
+import { cn } from '@/lib/utils'
+import { DatabaseZapIcon, GlobeIcon } from 'lucide-react'
+import type React from 'react'
 
 interface SkewedToggleProps {
-  onLabel?: string;
-  offLabel?: string;
-  checked?: boolean;
-  onChange?: (checked: boolean) => void;
+  onLabel?: string
+  offLabel?: string
+  checked?: boolean
+  onChange?: (checked: boolean) => void
 }
 
 export const SkewedToggle: React.FC<SkewedToggleProps> = ({
   onLabel = 'В ИНТЕРНЕТЕ',
   offLabel = 'ЛОКАЛЬНО',
   checked,
-  onChange,
+  onChange
 }) => {
-
   const handleChange = () => {
-    const newState = !checked;
-    onChange?.(newState);
-  };
+    const newState = !checked
+    onChange?.(newState)
+  }
 
   return (
     <div
@@ -66,5 +65,5 @@ export const SkewedToggle: React.FC<SkewedToggleProps> = ({
         <GlobeIcon size={16} /> {onLabel}
       </div>
     </div>
-  );
-};
+  )
+}

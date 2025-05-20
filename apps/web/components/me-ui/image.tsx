@@ -1,24 +1,24 @@
-import { useState } from "react";
-import NextImage, { ImageProps } from "next/image";
-import { CloudAlertIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
+import { CloudAlertIcon } from 'lucide-react'
+import NextImage, { type ImageProps } from 'next/image'
+import { useState } from 'react'
 
-type Props = ImageProps;
+type Props = ImageProps
 
 export function Image({ ...props }: Props) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [retryKey, /*setRetryKey*/] = useState(0);
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [retryKey /*setRetryKey*/] = useState(0)
 
   const handleLoad = () => {
-    setIsLoading(false);
-    setHasError(false);
-  };
+    setIsLoading(false)
+    setHasError(false)
+  }
 
   const handleError = () => {
-    setIsLoading(false);
-    setHasError(true);
-  };
+    setIsLoading(false)
+    setHasError(true)
+  }
 
   // const handleRetry = () => {
   //   setIsLoading(true);
@@ -28,22 +28,18 @@ export function Image({ ...props }: Props) {
 
   return (
     <div
-      className="relative inline-block"
+      className='relative inline-block'
       style={{ width: props.width, height: props.height }}
     >
       {(isLoading || hasError) && (
         <div
           className={`absolute inset-0 flex items-center justify-center rounded ${
             hasError
-              ? "bg-destructive text-destructive-foreground flex-col gap-2"
-              : "bg-muted animate-pulse"
+              ? 'bg-destructive text-destructive-foreground flex-col gap-2'
+              : 'bg-muted animate-pulse'
           }`}
         >
-          {hasError && (
-            <>
-              <CloudAlertIcon/>
-            </>
-          )}
+          {hasError && <CloudAlertIcon />}
         </div>
       )}
 
@@ -52,8 +48,11 @@ export function Image({ ...props }: Props) {
         {...props}
         onLoadingComplete={handleLoad}
         onError={handleError}
-        className={cn(props.className, isLoading || hasError ? "invisible" : "block")}
+        className={cn(
+          props.className,
+          isLoading || hasError ? 'invisible' : 'block'
+        )}
       />
     </div>
-  );
+  )
 }

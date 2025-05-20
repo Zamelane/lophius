@@ -15,12 +15,13 @@ import {
   type SearchResultType
 } from '@/actions/server/media/other/search'
 import { limitResults } from '@/actions/server/media/other/search/config'
+import { Tab, Tabs } from '@/components/me-ui/tabs'
 import { useDebounce } from '@/hooks/debounce'
 import type { LayoutProps } from '@/interfaces'
-import { cn } from '@/lib/utils'
 import NumberFlow from '@number-flow/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
+import { SkewedToggle } from '../../me-ui/skewed-toggle'
 import { Button } from '../../shadcn/ui/button'
 import {
   CommandDialog,
@@ -29,9 +30,18 @@ import {
 } from '../../shadcn/ui/command'
 import { DialogTitle } from '../../shadcn/ui/dialog'
 import { Spinner } from '../../shadcn/ui/spinner'
-import { SkewedToggle } from '../../me-ui/skewed-toggle'
-import ScrollContainer from 'react-indiana-drag-scroll'
 import { VideoItem } from './items/video-item'
+
+type TabType = {
+  title: string
+  key: ObjectType
+  subItems?: {
+    title: string
+    hideOnSelected?: boolean
+    selected?: boolean
+    key: MediaType
+  }[]
+}
 
 export function GlobalSearch() {
   const { isOpen: open, setIsOpen: setOpen } = useGlobalSearchContext()
@@ -41,15 +51,30 @@ export function GlobalSearch() {
   const [objectType, setObjectType] = useState<ObjectType>('media')
   const [mediaType, setMediaType] = useState<MediaType>('all')
 
-  const tabs: {
-    title: string,
-    key: ObjectType
-  }[] = [
-      { title: 'Медиа', key: 'media' },
-      { title: 'Человек', key: 'person' },
-      { title: 'Персонаж', key: 'personage' },
-      { title: 'Пользователь', key: 'user' }
-    ];
+  const [tabs, setTabs] = useState<TabType[]>([
+    {
+      title: 'Медиа',
+      key: 'media',
+      subItems: [
+        {
+          title: 'все',
+          key: 'all',
+          hideOnSelected: true
+        },
+        {
+          title: 'фильмы',
+          key: 'kino'
+        },
+        {
+          title: 'книги',
+          key: 'book'
+        }
+      ]
+    },
+    { title: 'Человек', key: 'person' },
+    { title: 'Персонаж', key: 'personage' },
+    { title: 'Пользователь', key: 'user' }
+  ])
 
   // Состояния
   const [isLoading, setIsLoading] = useState(false)
@@ -60,7 +85,7 @@ export function GlobalSearch() {
   )
 
   // Режим поиска
-  const [isOnlineSearch, setIsOnlineSearch] = useState(false) 
+  const [isOnlineSearch, setIsOnlineSearch] = useState(false)
 
   // Хуки
   const debouncedQuery = useDebounce(searchQuery.trim(), 400)
@@ -78,50 +103,53 @@ export function GlobalSearch() {
   }, [setOpen])
 
   // Регистрируем функционал поиска
-  const fetchResults = useCallback(async (query: string, offset = 0) => {
-    try {
-      if (offset > 0) {
-        setIsMoreLoading(true)
-      } else {
-        setIsLoading(true)
-      }
-      setError(null)
+  const fetchResults = useCallback(
+    async (query: string, offset = 0) => {
+      try {
+        if (offset > 0) {
+          setIsMoreLoading(true)
+        } else {
+          setIsLoading(true)
+        }
+        setError(null)
 
-      if (!query) {
-        setResults(undefined)
-        return
-      }
+        if (!query) {
+          setResults(undefined)
+          return
+        }
 
-      const results = await Search({
-        search: query,
-        place: isOnlineSearch ? 'ethernet' : 'local',
-        objectType,
-        mediaType,
-        offset
-      })
-
-      if (results) {
-        setResults((prev) => {
-          if (offset > 0) {
-            return {
-              ...results,
-              items: [...(prev?.items ?? []), ...results.items]
-            }
-          }
-
-          return results
+        const results = await Search({
+          search: query,
+          place: isOnlineSearch ? 'ethernet' : 'local',
+          objectType,
+          mediaType,
+          offset
         })
-      } else {
-        setResults(undefined)
+
+        if (results) {
+          setResults((prev) => {
+            if (offset > 0) {
+              return {
+                ...results,
+                items: [...(prev?.items ?? []), ...results.items]
+              }
+            }
+
+            return results
+          })
+        } else {
+          setResults(undefined)
+        }
+      } catch (err) {
+        setError(`${err}`)
+        //setResults(undefined)
+      } finally {
+        setIsLoading(false)
+        setIsMoreLoading(false)
       }
-    } catch (err) {
-      setError(`${err}`)
-      //setResults(undefined)
-    } finally {
-      setIsLoading(false)
-      setIsMoreLoading(false)
-    }
-  }, [isOnlineSearch, objectType, mediaType])
+    },
+    [isOnlineSearch, objectType, mediaType]
+  )
 
   // Эффект для выполнения поиска
   useEffect(() => {
@@ -149,26 +177,33 @@ export function GlobalSearch() {
           value={searchQuery}
           onValueChange={setSearchQuery}
         />
-        <div className='border-b border-border'>
-          <ScrollContainer vertical={false} className='h-full'>
-            <div className="flex gap-1 overflow-y-clip px-2">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.title + tab.key}
-                  onClick={() => setObjectType(tab.key)}
-                  data-state={objectType === tab.key ? "active" : "inactive"}
-                  className={cn(
-                    "relative px-3 pt-3 pb-2 text-sm text-muted-foreground transition-colors",
-                    "after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-primary after:rounded-t-[3px] after:transition-transform after:duration-200 after:ease-out after:translate-y-[4px] after:scale-x-90",
-                    "data-[state=active]:text-foreground data-[state=active]:after:translate-y-0 data-[state=active]:after:scale-x-100"
-                  )}
-                >
-                  {tab.title}
-                </button>
-              ))}
-            </div>
-          </ScrollContainer>
-        </div>
+
+        <Tabs activeKey={objectType}>
+          {tabs.map((tab) => (
+            <Tab
+              key={tab.key}
+              title={tab.title}
+              subItems={tab.subItems}
+              onSelect={() => setObjectType(tab.key)}
+              onSubItemSelect={(key) => {
+                console.log(key)
+                console.log(tab)
+                setMediaType(key)
+                setTabs((tabs) => {
+                  tabs.map((searchTab) => {
+                    if (tab.key === searchTab.key) {
+                      searchTab.subItems?.map((si) => {
+                        si.selected = si.key === key
+                      })
+                    }
+                  })
+                  return tabs
+                })
+              }}
+              selectedSubKey={mediaType}
+            />
+          ))}
+        </Tabs>
 
         <div className='h-full overflow-hidden'>
           {isLoading && (
@@ -192,25 +227,28 @@ export function GlobalSearch() {
               className='h-full flex flex-col justify-center items-center'
             >
               <p className='text-center'>
-                {
-                  error
-                    ? error
-                    : 'Ничего не найдено'
-                }
+                {error ? error : 'Ничего не найдено'}
               </p>
             </motion.div>
           )}
 
           <CommandList className='px-4 py-2'>
-            {!error && results?.items.map((m) => {
-              if (m.objectType === 'media') {
-                if (m.mediaType === 'kino') {
-                  return <VideoItem m={m} key={m.objectType + m.mediaType + m.id} setOpen={setOpen}/>
+            {!error &&
+              results?.items.map((m) => {
+                if (m.objectType === 'media') {
+                  if (m.mediaType === 'kino') {
+                    return (
+                      <VideoItem
+                        m={m}
+                        key={m.objectType + m.mediaType + m.id}
+                        setOpen={setOpen}
+                      />
+                    )
+                  }
                 }
-              }
 
-              return null
-            })}
+                return null
+              })}
             {results && results.total - results.current > 0 && (
               <Button
                 variant='secondary'

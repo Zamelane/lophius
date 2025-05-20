@@ -1,7 +1,7 @@
 'use client'
 
-import { useVisualViewportHeight } from '@/hooks/use-visual-viewport-height'
 import { Dialog, DialogContent } from '@/components/shadcn/ui/dialog'
+import { useVisualViewportHeight } from '@/hooks/use-visual-viewport-height'
 import { cn } from '@/lib/utils'
 import type { DialogProps } from '@radix-ui/react-dialog'
 import { Command as CommandPrimitive } from 'cmdk'
