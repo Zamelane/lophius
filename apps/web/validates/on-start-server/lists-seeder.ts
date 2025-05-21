@@ -9,10 +9,29 @@ type PublicList = {
 }
 
 export const publicLists: PublicList[] = [
-  { i18nTitleKey: "watching",  defaultTitle: "Watching",   mediaType: 'kino' }, // Смотрю
-  { i18nTitleKey: "planned",   defaultTitle: "Planned",    mediaType: 'kino' }, // Буду смотреть
-  { i18nTitleKey: "completed", defaultTitle: "Completed",  mediaType: 'kino' }, // Просмотрел
-  { i18nTitleKey: "dropped",   defaultTitle: "Dropped",    mediaType: 'kino' }, // Бросил
+  // 🎬 Фильмы и сериалы
+  { i18nTitleKey: "watching",   defaultTitle: "Watching",   mediaType: 'kino' },   // Смотрю
+  { i18nTitleKey: "planned",    defaultTitle: "Planned",    mediaType: 'kino' },   // Буду смотреть
+  { i18nTitleKey: "completed",  defaultTitle: "Completed",  mediaType: 'kino' },   // Просмотрел
+  { i18nTitleKey: "dropped",    defaultTitle: "Dropped",    mediaType: 'kino' },   // Бросил
+
+  // 📚 Книги
+  { i18nTitleKey: "reading",    defaultTitle: "Reading",    mediaType: 'book' },   // Читаю
+  { i18nTitleKey: "planned",    defaultTitle: "Planned",    mediaType: 'book' },   // Планирую прочитать
+  { i18nTitleKey: "completed",  defaultTitle: "Completed",  mediaType: 'book' },   // Прочитано
+  { i18nTitleKey: "dropped",    defaultTitle: "Dropped",    mediaType: 'book' },   // Брошено
+
+  // 🎵 Музыка
+  { i18nTitleKey: "listening",  defaultTitle: "Listening",  mediaType: 'music' },  // Слушаю
+  { i18nTitleKey: "planned",    defaultTitle: "Planned",    mediaType: 'music' },  // Хочу послушать
+  { i18nTitleKey: "completed",  defaultTitle: "Completed",  mediaType: 'music' },  // Прослушано
+  { i18nTitleKey: "skipped",    defaultTitle: "Skipped",    mediaType: 'music' },  // Пропустил / Не зашло
+
+  // 📖 Комиксы
+  { i18nTitleKey: "reading",    defaultTitle: "Reading",    mediaType: 'comic' },  // Читаю
+  { i18nTitleKey: "planned",    defaultTitle: "Planned",    mediaType: 'comic' },  // Планирую читать
+  { i18nTitleKey: "completed",  defaultTitle: "Completed",  mediaType: 'comic' },  // Прочитано
+  { i18nTitleKey: "dropped",    defaultTitle: "Dropped",    mediaType: 'comic' },  // Брошено
 ]
 
 export async function listSeeder() {
@@ -23,12 +42,12 @@ export async function listSeeder() {
   // Сразу сносим те системные типы, которые не описаны в публичных (publicLists)
   if (types.length) {
     await db.delete(lists)
-    .where(
-      and(
-        isNull(lists.authorId),
-        notInArray(lists.mediaType, types)
+      .where(
+        and(
+          isNull(lists.authorId),
+          notInArray(lists.mediaType, types)
+        )
       )
-    )
   }
 
   // Заносим списки в базу
