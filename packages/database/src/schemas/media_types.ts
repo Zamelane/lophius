@@ -7,3 +7,5 @@ export const media_types = pgEnum('media_types', [
   'book',
   'music'
 ])
+
+export type MediaType = typeof media_types.enumValues[number]
