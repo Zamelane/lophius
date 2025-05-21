@@ -49,7 +49,7 @@ export function ListsView() {
       >
         <SortableContext items={lists.map(l => l.id)} strategy={verticalListSortingStrategy}>
           {lists.map(list => (
-            <SortableList key={list.id} list={list} />
+            <SortableList key={'l' + list.id} list={list} />
           ))}
         </SortableContext>
       </DndContext>
