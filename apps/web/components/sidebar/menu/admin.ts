@@ -1,25 +1,35 @@
-import { SearchIcon, ServerCogIcon, ShieldUserIcon } from 'lucide-react'
+import { /*SearchIcon,*/ ListIcon, ServerCogIcon, ShieldUserIcon } from 'lucide-react'
 import type { MenuType } from '.'
 import type { LightMenuItemType } from '../light-nav-main'
 import type { NavMainMenuType } from '../nav-main'
 
 // Меню админа
 const adminMenu: LightMenuItemType[] = [
-  {
-    url: '#',
-    icon: SearchIcon,
-    title: 'Поиск'
-  }
+  // {
+  //   url: '#',
+  //   icon: SearchIcon,
+  //   title: 'Поиск'
+  // }
 ]
 
 const adminNav: NavMainMenuType = [
   {
-    title: 'Статистика',
+    title: 'Общее',
     items: [
       {
         url: '/admin',
-        title: 'Сервер',
+        title: 'Статистика',
         icon: ServerCogIcon
+      }
+    ]
+  },
+  {
+    title: 'Конфигурация',
+    items: [
+      {
+        url: '/admin/public-config',
+        title: 'Общие настройки',
+        icon: ListIcon
       }
     ]
   }
