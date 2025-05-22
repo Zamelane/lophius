@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from "@/components/shadcn/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/src/shared/ui/shadcn/button";
+import { cn } from "@/src/shared/lib/utils";
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { GripVerticalIcon, PencilIcon, TrashIcon } from "lucide-react";

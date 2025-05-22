@@ -1,8 +1,8 @@
 'use server'
 import CreateUser from '@/actions/server/logics/create-user'
-import { api_t_keys } from '@/i18n'
-import type { ErrorResponse } from '@/interfaces'
-import { createSession } from '@/lib/session'
+import { api_t_keys } from '@/src/shared/i18n'
+import type { ErrorResponse } from '@/src/shared/types'
+import { createSession } from '@/src/shared/lib/session'
 import { SignupFormSchema } from '@/validates'
 import { redirect } from 'next/navigation'
 

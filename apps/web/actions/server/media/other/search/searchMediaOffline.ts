@@ -1,4 +1,4 @@
-import { getCurrentLocale } from '@/i18n/current-locale' // Для получения локали пользователя
+import { getCurrentLocale } from '@/src/shared/i18n/current-locale' // Для получения локали пользователя
 import { db } from 'database' // Подключение к базе данных
 import {
   external_domains,

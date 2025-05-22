@@ -1,6 +1,6 @@
 'use client'
 
-import { CustomMenu, MenuContent, Tab } from "@/components/me-ui/custom-menu";
+import { CustomMenu, MenuContent, Tab } from '../../../../../src/shared/ui/custom/custom-menu';
 import { ListsView } from "@/views/list-configurations/view";
 import { ListIcon } from "lucide-react";
 

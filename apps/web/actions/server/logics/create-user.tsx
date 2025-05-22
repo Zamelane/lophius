@@ -1,4 +1,4 @@
-import type { ErrorResponse } from '@/interfaces'
+import type { ErrorResponse } from '@/src/shared/types'
 import bcrypt from 'bcrypt'
 import { db } from 'database'
 import { users } from 'database/src/schemas'

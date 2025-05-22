@@ -1,7 +1,7 @@
 'use server'
 
 import CreateUser from '@/actions/server/logics/create-user'
-import type { ApiResponse } from '@/interfaces'
+import type { ApiResponse } from '@/src/shared/types'
 
 type Props = {
   nickname: string

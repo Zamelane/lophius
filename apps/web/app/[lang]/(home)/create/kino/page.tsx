@@ -1,8 +1,8 @@
 'use client'
-import { CustomMenu, type Tab } from '@/components/me-ui/custom-menu'
-import { Title } from '@/components/me-ui/title'
-import { Centrize } from '@/components/template-components/other/centrize'
-import { ContentLayout } from '@/components/template-components/other/content-layout'
+import { CustomMenu, type Tab } from '../../../../../src/shared/ui/custom/custom-menu';
+import { Title } from '@/src/shared/ui/typography/title'
+import { Centrize } from '@/src/shared/ui/layout/centrize'
+import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 import type {
   CountryTranslation,
   GenreTranslation,
@@ -11,7 +11,7 @@ import type {
   KinoType,
   LanguageTranslation,
   SerialStatusType
-} from '@/interfaces'
+} from '@/src/shared/types'
 import { InfoIcon, LanguagesIcon } from 'lucide-react'
 import { useState } from 'react'
 

@@ -1,6 +1,6 @@
 'use server'
-import type { ApiResponse } from '@/interfaces'
-import { getEnv, loadConfig } from '@/lib/config'
+import type { ApiResponse } from '@/src/shared/types'
+import { getEnv, loadConfig } from '@/src/shared/lib/config'
 import { buildConnectUrl, updateDatabaseCredentials } from 'database'
 
 export async function ReloadConfig(newEnv?: { [key: string]: string }): Promise<

@@ -1,8 +1,8 @@
 'use server'
 
 import { api_t_keys } from '@/i18n'
-import type { ApiResponse, UserInfo } from '@/interfaces'
-import { verifySession } from '@/lib/dal'
+import type { ApiResponse, UserInfo } from '@/src/shared/types'
+import { verifySession } from '@/src/shared/lib/dal'
 import { UpdateProfileSchema } from '@/validates/schemas/UpdateProfileSchema'
 import { db, eq } from 'database'
 import { users } from 'database/src/schemas'
