@@ -1,7 +1,7 @@
 'use client'
 
-import { ChickNickname } from '@/actions/server/logics/check-nickname'
-import UpdateUser from '@/actions/server/logics/update-user'
+import { ChickNickname } from '@/src/features/auth/services/check-nickname'
+import UpdateUser from '@/src/features/auth/services/update-user'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   Dialog,

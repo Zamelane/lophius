@@ -21,7 +21,16 @@
     ],
     "paths": {
       "@/*": ["./*"], // Стандартный путь
-      "database/*": ["../../packages/database/src/*"]
+      "database/*": ["../../packages/database/src/*"],
+
+      // Вспомогательные пути
+      "@app/*": ["src/app/*"],
+      "@shared/*": ["src/shared/*"],
+      "@features/*": ["src/features/*"],
+      "@entities/*": ["src/entities/*"],
+      "@widgets/*": ["src/widgets/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@processes/*": ["src/processes/*"]
     },
     "baseUrl": "."
   },

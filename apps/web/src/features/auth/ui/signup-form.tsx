@@ -1,6 +1,6 @@
 'use client'
 
-import { signup } from '@/actions/server/signup'
+import { signup } from '@/src/features/auth/services/signup'
 import {
   Card,
   CardContent,

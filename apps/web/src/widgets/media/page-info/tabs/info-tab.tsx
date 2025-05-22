@@ -1,4 +1,4 @@
-import type { GetTvDetailedInfoResult } from '@/actions/server/media/tv/get-tv-detailed-info'
+import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
 import { Tag } from '@/src/widgets/media/page-info/tags/tag'
 import { TagContainer } from '@/src/widgets/media/page-info/tags/tag-container'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'

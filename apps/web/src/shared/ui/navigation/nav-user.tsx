@@ -1,6 +1,6 @@
 'use client'
 
-import { UserLogout } from '@/actions/client/user'
+import { UserLogout } from '@/src/features/user/services/logout'
 import { Avatar, AvatarFallback, AvatarImage } from '@/src/shared/ui/shadcn/avatar'
 import {
   DropdownMenu,
