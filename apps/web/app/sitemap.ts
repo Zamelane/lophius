@@ -3,7 +3,7 @@ import {
   type LocaleKeysType,
   defaultLocale,
   localesSupported
-} from '@/i18n/config'
+} from '@/src/shared/i18n/config';
 import type { MetadataRoute } from 'next'
 
 function languageHref(href = '', lang: string = defaultLocale) {
