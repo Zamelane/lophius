@@ -13,8 +13,8 @@ import {
   type ObjectType,
   Search,
   type SearchResultType
-} from '@/actions/server/media/other/search'
-import { limitResults } from '@/actions/server/media/other/search/config'
+} from '@/src/features/media/search/search'
+import { limitResults } from '@/src/features/media/search/search/config'
 import { Tab, Tabs } from '@/src/shared/ui/tabs/tabs-1'
 import { useDebounce } from '@/src/shared/hooks/debounce'
 import type { LayoutProps } from '@/src/shared/types'

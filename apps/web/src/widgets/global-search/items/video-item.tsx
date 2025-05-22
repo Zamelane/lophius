@@ -1,4 +1,4 @@
-import type { VideoType } from '@/actions/server/media/other/search'
+import type { VideoType } from '@/src/features/media/search/search'
 import { Image } from '@/src/shared/ui/media/image'
 import { CommandItem } from '@/src/shared/ui/shadcn/command'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'

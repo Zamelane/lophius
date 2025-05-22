@@ -1,6 +1,6 @@
 'use client'
 
-import type { GetTvDetailedInfoResult } from '@/actions/server/media/tv/get-tv-detailed-info'
+import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
 import { CustomMenu, type Tab } from '../../../shared/ui/custom/custom-menu';
 import { CinemaInfoTab } from '@/src/widgets/media/page-info/tabs/info-tab'
 import { useState } from 'react'

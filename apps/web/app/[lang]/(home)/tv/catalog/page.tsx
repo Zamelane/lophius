@@ -1,4 +1,4 @@
-import { getTvDetailedInfo } from '@/actions/server/media/tv/get-tv-detailed-info'
+import { getTvDetailedInfo } from '@/src/features/media/pages/get-tv-detailed-info'
 import { GridLayout } from '@/src/shared/ui/layout/grid-layout'
 import { PageHeader } from '@/src/shared/ui/layout/page-header'
 import { PageLayout } from '@/src/shared/ui/layout/page-layout'
