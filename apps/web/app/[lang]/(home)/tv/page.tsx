@@ -1,6 +1,6 @@
-import { VideoCard } from '@/components/template-components/media/cards/video-card'
-import { TitleList } from '@/components/template-components/media/containers/title-list'
-import { ContentLayout } from '@/components/template-components/other/content-layout'
+import { VideoCard } from '@/src/widgets/media/video-card'
+import { TitleList } from '@/src/widgets/media/title-list'
+import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 
 export default async function Page() {
   return (

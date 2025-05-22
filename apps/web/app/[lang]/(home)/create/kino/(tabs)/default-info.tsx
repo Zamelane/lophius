@@ -1,13 +1,13 @@
 'use client'
 
-import { EditSection, EditSectionItem } from '@/components/me-ui/custom-edit'
-import { MenuContent } from '@/components/me-ui/custom-menu'
-import { ExternalLinksSection } from '@/components/template-components/media/sections/external-links-section'
-import { DefaultInfoSection } from '@/components/template-components/media/sections/kino/default-info-section'
-import { OriginalInfoSection } from '@/components/template-components/media/sections/kino/original-info-section'
-import { KinoCategorySelect } from '@/components/template-components/media/selects/kino-category-select'
-import { KinoTypeSelect } from '@/components/template-components/media/selects/kino-type-select'
-import type { KinoDetailedInfoDataType } from '@/interfaces/edit-types'
+import { EditSection, EditSectionItem } from '@/src/shared/ui/custom/custom-edit'
+import { MenuContent } from '@/src/shared/ui/custom/custom-menu'
+import { ExternalLinksSection } from '@/src/widgets/media/sections/external-links-section'
+import { DefaultInfoSection } from '@/src/widgets/media/sections/kino/default-info-section'
+import { OriginalInfoSection } from '@/src/widgets/media/sections/kino/original-info-section'
+import { KinoCategorySelect } from '@/src/widgets/media/selects/kino-category-select'
+import { KinoTypeSelect } from '@/src/widgets/media/selects/kino-type-select'
+import type { KinoDetailedInfoDataType } from '@/src/shared/types/edit-types'
 
 type Props = KinoDetailedInfoDataType
 

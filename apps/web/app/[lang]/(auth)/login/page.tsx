@@ -1,5 +1,5 @@
-import LoginForm from '@/components/forms/login-form'
-import type { MetadataProps } from '@/interfaces'
+import LoginForm from '@/src/features/auth/ui/login-form'
+import type { MetadataProps } from '@/src/shared/types'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: MetadataProps) {

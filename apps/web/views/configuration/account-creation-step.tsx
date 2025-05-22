@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/shadcn/ui/button'
+import { Button } from '@/src/shared/ui/shadcn/button'
 import { Field } from '@/views/configuration/ui/field'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LockIcon, MailIcon, UserIcon } from 'lucide-react'

@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import { GetPathByFilename } from '@/lib/utils/upload-file'
+import { GetPathByFilename } from '@/src/shared/lib/utils/upload-file'
 import { db, eq } from 'database'
 import { files } from 'database/src/schemas'
 import { NextResponse } from 'next/server'

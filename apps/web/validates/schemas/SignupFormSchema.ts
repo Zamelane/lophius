@@ -1,4 +1,4 @@
-import { api_t_keys } from '@/i18n'
+import { api_t_keys } from '@/src/shared/i18n'
 import { CheckEmailExists, CheckNicknameExists } from '@/validates'
 import { z } from 'zod'
 

@@ -2,7 +2,7 @@
 
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
-import type { ApiResponse } from '@/interfaces'
+import type { ApiResponse } from '@/src/shared/types'
 
 const execAsync = promisify(exec)
 

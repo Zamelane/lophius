@@ -1,4 +1,4 @@
-import { api_t_keys } from '@/i18n'
+import { api_t_keys } from '@/src/shared/i18n'
 import { z } from 'zod'
 
 export const LoginFormSchema = z.object({
