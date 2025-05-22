@@ -1,7 +1,7 @@
 'use server'
 
 import { api_t_keys } from '@/i18n'
-import type { ApiResponse } from '@/interfaces'
+import type { ApiResponse } from '@/src/shared/types'
 import { CheckNicknameExists } from '@/validates'
 
 export async function ChickNickname(

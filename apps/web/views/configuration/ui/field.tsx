@@ -4,9 +4,9 @@ import type { LucideIcon } from 'lucide-react'
 import type React from 'react'
 import type { ChangeEvent } from 'react'
 
-import { Input } from '@/components/shadcn/ui/input'
-import { Label } from '@/components/shadcn/ui/label'
-import { cn } from '@/lib/utils'
+import { Input } from '@/src/shared/ui/shadcn/input'
+import { Label } from '@/src/shared/ui/shadcn/label'
+import { cn } from '@/src/shared/lib/utils'
 
 type Props = React.ComponentProps<typeof Input> & {
   icon?: LucideIcon

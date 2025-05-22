@@ -1,5 +1,5 @@
-import type { UserInfo } from '@/interfaces'
-import { getUserById, getUserByNickname } from '@/lib/dal'
+import type { UserInfo } from '@/src/shared/types'
+import { getUserById, getUserByNickname } from '@/src/shared/lib/dal'
 import { cache } from 'react'
 
 export async function MakeUserInfoById(

@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '@/components/ui/card'
+} from '@/src/shared/ui/shadcn/card'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 

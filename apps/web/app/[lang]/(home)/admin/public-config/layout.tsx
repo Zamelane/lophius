@@ -1,5 +1,5 @@
-import { ContentLayout } from "@/components/template-components/other/content-layout";
-import { LayoutProps } from "@/interfaces";
+import { ContentLayout } from "@/src/shared/ui/layout/content-layout";
+import { LayoutProps } from "@/src/shared/types";
 
 export default function Page({ children }: LayoutProps) {
   return (

@@ -1,5 +1,5 @@
 'use server'
-import type { ApiResponse } from '@/interfaces'
+import type { ApiResponse } from '@/src/shared/types'
 import { Client } from 'database'
 
 type Config = {

@@ -1,5 +1,5 @@
-import { LocaleLink } from '@/hooks/locale-link'
-import type { LayoutProps } from '@/interfaces'
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import type { LayoutProps } from '@/src/shared/types'
 import { GalleryVerticalEnd } from 'lucide-react'
 
 export default function Layout({ children }: LayoutProps) {

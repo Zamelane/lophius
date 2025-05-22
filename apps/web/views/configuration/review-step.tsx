@@ -1,4 +1,4 @@
-import { Button } from '@/components/shadcn/ui/button'
+import { Button } from '@/src/shared/ui/shadcn/button'
 import { ValidateCard } from '@/views/configuration/ui/validate-card'
 import { DatabaseIcon, ServerIcon, UserIcon } from 'lucide-react'
 

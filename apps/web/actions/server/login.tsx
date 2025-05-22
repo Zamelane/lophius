@@ -1,13 +1,13 @@
 'use server'
 
 import FindUser from '@/actions/server/logics/find-user'
-import { api_t_keys } from '@/i18n'
+import { api_t_keys } from '@/src/shared/i18n'
 import type {
   CurrentUserInfo,
   ErrorResponse,
   ServerResponse
-} from '@/interfaces'
-import { createSession } from '@/lib/session'
+} from '@/src/shared/types'
+import { createSession } from '@/src/shared/lib/session'
 import { LoginFormSchema } from '@/validates/schemas/LoginFormSchema'
 
 export async function login(

@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from "@/components/shadcn/ui/button"
+import { Button } from "@/src/shared/ui/shadcn/button"
 import { useState } from "react"
 import {
   DndContext,
@@ -49,7 +49,7 @@ export function ListsView() {
       >
         <SortableContext items={lists.map(l => l.id)} strategy={verticalListSortingStrategy}>
           {lists.map(list => (
-            <SortableList key={'l' + list.id} list={list} />
+            <SortableList key={'list' + list.id} list={list} />
           ))}
         </SortableContext>
       </DndContext>

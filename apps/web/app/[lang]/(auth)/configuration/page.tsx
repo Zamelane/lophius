@@ -1,6 +1,6 @@
 'use server'
 
-import { getIsConfigured } from '@/lib/config'
+import { getIsConfigured } from '@/src/shared/lib/config'
 import { ConfigurationView } from '@/views/configuration/view'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'

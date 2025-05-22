@@ -1,4 +1,4 @@
-import { ContentLayout } from '@/components/template-components/other/content-layout'
+import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 
 export default function Page() {
   return (

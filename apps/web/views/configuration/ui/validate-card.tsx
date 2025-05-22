@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/shadcn/ui/card'
+import { Card, CardContent } from '@/src/shared/ui/shadcn/card'
 import { Separator } from '@/components/ui/separator'
 import type { LucideIcon } from 'lucide-react'
 

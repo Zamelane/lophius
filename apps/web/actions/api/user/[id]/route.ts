@@ -1,5 +1,5 @@
-import { verifySession } from '@/lib/dal'
-import { MakeResponse } from '@/lib/make-response'
+import { verifySession } from '@/src/shared/lib/dal'
+import { MakeResponse } from '@/src/shared/lib/make-response'
 
 import { MakeUserInfoById } from '../user-info'
 
