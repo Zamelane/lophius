@@ -2,7 +2,7 @@
 
 import { translationEstimation } from '@/src/features/media/search/estimation'
 import { prioritizationByLanguage } from '@/src/features/media/search/prioritization-by-language'
-import { getCurrentLocale } from '@/i18n/current-locale'
+import { getCurrentLocale } from '@/src/shared/i18n/current-locale'
 import { db } from 'database/index'
 import type {
   CountriesTableType,
