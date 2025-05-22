@@ -1,6 +1,6 @@
 'use client'
 
-import type { GetTvDetailedInfoResult } from '@/actions/server/media/tv/get-tv-detailed-info'
+import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
 import Image from 'next/image'
 import { useState } from 'react'
 import { PhotoSlider } from 'react-photo-view/src'

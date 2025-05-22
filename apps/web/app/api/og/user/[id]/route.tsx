@@ -1,4 +1,4 @@
-import { GetUserByIdApiHandler } from '@/actions/api/user/[id]/route'
+import { GetUserByIdApiHandler } from '@/src/features/user/services/get-user-by-id-api-handler'
 import { ImageResponse } from 'next/og'
 
 export async function GET(

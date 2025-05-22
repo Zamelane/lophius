@@ -1,4 +1,4 @@
-import { CachedMakeUserInfoByNickname } from '@/actions/api/user/user-info'
+import { CachedMakeUserInfoByNickname } from '@/src/features/user/services/user-info'
 import { UserProfilePageComponent } from '@/src/widgets/profile'
 import { NotFound } from '@/src/shared/ui/misc/not-found'
 import { verifySession } from '@/src/shared/lib/dal'

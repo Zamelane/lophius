@@ -1,4 +1,4 @@
-import { getTvDetailedInfo } from '@/actions/server/media/tv/get-tv-detailed-info'
+import { getTvDetailedInfo } from '@/src/features/media/pages/get-tv-detailed-info'
 import { Button } from '@/src/shared/ui/button'
 import { InfoBlock } from '@/src/widgets/media/info-block'
 import { MediaPoster } from '@/src/widgets/media/media-poster'
