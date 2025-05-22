@@ -1,6 +1,6 @@
 'use server'
 
-import { api_t_keys } from '@/i18n'
+import { api_t_keys } from '@/src/shared/i18n'
 import type { ApiResponse, UserInfo } from '@/src/shared/types'
 import { verifySession } from '@/src/shared/lib/dal'
 import { UpdateProfileSchema } from '@/src/features/auth/schemas/UpdateProfileSchema'

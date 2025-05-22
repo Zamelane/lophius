@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/src/shared/ui/shadcn/card'
-import { Separator } from '@/components/ui/separator'
+import { Separator } from '@/src/shared/ui/shadcn/separator'
 import type { LucideIcon } from 'lucide-react'
 
 type Props = {

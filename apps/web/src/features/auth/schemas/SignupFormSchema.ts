@@ -1,6 +1,7 @@
 import { api_t_keys } from '@/src/shared/i18n'
-import { CheckEmailExists, CheckNicknameExists } from '@/validates'
 import { z } from 'zod'
+import { CheckNicknameExists } from '../validators/checkNicknameExists';
+import { CheckEmailExists } from '../validators/checkEmailExists';
 
 export const SignupFormSchema = z.object({
   email: z

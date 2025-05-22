@@ -3,7 +3,7 @@ import CreateUser from '@/src/features/auth/services/create-user'
 import { api_t_keys } from '@/src/shared/i18n'
 import type { ErrorResponse } from '@/src/shared/types'
 import { createSession } from '@/src/shared/lib/session'
-import { SignupFormSchema } from '@/validates'
+import { SignupFormSchema } from '../schemas'
 import { redirect } from 'next/navigation'
 
 export async function signup(

@@ -1,11 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { api_t_keys } from '@/i18n'
+import { api_t_keys } from '../../i18n'
 import { db } from 'database'
 import { files } from 'database/src/schemas/files'
 import sharp from 'sharp'
 
-import { MakeTranslateResponse } from '../../../../lib/make-response'
+import { MakeTranslateResponse } from '../make-response'
 import { getFileHash } from './get-file-hash'
 
 const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE) ?? 7 * 1024 * 1024

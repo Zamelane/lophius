@@ -2,7 +2,7 @@
 
 import { api_t_keys } from '@/src/shared/i18n'
 import type { ApiResponse } from '@/src/shared/types'
-import { CheckNicknameExists } from '@/validates'
+import { CheckNicknameExists } from '../validators'
 
 export async function ChickNickname(
   nickname: string,

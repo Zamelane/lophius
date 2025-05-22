@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   Command,
   CommandEmpty,
@@ -8,12 +8,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList
-} from '@/components/ui/command'
+} from '@/src/shared/ui/shadcn/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/components/ui/popover'
+} from '@/src/shared/ui/shadcn/popover'
 import type { ClassNameType, GenreTranslation } from '@/src/shared/types'
 import type {
   GenreInfoDataType,
