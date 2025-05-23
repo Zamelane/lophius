@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+    authInterrupts: true,
 
     useCache: true,
     nodeMiddleware: true,
