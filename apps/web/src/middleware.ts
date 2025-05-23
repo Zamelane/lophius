@@ -3,8 +3,8 @@ import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import { type NextRequest, NextResponse } from 'next/server'
 
-import { defaultLocale, localesSupported } from './src/shared/i18n/config';
-import { getIsConfigured } from './src/shared/lib/config'
+import { defaultLocale, localesSupported } from './shared/i18n/config'
+import { getIsConfigured } from './shared/lib/config'
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard']
