@@ -1,0 +1,134 @@
+'use client'
+
+import { UserLogout } from '@/src/features/user/services/logout'
+import { Avatar, AvatarFallback, AvatarImage } from '@/src/shared/ui/shadcn/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/src/shared/ui/shadcn/dropdown-menu'
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar
+} from '@/src/shared/ui/shadcn/sidebar'
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import type { UserInfo } from '@/src/shared/types'
+import { ChevronsUpDown, LogOut, SettingsIcon, ShieldUserIcon } from 'lucide-react'
+
+export function NavUser({
+  user
+}: {
+  user: UserInfo
+}) {
+  const { isMobile } = useSidebar()
+  const fallback = user.nickname.substring(0, 2).toUpperCase()
+
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size='lg'
+              className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
+            >
+              <Avatar className='h-8 w-8 rounded-lg'>
+                <AvatarImage
+                  alt={user.nickname}
+                  src={user.avatarId ? `/api/assets/id/${user.avatarId}` : ''}
+                />
+                <AvatarFallback className='rounded-lg'>
+                  {fallback}
+                </AvatarFallback>
+              </Avatar>
+              <div className='grid flex-1 text-left text-sm leading-tight'>
+                <span className='truncate font-semibold'>{user.nickname}</span>
+                <span className='truncate text-xs'>{user.email}</span>
+              </div>
+              <ChevronsUpDown className='ml-auto size-4' />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align='end'
+            sideOffset={4}
+            side={isMobile ? 'bottom' : 'right'}
+            className='w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg'
+          >
+            <LocaleLink href={`/user/${user.nickname}`}>
+              <DropdownMenuItem className='p-0 font-normal'>
+                <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
+                  <Avatar className='h-8 w-8 rounded-lg'>
+                    <AvatarImage
+                      alt={user.nickname}
+                      src={
+                        user.avatarId ? `/api/assets/id/${user.avatarId}` : ''
+                      }
+                    />
+                    <AvatarFallback className='rounded-lg'>
+                      {fallback}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className='grid flex-1 text-left text-sm leading-tight'>
+                    <span className='truncate font-semibold'>
+                      {user.nickname}
+                    </span>
+                    <span className='truncate text-xs'>{user.email}</span>
+                  </div>
+                </div>
+              </DropdownMenuItem>
+            </LocaleLink>
+            {/*<DropdownMenuSeparator />*/}
+            {/*<DropdownMenuGroup>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <Sparkles />*/}
+            {/*    My profile*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*</DropdownMenuGroup>*/}
+            {/*<DropdownMenuSeparator />*/}
+            {/*<DropdownMenuGroup>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <BadgeCheck />*/}
+            {/*    Account*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <CreditCard />*/}
+            {/*    Billing*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <Bell />*/}
+            {/*    Notifications*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*</DropdownMenuGroup>*/}
+            {user.isAdmin && (
+              <>
+                <DropdownMenuSeparator />
+                <LocaleLink href='/admin'>
+                  <DropdownMenuItem>
+                    <ShieldUserIcon />
+                    Админка
+                  </DropdownMenuItem>
+                </LocaleLink>
+              </>
+            )}
+            <DropdownMenuSeparator />
+            <LocaleLink href='/settings'>
+              <DropdownMenuItem>
+                <SettingsIcon />
+                Настройки
+              </DropdownMenuItem>
+            </LocaleLink>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={UserLogout}>
+              <LogOut />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  )
+}

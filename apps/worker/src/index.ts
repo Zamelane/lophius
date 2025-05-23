@@ -1,30 +1,31 @@
-import { fastify } from 'fastify'
+import { PluginQueue } from './plugin-queue.ts';
 import { PluginsManager } from './plugins-manager.ts'
+import { SearchQueue } from './search/search-queue.ts';
+import { app } from './server-app.ts'
 
 export * from './utils'
 
-export const pluginManager = new PluginsManager()
+const pluginManager = new PluginsManager()
+await pluginManager.loadPlugins()
 
-const app = fastify({
-  /* config */
-})
-
-app.get('/', (req, res) => {
-  res.status(200).send({
-    ok: true
-  })
-})
+const searchQueue = new SearchQueue(3)
+const pluginQueue = new PluginQueue()
 
 /**
  * Run the server!
  */
 export const run = async (port = 3001) => {
   try {
-    await pluginManager.loadPlugins()
-    await app.listen({ port })
+    app.listen({ port })
     return port
   } catch (err) {
     console.error(`Server didn't started. Reason: ${err}`)
     process.exit(1)
   }
+}
+
+export {
+  pluginManager,
+  searchQueue,
+  pluginQueue
 }

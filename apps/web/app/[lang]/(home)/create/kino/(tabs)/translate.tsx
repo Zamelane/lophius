@@ -4,24 +4,24 @@ import {
   EditSection,
   EditSectionGroup,
   EditSectionItem
-} from '@/components/me-ui/custom-edit'
-import { MenuContent } from '@/components/me-ui/custom-menu'
-import { Button } from '@/components/shadcn/ui/button'
+} from '@/src/shared/ui/custom/custom-edit'
+import { MenuContent } from '@/src/shared/ui/custom/custom-menu'
+import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle
-} from '@/components/shadcn/ui/card'
-import { Input } from '@/components/shadcn/ui/input'
-import { Textarea } from '@/components/shadcn/ui/textarea'
+} from '@/src/shared/ui/shadcn/card'
+import { Input } from '@/src/shared/ui/shadcn/input'
+import { Textarea } from '@/src/shared/ui/shadcn/textarea'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
-} from '@/components/shadcn/ui/tooltip'
-import { CreateTranslateDialog } from '@/components/template-components/media/selects/translate-dialogs/create-translate-dialog'
-import type { KinoTranslatesInfoDataType } from '@/interfaces/edit-types'
+} from '@/src/shared/ui/shadcn/tooltip'
+import { CreateTranslateDialog } from '@/src/widgets/media/selects/translate-dialogs/create-translate-dialog'
+import type { KinoTranslatesInfoDataType } from '@/src/shared/types/edit-types'
 import {
   BookDashedIcon,
   ChevronDownIcon,

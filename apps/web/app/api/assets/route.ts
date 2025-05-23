@@ -1,6 +1,6 @@
-import { api_t_keys } from '@/i18n'
-import { MakeTranslateResponse } from '@/lib/make-response'
-import { UploadFileByFormData } from '@/lib/utils/upload-file'
+import { api_t_keys } from '@/src/shared/i18n'
+import { MakeTranslateResponse } from '@/src/shared/lib/make-response'
+import { UploadFileByFormData } from '@/src/shared/lib/utils/upload-file'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {

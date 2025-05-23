@@ -4,7 +4,7 @@ import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 import { withTypedEnv } from 'next-typed-env'
 import { z } from 'zod'
-const withNextIntl = createNextIntlPlugin()
+const withNextIntl = createNextIntlPlugin('./src/shared/i18n/request.ts')
 
 const nextConfig: NextConfig = {
   eslint: {
@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+    authInterrupts: true,
 
     useCache: true,
     nodeMiddleware: true,
