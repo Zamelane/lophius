@@ -18,11 +18,13 @@ type Props = {
   tabs: Tab[]
   selected?: Tab
   setSelected?: Dispatch<SetStateAction<Tab>>
+  tabChange?: (id: string) => void
   children?: ReactElement<MenuItemProps>[] | ReactElement<MenuItemProps>
+  selectedId?: string | null
 }
 
-export function CustomMenu({ tabs, selected, setSelected, children }: Props) {
-  const [selectedTab, setSelectedTab] = useState(tabs[0])
+export function CustomMenu({ tabs, selected, setSelected, children, selectedId, tabChange }: Props) {
+  const [selectedTab, setSelectedTab] = useState(tabs.find(t => t.id === selectedId) || tabs[0])
   setSelected ??= setSelectedTab
   selected ??= selectedTab
   children &&= Array.isArray(children) ? children : [children]
@@ -42,7 +44,10 @@ export function CustomMenu({ tabs, selected, setSelected, children }: Props) {
             <div key={v.id} className='flex flex-col gap-1'>
               <Button
                 variant='ghost'
-                onClick={() => setSelected?.(v)}
+                onClick={() => {
+                  setSelected?.(v)
+                  tabChange?.(v.id)
+                }}
                 className={
                   selected?.id === v.id
                     ? cn(
@@ -84,7 +89,7 @@ export function CustomMenu({ tabs, selected, setSelected, children }: Props) {
   )
 }
 
-type MenuItemProps = LayoutProps & {
+export type MenuItemProps = LayoutProps & {
   id?: string
 }
 

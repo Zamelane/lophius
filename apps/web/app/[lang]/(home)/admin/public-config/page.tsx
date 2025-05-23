@@ -1,7 +1,7 @@
 'use client'
 
 import { CustomMenu, MenuContent, Tab } from '../../../../../src/shared/ui/custom/custom-menu';
-import { ListsView } from "@/src/features/user-lists/ui/view";
+import { ListsView } from "@/src/features/settings/ui/view";
 import { ListIcon } from "lucide-react";
 
 export default function Page() {
