@@ -17,7 +17,7 @@ import {
 } from '@/src/shared/ui/shadcn/sidebar'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import type { UserInfo } from '@/src/shared/types'
-import { ChevronsUpDown, LogOut, ShieldUserIcon } from 'lucide-react'
+import { ChevronsUpDown, LogOut, SettingsIcon, ShieldUserIcon } from 'lucide-react'
 
 export function NavUser({
   user
@@ -114,6 +114,13 @@ export function NavUser({
                 </LocaleLink>
               </>
             )}
+            <DropdownMenuSeparator />
+            <LocaleLink href='/settings'>
+              <DropdownMenuItem>
+                <SettingsIcon />
+                Настройки
+              </DropdownMenuItem>
+            </LocaleLink>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={UserLogout}>
               <LogOut />
