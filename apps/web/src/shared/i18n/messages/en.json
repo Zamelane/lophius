@@ -69,5 +69,14 @@
   "Public": {
     "close": "Close",
     "ok": "OK"
+  },
+  "Lists": {
+    "watching": "Watching",
+    "planned": "Planned",
+    "completed": "Completed",
+    "dropped": "Dropped",
+    "reading": "Reading",
+    "listening": "Listening",
+    "skipped": "Skipped"
   }
 }

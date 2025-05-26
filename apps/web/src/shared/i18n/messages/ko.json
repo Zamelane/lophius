@@ -69,5 +69,14 @@
   "Public": {
     "close": "닫기",
     "ok": "확인"
+  },
+  "Lists": {
+    "watching": "시청 중",
+    "planned": "계획됨",
+    "completed": "완료됨",
+    "dropped": "포기함",
+    "reading": "읽는 중",
+    "listening": "듣고 있음",
+    "skipped": "건너뛰었음"
   }
 }

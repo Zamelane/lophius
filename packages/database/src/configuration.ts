@@ -2,11 +2,6 @@ import { sql } from 'drizzle-orm'
 import { type NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schemas'
 
-// конфигурация global
-declare global {
-  var isStartConfigured: boolean
-}
-
 // Логировать запросы ?
 const logger = true
 
@@ -21,15 +16,7 @@ let db: NodePgDatabase<typeof schema> = drizzle(
   { schema, logger }
 )
 
-if (!global.isStartConfigured) {
-  global.isStartConfigured = true
-  await autoConfigure(db).catch(() => {
-    global.isStartConfigured = false
-    console.log('Auto configured errored ...')
-  })
-}
-
-export { db }
+export { db, schema }
 
 // Какие-то важные действия
 async function autoConfigure(db: NodePgDatabase<typeof schema>) {
