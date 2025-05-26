@@ -96,17 +96,11 @@ export default async function TVCatalogPage() {
             <VideoCard
               key={v.id}
               staticSize={false}
-              link={`/tv/${v.id}`}
+              id={v.id}
               subText='12 фев 2025'
               title={
                 v.translates.titles.length ? v.translates.titles[0] : 'Нету'
               }
-              img={{
-                alt: 'alt',
-                width: 1400,
-                height: 2100,
-                src: v.posters.length ? v.posters[0].imgSrc : undefined
-              }}
             />
           ))}
         </GridLayout>

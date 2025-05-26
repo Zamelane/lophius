@@ -1,4 +1,4 @@
-import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
+import { ContentLayout } from "@/src/shared/ui/layout/content-layout"
 
 export default async function Page({
   params

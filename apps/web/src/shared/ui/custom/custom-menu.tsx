@@ -8,22 +8,22 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 import { Button } from '../shadcn/button'
 
-export type Tab = {
-  id: string
+export type Tab<T extends number | string> = {
+  id: T
   title: string
   icon?: LucideIcon
 }
 
-type Props = {
-  tabs: Tab[]
-  selected?: Tab
-  setSelected?: Dispatch<SetStateAction<Tab>>
-  tabChange?: (id: string) => void
+type Props<T extends number | string> = {
+  tabs: Tab<T>[]
+  selected?: Tab<T>
+  setSelected?: Dispatch<SetStateAction<Tab<T>>>
+  tabChange?: (id: T) => void
   children?: ReactElement<MenuItemProps>[] | ReactElement<MenuItemProps>
   selectedId?: string | null
 }
 
-export function CustomMenu({ tabs, selected, setSelected, children, selectedId, tabChange }: Props) {
+export function CustomMenu<T extends number | string>({ tabs, selected, setSelected, children, selectedId, tabChange }: Props<T>) {
   const [selectedTab, setSelectedTab] = useState(tabs.find(t => t.id === selectedId) || tabs[0])
   setSelected ??= setSelectedTab
   selected ??= selectedTab
@@ -90,7 +90,7 @@ export function CustomMenu({ tabs, selected, setSelected, children, selectedId, 
 }
 
 export type MenuItemProps = LayoutProps & {
-  id?: string
+  id?: string | number
 }
 
 export function MenuContent({ children }: MenuItemProps) {

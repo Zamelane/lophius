@@ -20,10 +20,10 @@ const publicMenu: LightMenuItemType[] = [
   }
 ]
 
-const publicNav: NavMainMenuType = [...generatePublicMenu('comics')]
+const publicNav: NavMainMenuType = [...generatePublicMenu('comic')]
 
 const menu: MenuType = {
-  path: '/comics',
+  path: '/comic',
   mode: {
     name: 'Комиксы',
     logo: LibraryIcon
