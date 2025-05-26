@@ -9,16 +9,8 @@ import {
   UsersIcon
 } from 'lucide-react'
 import type { NavMainMenuType } from '../../ui/navigation/nav-main'
-import { MediaType } from 'database/schemas/media_types'
 
-function appendSlashIfNotEmpty(str?: string) {
-  if (str) str = `${str}/`
-  return str ?? ''
-}
-
-export function generatePublicMenu(
-  mediaType?: MediaType
-) {
+export function generatePublicMenu() {
   const generated: NavMainMenuType = [
     {
       title: 'Сообщество',
@@ -26,7 +18,7 @@ export function generatePublicMenu(
         {
           icon: BookCopyIcon,
           title: 'Коллекции',
-          url: `/${appendSlashIfNotEmpty(mediaType)}collections`
+          url: `/collections`
         },
         {
           icon: UsersIcon,
@@ -34,7 +26,7 @@ export function generatePublicMenu(
           title: 'Пользователи'
         },
         {
-          url: `/${appendSlashIfNotEmpty(mediaType)}calendar`,
+          url: `/calendar`,
           icon: CalendarDaysIcon,
           title: 'Медийный календарь'
         }
@@ -45,18 +37,18 @@ export function generatePublicMenu(
       items: [
         {
           icon: CalendarHeartIcon,
-          url: `/${appendSlashIfNotEmpty(mediaType)}calendar`,
+          url: `/calendar`,
           title: 'Мой календарь'
         },
         {
           icon: SquareLibraryIcon,
-          url: `/${appendSlashIfNotEmpty(mediaType)}collections/me`,
+          url: `/collections/me`,
           title: 'Мои коллекции'
         },
         {
           icon: ListTodoIcon,
           title: 'Мои списки',
-          url: `/${appendSlashIfNotEmpty(mediaType)}lists`
+          url: `/lists`
         }
       ]
     },
@@ -71,7 +63,7 @@ export function generatePublicMenu(
         {
           icon: GroupIcon,
           title: 'Подписки на коллекции',
-          url: `/subscriptions/collections${appendSlashIfNotEmpty(mediaType)}`
+          url: `/subscriptions/collections`
         }
       ]
     }
