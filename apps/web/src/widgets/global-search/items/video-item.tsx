@@ -20,7 +20,7 @@ export function VideoItem({ m, setOpen }: Props) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
     >
-      <LocaleLink href={`/tv/${m.id}`} onClick={() => setOpen?.(false)}>
+      <LocaleLink href={`/media/${m.id}`} onClick={() => setOpen?.(false)}>
         <CommandItem
           value={`${m.id}`}
           className='grid grid-cols-[auto,1fr] gap-x-2 h-[100px] overflow-clip'

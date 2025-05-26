@@ -13,9 +13,10 @@ import type { MediaType, SearchResultType } from '.' // Типы данных д
 import { limitResults } from './config'
 
 // Приоритет для языка
-const languagePriority = (langColumn: Column, locale: string) => [
-  sql`(${langColumn} = ${locale}) DESC`,
-  sql`(${langColumn} = 'en') DESC`
+export const languagePriority = (langColumn: Column, locale: string) => [
+  sql`(${langColumn} = ${locale}) DESC NULLS LAST`,
+  sql`(${langColumn} = 'en') DESC NULLS LAST`,
+  sql`${langColumn} IS NULL DESC`
 ]
 
 // Сортировка по релевантности

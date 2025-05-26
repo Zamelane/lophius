@@ -9,14 +9,15 @@ import {
   UsersIcon
 } from 'lucide-react'
 import type { NavMainMenuType } from '../../ui/navigation/nav-main'
+import { MediaType } from 'database/schemas/media_types'
 
 function appendSlashIfNotEmpty(str?: string) {
-  if (str) str = `/${str}`
+  if (str) str = `${str}/`
   return str ?? ''
 }
 
 export function generatePublicMenu(
-  mediaType?: 'video' | 'comics' | 'book' | 'music'
+  mediaType?: MediaType
 ) {
   const generated: NavMainMenuType = [
     {
@@ -25,7 +26,7 @@ export function generatePublicMenu(
         {
           icon: BookCopyIcon,
           title: 'Коллекции',
-          url: `/collections${appendSlashIfNotEmpty(mediaType)}`
+          url: `/${appendSlashIfNotEmpty(mediaType)}collections`
         },
         {
           icon: UsersIcon,
@@ -33,7 +34,7 @@ export function generatePublicMenu(
           title: 'Пользователи'
         },
         {
-          url: `/calendar${appendSlashIfNotEmpty(mediaType)}`,
+          url: `/${appendSlashIfNotEmpty(mediaType)}calendar`,
           icon: CalendarDaysIcon,
           title: 'Медийный календарь'
         }
@@ -44,18 +45,18 @@ export function generatePublicMenu(
       items: [
         {
           icon: CalendarHeartIcon,
-          url: `/calendar/me${appendSlashIfNotEmpty(mediaType)}`,
+          url: `/${appendSlashIfNotEmpty(mediaType)}calendar`,
           title: 'Мой календарь'
         },
         {
           icon: SquareLibraryIcon,
-          url: `/collections/me${appendSlashIfNotEmpty(mediaType)}`,
+          url: `/${appendSlashIfNotEmpty(mediaType)}collections/me`,
           title: 'Мои коллекции'
         },
         {
           icon: ListTodoIcon,
           title: 'Мои списки',
-          url: `/lists/me${appendSlashIfNotEmpty(mediaType)}`
+          url: `/${appendSlashIfNotEmpty(mediaType)}lists`
         }
       ]
     },

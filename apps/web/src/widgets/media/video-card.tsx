@@ -1,27 +1,30 @@
+'use client'
+
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { cn } from '@/src/shared/lib/utils'
 import { ImageOffIcon } from 'lucide-react'
 import Image from 'next/image'
 
-type Props = {
-  link: string
+export type Props = {
+  id: number
   img: {
-    src?: string
-    width: number
-    height: number
-    alt: string
-  }
-  title: string
+    width?: number | null
+    height?: number | null
+    path: string
+    domain: string
+    https: boolean
+  } | null | undefined
+  title?: string | null
   subText: string
   staticSize?: boolean
 }
 
 export function VideoCard(props: Props) {
-  const { img, link, title, subText, staticSize = true } = props
+  const { img, id, title, subText, staticSize = true } = props
   return (
     // flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]
     <LocaleLink
-      href={link}
+      href={`/media/${id}`}
       className={cn(
         'flex flex-col gap-[8px] text-start no-underline select-none',
         'transition-all duration-300 ease-in-out', // Плавный переход
@@ -30,18 +33,23 @@ export function VideoCard(props: Props) {
         staticSize ? 'w-[160px] min-w-[160px]' : 'w-full min-w-full relative'
       )}
     >
-      {img.src ? (
+      {img ? (
         <Image
-          src={img.src}
-          alt={img.alt}
-          width={img.width}
-          height={img.height}
+          src={`http${img.https ? 's' : ''}://${img.domain}${img.path}`}
+          alt='Постер'
           className={cn(
             'aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] max-h-[320px]',
             'border',
             'transition-all duration-300 ease-in-out', // Анимация только для изображения
             'group-hover:scale-[1.03]' // Увеличение изображения чуть сильнее
           )}
+          {
+            ...(
+              img.width && img.height
+                ? { width: img.width, height: img.height }
+                : { fill: true }
+            )
+          }
         />
       ) : (
         <div
