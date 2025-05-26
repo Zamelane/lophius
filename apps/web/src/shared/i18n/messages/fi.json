@@ -69,5 +69,14 @@
   "Public": {
     "close": "Sulje",
     "ok": "OK"
+  },
+  "Lists": {
+    "watching": "Katsominen",
+    "planned": "Suunniteltu",
+    "completed": "Valmis",
+    "dropped": "Hylätty",
+    "reading": "Luettava",
+    "listening": "Kuuntelu",
+    "skipped": "Ohitettu"
   }
 }

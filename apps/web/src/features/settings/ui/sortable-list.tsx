@@ -11,6 +11,7 @@ import { EditListSheet } from "./edit-list";
 import { NotificationOnListUpdate } from "../views/lists";
 import { DeleteList } from "./delete-list";
 import { deleteList } from "../services/deleteList";
+import { useTranslations } from "next-intl";
 
 type Props = {
   list: List
@@ -27,6 +28,8 @@ export function SortableList({ list, notificationOnListUpdate }: Props) {
     setActivatorNodeRef,
     isDragging,
   } = useSortable({ id: list.id })
+
+  const t = useTranslations('Lists')
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -71,7 +74,11 @@ export function SortableList({ list, notificationOnListUpdate }: Props) {
           </div>
           {/* List content */}
           <div className="flex flex-col gap-2">
-            <h2 className="font-semibold text-md">{list.title}</h2>
+            <h2 className="font-semibold text-md">{
+              list.i18nTitle
+                ? t(list.i18nTitle)
+                : list.title
+            }</h2>
             <p className={cn(
               "text-sm opacity-85",
               !list.comment && 'italic'

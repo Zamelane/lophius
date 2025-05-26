@@ -69,5 +69,14 @@
   "Public": {
     "close": "Закрыть",
     "ok": "ОК"
+  },
+  "Lists": {
+    "watching": "Просмотр",
+    "planned": "Запланировано",
+    "completed": "Завершено",
+    "dropped": "Брошено",
+    "reading": "Чтение",
+    "listening": "Слушаю",
+    "skipped": "Пропущено"
   }
 }

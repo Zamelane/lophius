@@ -23,6 +23,8 @@ import { SaveIcon } from "lucide-react"
 import { saveListSort } from "../services/saveListSort"
 import { Spinner } from "@/src/shared/ui/shadcn/spinner"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/src/shared/ui/shadcn/tooltip"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/src/shared/ui/shadcn/select"
+import { MediaType } from "database/schemas/media_types"
 
 type Props = {
   lists: List[]
@@ -31,6 +33,8 @@ type Props = {
   changeSort: (fn: (list: List[]) => List[]) => void
   approveSort: () => void
   updateButtonShow?: boolean
+  selectedMediaType: MediaType
+  setSelectedMediaType: Dispatch<SetStateAction<MediaType>>
 }
 
 export function ListsView({
@@ -38,7 +42,9 @@ export function ListsView({
   notificationOnListUpdate,
   changeSort,
   approveSort,
-  updateButtonShow
+  updateButtonShow,
+  selectedMediaType,
+  setSelectedMediaType
 }: Props) {
   const [updating, setUpdating] = useState(false)
 
@@ -69,6 +75,23 @@ export function ListsView({
 
   return (
     <div className="flex flex-col gap-2 pt-2 w-full">
+      <div className="md:mr-auto">
+        <Select
+          value={selectedMediaType}
+          onValueChange={(v) => setSelectedMediaType(v as MediaType)}>
+          <SelectTrigger>
+            <SelectValue placeholder=""/>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="kino">Видео</SelectItem>
+              <SelectItem value="comic">Комиксы</SelectItem>
+              <SelectItem value="book">Книги</SelectItem>
+              <SelectItem value="music">Музыка</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -91,7 +114,7 @@ export function ListsView({
         <EditListSheet
           title=""
           isHidden={false}
-          mediaType="kino"
+          mediaType={selectedMediaType}
           notificationOnListUpdate={notificationOnListUpdate}
         >
           <Button className="max-w-fit">

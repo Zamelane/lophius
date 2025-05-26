@@ -1,15 +1,17 @@
 'use client'
 
-import { useEffect, useRef, startTransition, useState } from "react"
+import { useEffect, startTransition, useState } from "react"
 import { useActionState } from "react"
 import { ListsView } from "../ui/view"
 import { getCurrentUserLists } from "../services/getCurrentUserLists"
 import { Skeleton } from "@/src/shared/ui/shadcn/skeleton"
 import { List } from "../types"
 import { useUnsavedChangesWarning } from '@/src/shared/hooks/useUnsavedChangesRouterGuard';
+import { MediaType } from "database/schemas/media_types"
 
 export function ListsSettingsView() {
   const [ready, setReady] = useState(false)
+  const [selectedMediaType, setSelectedMediaType] = useState<MediaType>('kino')
   const [state, fetchLists, pending] = useActionState(
     async (_state: List[], payload: "kino" | "anime" | "comic" | "book" | "music") => {
       return await getCurrentUserLists(payload)
@@ -23,17 +25,13 @@ export function ListsSettingsView() {
   const [showUpdateButton, setShowUpdateButton] = useState(false)
 
   //
-  const fetchedRef = useRef(false)
 
   useEffect(() => {
-    if (!fetchedRef.current) {
-      fetchedRef.current = true
-      startTransition(() => {
-        fetchLists('kino')
-        setReady(true)
-      })
-    }
-  }, [fetchLists])
+    startTransition(() => {
+      fetchLists(selectedMediaType)
+      setReady(true)
+    })
+  }, [fetchLists, selectedMediaType])
 
   useEffect(() => {
     setLists(state)
@@ -102,6 +100,8 @@ export function ListsSettingsView() {
             updateButtonShow={showUpdateButton}
             changeSort={changeSort}
             approveSort={approveSort}
+            selectedMediaType={selectedMediaType}
+            setSelectedMediaType={setSelectedMediaType}
           />}
     </div>
   )
