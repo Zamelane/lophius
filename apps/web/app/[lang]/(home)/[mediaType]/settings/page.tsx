@@ -10,7 +10,7 @@ export default function Page() {
   const searchParams = useSearchParams()
   const selectedTab = searchParams?.get('tab')
 
-  const tabs: Tab[] = [
+  const tabs: Tab<string>[] = [
     {
       id: 'lists',
       icon: ListIcon,

@@ -13,14 +13,14 @@ const publicMenu: LightMenuItemType[] = [
     kbd: 'K'
   },
   {
-    url: '/music',
+    url: '/',
     icon: HomeIcon,
     isActive: true,
     title: 'Главная'
   }
 ]
 
-const publicNav: NavMainMenuType = [...generatePublicMenu('music')]
+const publicNav: NavMainMenuType = [...generatePublicMenu()]
 
 const menu: MenuType = {
   path: '/music',
