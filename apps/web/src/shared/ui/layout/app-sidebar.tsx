@@ -70,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {auth ? (
           <NavUser user={auth} />
         ) : (
-          <LocaleLink href='/login'>
+          <LocaleLink href='/login' ignoreMediaType>
             <SidebarMenuButton className='w-full bg-primary text-primary-foreground transition-all duration-200'>
               <LogIn />
               <span className='text-center w-full'>Войти</span>

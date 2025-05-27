@@ -9,4 +9,5 @@ export type List = {
   mediaType?: MediaType
   isHidden: boolean
   isSystem: boolean
+  total?: number
 }
