@@ -62,7 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <LightNavMain items={topMenu} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain config={bottomMenu} />
+        <NavMain config={bottomMenu} user={auth} />
         {/* <NavMain items={navMain} /> */}
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>

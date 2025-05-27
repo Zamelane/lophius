@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://lophius.zmln.ru">Demo</a>
+  <a href="https://lophius.ru">Demo</a>
   <span>&nbsp;•&nbsp;</span>
   <a href="#run-locally">Run Locally</a>
   <span>&nbsp;•&nbsp;</span>
@@ -28,9 +28,9 @@
 
 ## Demo
 
-Демо-версию можно просмотреть по адресу [lophius.zmln.ru](https://lophius.zmln.ru)
+Демо-версию можно просмотреть по адресу [lophius.ru](https://lophius.ru)
 
-![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.zmln.ru
+![Site status](https://img.shields.io/website?url=https%3A%2F%2Flophius.ru
 )
 ## Run Locally
 

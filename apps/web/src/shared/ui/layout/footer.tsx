@@ -50,7 +50,7 @@ export function Footer({ lang }: { lang: string }) {
       <div className='max-w-[1920px] w-full gap-4 py-6 px-[16px] md:px-[16px]'>
         <div className='flex flex-col md:flex-row justify-between items-start gap-4'>
           <div className='flex flex-col gap-4'>
-            <h6 className='font-bold text-lg'>lophius.zmln.ru</h6>
+            <h6 className='font-bold text-lg'>lophius.ru</h6>
             <div className='flex flex-col gap-1'>
               <p className='text-xs text-muted-foreground flex items-center'>
                 Сервис коллекционирования медиа, сделанный с{' '}

@@ -27,9 +27,11 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger
 } from '../shadcn/context-menu'
+import { UserInfo } from '../../types'
 
 export type NavMainMenuType = {
   title: string
+  isAuthRequired?: boolean
   items: {
     title: string
     url: string
@@ -38,20 +40,24 @@ export type NavMainMenuType = {
     menu?: {
       title: string
       url: string
-      icon?: LucideIcon
+      icon?: LucideIcon,
     }[]
   }[]
 }[]
 
-export function NavMain({
-  config
-}: {
+type Props = {
   config: NavMainMenuType
-}) {
+  user: UserInfo | undefined
+}
+
+export function NavMain({
+  config,
+  user
+}: Props) {
   const path = usePathname()
   return (
     <>
-      {config.map((v, i) => (
+      {config.map((v, i) => (!v.isAuthRequired || user) && (
         <SidebarGroup key={i}>
           <SidebarGroupLabel>{v.title}</SidebarGroupLabel>
           <SidebarMenu>

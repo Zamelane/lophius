@@ -1,11 +1,23 @@
 import { cn } from '@/src/shared/lib/utils'
 import { CloudAlertIcon } from 'lucide-react'
 import NextImage, { type ImageProps } from 'next/image'
-import { useState } from 'react'
+import { DetailedHTMLProps, HTMLAttributes, useState } from 'react'
+import { LayoutProps } from '../../types'
+import { LocaleLink } from '../../hooks/locale-link'
 
-type Props = ImageProps
+type Props = ImageProps & {
+  link?: string
+}
 
-export function Image({ ...props }: Props) {
+function DivOrLink({ children, className, link }: LayoutProps & { link?: string, className?: string } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
+  if (link) {
+    return <LocaleLink href={link} className={className}>{children}</LocaleLink>
+  }
+
+  return <div className={className}>{children}</div>
+}
+
+export function Image({ link, ...props }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
   const [retryKey /*setRetryKey*/] = useState(0)
@@ -27,9 +39,10 @@ export function Image({ ...props }: Props) {
   // };
 
   return (
-    <div
+    <DivOrLink
       className='relative inline-block'
       style={{ width: props.width, height: props.height }}
+      link={link}
     >
       {(isLoading || hasError) && (
         <div
@@ -53,6 +66,6 @@ export function Image({ ...props }: Props) {
           isLoading || hasError ? 'invisible' : 'block'
         )}
       />
-    </div>
+    </DivOrLink>
   )
 }

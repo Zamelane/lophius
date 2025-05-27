@@ -34,6 +34,7 @@ export function generatePublicMenu() {
     },
     {
       title: 'Моя библиотека',
+      isAuthRequired: true,
       items: [
         {
           icon: CalendarHeartIcon,
@@ -54,6 +55,7 @@ export function generatePublicMenu() {
     },
     {
       title: 'Подписки',
+      isAuthRequired: true,
       items: [
         {
           icon: PodcastIcon,

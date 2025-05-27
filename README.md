@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://lophius.zmln.ru">Demo</a>
+  <a href="https://lophius.ru">Demo</a>
   <span>&nbsp;•&nbsp;</span>
   <a href="#run-locally">Run Locally</a>
   <span>&nbsp;•&nbsp;</span>
