@@ -16,7 +16,7 @@ import { LayoutProps } from "@/src/shared/types";
 
 const schema = z.object({
   title: z.string().min(1, "Имя обязательно"),
-  comment: z.string().max(500, "Слишком длинная заметка"),
+  comment: z.string().max(255, "Слишком длинная заметка"),
 });
 
 type Props = WithOptional<List, 'id' | 'isSystem'> & LayoutProps & {

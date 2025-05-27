@@ -8,6 +8,7 @@ import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { MediaListButton } from '@/src/features/media-list-button'
+import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 
 export const revalidate = 3600
 
@@ -89,13 +90,13 @@ export default async function TVDetailedPage({ params }: Props) {
           </div>
           <div className='z-40 flex justify-center md:justify-between items-start'>
             <div className='flex flex-col text-center md:text-start'>
-              <h1 className='text-center md:text-start text-2xl font-semibold line-clamp-2'>
+              <HeaderTitle className='text-center md:text-start text-2xl font-semibold line-clamp-2'>
                 {mediaInfo.translates.titles.length ? (
                   mediaInfo.translates.titles[0]
                 ) : (
                   <i>[Без заголовка]</i>
                 )}
-              </h1>
+              </HeaderTitle>
               <p className='text-center md:text-start text-sm text-secondary-foreground opacity-80 line-clamp-2'>
                 {mediaInfo.translates.taglines.length ? (
                   mediaInfo.translates.taglines[0]

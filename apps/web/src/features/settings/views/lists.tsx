@@ -13,7 +13,7 @@ export function ListsSettingsView() {
   const [ready, setReady] = useState(false)
   const [selectedMediaType, setSelectedMediaType] = useState<MediaType>('kino')
   const [state, fetchLists, pending] = useActionState(
-    async (_state: List[], payload: "kino" | "anime" | "comic" | "book" | "music") => {
+    async (_state: List[], payload: MediaType) => {
       return await getCurrentUserLists(payload)
     },
     []

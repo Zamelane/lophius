@@ -14,6 +14,8 @@ export async function ListLibraryView({
   mediaType
 }: Props) {
   const user = await getCurrentUser()
+
+  console.log(user)
   
   if (!user)
     forbidden()

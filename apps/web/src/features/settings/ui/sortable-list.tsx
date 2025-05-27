@@ -80,7 +80,7 @@ export function SortableList({ list, notificationOnListUpdate }: Props) {
                 : list.title
             }</h2>
             <p className={cn(
-              "text-sm opacity-85",
+              "text-sm opacity-85 break-all",
               !list.comment && 'italic'
             )}>
               {list.comment || 'Нет заметки'}

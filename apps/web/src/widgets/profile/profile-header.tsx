@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Centrize } from '../../shared/ui/layout/centrize'
 import EditProfileDialog from './dialogs/edit-dialog'
 import { ProfileAvatar } from './profile-avatar'
+import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 
 type ParamsType = {
   data: UserInfo
@@ -54,6 +55,7 @@ export const ProfileHeader = ({ data, isAuth, setData }: ParamsType) => {
               }
             />
             <div className='flex flex-col items-center sm:items-start sm:pl-8 sm:translate-y-0 min-w-[200px] -translate-y-[45px]'>
+              <HeaderTitle className='sr-only'>{data.nickname}</HeaderTitle>
               <TextAnimate
                 delay={0.4}
                 by='character'
