@@ -6,10 +6,15 @@ import NextIntlLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 
+type Props = React.ComponentProps<typeof NextIntlLink> & {
+  ignoreMediaType?: boolean
+}
+
 export function LocaleLink({
   href,
+  ignoreMediaType,
   ...props
-}: React.ComponentProps<typeof NextIntlLink>) {
+}: Props) {
   const pathname = usePathname()
   const hrefString = href.toString()
 
@@ -47,7 +52,7 @@ export function LocaleLink({
       mediaTypes.includes(hrefSegments[1] as MediaType)
 
     // Вставим mediaType в путь, если он был в текущем, но его ещё нет в href
-    if (mediaType && !hrefHasMediaType) {
+    if (mediaType && !hrefHasMediaType && !ignoreMediaType) {
       const insertPosition = hrefHasLocale ? 1 : 0
       hrefSegments.splice(insertPosition, 0, mediaType)
       resolvedHref = '/' + hrefSegments.join('/')

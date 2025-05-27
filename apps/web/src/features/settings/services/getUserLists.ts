@@ -1,12 +1,20 @@
 'use server'
 
-import { and, db, eq, isNull, or } from "database";
-import { lists, userLists } from "database/schemas/lists";
+import { and, db, eq, isNull, or, sql } from "database";
+import { lists, userListMedias, userLists } from "database/schemas/lists";
 import { List } from "../types";
 import { MediaType } from "database/schemas/media_types";
 
 // Возвращает списки конкретного пользователя для конкретного типа медиа
 export async function getUserLists(userId: number, mediaType: MediaType) {
+  const totalLiteral = db.select({
+    total: sql<number>`count(${userListMedias.mediaId})`.as('total')
+  }).from(userListMedias)
+  .where(and(
+    eq(userListMedias.listId, lists.id),
+    eq(userListMedias.userId, userId)
+  )).as('total_literal')
+
   const rows = await db.select()
     .from(lists)
     .where(and(
@@ -24,6 +32,7 @@ export async function getUserLists(userId: number, mediaType: MediaType) {
       userLists.order,
       lists.order
     )
+    .innerJoinLateral(totalLiteral, sql`true`)
   
   const result: List[] = []
 
@@ -38,7 +47,8 @@ export async function getUserLists(userId: number, mediaType: MediaType) {
       mediaType: list.mediaType,
       isHidden: userList?.isHidden ?? false,
       isSystem: list.authorId === null,
-      comment: userList?.comment ?? ""
+      comment: userList?.comment ?? "",
+      total: Number(row.total_literal.total)
     })
   }
 

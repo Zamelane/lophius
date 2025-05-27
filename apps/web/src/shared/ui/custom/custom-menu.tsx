@@ -11,6 +11,7 @@ import { Button } from '../shadcn/button'
 export type Tab<T extends number | string> = {
   id: T
   title: string
+  badge?: string | number
   icon?: LucideIcon
 }
 
@@ -62,9 +63,16 @@ export function CustomMenu<T extends number | string>({ tabs, selected, setSelec
                     )
                 }
               >
-                <div className='flex items-center'>
+                <div className='flex gap-2 items-center'>
                   {v.icon && <v.icon />}
                   {v.title}
+                  {
+                    v.badge && (
+                      <div className='inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-[10px] px-1.5 py-0.5 rounded-full pointer-events-none h-[18px]'>
+                        {v.badge}
+                      </div>
+                    )
+                  }
                 </div>
               </Button>
               {selected?.id === v.id ? (

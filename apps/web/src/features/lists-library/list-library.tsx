@@ -5,9 +5,10 @@ import { List } from "../settings/types";
 import { useTranslations } from "next-intl";
 import { GridLayout } from "@/src/shared/ui/layout/grid-layout";
 import { GridMediaCard, Props as GridMediaCardProps } from "../media/ui/gridMediaCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MediaType } from "database/schemas/media_types";
 import { loadListMedias } from "./services/loadListMedias";
+import { Spinner } from "@/src/shared/ui/shadcn/spinner";
 
 type Props = {
   lists: List[],
@@ -15,55 +16,99 @@ type Props = {
 }
 
 type TabProps = Tab<number> & {
-  medias: GridMediaCardProps[]
+  medias: GridMediaCardProps[],
+  hasMore: boolean
 }
 
-export function ListLibrary({
-  lists,
-  mediaType
-}: Props) {
+const PAGE_SIZE = 20
+
+export function ListLibrary({ lists, mediaType }: Props) {
   const t = useTranslations('Lists')
 
-  const initialTabs: TabProps[] = lists.map(list => ({
-    id: list.id,
-    title: list.i18nTitle ? t(list.i18nTitle) : list.title,
-    medias: []
-  }))
+  const initialTabs: TabProps[] = [
+    {
+      id: -1,
+      medias: [],
+      hasMore: true,
+      title: 'Все',
+      badge: lists.reduce((sum, list) => (list.total?? 0) + sum, 0)
+    },
+    ...lists.map(list => ({
+      id: list.id,
+      title: list.i18nTitle ? t(list.i18nTitle) : list.title,
+      medias: [],
+      page: 0,
+      hasMore: true,
+      badge: list.total || undefined
+    }))
+  ]
 
   const [tabs, setTabs] = useState(initialTabs)
   const [selectedTabId, setSelectedTabId] = useState<number | undefined>(initialTabs?.[0]?.id)
   const [loading, setLoading] = useState(false)
 
-  async function loadMedias(listId: number) {
-    const currentTab = tabs.find(tab => tab.id === listId)
-    if (!currentTab || currentTab.medias.length > 0) return // Медиа уже загружены
+  const loaderRef = useRef<HTMLDivElement | null>(null)
 
+  async function loadMore(listId: number) {
+    const tab = tabs.find(t => t.id === listId)
+    if (!tab || !tab.hasMore || loading) return
+
+    setLoading(true)
     try {
-      setLoading(true)
-      const medias = await loadListMedias({ listId, mediaType })
+      const newMedias = await loadListMedias({ listId, mediaType, offset: tab.medias.length, size: PAGE_SIZE })
+      console.log({ listId, mediaType, offset: tab.medias.length, size: PAGE_SIZE })
 
-      setTabs(state => state.map(tab => (
-        tab.id === listId
-          ? { ...tab, medias }
-          : tab
-      )))
+      setTabs(prev =>
+        prev.map(t =>
+          t.id === listId
+            ? {
+              ...t,
+              medias: [...t.medias, ...newMedias],
+              hasMore: newMedias.length === PAGE_SIZE
+            }
+            : t
+        )
+      )
     } finally {
       setLoading(false)
     }
   }
 
+  // Загрузка при выборе новой вкладки
   useEffect(() => {
-    if (selectedTabId !== undefined) {
-      loadMedias(selectedTabId)
+    if (selectedTabId === undefined) return
+    const tab = tabs.find(t => t.id === selectedTabId)
+    if (tab && tab.medias.length === 0) {
+      tab.hasMore = true
+      loadMore(tab.id)
     }
   }, [selectedTabId])
 
+  // IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && selectedTabId !== undefined) {
+          loadMore(selectedTabId)
+        }
+      },
+      { rootMargin: '300px' }
+    )
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current)
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current)
+      }
+    }
+  }, [loaderRef.current, selectedTabId, tabs])
+
   return (
     <div>
-      <CustomMenu
-        tabs={tabs}
-        tabChange={setSelectedTabId}
-      >
+      <CustomMenu tabs={tabs} tabChange={setSelectedTabId}>
         {tabs.map(tab => (
           <MenuContent key={tab.id} id={tab.id}>
             <GridLayout>
@@ -71,6 +116,12 @@ export function ListLibrary({
                 <GridMediaCard key={i} {...media} />
               ))}
             </GridLayout>
+
+            {tab.id === selectedTabId && (
+              <div ref={loaderRef} className="flex justify-center py-4">
+                {loading && <Spinner size='lg' className='bg-black dark:bg-white' />}
+              </div>
+            )}
           </MenuContent>
         ))}
       </CustomMenu>

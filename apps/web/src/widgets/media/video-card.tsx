@@ -3,6 +3,7 @@
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { cn } from '@/src/shared/lib/utils'
 import { ImageOffIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
 export type Props = {
@@ -16,11 +17,16 @@ export type Props = {
   } | null | undefined
   title?: string | null
   subText: string
+  inListBadge?: {
+    title: string
+    i18nTitle?: string | null
+  }
   staticSize?: boolean
 }
 
 export function VideoCard(props: Props) {
-  const { img, id, title, subText, staticSize = true } = props
+  const t = useTranslations('Lists')
+  const { img, id, title, subText, inListBadge, staticSize = false } = props
   return (
     // flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]
     <LocaleLink
@@ -33,6 +39,17 @@ export function VideoCard(props: Props) {
         staticSize ? 'w-[160px] min-w-[160px]' : 'w-full min-w-full relative'
       )}
     >
+      {
+        inListBadge && (
+          <div className='flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-[10px] px-1.5 py-0.5 rounded-sm absolute top-[4px] left-[-3px] line-clamp-1'>
+            {
+              inListBadge.i18nTitle
+                ? t(inListBadge.i18nTitle)
+                : inListBadge.title
+            }
+          </div>
+        )
+      }
       {img ? (
         <Image
           src={`http${img.https ? 's' : ''}://${img.domain}${img.path}`}

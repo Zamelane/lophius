@@ -40,9 +40,16 @@ export function ButtonList({
   const [removeLoading, setRemoveLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    if (triggerRef.current) {
-      setWidth(triggerRef.current.offsetWidth);
-    }
+    const button = triggerRef.current;
+    if (!button) return;
+
+    const observer = new ResizeObserver(() => {
+      setWidth(button.offsetWidth);
+    });
+
+    observer.observe(button);
+
+    return () => observer.disconnect();
   }, []);
 
   async function addToListHandler(listId: number) {
