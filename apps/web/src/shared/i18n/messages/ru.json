@@ -78,5 +78,16 @@
     "reading": "Чтение",
     "listening": "Слушаю",
     "skipped": "Пропущено"
+  },
+  "MediaTypes": {
+    "kino": "Видео",
+    "music": "Музыка",
+    "book": "Книга",
+    "comic": "Комикс",
+
+    "kinoPlural": "Видео",
+    "musicPlural": "Музыка",
+    "bookPlural": "Книги",
+    "comicPlural": "Комиксы"
   }
 }

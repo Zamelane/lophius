@@ -42,6 +42,7 @@ const publicNav: NavMainMenuType = [
     },
     {
       title: 'Моя библиотека',
+      isAuthRequired: true,
       items: [
         {
           icon: CalendarHeartIcon,

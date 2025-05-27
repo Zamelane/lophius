@@ -34,15 +34,14 @@ export default async function AppLayout({ children }: LayoutProps) {
         <GlobalSearch />
         <AppSidebar />
         <SidebarInset className="ml-[2px]">
-  <SiteHeader />
-  <div className="flex flex-grow justify-center overflow-hidden">
-    <div className="w-full max-w-[1920px]">
-      <Suspense fallback={<p>Загрузка ...</p>}>{children}</Suspense>
-    </div>
-  </div>
-  <Footer lang={lang} />
-</SidebarInset>
-
+          <SiteHeader />
+          <div className="flex flex-grow justify-center overflow-hidden">
+            <div className="w-full max-w-[1920px]">
+              <Suspense fallback={<p>Загрузка ...</p>}>{children}</Suspense>
+            </div>
+          </div>
+          <Footer lang={lang} />
+        </SidebarInset>
       </SidebarProvider>
     </GlobalSearchProvider>
   )
