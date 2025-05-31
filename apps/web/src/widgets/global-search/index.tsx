@@ -31,6 +31,7 @@ import {
 import { DialogTitle } from '../../shared/ui/shadcn/dialog'
 import { Spinner } from '../../shared/ui/shadcn/spinner'
 import { VideoItem } from './items/video-item'
+import { useSearchWebSocket } from '@/src/features/online-search/hooks/useSearchWebSocket'
 
 type TabType = {
   title: string
@@ -83,6 +84,15 @@ export function GlobalSearch() {
   const [results, setResults] = useState<SearchResultType | undefined>(
     undefined
   )
+
+  // Хук онлайн поиска
+  const {
+    connect,
+    disconnect,
+    status,
+    error: wsError,
+    results: wsResults,
+  } = useSearchWebSocket({ query: searchQuery, mediaType: mediaType === 'all' ? 'kino' : mediaType });
 
   // Режим поиска
   const [isOnlineSearch, setIsOnlineSearch] = useState(false)
@@ -151,6 +161,15 @@ export function GlobalSearch() {
     [isOnlineSearch, objectType, mediaType]
   )
 
+  // Обработчик онлайн поиска
+  const onlineSearchHandler = async () => {
+    try {
+      await connect()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   // Эффект для выполнения поиска
   useEffect(() => {
     fetchResults(debouncedQuery)
@@ -168,6 +187,14 @@ export function GlobalSearch() {
     setIsOnlineSearch(isOnlineState === 'true')
   }, [])
 
+  // Не даём попасть типу 'all' в онлайн поиск
+  // TODO: таб не реагирует на принудительное изменение
+  useEffect(() => {
+    if (isOnlineSearch && mediaType === 'all') {
+      setMediaType('kino')
+    }
+  }, [isOnlineSearch, mediaType])
+
   return (
     <AnimatePresence>
       <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
@@ -176,6 +203,13 @@ export function GlobalSearch() {
           placeholder='Введите для поиска...'
           value={searchQuery}
           onValueChange={setSearchQuery}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && isOnlineSearch) {
+              e.preventDefault()
+              disconnect()
+              onlineSearchHandler()
+            }
+          }}
         />
 
         <Tabs activeKey={objectType}>

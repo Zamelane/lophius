@@ -14,12 +14,18 @@ import { setGenres } from '../steps/setGenres.ts'
 import { setMediaBudget } from '../steps/setMediaBudget.ts'
 import { setMediaRevenue } from '../steps/setMediaRevenue.ts'
 import { setMediaStatus } from '../steps/setMediaStatus.ts'
+import { SearchStatus } from 'src/search/search-status.ts'
+import { sendOnlineResult } from '../steps/sendOnlineResult.ts'
 
 export async function saveMovies(
   moviesData: DiscoverMovieResponse,
   sourceId: number,
   token: string,
-  storage: PluginStorage
+  storage: PluginStorage,
+  realtimeResult?: {
+    uid: string,
+    status: SearchStatus
+  }
 ) {
   if (!moviesData.results)
     throw new Error('Could not save movies for movies data')
@@ -31,7 +37,8 @@ export async function saveMovies(
       storage,
       sourceMediaService: new SourceMediaService(sourceId),
       fetchedData: movie,
-      token
+      token,
+      realtimeResult
     })
       .addStep(createOrGetKino)
       .addStep(getTranslations)
@@ -44,6 +51,7 @@ export async function saveMovies(
       .addStep(setMediaRevenue)
       .addStep(setMediaStatus)
       .addStep(commitStep)
+      .addStep(sendOnlineResult)
 
     await pipeline.execute()
   }

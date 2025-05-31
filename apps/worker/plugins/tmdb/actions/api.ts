@@ -1,15 +1,15 @@
-import { allFieldsDefined } from '@/interfaces'
 import { saveMovies } from '@plugins/tmdb/actions/savers.ts'
 import { getDataByStorage } from '@plugins/tmdb/utils.ts'
 import { compareAsc } from 'date-fns'
 import type { PluginStorage } from '../../../src/plugin-storage.ts'
 import { discoverMovie } from '../client'
 import type { StorageData } from '../types'
+import { allFieldsDefined } from '../../../../web/src/shared/types/helps';
 
 export async function moviesLibraryLoader(storage: PluginStorage) {
   let storageData = await getDataByStorage(storage)
   const { movies, defaultLang } = storageData
-  const token = `Bearer ${storageData.token}`
+  const token = `${storageData.token}`
 
   // Если уже всё извлекали, то просто выходим
   if (movies.isFullParsed) return

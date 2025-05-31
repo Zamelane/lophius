@@ -1,4 +1,3 @@
-import type { ArrayElementType } from '@/interfaces'
 import type { MediaModel } from 'database/src/models/Media/model.ts'
 import type { SourceMediaService } from 'database/src/services/SourceMediaService.ts'
 import type { PluginStorage } from '../../src/plugin-storage.ts'
@@ -8,6 +7,8 @@ import type {
   MovieImagesResponse,
   MovieTranslationsResponse
 } from './client'
+import { SearchStatus } from 'src/search/search-status.ts'
+import { ArrayElementType } from '@/src/shared/types/helps.ts'
 
 export interface Context {
   fetchedData: ArrayElementType<DiscoverMovieResponse['results']>
@@ -18,6 +19,10 @@ export interface Context {
   sourceMediaService: SourceMediaService
   mediaModel?: MediaModel
   token: string
+  realtimeResult?: {
+      uid: string,
+      status: SearchStatus
+    }
 }
 
 export type StorageData = {

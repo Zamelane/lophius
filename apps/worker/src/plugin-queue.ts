@@ -99,4 +99,14 @@ export class PluginQueue {
         })
     }
   }
+
+  // Ждём отправки всех сообщений
+  public async awaitPluginQueues(uid: string) {
+    const plugin = this.queue.get(uid)
+
+    if (!plugin)
+      return
+
+    return Promise.all(plugin.taskQueue)
+  }
 }

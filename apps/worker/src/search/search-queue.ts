@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SearchData, SearchRequest } from './interfaces';
+import { SearchRequest } from './interfaces';
 import { SearchStatus, StatusType } from './search-status';
 import { pluginManager } from 'src';
 import { PluginStorage } from 'src/plugin-storage';
+import { PluginQueue } from 'src/plugin-queue';
+import { MediaType } from 'database/src/schemas/media_types';
 
 export class SearchQueue {
   private maxConcurrent: number;
@@ -11,14 +13,19 @@ export class SearchQueue {
   private queueOrder: string[] = []
   private plugins = pluginManager.getPlugins().map(p => p.plugin)
 
-  constructor(maxConcurrent: number) {
+  constructor(maxConcurrent: number, private pluginQueue: PluginQueue) {
     this.maxConcurrent = maxConcurrent;
   }
 
   registrateNewSearch({
-    userId
+    userId,
+    data
   }: {
-    userId: number
+    userId: number,
+    data: {
+      query: string
+      mediaType: MediaType
+    }
   }) {
     // Удаляем другие запросы, если они уже закрыты
     this.queue.forEach((request, key) => {
@@ -35,7 +42,7 @@ export class SearchQueue {
 
     // Сам запрос для очереди
     const request: SearchRequest = {
-      data: {},
+      data,
       userId,
       status: new SearchStatus()
     }
@@ -98,6 +105,9 @@ export class SearchQueue {
     })
 
     await Promise.all(promises)
+
+    // На всякий який ждём отправку всех сообщений
+    await Promise.all(allowedOnlineSearchPlugins.map(ap => this.pluginQueue.awaitPluginQueues(ap.uid)))
 
     return 'close'
   }
