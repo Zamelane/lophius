@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { searchQueue } from "src";
 
-export const statusRoute = new Elysia()
+export const websocketApp = new Elysia()
   .ws("/status", {
     open(ws) {
       const key = ws.data.query.key;
@@ -20,6 +20,9 @@ export const statusRoute = new Elysia()
       }
 
       status.setClient(ws);
+      return {
+        type: getStatus(key)
+      }
     },
 
     message(ws, message) {
@@ -27,7 +30,9 @@ export const statusRoute = new Elysia()
       console.log("Received from client:", message);
 
       if (message === 'status') {
-        return getStatus(ws.data.query.key)
+        return {
+          type: getStatus(ws.data.query.key)
+        }
       }
     },
 

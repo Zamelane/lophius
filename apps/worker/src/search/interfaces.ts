@@ -1,9 +1,14 @@
 import { SearchStatus } from "./search-status";
-import { MediasType } from '../../../web/actions/server/media/other/search/index';
+import { MediasType } from '../../../web/src/features/media/search/search/index';
+import { MediaType } from "database/src/schemas/media_types";
+import { CardItemProp } from '../../../web/src/features/calendar/ui/media-cards/card';
 
-export type SearchData = any;
+export type SearchData = {
+  query: string
+  mediaType: MediaType
+}
 
-export type StatusUpdate = any;
+export type StatusUpdate = CardItemProp
 
 export type MediaOnlineResultType = {
   items: MediasType[]

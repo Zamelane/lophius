@@ -13,7 +13,6 @@ export type VideoItemCardProps = {
   title: string
   date?: string
   type?: 'film' | 'episode' | 'chapter'
-  episodeOrChapter?: string
 }
 
 export function VideoCard({ id, title }: VideoItemCardProps) {

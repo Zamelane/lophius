@@ -1,15 +1,15 @@
 import { PluginQueue } from './plugin-queue.ts';
 import { PluginsManager } from './plugins-manager.ts'
 import { SearchQueue } from './search/search-queue.ts';
-import { app } from './server-app.ts'
+import { app, websocketApp } from './server-app.ts'
 
 export * from './utils'
 
 const pluginManager = new PluginsManager()
 await pluginManager.loadPlugins()
 
-const searchQueue = new SearchQueue(3)
 const pluginQueue = new PluginQueue()
+const searchQueue = new SearchQueue(3, pluginQueue)
 
 /**
  * Run the server!
@@ -17,6 +17,7 @@ const pluginQueue = new PluginQueue()
 export const run = async (port = 3001) => {
   try {
     app.listen({ port })
+    websocketApp.listen({ port: port + 1 })
     return port
   } catch (err) {
     console.error(`Server didn't started. Reason: ${err}`)
