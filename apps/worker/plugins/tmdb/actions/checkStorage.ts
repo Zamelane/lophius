@@ -2,11 +2,11 @@ import * as process from 'node:process'
 import type { StorageData } from '@plugins/tmdb/types.ts'
 import type { PluginStorage } from '../../../src/plugin-storage.ts'
 
-export async function checkStorage(storage: PluginStorage): Promise<void> {
+export async function checkStorage(storage: PluginStorage): Promise<StorageData> {
   const { data } = await storage.get<StorageData>()
 
   if (!data) {
-    const result = await storage.create<StorageData>({
+    const storageData = {
       defaultLang: 'en',
       movies: {
         date: null,
@@ -27,8 +27,13 @@ export async function checkStorage(storage: PluginStorage): Promise<void> {
         succesfullLastUpdateDate: null
       },
       token: process.env.TMDB_TOKEN!
-    })
+    }
+
+    const result = await storage.create<StorageData>(storageData)
 
     if (!result.successful) throw new Error('Error set storage data')
+    return storageData
   }
+
+  return data
 }

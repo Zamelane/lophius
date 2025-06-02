@@ -1,14 +1,13 @@
 import type { DiscoverMovieResponse } from '@plugins/tmdb/client'
 import type { Context } from '@plugins/tmdb/types.ts'
 import { SourceMediaService } from 'database/src/services/SourceMediaService.ts'
-import type { PluginStorage } from '../../../src/plugin-storage.ts'
 import { createMoviePipeline } from '../utils/pipelineFactory.ts'
+import { TMDBPlugin } from '../plugin.ts'
 
 export async function saveMovies(
+  plugin: TMDBPlugin,
   moviesData: DiscoverMovieResponse,
-  sourceId: number,
-  token: string,
-  storage: PluginStorage
+  sourceId: number
 ) {
   if (!moviesData.results)
     throw new Error('Could not save movies for movies data')
@@ -17,10 +16,9 @@ export async function saveMovies(
 
   for (const movie of moviesData.results) {
     const ctx: Context = {
-      storage,
+      token: plugin.storageData.token,
       sourceMediaService: new SourceMediaService(sourceId),
-      fetchedData: movie,
-      token
+      fetchedData: movie
     }
     const pipeline = createMoviePipeline(ctx)
     await pipeline.execute()

@@ -2,14 +2,10 @@ import { PluginStorage } from "./plugin-storage"
 import { SearchRequest } from "./search/interfaces"
 import { SearchStatus } from "./search/search-status"
 
-export type Method = (args: MethodArgs) => Promise<void>
-export type MethodArgs = {
-  storage: PluginStorage
-}
+export type Method<TThis> = (this: TThis) => Promise<void>
 
-export type OnlineSearchMethod = (args: OnlineSearchMethodArgs) => Promise<void>
+export type OnlineSearchMethod<TThis> = (this: TThis, args: OnlineSearchMethodArgs) => Promise<void>
 export type OnlineSearchMethodArgs = {
-  storage: PluginStorage
   status: SearchStatus
   request: SearchRequest['data']
 }
@@ -25,9 +21,18 @@ export type ParserPluginConfig = {
   concurrent?: number
 }
 
-export type ParserPlugin = ParserPluginConfig & {
-  execute: Method
+export type ParserPluginInstance<TThis = any> = ParserPluginConfig & {
+  execute: Method<TThis>
+
 
   // Online search
-  onlineSearch?: OnlineSearchMethod
+  onlineSearch?: OnlineSearchMethod<TThis>
+}
+
+/**
+ * Тип для самого класса плагина (с static init)
+ */
+export interface ParserPluginClass<T extends ParserPluginInstance = ParserPluginInstance> {
+  uid: string
+  init(storage: PluginStorage): Promise<T>
 }

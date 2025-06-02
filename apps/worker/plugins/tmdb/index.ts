@@ -1,2 +1,2 @@
 import { TMDBPlugin } from './plugin'
-export default new TMDBPlugin()
+export default TMDBPlugin

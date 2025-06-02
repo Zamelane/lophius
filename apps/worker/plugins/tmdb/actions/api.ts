@@ -1,31 +1,29 @@
 import { saveMovies } from '@plugins/tmdb/actions/savers.ts'
-import { getDataByStorage } from '@plugins/tmdb/utils.ts'
 import { compareAsc } from 'date-fns'
 import type { PluginStorage } from '../../../src/plugin-storage.ts'
 import { discoverMovie } from '../client'
 import type { StorageData } from '../types'
 import { allFieldsDefined } from '../../../../web/src/shared/types/helps';
+import { TMDBPlugin } from '../plugin.ts'
 
-export async function moviesLibraryLoader(storage: PluginStorage) {
-  let storageData = await getDataByStorage(storage)
-  const { movies, defaultLang } = storageData
-  const token = `${storageData.token}`
+export async function moviesLibraryLoader(plugin: TMDBPlugin) {
+  const { movies, defaultLang, token } = plugin.storageData
 
   // Если уже всё извлекали, то просто выходим
   if (movies.isFullParsed) return
 
   // Сохраняем дату самого первого начала извлечения (это чтобы потом от этой даты искать обновления)
   if (!movies.firstUpdateDate) {
-    await storage.update({
-      ...storageData,
-      movies: { ...storageData.movies, firstUpdateDate: new Date() }
+    await plugin.storage.update({
+      ...plugin.storageData,
+      movies: { ...plugin.storageData.movies, firstUpdateDate: new Date() }
     })
   }
 
   // Задаём последнее начало извлечения данных
-  await storage.update({
-    ...storageData,
-    movies: { ...storageData.movies, startLastUpdateDate: new Date() }
+  await plugin.storage.update({
+    ...plugin.storageData,
+    movies: { ...plugin.storageData.movies, startLastUpdateDate: new Date() }
   })
 
   let date: string | null = movies.date // Искомая дата
@@ -78,23 +76,23 @@ export async function moviesLibraryLoader(storage: PluginStorage) {
     date_gte = lastItemReleaseDate ?? null
 
     // Сохраняем результаты страниц
-    await saveMovies(data, await storage.GetSourceId(), token, storage)
-    const rs = await storage.update<StorageData>({
-      ...storageData,
+    await saveMovies(plugin, data, await plugin.storage.GetSourceId())
+    const rs = await plugin.storage.update<StorageData>({
+      ...plugin.storageData,
       movies: {
-        ...storageData.movies,
+        ...plugin.storageData.movies,
         date_gte,
         date,
         page
       }
     })
 
-    if (rs.successful === true && rs.data) storageData = rs.data
+    if (rs.successful === true && rs.data) plugin.storageData = rs.data
 
     console.info(`Страница ${page}/${500} (${date}/${date_gte}) извлечена`)
   }
 
-  await setTotalComplete({ storage, storageData })
+  await setTotalComplete({ storage: plugin.storage, storageData: plugin.storageData })
 }
 
 async function setTotalComplete({
