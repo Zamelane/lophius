@@ -1,12 +1,20 @@
 import { useRef, useState, useCallback } from "react";
 import { getSearchKey } from "../services";
 import { MediaType } from "database/schemas/media_types";
+import { GlobalSearchItemCardProps } from "@/src/widgets/global-search/items/gs-card-item";
+
+type PluginProps = { uid: string, name: string }
 
 type Message =
   | { type: "close" }
-  | { type: string; [key: string]: string };
+  | { type: "update"; data: GlobalSearchItemCardProps, plugin: PluginProps }
 
-type Status = "idle" | "connecting" | "connected" | "closed" | "error";
+type Status = "connecting" | "wait results" | "closed";
+
+type ResultProps = {
+  items: GlobalSearchItemCardProps[],
+  plugin: PluginProps
+}
 
 type Props = {
   query: string
@@ -19,9 +27,9 @@ export function useSearchWebSocket({
 }: Props) {
   const wsRef = useRef<WebSocket | null>(null);
   const abortRef = useRef<(() => void) | null>(null);
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>("closed");
   const [error, setError] = useState<string | null>(null);
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<ResultProps[]>([]);
 
   const connect = useCallback((): Promise<void> => {
     return new Promise<void>(async (resolve, reject) => {
@@ -39,22 +47,54 @@ export function useSearchWebSocket({
       wsRef.current = ws;
 
       ws.onopen = () => {
-        setStatus("connected");
+        setStatus("wait results");
         console.log("✅ WebSocket подключен");
       };
 
       ws.onerror = () => {
-        setStatus("error");
+        setError("Ошибка подключения")
+        setStatus("closed");
         ws.close();
-        reject(new Error("Ошибка подключения"));
+        reject();
       };
 
       ws.onmessage = (event) => {
         try {
           const message: Message = JSON.parse(event.data);
 
-          if (message.type === "result") {
-            setResults((prev) => [...prev, message.payload]);
+          if (message.type === "update") {
+            setResults((prev) => {
+              const index = prev.findIndex(v => v.plugin.uid === message.plugin.uid);
+
+              if (index !== -1) {
+                const existing = prev[index];
+
+                // Проверим, нет ли уже такого элемента (по id или другому ключу)
+                const alreadyExists = existing.items.some(item => item.id === message.data.id);
+                if (alreadyExists) return prev;
+
+                // Создаем новый объект plugin-результата с добавленным item
+                const updated = {
+                  ...existing,
+                  items: [...existing.items, message.data],
+                };
+
+                return [
+                  ...prev.slice(0, index),
+                  updated,
+                  ...prev.slice(index + 1),
+                ];
+              }
+
+              // Новый плагин
+              return [
+                ...prev,
+                {
+                  plugin: message.plugin,
+                  items: [message.data],
+                },
+              ];
+            });
           }
 
           if (message.type === "close") {
@@ -74,7 +114,7 @@ export function useSearchWebSocket({
 
       abortRef.current = () => {
         ws.close();
-        reject(new Error("Прервано вручную"));
+        reject();
       };
     });
   }, [query]);

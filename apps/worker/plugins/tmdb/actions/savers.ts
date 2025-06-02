@@ -51,7 +51,7 @@ export async function saveMovies(
       .addStep(setMediaRevenue)
       .addStep(setMediaStatus)
       .addStep(commitStep)
-      .addStep(sendOnlineResult)
+      //.addStep(sendOnlineResult)
 
     await pipeline.execute()
   }

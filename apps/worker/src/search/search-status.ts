@@ -1,10 +1,19 @@
+import { ParserPlugin } from "src/types";
 import { StatusUpdate } from "./interfaces";
 import { ElysiaWS } from "elysia/ws";
 
 export type StatusType = 'close' | 'open' | 'completed'
 
+type StatusUpdateData = {
+  data: StatusUpdate
+  plugin: {
+    uid: string
+    name: string
+  }
+}
+
 export class SearchStatus {
-  private updates: StatusUpdate[] = [];
+  private updates: StatusUpdateData[] = [];
   private wsClient: ElysiaWS | null = null;
   private status: StatusType = 'open'
   private error: string | undefined = undefined
@@ -20,10 +29,11 @@ export class SearchStatus {
   }
 
   // Добавить новое обновление и отправить клиенту
-  addUpdate(update: StatusUpdate) {
+  addUpdate(plugin: ParserPlugin, data: StatusUpdate) {
+    const update = { data, plugin: { uid: plugin.uid, name: plugin.name } }
     this.updates.push(update);
     if (this.wsClient && this.wsClient.readyState === 1) {
-      this.wsClient.send(JSON.stringify({ type: 'update', data: update }));
+      this.wsClient.send(JSON.stringify({ type: 'update', ...update }));
     }
   }
 

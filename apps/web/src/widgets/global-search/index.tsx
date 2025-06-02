@@ -30,8 +30,8 @@ import {
 } from '../../shared/ui/shadcn/command'
 import { DialogTitle } from '../../shared/ui/shadcn/dialog'
 import { Spinner } from '../../shared/ui/shadcn/spinner'
-import { VideoItem } from './items/video-item'
 import { useSearchWebSocket } from '@/src/features/online-search/hooks/useSearchWebSocket'
+import { GlobalSearchItemCard } from './items/gs-card-item'
 
 type TabType = {
   title: string
@@ -166,7 +166,9 @@ export function GlobalSearch() {
     try {
       await connect()
     } catch (error) {
-      console.error(error)
+      if (error) {
+        console.error(error)
+      }
     }
   }
 
@@ -240,7 +242,7 @@ export function GlobalSearch() {
         </Tabs>
 
         <div className='h-full overflow-hidden'>
-          {isLoading && (
+          {isLoading || (status !== 'closed' && wsResults.length === 0) && (
             <motion.div
               key='loading'
               initial={{ opacity: 0 }}
@@ -249,39 +251,46 @@ export function GlobalSearch() {
               className='h-full flex flex-col justify-center items-center'
             >
               <Spinner size='lg' className='bg-black dark:bg-white' />
+              {
+                status
+              }
             </motion.div>
           )}
 
-          {(!results?.current || error) && !isLoading && (
-            <motion.div
-              key='empty'
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className='h-full flex flex-col justify-center items-center'
-            >
-              <p className='text-center'>
-                {error ? error : 'Ничего не найдено'}
-              </p>
-            </motion.div>
-          )}
+          {(!results?.current || error) && !isLoading
+            && wsResults.length === 0 && status === 'closed' && (
+              <motion.div
+                key='empty'
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className='h-full flex flex-col justify-center items-center'
+              >
+                <p className='text-center'>
+                  {error || wsError || 'Ничего не найдено'}
+                </p>
+              </motion.div>
+            )}
 
           <CommandList className='px-4 py-2'>
-            {!error &&
-              results?.items.map((m) => {
-                if (m.objectType === 'media') {
-                  if (m.mediaType === 'kino') {
-                    return (
-                      <VideoItem
-                        m={m}
-                        key={m.objectType + m.mediaType + m.id}
-                        setOpen={setOpen}
-                      />
-                    )
-                  }
-                }
+            {!error && !wsError &&
+              (isOnlineSearch ? wsResults : [{ plugin: { name: '', uid: '' }, items: results?.items || [] }]).map((g) => {
 
-                return null
+                return g.items.map(m => {
+                  if (m.objectType === 'media') {
+                    if (m.mediaType === 'kino') {
+                      return (
+                        <GlobalSearchItemCard
+                          {...m}
+                          key={m.objectType + m.mediaType + m.id}
+                          setOpen={setOpen}
+                          mediaType='kino'
+                        />
+                      )
+                    }
+                  }
+                  return null
+                })
               })}
             {results && results.total - results.current > 0 && (
               <Button
