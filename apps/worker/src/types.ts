@@ -36,3 +36,10 @@ export interface ParserPluginClass<T extends ParserPluginInstance = ParserPlugin
   uid: string
   init(storage: PluginStorage): Promise<T>
 }
+
+
+// Вообще левые вспомогательные
+// TODO: Надо вынести прям в общие потом для всей репы, наверное
+export type RequireContextFields<T, K extends keyof T> = T & {
+  [P in K]-?: NonNullable<T[P]>
+}
