@@ -19,7 +19,7 @@ export type VideoType = {
   id: number
   title: string
   mediaType: MediasTableType['mediaType']
-  poster: {
+  poster?: {
     path: string
     domain: string
     https: boolean

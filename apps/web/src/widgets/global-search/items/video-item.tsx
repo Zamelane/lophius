@@ -7,12 +7,13 @@ import { cn } from '@/src/shared/lib/utils'
 import { motion } from 'framer-motion'
 import { SearchSlashIcon } from 'lucide-react'
 
-type Props = {
-  m: VideoType
+export type VideoItemProps = VideoType
+
+export type Props = VideoItemProps & {
   setOpen?: (value: boolean) => void
 }
 
-export function VideoItem({ m, setOpen }: Props) {
+export function VideoItem({ setOpen, ...m }: Props) {
   return (
     <motion.div
       key={`media_item_${m.id}`}

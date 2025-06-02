@@ -1,14 +1,15 @@
 import { SearchStatus } from "./search-status";
 import { MediasType } from '../../../web/src/features/media/search/search/index';
 import { MediaType } from "database/src/schemas/media_types";
-import { CardItemProp } from '../../../web/src/features/calendar/ui/media-cards/card';
+import { GlobalSearchItemCardProps } from '../../../web/src/widgets/global-search/items/gs-card-item';
 
 export type SearchData = {
   query: string
   mediaType: MediaType
+  locale: string
 }
 
-export type StatusUpdate = CardItemProp
+export type StatusUpdate = GlobalSearchItemCardProps
 
 export type MediaOnlineResultType = {
   items: MediasType[]

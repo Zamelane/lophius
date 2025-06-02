@@ -24,7 +24,8 @@ export class SearchQueue {
     userId: number,
     data: {
       query: string
-      mediaType: MediaType
+      mediaType: MediaType,
+      locale: string
     }
   }) {
     // Удаляем другие запросы, если они уже закрыты

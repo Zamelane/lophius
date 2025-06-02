@@ -13,7 +13,8 @@ export const searchRoute = new Elysia()
       userId: t.Number(),
       data: t.Object({
         query: t.String({ minLength: 1, maxLength: 255 }),
-        mediaType: t.UnionEnum(mediaTypes)
+        mediaType: t.UnionEnum(mediaTypes),
+        locale: t.String({ minLength: 2, maxLength: 2 })
       })
     })
   });
