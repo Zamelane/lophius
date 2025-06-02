@@ -7,10 +7,33 @@ type Status<T> = {
 }
 
 export class PluginStorage {
-  public sourceId: number | null = null
+  public sourceId!: number
 
-  constructor(private readonly pluginName: string) {
+  private constructor(private readonly pluginName: string) {
     console.info(`Plugin (${pluginName}) Storage initialized`)
+    this.GetSourceId()
+  }
+
+  static async init(pluginName: string) {
+    const instance = new PluginStorage(pluginName)
+    
+    // Проверяем, занесено ли в базу
+    const check = await instance.get()
+
+    // Если занесено, чекаем id'шник
+    if (check.successful) {
+      await instance.GetSourceId()
+      return instance
+    }
+
+    // Иначе создаём запись в базе
+    const { successful } = await instance.create(null)
+
+    if (!successful) {
+      throw new Error(`Error create storage in database (plugin ${pluginName})`)
+    }
+
+    return instance
   }
 
   public async GetSourceId() {
