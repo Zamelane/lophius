@@ -19,10 +19,6 @@ export interface Context {
   sourceMediaService: SourceMediaService
   mediaModel?: MediaModel
   token: string
-  realtimeResult?: {
-      uid: string,
-      status: SearchStatus
-    }
 }
 
 export type StorageData = {

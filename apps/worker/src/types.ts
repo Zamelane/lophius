@@ -1,16 +1,6 @@
-import type { PluginStorage } from './plugin-storage.ts'
-import { SearchRequest } from './search/interfaces.ts'
-import { SearchStatus } from './search/search-status.ts'
-
-export type ParserPlugin = {
-  name: string
-  uid: string
-  allowedDomains?: string[]
-  version: string
-
-  // Системные вызовы
-  execute: Method
-} & OnlineSearchConfig
+import { PluginStorage } from "./plugin-storage"
+import { SearchRequest } from "./search/interfaces"
+import { SearchStatus } from "./search/search-status"
 
 export type Method = (args: MethodArgs) => Promise<void>
 export type MethodArgs = {
@@ -19,17 +9,25 @@ export type MethodArgs = {
 
 export type OnlineSearchMethod = (args: OnlineSearchMethodArgs) => Promise<void>
 export type OnlineSearchMethodArgs = {
-  storage: PluginStorage,
-  status: SearchStatus,
+  storage: PluginStorage
+  status: SearchStatus
   request: SearchRequest['data']
 }
 
-export type OnlineSearchConfig = {
-  onlineSearch?: undefined
-  maxInMinute?: undefined
-  concurrent?: undefined
-} | {
-  onlineSearch: OnlineSearchMethod
-  maxInMinute: number
-  concurrent: number
+export type ParserPluginConfig = {
+  name: string
+  uid: string
+  allowedDomains?: string[]
+  version: string
+  
+  // Online search
+  maxInMinute?: number
+  concurrent?: number
+}
+
+export type ParserPlugin = ParserPluginConfig & {
+  execute: Method
+
+  // Online search
+  onlineSearch?: OnlineSearchMethod
 }

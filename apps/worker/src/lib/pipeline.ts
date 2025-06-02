@@ -1,22 +1,25 @@
-type Step<T> = (context: T) => Promise<T> | T
+type Step<Context> = {
+  execute: (ctx: Context) => Promise<Context>
+}
 
-export class Pipeline<T extends object> {
-  private steps: Step<T>[] = []
-  private context: T
+export class Pipeline<Context> {
+  private steps: Step<Context>[] = []
+  private context: Context
 
-  constructor(initialContext: T) {
+  constructor(initialContext: Context) {
     this.context = initialContext
   }
 
-  addStep(step: Step<T>): this {
+  addStep(step: Step<Context>): this {
     this.steps.push(step)
     return this
   }
 
-  async execute(): Promise<T> {
+  async execute(): Promise<Context> {
+    let ctx = this.context
     for (const step of this.steps) {
-      this.context = await step(this.context)
+      ctx = await step.execute(ctx)
     }
-    return this.context
+    return ctx
   }
 }
