@@ -1,14 +1,14 @@
 import Bun from 'bun'
 import { glob } from 'glob'
 import { PluginStorage } from './plugin-storage.ts'
-import type { ParserPlugin } from './types.ts'
+import type { ParserPluginClass, ParserPluginInstance } from './types.ts'
 
 export class PluginsManager {
   private pluginsPath = './plugins/*/index.{ts,js}'
   private plugins: Record<
     string,
     {
-      plugin: ParserPlugin
+      plugin: ParserPluginInstance
       promise?: Promise<void>
     }
   > = {}
@@ -36,17 +36,18 @@ export class PluginsManager {
         }
         // Динамический импорт (Bun поддерживает ES-модули)
         const pluginModule = await import(entry)
-        const plugin = pluginModule.default as ParserPlugin
+        const plugin = pluginModule.default as ParserPluginClass
+        const instance = await plugin.init(new PluginStorage(plugin.uid))
 
-        if (!plugin.name) {
+        if (!instance.name) {
           console.error(`🛑 Plugin '${entry}' ignored: missing 'name' field!`)
           continue
         }
 
-        this.plugins[plugin.name] = {
-          plugin
+        this.plugins[instance.name] = {
+          plugin: instance
         }
-        console.info(`✅ Plugin loaded: ${plugin.name}`)
+        console.info(`✅ Plugin loaded: ${instance.name}`)
       } catch (err) {
         console.error(`❌ Plugin loading error (${entry}):`, err)
       }
@@ -63,9 +64,7 @@ export class PluginsManager {
         if (config.promise) continue
 
         config.promise = config.plugin
-          .execute({
-            storage: new PluginStorage(pluginKey)
-          })
+          .execute()
           .then(() => {
             config.promise = undefined
           })

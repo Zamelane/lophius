@@ -1,16 +1,14 @@
 import { OnlineSearchMethodArgs } from "src/types"
-import { checkStorage } from "./checkStorage"
-import { getDataByStorage } from "../utils"
 import { pluginQueue } from "src"
 import TMDB from ".."
 import { searchMovie } from "../client"
+import TMDBPlugin from ".."
 
-export async function onlineSearch({ status, request, storage }: OnlineSearchMethodArgs) {
-    await checkStorage(storage)
-    const data = await getDataByStorage(storage)
-    await storage.GetSourceId()
+export async function onlineSearch(this: TMDBPlugin, { status, request }: OnlineSearchMethodArgs) {
+    const data = await this.storageData
+    await this.storage.GetSourceId()
 
-    if (!data || !data.token || !storage.sourceId) {
+    if (!data || !data.token || !this.storage.sourceId) {
       return
     }
 

@@ -1,23 +1,33 @@
-// /plugins/tmdb/plugin.ts
-
 import { TMDBConfig } from './config'
 import { execute as executeLoader } from './actions/execute'
 import { onlineSearch as searchAction } from './actions/onlineSearch'
-import { ParserPlugin } from 'src/types'
+import { ParserPluginInstance } from 'src/types'
+import { PluginStorage } from 'src/plugin-storage'
+import { StorageData } from './types'
+import { checkStorage } from './actions/checkStorage'
 
-export class TMDBPlugin implements ParserPlugin {
+export class TMDBPlugin implements ParserPluginInstance {
   name = TMDBConfig.name
   uid = TMDBConfig.uid
   version = TMDBConfig.version
 
   maxInMinute = TMDBConfig.maxInMinute
   concurrent = TMDBConfig.concurrent
+  storageData!: StorageData
 
-  execute: ParserPlugin['execute'] = async (args) => {
-    return executeLoader(args)
+  private constructor(public storage: PluginStorage) {}
+
+  // Делаем uid доступным до инициализации
+  static uid = TMDBConfig.uid
+
+  // Инициализация плагина
+  static async init(storage: PluginStorage): Promise<TMDBPlugin> {
+    const plugin = new TMDBPlugin(storage)
+    plugin.storageData = await checkStorage(storage)
+    return plugin
   }
 
-  onlineSearch: ParserPlugin['onlineSearch'] = async (args) => {
-    return searchAction(args)
-  }
+  execute = executeLoader
+
+  onlineSearch = searchAction
 }

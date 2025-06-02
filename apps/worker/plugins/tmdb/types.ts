@@ -15,7 +15,6 @@ export interface Context {
   fetchedMovieDetails?: MovieDetailsResponse
   fetchedTranslatesData?: MovieTranslationsResponse
   fetchedImagesData?: MovieImagesResponse
-  storage: PluginStorage
   sourceMediaService: SourceMediaService
   mediaModel?: MediaModel
   token: string
@@ -24,7 +23,7 @@ export interface Context {
 export type StorageData = {
   movies: ParsedConfig
   serials: ParsedConfig
-  token: string | null
+  token: string
   defaultLang: string
 }
 
