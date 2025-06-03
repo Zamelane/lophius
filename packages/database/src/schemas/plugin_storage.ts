@@ -5,7 +5,8 @@ import { sources } from './sources'
 
 export const plugin_storage = pgTable('plugin_storage', {
   value: json().default(null),
-  pluginName: varchar().notNull().unique(),
+  uid: varchar().notNull().unique(),
+  pluginName: varchar().notNull(),
   sourceId: integer()
     .references(() => sources.id)
     .notNull()

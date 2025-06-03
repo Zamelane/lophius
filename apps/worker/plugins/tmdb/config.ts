@@ -1,7 +1,7 @@
 import { ParserPluginConfig } from "src/types";
 
 export const TMDBConfig: ParserPluginConfig = {
-  name: 'TMDB',
+  pluginName: 'TMDB',
   uid: 'GSIST',
   version: '0.1.1',
   concurrent: 10,

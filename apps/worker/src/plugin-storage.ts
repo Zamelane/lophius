@@ -9,19 +9,18 @@ type Status<T> = {
 export class PluginStorage {
   public sourceId!: number
 
-  private constructor(private readonly pluginName: string) {
+  private constructor(private readonly uid: string, private readonly pluginName: string) {
     console.info(`Plugin (${pluginName}) Storage initialized`)
-    this.GetSourceId()
   }
 
-  static async init(pluginName: string) {
-    const instance = new PluginStorage(pluginName)
+  static async init(uid: string, pluginName: string) {
+    const instance = new PluginStorage(uid, pluginName)
     
     // Проверяем, занесено ли в базу
     const check = await instance.get()
 
     // Если занесено, чекаем id'шник
-    if (check.successful) {
+    if (check.successful && check.data !== undefined) {
       await instance.GetSourceId()
       return instance
     }
@@ -36,13 +35,13 @@ export class PluginStorage {
     return instance
   }
 
-  public async GetSourceId() {
+  private async GetSourceId() {
     if (this.sourceId) return this.sourceId
 
     const sourceId = await db
       .select()
       .from(plugin_storage)
-      .where(eq(plugin_storage.pluginName, this.pluginName))
+      .where(eq(plugin_storage.uid, this.uid))
       .then((v) => v[0].sourceId)
 
     this.sourceId = sourceId
@@ -54,11 +53,11 @@ export class PluginStorage {
     return db
       .select()
       .from(plugin_storage)
-      .where(eq(plugin_storage.pluginName, this.pluginName))
+      .where(eq(plugin_storage.uid, this.uid))
       .then((v) => {
         return {
           successful: true,
-          data: v.length ? (v[0].value as T) : null
+          data: v.length ? (v[0].value as T) : undefined
         }
       })
       .catch((e) => {
@@ -85,6 +84,7 @@ export class PluginStorage {
         .insert(plugin_storage)
         .values({
           sourceId,
+          uid: this.uid,
           pluginName: this.pluginName,
           value: v
         })
@@ -123,7 +123,7 @@ export class PluginStorage {
       .set({
         value: v
       })
-      .where(eq(plugin_storage.pluginName, this.pluginName))
+      .where(eq(plugin_storage.uid, this.uid))
       .returning()
       .then((v) => {
         console.info(`Plugin (${this.pluginName}) Storage update value success`)
