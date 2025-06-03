@@ -21,7 +21,7 @@ export function CinemaInfoTab({ mediaInfo }: Props) {
     case 'comic':
       mediaType = 'фильм'
       break
-    case 'kino':
+    case 'video':
       mediaType = 'фильм'
       break
     case 'music':

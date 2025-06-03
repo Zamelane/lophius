@@ -1,4 +1,4 @@
-export * from './createOrGetKino'
+export * from './createOrGetVideo'
 export * from './createPrefetchMedia'
 export * from './getMovieDetails'
 export * from './setGenres'

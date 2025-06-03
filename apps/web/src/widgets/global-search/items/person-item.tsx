@@ -1,19 +1,18 @@
-'use client'
-import { VideoType } from '@/src/features/media/search/types'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
-import { cn } from '@/src/shared/lib/utils'
-import { Image } from '@/src/shared/ui/media/image'
-import { CommandItem } from '@/src/shared/ui/shadcn/command'
+import { PersonType } from "@/src/features/media/search/types"
+import { LocaleLink } from "@/src/shared/hooks/locale-link"
+import { cn } from "@/src/shared/lib/utils"
+import { Image } from "@/src/shared/ui/media/image"
+import { CommandItem } from "cmdk"
 import { motion } from 'framer-motion'
-import { SearchSlashIcon } from 'lucide-react'
+import { SearchSlashIcon } from "lucide-react"
 
-export type VideoItemProps = VideoType
+export type PersonItemProps = PersonType
 
-export type Props = VideoItemProps & {
+export type Props = PersonItemProps & {
   setOpen?: (value: boolean) => void
 }
 
-export function VideoItem({ setOpen, ...m }: Props) {
+export function PersonItem({ setOpen, ...m }: Props) {
   return (
     <motion.div
       key={`media_item_${m.id}`}
@@ -32,14 +31,14 @@ export function VideoItem({ setOpen, ...m }: Props) {
               'w-[54px] h-[75px]'
             )}
           >
-            {m.poster ? (
+            {m.avatar ? (
               <Image
                 className={cn(
                   'object-cover aspect-[5/7] max-w-fit max-h-fit',
                   m.isAdult && 'blur-[8px]'
                 )}
                 //src='https://image.tmdb.org/t/p/original/gstnSthunNwXD4kVyq9CC5JEP39.jpg'
-                src={`${m.poster.https ? 'https' : 'http'}://${m.poster.domain}${m.poster.path}`}
+                src={`${m.avatar.https ? 'https' : 'http'}://${m.avatar.domain}${m.avatar.path}`}
                 quality={55}
                 loading='lazy'
                 decoding='async'
@@ -54,13 +53,14 @@ export function VideoItem({ setOpen, ...m }: Props) {
             )}
           </div>
           <div className='flex flex-col justify-center'>
-            <p className='text-xs text-secondary-foreground'>Завершён</p>
-            <p className='text-base mb-1 truncate'>{m.title}</p>
+            <p className='text-base mb-1 truncate'>{m.name}</p>
             <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
               {[
-                m.contentType === 'film' && 'Фильм' || m.contentType === 'serial' && 'Сериал',
-                m.firstAirDate && new Date(m.firstAirDate).getFullYear()
-              ].join(', ')}
+                m.gender !== undefined ? (m.gender ? 'Мужчина' : 'Женщина') : null,
+                m.age ? `${m.age} лет` : null
+              ]
+                .filter(Boolean)
+                .join(', ')}
             </p>
           </div>
         </CommandItem>

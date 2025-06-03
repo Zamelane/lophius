@@ -1,9 +1,9 @@
 import type {
   CountryTranslation,
   GenreTranslation,
-  KinoCategoryType,
-  KinoTranslateType,
-  KinoType,
+  VideoCategoryType,
+  VideoTranslateType,
+  VideoType,
   LanguageTranslation,
   SerialStatusType
 } from '@/src/shared/types'
@@ -22,26 +22,26 @@ export type GenreInfoDataType = WithInfoDataType<GenreTranslation[]>
 
 export type ExternalLinksInfoDataType = WithInfoDataType<string[]>
 
-export type KinoTypeInfoDataType = WithInfoDataType<KinoType | null>
-export type KinoCategoryInfoDataType = WithInfoDataType<KinoCategoryType | null>
+export type VideoTypeInfoDataType = WithInfoDataType<VideoType | null>
+export type VideoCategoryInfoDataType = WithInfoDataType<VideoCategoryType | null>
 export type SerialProductionStatusInfoDataType =
   WithInfoDataType<null | SerialStatusType>
-export type KinoTranslateInfoDataType = WithInfoDataType<KinoTranslateType[]>
+export type VideoTranslateInfoDataType = WithInfoDataType<VideoTranslateType[]>
 export type OriginalLanguageInfoDataType =
   WithInfoDataType<LanguageTranslation | null>
 
-export type KinoDetailedInfoDataType = {
+export type VideoDetailedInfoDataType = {
   languages: LanguageInfoDataType
   countries: CountryInfoDataType
   genres: GenreInfoDataType
   links: ExternalLinksInfoDataType
-  kinoType: KinoTypeInfoDataType
-  kinoCategory: KinoCategoryInfoDataType
+  videoType: VideoTypeInfoDataType
+  videoCategory: VideoCategoryInfoDataType
   serialStatus: SerialProductionStatusInfoDataType
   originalLanguage: OriginalLanguageInfoDataType
 }
 
-export type KinoTranslatesInfoDataType = {
-  translates: KinoTranslateInfoDataType
+export type VideoTranslatesInfoDataType = {
+  translates: VideoTranslateInfoDataType
   languages: LanguageInfoDataType
 }

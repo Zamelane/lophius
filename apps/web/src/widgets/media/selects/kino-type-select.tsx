@@ -1,7 +1,7 @@
 'use client'
 
-import type { KinoType } from '@/src/shared/types'
-import type { KinoTypeInfoDataType } from '@/src/shared/types/edit-types'
+import type { VideoType } from '@/src/shared/types'
+import type { VideoTypeInfoDataType } from '@/src/shared/types/edit-types'
 import {
   Select,
   SelectContent,
@@ -14,12 +14,12 @@ import {
 import { SquarePlayIcon, SquareStackIcon } from 'lucide-react'
 
 type Props = {
-  kinoType: KinoTypeInfoDataType
+  videoType: VideoTypeInfoDataType
 }
 
-export function KinoTypeSelect({ kinoType: { set } }: Props) {
+export function VideoTypeSelect({ videoType: { set } }: Props) {
   return (
-    <Select onValueChange={(v) => set(v as KinoType)}>
+    <Select onValueChange={(v) => set(v as VideoType)}>
       <SelectTrigger>
         <SelectValue placeholder='Тип контента' />
       </SelectTrigger>

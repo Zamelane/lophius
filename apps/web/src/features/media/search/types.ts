@@ -1,4 +1,5 @@
 import type { MediasTableType } from 'database/schemas'
+import { ContentTypesType } from 'database/schemas/media_types'
 
 export const objectTypes = ['media', 'personage', 'person', 'user'] as const
 
@@ -17,6 +18,8 @@ export type VideoType = {
   } | null
   isAdult: boolean
   objectType: 'media'
+  contentType: ContentTypesType
+  firstAirDate?: string
 }
 
 export type PersonType = {
@@ -25,10 +28,12 @@ export type PersonType = {
   avatar?: {
     path: string
     domain: string
-    https: string
+    https: boolean
   }
   age?: number
+  isAdult: boolean
   objectType: 'person'
+  gender?: boolean
 }
 
 export type PersonageType = {
@@ -37,7 +42,7 @@ export type PersonageType = {
   avatar?: {
     path: string
     domain: string
-    https: string
+    https: boolean
   }
   objectType: 'personage'
 }

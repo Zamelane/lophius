@@ -48,7 +48,7 @@ export function EditDropdownMenu() {
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <LocaleLink href='/create/kino'>
+                <LocaleLink href='/create/video'>
                   <DropdownMenuItem>
                     <ClapperboardIcon />
                     <div className='flex flex-col'>

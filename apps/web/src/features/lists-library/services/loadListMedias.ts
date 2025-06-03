@@ -50,7 +50,7 @@ export async function loadListMedias({
   const rtr: GridMediaCardProps[] = []
 
   for (const row of await result) {
-    if (row.medias.mediaType === 'kino') {
+    if (row.medias.mediaType === 'video') {
       rtr.push({
         id: row.medias.id,
         img: row.literal_posters,

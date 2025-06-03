@@ -23,7 +23,7 @@ const publicMenu: LightMenuItemType[] = [
 const publicNav: NavMainMenuType = [...generatePublicMenu()]
 
 const menu: MenuType = {
-  path: '/kino',
+  path: '/video',
   mode: {
     name: 'Видео',
     logo: FilmIcon

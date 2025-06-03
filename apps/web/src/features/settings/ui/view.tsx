@@ -96,7 +96,7 @@ export function ListsView({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value='kino'>Видео</SelectItem>
+              <SelectItem value='video'>Видео</SelectItem>
               <SelectItem value='comic'>Комиксы</SelectItem>
               <SelectItem value='book'>Книги</SelectItem>
               <SelectItem value='music'>Музыка</SelectItem>

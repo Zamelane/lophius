@@ -1,5 +1,5 @@
-import type { KinoCategoryType } from '@/src/shared/types'
-import type { KinoCategoryInfoDataType } from '@/src/shared/types/edit-types'
+import type { VideoCategoryType } from '@/src/shared/types'
+import type { VideoCategoryInfoDataType } from '@/src/shared/types/edit-types'
 import {
   Select,
   SelectContent,
@@ -12,12 +12,12 @@ import {
 import { CatIcon, VideoIcon } from 'lucide-react'
 
 type Props = {
-  kinoCategory: KinoCategoryInfoDataType
+  videoCategory: VideoCategoryInfoDataType
 }
 
-export function KinoCategorySelect({ kinoCategory: { set } }: Props) {
+export function VideoCategorySelect({ videoCategory: { set } }: Props) {
   return (
-    <Select onValueChange={(v) => set(v as KinoCategoryType)}>
+    <Select onValueChange={(v) => set(v as VideoCategoryType)}>
       <SelectTrigger>
         <SelectValue placeholder='Категория' />
       </SelectTrigger>

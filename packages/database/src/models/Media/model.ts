@@ -7,6 +7,7 @@ export class MediaModel implements OptionalMedia {
   isAdult!: OptionalMedia['isAdult']
   mediaType!: OptionalMedia['mediaType']
   mediaStatus!: OptionalMedia['mediaStatus']
+  contentType!: OptionalMedia['contentType']
   external_id!: OptionalMedia['external_id']
 
   constructor(data: OptionalMedia) {

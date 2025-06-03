@@ -2,7 +2,7 @@
 
 import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
 import type {
-  KinoTranslateInfoDataType,
+  VideoTranslateInfoDataType,
   LanguageInfoDataType
 } from '@/src/shared/types/edit-types'
 import { Button } from '@/src/shared/ui/shadcn/button'
@@ -21,7 +21,7 @@ import { toast } from 'sonner'
 import { LanguageSelect } from '../language-select'
 
 type Props = LayoutProps & {
-  translates: KinoTranslateInfoDataType
+  translates: VideoTranslateInfoDataType
   languages: LanguageInfoDataType
 }
 

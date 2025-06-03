@@ -73,8 +73,8 @@ export type UserInfo = User & {
 }
 
 // Прочее
-export type KinoType = 'film' | 'serial'
-export type KinoCategoryType = 'anime' | 'cinema'
+export type VideoType = 'film' | 'serial'
+export type VideoCategoryType = 'anime' | 'cinema'
 export type SerialStatusType =
   | 'canceled'
   | 'coming out'
@@ -82,7 +82,7 @@ export type SerialStatusType =
   | 'in production'
   | 'ongoing'
   | 'planned'
-export type KinoTranslateType = {
+export type VideoTranslateType = {
   language: LanguageTranslation
   overview: string
   titles: string[]
