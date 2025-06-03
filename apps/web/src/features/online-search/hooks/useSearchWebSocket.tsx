@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from "react";
 import { getSearchKey } from "../services";
 import { MediaType } from "database/schemas/media_types";
 import { GlobalSearchItemCardProps } from "@/src/widgets/global-search/items/gs-card-item";
+import { ObjectType } from "../../media/search/types";
 
 type PluginProps = { uid: string, name: string }
 
@@ -19,11 +20,13 @@ type ResultProps = {
 type Props = {
   query: string
   mediaType: MediaType
+  objectType: ObjectType
 }
 
 export function useSearchWebSocket({
   query,
-  mediaType
+  mediaType,
+  objectType
 }: Props) {
   const wsRef = useRef<WebSocket | null>(null);
   const abortRef = useRef<(() => void) | null>(null);
@@ -33,7 +36,7 @@ export function useSearchWebSocket({
 
   const connect = useCallback((): Promise<void> => {
     return new Promise<void>(async (resolve, reject) => {
-      const key = await getSearchKey(query, mediaType)
+      const key = await getSearchKey(query, mediaType, objectType)
       if (!key) {
         reject(new Error("Нет ключа поиска"));
         return;
@@ -117,7 +120,7 @@ export function useSearchWebSocket({
         reject();
       };
     });
-  }, [query]);
+  }, [query, mediaType, objectType]);
 
   const disconnect = useCallback(() => {
     abortRef.current?.();

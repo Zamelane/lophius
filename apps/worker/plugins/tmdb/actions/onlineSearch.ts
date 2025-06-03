@@ -3,8 +3,16 @@ import { pluginQueue } from "src"
 import { searchMovie } from "../client"
 import TMDBPlugin from ".."
 import { createPrefetchMediaPipeline } from "../utils/pipelineFactory"
+import { InternalConfig } from "../config"
+import { StorageData } from "../types"
 
-export async function onlineSearch(this: TMDBPlugin, { status, request }: OnlineSearchMethodArgs) {
+export async function onlineSearch(this: TMDBPlugin, onlineSearch: OnlineSearchMethodArgs) {
+  // Валидируем запрос поиска
+  if (onlineSearch.request.objectType !== 'media') {
+    return
+  }
+
+
   const data = this.storageData
   await this.storage.GetSourceId()
 
@@ -12,7 +20,13 @@ export async function onlineSearch(this: TMDBPlugin, { status, request }: Online
     return
   }
 
-  const { data: fetchData, error, request: rq } = await pluginQueue.addAction(this.uid, async () => {
+  if (onlineSearch.request.mediaType === 'kino') {
+    await fetchVideos(this, data, onlineSearch)
+  }
+}
+
+async function fetchVideos(plugin: TMDBPlugin, data: StorageData, { status, request }: OnlineSearchMethodArgs) {
+  const { data: fetchData, error, request: rq } = await pluginQueue.addAction(plugin.uid, async () => {
     return searchMovie({
       auth: data.token!,
       query: {
@@ -30,22 +44,29 @@ export async function onlineSearch(this: TMDBPlugin, { status, request }: Online
     return
   }
 
-  let i = 0
   for (const item of fetchData.results || []) {
-    const result = await createPrefetchMediaPipeline(this, {
+    const result = await createPrefetchMediaPipeline(plugin, {
       external_id: item.id!.toString(),
       isAdult: item.adult ?? true,
       isVideo: item.video ?? false,
       mediaType: 'kino'
     }).execute()
 
-    if (result.media.id)
-      status.addUpdate(this, {
+    if (result.media.id) {
+      status.addUpdate(plugin, {
         id: result.media.id,
         isAdult: item.adult ?? true,
         mediaType: 'kino',
         objectType: 'media',
-        title: item.title ?? "Нету"
+        title: item.title ?? "Нету",
+        poster: item.poster_path
+          ? { 
+            domain: InternalConfig.img.domain,
+            https: InternalConfig.img.https,
+            path: InternalConfig.img.path + item.poster_path
+           }
+          : undefined
       })
+    }
   }
 }
