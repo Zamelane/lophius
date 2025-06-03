@@ -1,5 +1,5 @@
 import type { Context } from '@plugins/tmdb/types'
-import type { OptionalMedia } from 'database'
+import type { OptionalExternalImage, OptionalMedia } from 'database'
 import { SourceMediaService } from 'database/src/services/SourceMediaService'
 import { Pipeline } from 'src/lib/pipeline'
 import type { TMDBPlugin } from '../plugin'
@@ -17,6 +17,7 @@ import {
   SetMediaStatusStep,
   SetTranslationsStep
 } from '../steps'
+import { OptionalPeople } from 'database/models/People'
 
 export function createMoviePipeline(
   initialContext: Context
@@ -35,18 +36,36 @@ export function createMoviePipeline(
     .addStep(new CommitStep())
 }
 
-export type PrefetchContext = {
+export type MediaPrefetchContext = {
   media: OptionalMedia
   sourceMediaService: SourceMediaService
 }
 export function createPrefetchMediaPipeline(
   plugin: TMDBPlugin,
-  media: PrefetchContext['media']
-): Pipeline<PrefetchContext> {
-  return new Pipeline<PrefetchContext>({
+  media: MediaPrefetchContext['media']
+): Pipeline<MediaPrefetchContext> {
+  return new Pipeline<MediaPrefetchContext>({
     media,
     sourceMediaService: new SourceMediaService(plugin.storage.sourceId)
   })
     .addStep(new CreatePrefetchMediaStep())
     .addStep(new CommitStep())
+}
+
+export type PeoplePrefetchContext = {
+  avatar: OptionalExternalImage
+  people: OptionalPeople
+  sourceMediaService: SourceMediaService
+}
+export function createPrefetchPersonPipeline(
+  plugin: TMDBPlugin,
+  people: PeoplePrefetchContext['people'],
+  avatar: PeoplePrefetchContext['avatar']
+): Pipeline<PeoplePrefetchContext> {
+  return new Pipeline<PeoplePrefetchContext>({
+    people,
+    avatar,
+    sourceMediaService: new SourceMediaService(plugin.storage.sourceId)
+  })
+    //.addStep()
 }
