@@ -4,7 +4,7 @@ import type TMDBPlugin from '..'
 import { searchMovie, searchPerson, searchTv } from '../client'
 import { InternalConfig } from '../config'
 import type { StorageData } from '../types'
-import { createPrefetchMediaPipeline } from '../utils/pipelineFactory'
+import { createPrefetchMediaPipeline, createPrefetchPersonPipeline } from '../utils/pipelineFactory'
 
 export async function onlineSearch(
   this: TMDBPlugin,
@@ -63,6 +63,12 @@ async function fetchPersons(
     //   mediaStatus: 'preliminary',
     //   contentType: 'film'
     // }).execute()
+
+    const result = await createPrefetchPersonPipeline(plugin, {
+
+    }, {
+
+    }).execute()
 
     if (item.id) {
       status.addUpdate(plugin, {

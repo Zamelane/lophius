@@ -2,6 +2,7 @@ import {
   type DBConnection,
   type MediaBudget,
   MediaRepository,
+  PartialExternalDomain,
   type PartialExternalImage,
   type PartialGenre,
   type PartialMedia,
@@ -34,6 +35,9 @@ import { StatusService } from './StatusService'
 import { TranslateService } from './TranslateService'
 import type { UoW } from './UnitOfWorks'
 import { BaseService } from './types'
+import { PeopleService } from './PeopleService'
+import { PartialPeople } from 'database/models/People'
+import { PeopleModel } from 'database/models/People/model'
 
 export class SourceMediaService extends BaseService {
   private readonly mediaRepository: MediaRepository
@@ -54,6 +58,7 @@ export class SourceMediaService extends BaseService {
   public readonly mediaStatusService: MediaStatusService
   public readonly statusService: StatusService
   public readonly mediaRevenueService: MediaRevenueService
+  public readonly peopleService: PeopleService
 
   constructor(
     protected sourceId: SourceId,
@@ -83,6 +88,7 @@ export class SourceMediaService extends BaseService {
     this.mediaStatusService = new MediaStatusService(tx, this.uow)
     this.statusService = new StatusService(tx, this.uow)
     this.mediaRevenueService = new MediaRevenueService(tx, this.uow)
+    this.peopleService = new PeopleService(tx, this.uow)
   }
 
   /**
@@ -107,6 +113,10 @@ export class SourceMediaService extends BaseService {
     return mediaModel
   }
 
+  createPeople(people: PartialPeople): PeopleModel {
+    return this.peopleService.createPeople(people)
+  }
+
   findMediaByExternalId(externalId: string): Promise<MediaModel | undefined> {
     return this.mediaRepository.findByExternalId(externalId, this.sourceId)
   }
@@ -117,7 +127,9 @@ export class SourceMediaService extends BaseService {
 
   async createPoster(
     media: MediaModel,
-    image: PartialExternalImage
+    image: Omit<PartialExternalImage, 'externalDomain'> & {
+      externalDomain: PartialExternalDomain
+    }
   ): Promise<ExternalPosterModel> {
     const externalDomain = await this.externalDomainService.findOrCreate({
       ...image.externalDomain
@@ -139,7 +151,9 @@ export class SourceMediaService extends BaseService {
 
   async createBackdrop(
     media: MediaModel,
-    image: PartialExternalImage
+    image: Omit<PartialExternalImage, 'externalDomain'> & {
+      externalDomain: PartialExternalDomain
+    }
   ): Promise<ExternalBackdropModel> {
     const externalDomain = await this.externalDomainService.findOrCreate({
       ...image.externalDomain
@@ -161,8 +175,10 @@ export class SourceMediaService extends BaseService {
 
   async createLogo(
     media: MediaModel,
-    image: PartialExternalImage
-  ): Promise<ExternalBackdropModel> {
+    image: Omit<PartialExternalImage, 'externalDomain'> & {
+      externalDomain: PartialExternalDomain
+    }
+  ): Promise<ExternalLogoModel> {
     const externalDomain = await this.externalDomainService.findOrCreate({
       ...image.externalDomain
     })
