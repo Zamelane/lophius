@@ -47,6 +47,9 @@ type TabType = {
 export function GlobalSearch() {
   const { isOpen: open, setIsOpen: setOpen } = useGlobalSearchContext()
 
+  // Режим поиска
+  const [isOnlineSearch, setIsOnlineSearch] = useState(false)
+
   // Конфигурация запроса
   const [searchQuery, setSearchQuery] = useState('')
   const [objectType, setObjectType] = useState<ObjectType>('media')
@@ -74,7 +77,7 @@ export function GlobalSearch() {
     },
     { title: 'Человек', key: 'person' },
     { title: 'Персонаж', key: 'personage' },
-    { title: 'Пользователь', key: 'user' }
+    { title: 'Пользователь', key: 'user'}
   ])
 
   // Состояния
@@ -92,15 +95,13 @@ export function GlobalSearch() {
     status,
     error: wsError,
     results: wsResults,
-    resultsLength: wsResultsLength
+    resultsLength: wsResultsLength,
+    clearResults: wsClearResults
   } = useSearchWebSocket({
     query: searchQuery,
     mediaType: mediaType === 'all' ? 'video' : mediaType,
     objectType
   })
-
-  // Режим поиска
-  const [isOnlineSearch, setIsOnlineSearch] = useState(false)
 
   // Хуки
   const debouncedQuery = useDebounce(searchQuery.trim(), 400)
@@ -201,7 +202,21 @@ export function GlobalSearch() {
     if (isOnlineSearch && mediaType === 'all') {
       setMediaType('video')
     }
+
+    if (isOnlineSearch && objectType === 'user') {
+      setObjectType('media')
+    }
+
   }, [isOnlineSearch, mediaType])
+
+  useEffect(() => {
+    wsClearResults()
+    if (isOnlineSearch && (mediaType !== 'all' || objectType !== 'media')) {
+      onlineSearchHandler()
+    } else if (!isOnlineSearch) {
+      fetchResults(debouncedQuery)
+    }
+  }, [objectType, mediaType])
 
   return (
     <AnimatePresence>
@@ -243,6 +258,7 @@ export function GlobalSearch() {
                 })
               }}
               selectedSubKey={mediaType}
+              hide={tab.key === 'user' && isOnlineSearch}
             />
           ))}
         </Tabs>
