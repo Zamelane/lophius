@@ -2,7 +2,9 @@ import * as process from 'node:process'
 import type { StorageData } from '@plugins/tmdb/types.ts'
 import type { PluginStorage } from '../../../src/plugin-storage.ts'
 
-export async function checkStorage(storage: PluginStorage): Promise<StorageData> {
+export async function checkStorage(
+  storage: PluginStorage
+): Promise<StorageData> {
   const { data } = await storage.get<StorageData>()
 
   if (!data) {

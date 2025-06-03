@@ -4,7 +4,8 @@ export class SetGenresStep {
   async execute(ctx: Context): Promise<Context> {
     if (!ctx.mediaModel) throw new Error('Media model missing')
 
-    if (!ctx.fetchedMovieDetails) throw new Error('Fetched MovieDetails missing')
+    if (!ctx.fetchedMovieDetails)
+      throw new Error('Fetched MovieDetails missing')
 
     if (ctx.fetchedMovieDetails.genres) {
       const genres = []

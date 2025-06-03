@@ -1,7 +1,10 @@
 'use client'
 
-import { VideoCard, Props as VideoCardProps } from "@/src/widgets/media/video-card"
-import { MediaType } from "database/schemas/media_types"
+import {
+  VideoCard,
+  type Props as VideoCardProps
+} from '@/src/widgets/media/video-card'
+import type { MediaType } from 'database/schemas/media_types'
 
 type KinoProps = {
   mediaType: 'kino'

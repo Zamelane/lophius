@@ -1,8 +1,8 @@
 'use server'
 
-import { getCurrentUser } from "@/src/shared/lib/dal"
-import { db } from "database"
-import { userLists } from "database/schemas/lists"
+import { getCurrentUser } from '@/src/shared/lib/dal'
+import { db } from 'database'
+import { userLists } from 'database/schemas/lists'
 
 export async function saveListSort(listsIds: number[]) {
   console.log(listsIds)

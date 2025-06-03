@@ -1,17 +1,17 @@
 'use client'
 
-import { Button } from "@/src/shared/ui/shadcn/button";
-import { cn } from "@/src/shared/lib/utils";
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import { GripVerticalIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { motion } from 'framer-motion';
-import { List } from "../types";
-import { EditListSheet } from "./edit-list";
-import { NotificationOnListUpdate } from "../views/lists";
-import { DeleteList } from "./delete-list";
-import { deleteList } from "../services/deleteList";
-import { useTranslations } from "next-intl";
+import { cn } from '@/src/shared/lib/utils'
+import { Button } from '@/src/shared/ui/shadcn/button'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { motion } from 'framer-motion'
+import { GripVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { deleteList } from '../services/deleteList'
+import type { List } from '../types'
+import type { NotificationOnListUpdate } from '../views/lists'
+import { DeleteList } from './delete-list'
+import { EditListSheet } from './edit-list'
 
 type Props = {
   list: List
@@ -26,14 +26,14 @@ export function SortableList({ list, notificationOnListUpdate }: Props) {
     transform,
     transition,
     setActivatorNodeRef,
-    isDragging,
+    isDragging
   } = useSortable({ id: list.id })
 
   const t = useTranslations('Lists')
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition
   }
 
   async function deleteListAndNotificate() {
@@ -58,46 +58,45 @@ export function SortableList({ list, notificationOnListUpdate }: Props) {
     >
       <div
         className={cn(
-          "flex gap-2 justify-between border-[1px] rounded-md py-3 px-3.5 bg-sidebar-primary-foreground dark:bg-background transition-shadow",
-          isDragging && "ring-2 ring-primary/50 shadow-lg bg-muted"
+          'flex gap-2 justify-between border-[1px] rounded-md py-3 px-3.5 bg-sidebar-primary-foreground dark:bg-background transition-shadow',
+          isDragging && 'ring-2 ring-primary/50 shadow-lg bg-muted'
         )}
       >
-        <div className="flex items-start gap-3">
+        <div className='flex items-start gap-3'>
           {/* Drag handle */}
           <div
             ref={setActivatorNodeRef}
             {...listeners}
             {...attributes}
-            className="cursor-grab active:cursor-grabbing pt-1 text-muted-foreground select-none touch-none"
+            className='cursor-grab active:cursor-grabbing pt-1 text-muted-foreground select-none touch-none'
           >
             <GripVerticalIcon size={18} />
           </div>
           {/* List content */}
-          <div className="flex flex-col gap-2">
-            <h2 className="font-semibold text-md">{
-              list.i18nTitle
-                ? t(list.i18nTitle)
-                : list.title
-            }</h2>
-            <p className={cn(
-              "text-sm opacity-85 break-all",
-              !list.comment && 'italic'
-            )}>
+          <div className='flex flex-col gap-2'>
+            <h2 className='font-semibold text-md'>
+              {list.i18nTitle ? t(list.i18nTitle) : list.title}
+            </h2>
+            <p
+              className={cn(
+                'text-sm opacity-85 break-all',
+                !list.comment && 'italic'
+              )}
+            >
               {list.comment || 'Нет заметки'}
             </p>
-            {
-              list.isSystem && (
-                <div className="flex flex-wrap gap-2">
-                  <div className="inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full">
-                    Системная
-                  </div>
+            {list.isSystem && (
+              <div className='flex flex-wrap gap-2'>
+                <div className='inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full'>
+                  Системная
                 </div>
-              )
-            }
+              </div>
+            )}
           </div>
         </div>
-        <div className="flex">
-          <EditListSheet isEdit
+        <div className='flex'>
+          <EditListSheet
+            isEdit
             id={list.id}
             isSystem={list.isSystem}
             isHidden={list.isHidden}
@@ -105,12 +104,17 @@ export function SortableList({ list, notificationOnListUpdate }: Props) {
             comment={list.comment}
             notificationOnListUpdate={notificationOnListUpdate}
           >
-            <Button variant='ghost' size='icon' className="light:bg-red-400">
+            <Button variant='ghost' size='icon' className='light:bg-red-400'>
               <PencilIcon />
             </Button>
           </EditListSheet>
           <DeleteList onContinuePromise={deleteListAndNotificate}>
-            <Button variant='ghost' size='icon' className="hover:bg-destructive dark:shadow-sm text-destructive" disabled={list.isSystem}>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='hover:bg-destructive dark:shadow-sm text-destructive'
+              disabled={list.isSystem}
+            >
               <TrashIcon />
             </Button>
           </DeleteList>

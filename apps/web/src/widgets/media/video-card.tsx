@@ -8,13 +8,16 @@ import Image from 'next/image'
 
 export type Props = {
   id: number
-  img: {
-    width?: number | null
-    height?: number | null
-    path: string
-    domain: string
-    https: boolean
-  } | null | undefined
+  img:
+    | {
+        width?: number | null
+        height?: number | null
+        path: string
+        domain: string
+        https: boolean
+      }
+    | null
+    | undefined
   title?: string | null
   subText: string
   inListBadge?: {
@@ -39,17 +42,11 @@ export function VideoCard(props: Props) {
         staticSize ? 'w-[160px] min-w-[160px]' : 'w-full min-w-full relative'
       )}
     >
-      {
-        inListBadge && (
-          <div className='flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-[10px] px-1.5 py-0.5 rounded-sm absolute top-[4px] left-[-3px] line-clamp-1'>
-            {
-              inListBadge.i18nTitle
-                ? t(inListBadge.i18nTitle)
-                : inListBadge.title
-            }
-          </div>
-        )
-      }
+      {inListBadge && (
+        <div className='flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-[10px] px-1.5 py-0.5 rounded-sm absolute top-[4px] left-[-3px] line-clamp-1'>
+          {inListBadge.i18nTitle ? t(inListBadge.i18nTitle) : inListBadge.title}
+        </div>
+      )}
       {img ? (
         <Image
           src={`http${img.https ? 's' : ''}://${img.domain}${img.path}`}
@@ -60,13 +57,9 @@ export function VideoCard(props: Props) {
             'transition-all duration-300 ease-in-out', // Анимация только для изображения
             'group-hover:scale-[1.03]' // Увеличение изображения чуть сильнее
           )}
-          {
-            ...(
-              img.width && img.height
-                ? { width: img.width, height: img.height }
-                : { fill: true }
-            )
-          }
+          {...(img.width && img.height
+            ? { width: img.width, height: img.height }
+            : { fill: true })}
         />
       ) : (
         <div

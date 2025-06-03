@@ -1,7 +1,13 @@
 'use client'
 
 import { UserLogout } from '@/src/features/user/services/logout'
-import { Avatar, AvatarFallback, AvatarImage } from '@/src/shared/ui/shadcn/avatar'
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import type { UserInfo } from '@/src/shared/types'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from '@/src/shared/ui/shadcn/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +21,12 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/src/shared/ui/shadcn/sidebar'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
-import type { UserInfo } from '@/src/shared/types'
-import { ChevronsUpDown, LogOut, SettingsIcon, ShieldUserIcon } from 'lucide-react'
+import {
+  ChevronsUpDown,
+  LogOut,
+  SettingsIcon,
+  ShieldUserIcon
+} from 'lucide-react'
 
 export function NavUser({
   user

@@ -1,6 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/src/shared/ui/shadcn/avatar'
-import { Skeleton } from '@/src/shared/ui/shadcn/skeleton'
 import { cn } from '@/src/shared/lib/utils'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from '@/src/shared/ui/shadcn/avatar'
+import { Skeleton } from '@/src/shared/ui/shadcn/skeleton'
 import { useState } from 'react'
 
 type PropsType = {

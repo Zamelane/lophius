@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-export function HeaderTitle({ children, className }: { children: React.ReactNode, className?: string }) {
+export function HeaderTitle({
+  children,
+  className
+}: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [, setIsStuck] = useState(false)
 
@@ -11,7 +14,11 @@ export function HeaderTitle({ children, className }: { children: React.ReactNode
       ([entry]) => {
         const stuck = !entry.isIntersecting
         setIsStuck(stuck)
-        window.dispatchEvent(new CustomEvent('header-title:set', { detail: stuck ? children : null }))
+        window.dispatchEvent(
+          new CustomEvent('header-title:set', {
+            detail: stuck ? children : null
+          })
+        )
       },
       { threshold: 0 }
     )
@@ -22,7 +29,9 @@ export function HeaderTitle({ children, className }: { children: React.ReactNode
     return () => {
       if (el) observer.unobserve(el)
       // Сбросить заголовок при размонтировании
-      window.dispatchEvent(new CustomEvent('header-title:set', { detail: null }))
+      window.dispatchEvent(
+        new CustomEvent('header-title:set', { detail: null })
+      )
     }
   }, [children])
 

@@ -9,15 +9,15 @@ export class GetTranslationsStep {
     const { data, error } = await movieTranslations({
       auth: ctx.token,
       path: {
-        movie_id: ctx.fetchedData.id,
-      },
+        movie_id: ctx.fetchedData.id
+      }
     })
 
     if (error || !data)
       throw new Error(
         JSON.stringify({
           error,
-          id: ctx.fetchedData.id,
+          id: ctx.fetchedData.id
         })
       )
 

@@ -1,5 +1,5 @@
-import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 import type { MetadataProps } from '@/src/shared/types'
+import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata(props: MetadataProps) {

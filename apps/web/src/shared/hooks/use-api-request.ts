@@ -1,8 +1,8 @@
 'use client'
 
-import { api_t_keys } from '../i18n'
 import type { ApiResponse } from '@/src/shared/types'
 import { useState } from 'react'
+import { api_t_keys } from '../i18n'
 
 export function useApiRequest<T, P extends unknown[] = []>(
   requestFn: (...args: P) => Promise<ApiResponse<T>>

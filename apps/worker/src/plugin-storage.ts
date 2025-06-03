@@ -9,13 +9,16 @@ type Status<T> = {
 export class PluginStorage {
   public sourceId!: number
 
-  private constructor(private readonly uid: string, private readonly pluginName: string) {
+  private constructor(
+    private readonly uid: string,
+    private readonly pluginName: string
+  ) {
     console.info(`Plugin (${pluginName}) Storage initialized`)
   }
 
   static async init(uid: string, pluginName: string) {
     const instance = new PluginStorage(uid, pluginName)
-    
+
     // Проверяем, занесено ли в базу
     const check = await instance.get()
 

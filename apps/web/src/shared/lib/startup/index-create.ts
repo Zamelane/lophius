@@ -1,5 +1,5 @@
-import { schema, sql } from "database"
-import { NodePgDatabase } from "drizzle-orm/node-postgres"
+import { type schema, sql } from 'database'
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export async function indexCreate(db: NodePgDatabase<typeof schema>) {
   if (process.env.NEXT_PHASE === 'phase-production-build') {

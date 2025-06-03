@@ -1,6 +1,6 @@
-import { api_t_keys } from '../i18n'
 import type { ServerResponse } from '@/src/shared/types'
 import type { SafeParseReturnType } from 'zod'
+import { api_t_keys } from '../i18n'
 
 export function MakeResponse<T>(
   data: T,

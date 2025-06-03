@@ -1,5 +1,7 @@
 'use client'
 
+import type { KinoType } from '@/src/shared/types'
+import type { KinoTypeInfoDataType } from '@/src/shared/types/edit-types'
 import {
   Select,
   SelectContent,
@@ -9,8 +11,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/src/shared/ui/shadcn/select'
-import type { KinoType } from '@/src/shared/types'
-import type { KinoTypeInfoDataType } from '@/src/shared/types/edit-types'
 import { SquarePlayIcon, SquareStackIcon } from 'lucide-react'
 
 type Props = {

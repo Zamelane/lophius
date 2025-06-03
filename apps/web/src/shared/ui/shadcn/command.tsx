@@ -1,8 +1,8 @@
 'use client'
 
-import { Dialog, DialogContent } from '@/src/shared/ui/shadcn/dialog'
 import { useVisualViewportHeight } from '@/src/shared/hooks/use-visual-viewport-height'
 import { cn } from '@/src/shared/lib/utils'
+import { Dialog, DialogContent } from '@/src/shared/ui/shadcn/dialog'
 import type { DialogProps } from '@radix-ui/react-dialog'
 import { Command as CommandPrimitive } from 'cmdk'
 import { Search } from 'lucide-react'

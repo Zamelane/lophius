@@ -1,7 +1,7 @@
-import InputMessage from '@/src/shared/ui/forms/input-message'
-import { Label } from '../shadcn/label'
 import type { LayoutProps } from '@/src/shared/types'
 import type { TranslationFunctionType } from '@/src/shared/types/translationFunctionType'
+import InputMessage from '@/src/shared/ui/forms/input-message'
+import { Label } from '../shadcn/label'
 
 export default function FormInput({
   code,

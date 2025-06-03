@@ -1,4 +1,4 @@
-import { VideoItem, Props as VideoItemProps } from "./video-item"
+import { VideoItem, type Props as VideoItemProps } from './video-item'
 
 export type GlobalSearchItemCardProps = {
   mediaType: 'kino'
@@ -6,7 +6,7 @@ export type GlobalSearchItemCardProps = {
 
 export function GlobalSearchItemCard(props: GlobalSearchItemCardProps) {
   if (props.mediaType === 'kino') {
-    return <VideoItem {...props}/>
+    return <VideoItem {...props} />
   }
 
   return null

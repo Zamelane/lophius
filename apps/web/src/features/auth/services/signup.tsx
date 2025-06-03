@@ -1,10 +1,10 @@
 'use server'
 import CreateUser from '@/src/features/auth/services/create-user'
 import { api_t_keys } from '@/src/shared/i18n'
-import type { ErrorResponse } from '@/src/shared/types'
 import { createSession } from '@/src/shared/lib/session'
-import { SignupFormSchema } from '../schemas'
+import type { ErrorResponse } from '@/src/shared/types'
 import { redirect } from 'next/navigation'
+import { SignupFormSchema } from '../schemas'
 
 export async function signup(
   state: ErrorResponse | undefined,

@@ -31,8 +31,8 @@ export class SetImagesStep {
         const language = !image.iso_639_1
           ? null
           : ctx.sourceMediaService.languageService.createLanguage({
-            iso_639_1: image.iso_639_1
-          })
+              iso_639_1: image.iso_639_1
+            })
         const externalPoster = await ctx.sourceMediaService.createPoster(
           ctx.mediaModel,
           {
@@ -44,7 +44,7 @@ export class SetImagesStep {
             vote_count: image.vote_count ?? null,
             vote_avg:
               typeof image.vote_average === 'number' &&
-                !Number.isNaN(image.vote_average)
+              !Number.isNaN(image.vote_average)
                 ? image.vote_average.toString()
                 : null
           }
@@ -69,7 +69,7 @@ export class SetImagesStep {
             vote_count: image.vote_count ?? null,
             vote_avg:
               typeof image.vote_average === 'number' &&
-                !Number.isNaN(image.vote_average)
+              !Number.isNaN(image.vote_average)
                 ? image.vote_average.toString()
                 : null
           }
@@ -94,7 +94,7 @@ export class SetImagesStep {
             vote_count: image.vote_count ?? null,
             vote_avg:
               typeof image.vote_average === 'number' &&
-                !Number.isNaN(image.vote_average)
+              !Number.isNaN(image.vote_average)
                 ? image.vote_average.toString()
                 : null
           }
@@ -107,7 +107,10 @@ export class SetImagesStep {
         referenceBackdrops
       )
       ctx.sourceMediaService.deleteNotInLogos(ctx.mediaModel, referenceLogos)
-      ctx.sourceMediaService.deleteNotInPosters(ctx.mediaModel, referencePosters)
+      ctx.sourceMediaService.deleteNotInPosters(
+        ctx.mediaModel,
+        referencePosters
+      )
     }
 
     return ctx

@@ -1,24 +1,28 @@
 'use server'
 
-import { getCurrentUser } from "@/src/shared/lib/dal";
-import { List } from "../types";
-import { db, eq, WithOptional } from "database";
-import { lists, userLists } from "database/schemas/lists";
+import { getCurrentUser } from '@/src/shared/lib/dal'
+import { type WithOptional, db, eq } from 'database'
+import { lists, userLists } from 'database/schemas/lists'
+import type { List } from '../types'
 
-export async function saveList(list: WithOptional<List, 'i18nTitle' | 'isSystem'>) {
+export async function saveList(
+  list: WithOptional<List, 'i18nTitle' | 'isSystem'>
+) {
   const user = await getCurrentUser()
 
   if (!user) {
     return
   }
 
-  await db.update(lists)
+  await db
+    .update(lists)
     .set({
       title: list.title
     })
     .where(eq(lists.authorId, user.id))
 
-  await db.insert(userLists)
+  await db
+    .insert(userLists)
     .values({
       listId: list.id,
       userId: user.id,

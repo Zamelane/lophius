@@ -1,5 +1,8 @@
+import type { Context } from '@plugins/tmdb/types'
+import type { OptionalMedia } from 'database'
+import { SourceMediaService } from 'database/src/services/SourceMediaService'
 import { Pipeline } from 'src/lib/pipeline'
-import { Context } from '@plugins/tmdb/types'
+import type { TMDBPlugin } from '../plugin'
 import {
   CommitStep,
   CreateOrGetKinoStep,
@@ -14,12 +17,10 @@ import {
   SetMediaStatusStep,
   SetTranslationsStep
 } from '../steps'
-import { OptionalMedia, PartialMedia, WithOptional } from 'database'
-import { Media } from 'database/src/schemas'
-import { SourceMediaService } from 'database/src/services/SourceMediaService'
-import { TMDBPlugin } from '../plugin'
 
-export function createMoviePipeline(initialContext: Context): Pipeline<Context> {
+export function createMoviePipeline(
+  initialContext: Context
+): Pipeline<Context> {
   return new Pipeline<Context>(initialContext)
     .addStep(new CreateOrGetKinoStep())
     .addStep(new GetTranslationsStep())
@@ -34,13 +35,18 @@ export function createMoviePipeline(initialContext: Context): Pipeline<Context> 
     .addStep(new CommitStep())
 }
 
-
 export type PrefetchContext = {
-  media: OptionalMedia,
+  media: OptionalMedia
   sourceMediaService: SourceMediaService
 }
-export function createPrefetchMediaPipeline(plugin: TMDBPlugin, media: PrefetchContext['media']): Pipeline<PrefetchContext> {
-  return new Pipeline<PrefetchContext>({ media, sourceMediaService: new SourceMediaService(plugin.storage.sourceId) })
+export function createPrefetchMediaPipeline(
+  plugin: TMDBPlugin,
+  media: PrefetchContext['media']
+): Pipeline<PrefetchContext> {
+  return new Pipeline<PrefetchContext>({
+    media,
+    sourceMediaService: new SourceMediaService(plugin.storage.sourceId)
+  })
     .addStep(new CreatePrefetchMediaStep())
     .addStep(new CommitStep())
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { NavUser } from '@/src/shared/ui/navigation/nav-user'
 import { ModeSwitcher } from '@/src/shared/ui/navigation/team-switcher'
 import {
@@ -11,14 +12,13 @@ import {
   //useSidebar,
   SidebarRail
 } from '@/src/shared/ui/shadcn/sidebar'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { usePathname } from 'next/navigation'
 import type * as React from 'react'
 
+import { menu } from '@/src/shared/lib/menu'
 import { LogIn } from 'lucide-react'
 import { useAuth } from '../../providers/auth-context'
 import { LightNavMain } from '../navigation/light-nav-main'
-import { menu } from '@/src/shared/lib/menu'
 import { NavMain } from '../navigation/nav-main'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

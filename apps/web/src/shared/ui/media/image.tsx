@@ -1,17 +1,28 @@
 import { cn } from '@/src/shared/lib/utils'
 import { CloudAlertIcon } from 'lucide-react'
 import NextImage, { type ImageProps } from 'next/image'
-import { DetailedHTMLProps, HTMLAttributes, useState } from 'react'
-import { LayoutProps } from '../../types'
+import { type DetailedHTMLProps, type HTMLAttributes, useState } from 'react'
 import { LocaleLink } from '../../hooks/locale-link'
+import type { LayoutProps } from '../../types'
 
 type Props = ImageProps & {
   link?: string
 }
 
-function DivOrLink({ children, className, link }: LayoutProps & { link?: string, className?: string } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
+function DivOrLink({
+  children,
+  className,
+  link
+}: LayoutProps & { link?: string; className?: string } & DetailedHTMLProps<
+    HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >) {
   if (link) {
-    return <LocaleLink href={link} className={className}>{children}</LocaleLink>
+    return (
+      <LocaleLink href={link} className={className}>
+        {children}
+      </LocaleLink>
+    )
   }
 
   return <div className={className}>{children}</div>

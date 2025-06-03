@@ -1,6 +1,11 @@
 'use client'
 
 import { signup } from '@/src/features/auth/services/signup'
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import { isErrorsIncluded } from '@/src/shared/lib/utils'
+import { InputCustom } from '@/src/shared/ui/custom/input-custom'
+import LoadingButton from '@/src/shared/ui/custom/loading-button'
+import InputPassword from '@/src/shared/ui/forms/input-password'
 import {
   Card,
   CardContent,
@@ -8,12 +13,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/src/shared/ui/shadcn/card'
-import { InputCustom } from '@/src/shared/ui/custom/input-custom'
-import InputPassword from '@/src/shared/ui/forms/input-password'
 import { Label } from '@/src/shared/ui/shadcn/label'
-import LoadingButton from '@/src/shared/ui/custom/loading-button'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
-import { isErrorsIncluded } from '@/src/shared/lib/utils'
 import { useTranslations } from 'next-intl'
 import React, { useState, useActionState } from 'react'
 import { toast } from 'sonner'

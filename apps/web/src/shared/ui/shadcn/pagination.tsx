@@ -1,5 +1,5 @@
-import { type ButtonProps, buttonVariants } from '@/src/shared/ui/shadcn/button'
 import { cn } from '@/src/shared/lib/utils'
+import { type ButtonProps, buttonVariants } from '@/src/shared/ui/shadcn/button'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import * as React from 'react'
 

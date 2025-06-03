@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '@/src/shared/ui/shadcn/button'
 import { cn } from '@/src/shared/lib/utils'
+import { Button } from '@/src/shared/ui/shadcn/button'
 import useEmblaCarousel, {
   type UseEmblaCarouselType
 } from 'embla-carousel-react'

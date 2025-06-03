@@ -1,5 +1,5 @@
-import type { LayoutProps } from '@/src/shared/types'
 import { cn } from '@/src/shared/lib/utils'
+import type { LayoutProps } from '@/src/shared/types'
 
 type Props = LayoutProps & {
   className?: string

@@ -1,5 +1,5 @@
-import { pluginManager } from "src"
-import { ParserPlugin } from "./types"
+import { pluginManager } from 'src'
+import type { ParserPlugin } from './types'
 
 type Task<T> = {
   action: () => Promise<T>
@@ -8,22 +8,25 @@ type Task<T> = {
 }
 
 export class PluginQueue {
-  private queue = new Map<string, {
-    plugin: ParserPlugin
-    runningCount: number
-    taskQueue: Task<any>[]
-    concurrency: number
-    requestTimestamps: number[]
-    waiting: boolean
-  }>()
-
-  constructor() {}
+  private queue = new Map<
+    string,
+    {
+      plugin: ParserPlugin
+      runningCount: number
+      taskQueue: Task<any>[]
+      concurrency: number
+      requestTimestamps: number[]
+      waiting: boolean
+    }
+  >()
 
   addAction<T>(uid: string, action: () => Promise<T>): Promise<T> {
     let pluginQueue = this.queue.get(uid)
 
     if (!pluginQueue) {
-      const plugin = pluginManager.getPlugins().find(p => p.plugin.uid === uid)?.plugin
+      const plugin = pluginManager
+        .getPlugins()
+        .find((p) => p.plugin.uid === uid)?.plugin
       if (!plugin) throw new Error(`There is no plugin with uid ${uid}`)
 
       if (!plugin.onlineSearch) {
@@ -43,7 +46,7 @@ export class PluginQueue {
     }
 
     return new Promise<T>((resolve, reject) => {
-      pluginQueue!.taskQueue.push({ action, resolve, reject })
+      pluginQueue?.taskQueue.push({ action, resolve, reject })
       this.tryRunNext(uid)
     })
   }
@@ -58,9 +61,11 @@ export class PluginQueue {
     const minuteAgo = now - 60_000
 
     // Удаляем устаревшие запросы
-    pluginQueue.requestTimestamps = requestTimestamps.filter(ts => ts > minuteAgo)
+    pluginQueue.requestTimestamps = requestTimestamps.filter(
+      (ts) => ts > minuteAgo
+    )
 
-    const maxRequests = plugin.maxInMinute ?? Infinity
+    const maxRequests = plugin.maxInMinute ?? Number.POSITIVE_INFINITY
 
     // Если достигнут лимит запросов в минуту
     if (pluginQueue.requestTimestamps.length >= maxRequests) {
@@ -90,7 +95,8 @@ export class PluginQueue {
       pluginQueue.runningCount++
       pluginQueue.requestTimestamps.push(Date.now())
 
-      task.action()
+      task
+        .action()
         .then(task.resolve)
         .catch(task.reject)
         .finally(() => {
@@ -104,8 +110,7 @@ export class PluginQueue {
   public async awaitPluginQueues(uid: string) {
     const plugin = this.queue.get(uid)
 
-    if (!plugin)
-      return
+    if (!plugin) return
 
     return Promise.all(plugin.taskQueue)
   }

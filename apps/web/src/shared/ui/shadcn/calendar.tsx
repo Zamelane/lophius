@@ -1,7 +1,7 @@
 'use client'
 
-import { buttonVariants } from '@/src/shared/ui/shadcn/button'
 import { cn } from '@/src/shared/lib/utils'
+import { buttonVariants } from '@/src/shared/ui/shadcn/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type * as React from 'react'
 import { DayPicker } from 'react-day-picker'

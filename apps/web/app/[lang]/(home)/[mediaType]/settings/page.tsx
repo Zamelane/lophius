@@ -1,10 +1,14 @@
 'use client'
 
-import { ListsSettingsView } from "@/src/features/settings/views/lists";
-import { NotificationsSettingsView } from "@/src/features/settings/views/notifications";
-import { CustomMenu, MenuContent, Tab } from "@/src/shared/ui/custom/custom-menu";
-import { BellIcon, ListIcon } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { ListsSettingsView } from '@/src/features/settings/views/lists'
+import { NotificationsSettingsView } from '@/src/features/settings/views/notifications'
+import {
+  CustomMenu,
+  MenuContent,
+  type Tab
+} from '@/src/shared/ui/custom/custom-menu'
+import { BellIcon, ListIcon } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -24,7 +28,7 @@ export default function Page() {
   ]
 
   function handleTabChange(id: string) {
-    const params = new URLSearchParams(searchParams ?? "")
+    const params = new URLSearchParams(searchParams ?? '')
     params.set('tab', id)
 
     const newUrl = `${window.location.pathname}?${params.toString()}`
@@ -32,7 +36,11 @@ export default function Page() {
   }
 
   return (
-    <CustomMenu tabs={tabs} selectedId={selectedTab} tabChange={handleTabChange}>
+    <CustomMenu
+      tabs={tabs}
+      selectedId={selectedTab}
+      tabChange={handleTabChange}
+    >
       <MenuContent id='lists'>
         <ListsSettingsView />
       </MenuContent>

@@ -8,8 +8,7 @@ import React, {
   cloneElement,
   isValidElement,
   useState,
-  useRef,
-  useEffect
+  useRef
 } from 'react'
 import { createPortal } from 'react-dom'
 import ScrollContainer from 'react-indiana-drag-scroll'
@@ -184,7 +183,11 @@ export function Tab<T = string>({
                 isOpen ? 'text-foreground' : ''
               )}
             >
-              {subItems?.find((v) => v.key === selectedSubKey && !v.hideOnSelected)?.title}
+              {
+                subItems?.find(
+                  (v) => v.key === selectedSubKey && !v.hideOnSelected
+                )?.title
+              }
               <ChevronDownIcon size={16} />
             </p>
           )}

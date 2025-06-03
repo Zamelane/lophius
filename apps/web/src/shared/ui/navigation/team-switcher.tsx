@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/src/shared/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,6 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/src/shared/ui/shadcn/sidebar'
-import { cn } from '@/src/shared/lib/utils'
 import { ChevronsUpDown } from 'lucide-react'
 import { redirect, usePathname } from 'next/navigation'
 import * as React from 'react'

@@ -1,10 +1,10 @@
-import { TMDBConfig } from './config'
+import type { PluginStorage } from 'src/plugin-storage'
+import type { ParserPluginInstance } from 'src/types'
+import { checkStorage } from './actions/checkStorage'
 import { execute as executeLoader } from './actions/execute'
 import { onlineSearch as searchAction } from './actions/onlineSearch'
-import { ParserPluginInstance } from 'src/types'
-import { PluginStorage } from 'src/plugin-storage'
-import { StorageData } from './types'
-import { checkStorage } from './actions/checkStorage'
+import { TMDBConfig } from './config'
+import type { StorageData } from './types'
 
 export class TMDBPlugin implements ParserPluginInstance {
   pluginName = TMDBConfig.pluginName

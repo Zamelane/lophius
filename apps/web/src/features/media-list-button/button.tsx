@@ -1,21 +1,21 @@
-"use client";
+'use client'
 
+import { cn } from '@/src/shared/lib/utils'
+import { Button } from '@/src/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/src/shared/ui/shadcn/dropdown-menu";
-import { Button } from "@/src/shared/ui/button";
-import { useRef, useState, useEffect } from 'react';
-import { List } from "../settings/types";
-import { useTranslations } from "next-intl";
-import { cn } from "@/src/shared/lib/utils";
-import { addToList } from "./services/addToList";
-import { LoaderIcon } from "lucide-react";
-import { removeFromList } from "./services/removeFromList";
+  DropdownMenuTrigger
+} from '@/src/shared/ui/shadcn/dropdown-menu'
+import { LoaderIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useEffect, useRef, useState } from 'react'
+import type { List } from '../settings/types'
+import { addToList } from './services/addToList'
+import { removeFromList } from './services/removeFromList'
 
 type Props = {
   lists: List[]
@@ -36,26 +36,28 @@ export function ButtonList({
   const [width, setWidth] = useState<number>()
   const [inLists, setInLists] = useState(inListsFromServer)
 
-  const [addToListLoading, setAddToListLoading] = useState<number | undefined>(undefined)
+  const [addToListLoading, setAddToListLoading] = useState<number | undefined>(
+    undefined
+  )
   const [removeLoading, setRemoveLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    const button = triggerRef.current;
-    if (!button) return;
+    const button = triggerRef.current
+    if (!button) return
 
     const observer = new ResizeObserver(() => {
-      setWidth(button.offsetWidth);
-    });
+      setWidth(button.offsetWidth)
+    })
 
-    observer.observe(button);
+    observer.observe(button)
 
-    return () => observer.disconnect();
-  }, []);
+    return () => observer.disconnect()
+  }, [])
 
   async function addToListHandler(listId: number) {
     try {
       setAddToListLoading(listId)
-      if (inLists.length && !await removeFromListHandler(inLists[0])) {
+      if (inLists.length && !(await removeFromListHandler(inLists[0]))) {
         return
       }
       if (await addToList(listId, mediaId, userId)) {
@@ -80,55 +82,45 @@ export function ButtonList({
     return false
   }
 
-  const list = lists.find(l => inLists.includes(l.id))
+  const list = lists.find((l) => inLists.includes(l.id))
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button ref={triggerRef}>
-          {
-            list?.i18nTitle && t(list.i18nTitle) || list?.title || 'Добавить в список'
-          }
+          {(list?.i18nTitle && t(list.i18nTitle)) ||
+            list?.title ||
+            'Добавить в список'}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent style={{ width }}>
         <DropdownMenuGroup>
-          {
-            lists?.map(list => (
-              <DropdownMenuItem
-                onClick={() => addToListHandler(list.id)}
-                key={'list_' + list.id}
-                className={cn(inLists.includes(list.id) && 'bg-accent')}>
-                {
-                  list.i18nTitle
-                    ? t(list.i18nTitle)
-                    : list.title
-                }
-                {
-                  list.id === addToListLoading && (
-                    <LoaderIcon className="ml-auto" />
-                  )
-                }
-              </DropdownMenuItem>
-            ))
-          }
+          {lists?.map((list) => (
+            <DropdownMenuItem
+              onClick={() => addToListHandler(list.id)}
+              key={`list_${list.id}`}
+              className={cn(inLists.includes(list.id) && 'bg-accent')}
+            >
+              {list.i18nTitle ? t(list.i18nTitle) : list.title}
+              {list.id === addToListLoading && (
+                <LoaderIcon className='ml-auto' />
+              )}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
-        {
-          inLists.length > 0 && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-500" onClick={() => removeFromListHandler(inLists[0])}>
-                Удалить из списка
-                {
-                  removeLoading && (
-                    <LoaderIcon className="ml-auto" />
-                  )
-                }
-              </DropdownMenuItem>
-            </>
-          )
-        }
+        {inLists.length > 0 && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className='text-red-500'
+              onClick={() => removeFromListHandler(inLists[0])}
+            >
+              Удалить из списка
+              {removeLoading && <LoaderIcon className='ml-auto' />}
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

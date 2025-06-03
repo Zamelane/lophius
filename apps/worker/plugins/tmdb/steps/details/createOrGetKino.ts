@@ -4,7 +4,12 @@ export class CreateOrGetKinoStep {
   async execute(ctx: Context): Promise<Context> {
     const { id, adult, video, original_language } = ctx.fetchedData
 
-    if (!id || adult === undefined || video === undefined || !original_language) {
+    if (
+      !id ||
+      adult === undefined ||
+      video === undefined ||
+      !original_language
+    ) {
       throw new Error(
         `Id or another fields not provided: ${JSON.stringify(ctx.fetchedData)}`
       )
@@ -34,5 +39,4 @@ export class CreateOrGetKinoStep {
 
     return ctx
   }
-
 }

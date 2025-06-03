@@ -1,7 +1,7 @@
-import { Button } from '@/src/shared/ui/shadcn/button'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { useApiRequest } from '@/src/shared/hooks/use-api-request'
 import type { ApiResponse } from '@/src/shared/types'
+import { Button } from '@/src/shared/ui/shadcn/button'
 import { Capacity } from '@geist-ui/core'
 import { useEffect, useState } from 'react'
 

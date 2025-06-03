@@ -18,7 +18,7 @@ export function generatePublicMenu() {
         {
           icon: BookCopyIcon,
           title: 'Коллекции',
-          url: `/collections`
+          url: '/collections'
         },
         {
           icon: UsersIcon,
@@ -26,7 +26,7 @@ export function generatePublicMenu() {
           title: 'Пользователи'
         },
         {
-          url: `/calendar`,
+          url: '/calendar',
           icon: CalendarDaysIcon,
           title: 'Медийный календарь'
         }
@@ -38,18 +38,18 @@ export function generatePublicMenu() {
       items: [
         {
           icon: CalendarHeartIcon,
-          url: `/calendar`,
+          url: '/calendar',
           title: 'Мой календарь'
         },
         {
           icon: SquareLibraryIcon,
-          url: `/collections/me`,
+          url: '/collections/me',
           title: 'Мои коллекции'
         },
         {
           icon: ListTodoIcon,
           title: 'Мои списки',
-          url: `/lists`
+          url: '/lists'
         }
       ]
     },
@@ -65,7 +65,7 @@ export function generatePublicMenu() {
         {
           icon: GroupIcon,
           title: 'Подписки на коллекции',
-          url: `/subscriptions/collections`
+          url: '/subscriptions/collections'
         }
       ]
     }

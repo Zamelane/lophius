@@ -1,6 +1,6 @@
 'use client'
-import type { LayoutProps } from '@/src/shared/types'
 import { cn } from '@/src/shared/lib/utils'
+import type { LayoutProps } from '@/src/shared/types'
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 type Props = {

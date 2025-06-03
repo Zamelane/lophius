@@ -1,7 +1,7 @@
 import { CachedMakeUserInfoByNickname } from '@/src/features/user/services/user-info'
-import { UserProfilePageComponent } from '@/src/widgets/profile'
-import { NotFound } from '@/src/shared/ui/misc/not-found'
 import { verifySession } from '@/src/shared/lib/dal'
+import { NotFound } from '@/src/shared/ui/misc/not-found'
+import { UserProfilePageComponent } from '@/src/widgets/profile'
 //import { ResolvingMetadata } from "next"
 import type { Metadata } from 'next'
 

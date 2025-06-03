@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, startTransition, useState } from "react"
-import { useActionState } from "react"
-import { ListsView } from "../ui/view"
-import { getCurrentUserLists } from "../services/getCurrentUserLists"
-import { Skeleton } from "@/src/shared/ui/shadcn/skeleton"
-import { List } from "../types"
-import { useUnsavedChangesWarning } from '@/src/shared/hooks/useUnsavedChangesRouterGuard';
-import { MediaType } from "database/schemas/media_types"
+import { useUnsavedChangesWarning } from '@/src/shared/hooks/useUnsavedChangesRouterGuard'
+import { Skeleton } from '@/src/shared/ui/shadcn/skeleton'
+import type { MediaType } from 'database/schemas/media_types'
+import { startTransition, useEffect, useState } from 'react'
+import { useActionState } from 'react'
+import { getCurrentUserLists } from '../services/getCurrentUserLists'
+import type { List } from '../types'
+import { ListsView } from '../ui/view'
 
 export function ListsSettingsView() {
   const [ready, setReady] = useState(false)
@@ -39,29 +39,31 @@ export function ListsSettingsView() {
 
   function notificateOnUpdate({ list, type }: NotificationOnListUpdate) {
     if (type === 'update') {
-      setLists(state => state.map(l => {
-        if (l.id === list.id)
-          return list
-        return l
-      }))
-      setListsBackup(state => state?.map(l => {
-        if (l.id === list.id)
-          return list
-        return l
-      }))
+      setLists((state) =>
+        state.map((l) => {
+          if (l.id === list.id) return list
+          return l
+        })
+      )
+      setListsBackup((state) =>
+        state?.map((l) => {
+          if (l.id === list.id) return list
+          return l
+        })
+      )
     }
 
     if (type === 'add') {
-      setLists(old => [...old, list])
+      setLists((old) => [...old, list])
       if (listsBackup) {
-        setListsBackup(old => [...old!, list])
+        setListsBackup((old) => [...old!, list])
       }
     }
 
     if (type === 'delete') {
-      setLists(old => old.filter(l => l.id !== list.id))
+      setLists((old) => old.filter((l) => l.id !== list.id))
       if (listsBackup) {
-        setListsBackup(old => old!.filter(l => l.id !== list.id))
+        setListsBackup((old) => old?.filter((l) => l.id !== list.id))
       }
     }
   }
@@ -86,23 +88,25 @@ export function ListsSettingsView() {
 
   return (
     <div>
-      {pending || !ready
-        ? (
-          <div className="flex flex-col gap-2">
-            { Array.from(Array(3).keys()).map(i => <Skeleton key={'ls' + i} className="w-full h-24" />) }
-            <Skeleton className="w-32 h-10 mt-2"/>
-          </div>
-        )
-        : <ListsView
-            lists={lists}
-            setLists={setLists}
-            notificationOnListUpdate={notificateOnUpdate}
-            updateButtonShow={showUpdateButton}
-            changeSort={changeSort}
-            approveSort={approveSort}
-            selectedMediaType={selectedMediaType}
-            setSelectedMediaType={setSelectedMediaType}
-          />}
+      {pending || !ready ? (
+        <div className='flex flex-col gap-2'>
+          {Array.from(Array(3).keys()).map((i) => (
+            <Skeleton key={`ls${i}`} className='w-full h-24' />
+          ))}
+          <Skeleton className='w-32 h-10 mt-2' />
+        </div>
+      ) : (
+        <ListsView
+          lists={lists}
+          setLists={setLists}
+          notificationOnListUpdate={notificateOnUpdate}
+          updateButtonShow={showUpdateButton}
+          changeSort={changeSort}
+          approveSort={approveSort}
+          selectedMediaType={selectedMediaType}
+          setSelectedMediaType={setSelectedMediaType}
+        />
+      )}
     </div>
   )
 }

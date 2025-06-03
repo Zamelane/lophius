@@ -1,11 +1,7 @@
 'use server'
 
-import {
-  type LocaleKeysType,
-  defaultLocale,
-  localesSupported
-} from './config';
 import { headers } from 'next/headers'
+import { type LocaleKeysType, defaultLocale, localesSupported } from './config'
 
 export async function getCurrentLocale() {
   let localeFromPath = defaultLocale

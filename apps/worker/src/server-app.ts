@@ -1,10 +1,10 @@
-import { Elysia, t } from "elysia";
-import { searchRoute } from "./search/routes/search";
-import { websocketApp } from './search/routes/ws-status';
+import { Elysia } from 'elysia'
+import { searchRoute } from './search/routes/search'
+import { websocketApp } from './search/routes/ws-status'
 
 const app = new Elysia()
-  .get("/", () => ({ ok: true }))
-  
+  .get('/', () => ({ ok: true }))
+
   // Роут для регистрации поиска
   .use(searchRoute)
 

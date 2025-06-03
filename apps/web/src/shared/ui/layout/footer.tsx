@@ -1,15 +1,14 @@
 'use client'
 
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
-import { localesSupported } from '../../i18n/config'
 import { cn } from '@/src/shared/lib/utils'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Check, Heart } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
+import { localesSupported } from '../../i18n/config'
 
-import { Button } from '../shadcn/button'
 import {
   Command,
   CommandEmpty,
@@ -18,7 +17,12 @@ import {
   CommandItem,
   CommandList
 } from '@/src/shared/ui/shadcn/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/src/shared/ui/shadcn/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/src/shared/ui/shadcn/popover'
+import { Button } from '../shadcn/button'
 
 export function Footer({ lang }: { lang: string }) {
   const pathname = usePathname()

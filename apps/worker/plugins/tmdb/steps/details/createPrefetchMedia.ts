@@ -1,8 +1,10 @@
-import { PrefetchContext } from '../../utils/pipelineFactory'
+import type { PrefetchContext } from '../../utils/pipelineFactory'
 
 export class CreatePrefetchMediaStep {
   async execute(ctx: PrefetchContext): Promise<PrefetchContext> {
-    let media = await ctx.sourceMediaService.findMediaByExternalId(ctx.media.external_id)
+    let media = await ctx.sourceMediaService.findMediaByExternalId(
+      ctx.media.external_id
+    )
 
     if (!media) {
       media = ctx.sourceMediaService.createMediaWithOriginalTitle(ctx.media)

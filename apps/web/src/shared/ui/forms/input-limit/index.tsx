@@ -1,8 +1,8 @@
 'use client'
 import { InputCustom } from '@/src/shared/ui/custom/input-custom'
-import { useCharacterLimit } from './use-character-limit'
 import { useId } from 'react'
 import type * as React from 'react'
+import { useCharacterLimit } from './use-character-limit'
 
 interface InputLimitProps extends React.InputHTMLAttributes<HTMLInputElement> {
   maxLength?: number

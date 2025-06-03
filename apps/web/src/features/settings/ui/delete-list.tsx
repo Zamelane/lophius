@@ -1,10 +1,17 @@
 'use client'
 
-import { LayoutProps } from "@/src/shared/types"
-import { Button } from "@/src/shared/ui/shadcn/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/src/shared/ui/shadcn/dialog"
-import { Spinner } from "@/src/shared/ui/shadcn/spinner"
-import { useState } from "react"
+import type { LayoutProps } from '@/src/shared/types'
+import { Button } from '@/src/shared/ui/shadcn/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/src/shared/ui/shadcn/dialog'
+import { Spinner } from '@/src/shared/ui/shadcn/spinner'
+import { useState } from 'react'
 
 type Props = LayoutProps & {
   onContinue?: () => void
@@ -37,26 +44,27 @@ export function DeleteList({ children, onContinue, onContinuePromise }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className="gap-4">
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader className='gap-4'>
           <DialogTitle>Подтвердите действие</DialogTitle>
-          <DialogDescription className="text-sm">Вы действительно хотите удалить список? Назад дороги не будет!</DialogDescription>
+          <DialogDescription className='text-sm'>
+            Вы действительно хотите удалить список? Назад дороги не будет!
+          </DialogDescription>
         </DialogHeader>
 
-        <div className="flex justify-end gap-2 -mb-2 -mr-2">
-          <Button variant='ghost' onClick={CloseHandler}>Отмена</Button>
+        <div className='flex justify-end gap-2 -mb-2 -mr-2'>
+          <Button variant='ghost' onClick={CloseHandler}>
+            Отмена
+          </Button>
           <Button variant='destructive' onClick={ContinueHandler}>
-            {
-              loading
-                ? <Spinner size='sm' className="bg-white dark:bg-black"/>
-                : 'Удалить'
-            }
+            {loading ? (
+              <Spinner size='sm' className='bg-white dark:bg-black' />
+            ) : (
+              'Удалить'
+            )}
           </Button>
         </div>
-
       </DialogContent>
     </Dialog>
   )

@@ -2,6 +2,10 @@
 
 import { ChickNickname } from '@/src/features/auth/services/check-nickname'
 import UpdateUser from '@/src/features/auth/services/update-user'
+import { useApiRequest } from '@/src/shared/hooks/use-api-request'
+import { useImageUpload } from '@/src/shared/hooks/use-image-upload'
+import type { SetState, UserInfo } from '@/src/shared/types'
+import { useCharacterLimit } from '@/src/shared/ui/forms/input-limit/use-character-limit'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   Dialog,
@@ -14,12 +18,8 @@ import {
   DialogTrigger
 } from '@/src/shared/ui/shadcn/dialog-2'
 import { Input } from '@/src/shared/ui/shadcn/input'
-import { useCharacterLimit } from '@/src/shared/ui/forms/input-limit/use-character-limit'
 import { Label } from '@/src/shared/ui/shadcn/label'
 import { Textarea } from '@/src/shared/ui/shadcn/text-area'
-import { useApiRequest } from '@/src/shared/hooks/use-api-request'
-import { useImageUpload } from '@/src/shared/hooks/use-image-upload'
-import type { SetState, UserInfo } from '@/src/shared/types'
 import { Check, Edit, ImagePlus, LoaderCircle, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'

@@ -1,14 +1,14 @@
+import { MediaListButton } from '@/src/features/media-list-button'
 import { getTvDetailedInfo } from '@/src/features/media/pages/get-tv-detailed-info'
 import { Button } from '@/src/shared/ui/button'
+import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
+import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 import { InfoBlock } from '@/src/widgets/media/info-block'
 import { MediaPoster } from '@/src/widgets/media/media-poster'
 import { FilmInfo } from '@/src/widgets/media/page-info/film-info'
 import { RatingBadge } from '@/src/widgets/media/rating-badge'
-import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { MediaListButton } from '@/src/features/media-list-button'
-import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 
 export const revalidate = 3600
 
@@ -54,7 +54,7 @@ export default async function TVDetailedPage({ params }: Props) {
           <MediaPoster posters={mediaInfo.posters} />
           <div className='flex flex-col gap-2 max-w-[250px]'>
             <Button isPrimary>Смотреть</Button>
-            <MediaListButton mediaId={id}/>
+            <MediaListButton mediaId={id} />
           </div>
           <div className='border-[1px] border-border rounded-sm py-2 px-3 flex flex-col gap-2'>
             <div className='flex flex-col gap-2'>

@@ -1,30 +1,42 @@
 'use client'
 
-import { Button } from "@/src/shared/ui/shadcn/button"
-import { Dispatch, SetStateAction, useState } from "react"
+import type { List } from '@/src/features/settings/types'
+import { SortableList } from '@/src/features/settings/ui/sortable-list'
+import { Button } from '@/src/shared/ui/shadcn/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/src/shared/ui/shadcn/select'
+import { Spinner } from '@/src/shared/ui/shadcn/spinner'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/src/shared/ui/shadcn/tooltip'
 import {
   DndContext,
-  closestCenter,
+  type DragOverEvent,
   PointerSensor,
+  closestCenter,
   useSensor,
-  useSensors,
-  DragOverEvent,
-} from "@dnd-kit/core"
+  useSensors
+} from '@dnd-kit/core'
 import {
-  arrayMove,
   SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable"
-import { List } from "@/src/features/settings/types"
-import { SortableList } from "@/src/features/settings/ui/sortable-list"
-import { NotificationOnListUpdate } from "../views/lists"
-import { EditListSheet } from "./edit-list"
-import { SaveIcon } from "lucide-react"
-import { saveListSort } from "../services/saveListSort"
-import { Spinner } from "@/src/shared/ui/shadcn/spinner"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/src/shared/ui/shadcn/tooltip"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/src/shared/ui/shadcn/select"
-import { MediaType } from "database/schemas/media_types"
+  arrayMove,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable'
+import type { MediaType } from 'database/schemas/media_types'
+import { SaveIcon } from 'lucide-react'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+import { saveListSort } from '../services/saveListSort'
+import type { NotificationOnListUpdate } from '../views/lists'
+import { EditListSheet } from './edit-list'
 
 type Props = {
   lists: List[]
@@ -54,40 +66,40 @@ export function ListsView({
     const { active, over } = event
     if (!over || active.id === over.id) return
 
-    const oldIndex = lists.findIndex(item => item.id === active.id)
-    const newIndex = lists.findIndex(item => item.id === over.id)
+    const oldIndex = lists.findIndex((item) => item.id === active.id)
+    const newIndex = lists.findIndex((item) => item.id === over.id)
 
     if (oldIndex !== newIndex) {
-      changeSort(prev => arrayMove(prev, oldIndex, newIndex))
+      changeSort((prev) => arrayMove(prev, oldIndex, newIndex))
     }
   }
 
   async function updateSort() {
     try {
       setUpdating(true)
-      const result = await saveListSort(lists.map(l => l.id))
-      if (result)
-        approveSort()
+      const result = await saveListSort(lists.map((l) => l.id))
+      if (result) approveSort()
     } finally {
       setUpdating(false)
     }
   }
 
   return (
-    <div className="flex flex-col gap-2 pt-2 w-full">
-      <div className="md:mr-auto">
+    <div className='flex flex-col gap-2 pt-2 w-full'>
+      <div className='md:mr-auto'>
         <Select
           value={selectedMediaType}
-          onValueChange={(v) => setSelectedMediaType(v as MediaType)}>
+          onValueChange={(v) => setSelectedMediaType(v as MediaType)}
+        >
           <SelectTrigger>
-            <SelectValue placeholder=""/>
+            <SelectValue placeholder='' />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="kino">Видео</SelectItem>
-              <SelectItem value="comic">Комиксы</SelectItem>
-              <SelectItem value="book">Книги</SelectItem>
-              <SelectItem value="music">Музыка</SelectItem>
+              <SelectItem value='kino'>Видео</SelectItem>
+              <SelectItem value='comic'>Комиксы</SelectItem>
+              <SelectItem value='book'>Книги</SelectItem>
+              <SelectItem value='music'>Музыка</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -97,12 +109,15 @@ export function ListsView({
         collisionDetection={closestCenter}
         onDragOver={handleDragOver}
         //onDragEnd={handleDragEnd}
-        id="lists"
+        id='lists'
       >
-        <SortableContext items={lists.map(l => l.id)} strategy={verticalListSortingStrategy}>
-          {lists.map(list => (
+        <SortableContext
+          items={lists.map((l) => l.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {lists.map((list) => (
             <SortableList
-              key={'list' + list.id}
+              key={`list${list.id}`}
               list={list}
               notificationOnListUpdate={notificationOnListUpdate}
             />
@@ -110,43 +125,39 @@ export function ListsView({
         </SortableContext>
       </DndContext>
 
-      <div className="flex justify-between mt-2">
+      <div className='flex justify-between mt-2'>
         <EditListSheet
-          title=""
+          title=''
           isHidden={false}
           mediaType={selectedMediaType}
           notificationOnListUpdate={notificationOnListUpdate}
         >
-          <Button className="max-w-fit">
-            Добавить список
-          </Button>
+          <Button className='max-w-fit'>Добавить список</Button>
         </EditListSheet>
-        {
-          updateButtonShow && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="icon"
-                    className="bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600"
-                    onClick={updateSort}
-                    disabled={updating}
-                  >
-                    {
-                      updating
-                        ? <Spinner size='sm' className="bg-white dark:bg-black" />
-                        : <SaveIcon />
-                    }
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-green-600 dark:bg-green-500 text-white">
-                  <p>Сохранить сортировку</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )
-        }
+        {updateButtonShow && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size='icon'
+                  className='bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600'
+                  onClick={updateSort}
+                  disabled={updating}
+                >
+                  {updating ? (
+                    <Spinner size='sm' className='bg-white dark:bg-black' />
+                  ) : (
+                    <SaveIcon />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className='bg-green-600 dark:bg-green-500 text-white'>
+                <p>Сохранить сортировку</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
-    </div >
+    </div>
   )
 }
