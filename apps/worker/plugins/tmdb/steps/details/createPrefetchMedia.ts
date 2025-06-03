@@ -11,7 +11,7 @@ export class CreatePrefetchMediaStep {
     } else {
       media.isVideo = ctx.media.isVideo
       media.isAdult = ctx.media.isAdult
-      media.mediaType = 'kino'
+      media.mediaType = 'video'
       ctx.sourceMediaService.updateMedia(media)
     }
 

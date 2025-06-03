@@ -63,12 +63,12 @@ export function GlobalSearch() {
           hideOnSelected: true
         },
         {
-          title: 'фильмы',
-          key: 'kino'
+          title: 'Видео',
+          key: 'video'
         },
         {
-          title: 'книги',
-          key: 'book'
+          title: 'Комиксы',
+          key: 'comic'
         }
       ]
     },
@@ -95,7 +95,7 @@ export function GlobalSearch() {
     resultsLength: wsResultsLength
   } = useSearchWebSocket({
     query: searchQuery,
-    mediaType: mediaType === 'all' ? 'kino' : mediaType,
+    mediaType: mediaType === 'all' ? 'video' : mediaType,
     objectType
   })
 
@@ -199,7 +199,7 @@ export function GlobalSearch() {
   // TODO: таб не реагирует на принудительное изменение
   useEffect(() => {
     if (isOnlineSearch && mediaType === 'all') {
-      setMediaType('kino')
+      setMediaType('video')
     }
   }, [isOnlineSearch, mediaType])
 
@@ -293,16 +293,25 @@ export function GlobalSearch() {
               ).map((g) => {
                 return g.items.map((m) => {
                   if (m.objectType === 'media') {
-                    if (m.mediaType === 'kino') {
+                    if (m.mediaType === 'video') {
                       return (
                         <GlobalSearchItemCard
                           {...m}
                           key={m.objectType + m.mediaType + m.id}
                           setOpen={setOpen}
-                          mediaType='kino'
+                          mediaType='video'
                         />
                       )
                     }
+                  } else if (m.objectType === 'person') {
+                    return (
+                      <GlobalSearchItemCard
+                          {...m}
+                          key={m.objectType + m.id}
+                          setOpen={setOpen}
+                          mediaType='person'
+                        />
+                    )
                   }
                   return null
                 })

@@ -56,7 +56,7 @@ export async function getTvDetailedInfo({
   const query_result = id
     ? await db.query.medias.findFirst({
         where: (medias, { eq, and }) =>
-          and(eq(medias.id, id), eq(medias.mediaType, 'kino')),
+          and(eq(medias.id, id), eq(medias.mediaType, 'video')),
         with: {
           source: {
             with: {

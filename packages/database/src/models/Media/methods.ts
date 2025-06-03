@@ -68,7 +68,8 @@ export async function insertMedia(
           'isAdult',
           'external_id',
           'isVideo',
-          'mediaStatus'
+          'mediaStatus',
+          'contentType'
         ]),
         sourceId: data.sourceId
       })

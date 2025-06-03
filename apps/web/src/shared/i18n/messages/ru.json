@@ -80,12 +80,12 @@
     "skipped": "Пропущено"
   },
   "MediaTypes": {
-    "kino": "Видео",
+    "video": "Видео",
     "music": "Музыка",
     "book": "Книга",
     "comic": "Комикс",
 
-    "kinoPlural": "Видео",
+    "videoPlural": "Видео",
     "musicPlural": "Музыка",
     "bookPlural": "Книги",
     "comicPlural": "Комиксы"

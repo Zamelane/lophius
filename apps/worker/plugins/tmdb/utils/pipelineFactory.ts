@@ -5,7 +5,7 @@ import { Pipeline } from 'src/lib/pipeline'
 import type { TMDBPlugin } from '../plugin'
 import {
   CommitStep,
-  CreateOrGetKinoStep,
+  CreateOrGetVideoStep,
   CreatePrefetchMediaStep,
   GetImagesStep,
   GetMovieDetailsStep,
@@ -22,7 +22,7 @@ export function createMoviePipeline(
   initialContext: Context
 ): Pipeline<Context> {
   return new Pipeline<Context>(initialContext)
-    .addStep(new CreateOrGetKinoStep())
+    .addStep(new CreateOrGetVideoStep())
     .addStep(new GetTranslationsStep())
     .addStep(new GetImagesStep())
     .addStep(new GetMovieDetailsStep())

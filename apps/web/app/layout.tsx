@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     'Collections',
     'films',
     'serials',
-    'comics',
+    'comic',
     'music',
     'books'
   ]

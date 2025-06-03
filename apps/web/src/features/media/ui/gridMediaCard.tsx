@@ -6,18 +6,18 @@ import {
 } from '@/src/widgets/media/video-card'
 import type { MediaType } from 'database/schemas/media_types'
 
-type KinoProps = {
-  mediaType: 'kino'
+type VideoProps = {
+  mediaType: 'video'
 } & VideoCardProps
 
 type DefaultProps = {
-  mediaType: Exclude<MediaType, 'kino'>
+  mediaType: Exclude<MediaType, 'video'>
 }
 
-export type Props = KinoProps | DefaultProps
+export type Props = VideoProps | DefaultProps
 
 export function GridMediaCard(props: Props) {
-  if (props.mediaType === 'kino') {
+  if (props.mediaType === 'video') {
     return <VideoCard {...props} />
   }
 

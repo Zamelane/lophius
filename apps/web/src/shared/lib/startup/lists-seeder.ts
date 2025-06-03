@@ -10,16 +10,10 @@ type PublicList = {
 
 export const publicLists: PublicList[] = [
   // 🎬 Фильмы и сериалы
-  { i18nTitleKey: 'watching', defaultTitle: 'Watching', mediaType: 'kino' }, // Смотрю
-  { i18nTitleKey: 'planned', defaultTitle: 'Planned', mediaType: 'kino' }, // Буду смотреть
-  { i18nTitleKey: 'completed', defaultTitle: 'Completed', mediaType: 'kino' }, // Просмотрел
-  { i18nTitleKey: 'dropped', defaultTitle: 'Dropped', mediaType: 'kino' }, // Бросил
-
-  // 📚 Книги
-  { i18nTitleKey: 'reading', defaultTitle: 'Reading', mediaType: 'book' }, // Читаю
-  { i18nTitleKey: 'planned', defaultTitle: 'Planned', mediaType: 'book' }, // Планирую прочитать
-  { i18nTitleKey: 'completed', defaultTitle: 'Completed', mediaType: 'book' }, // Прочитано
-  { i18nTitleKey: 'dropped', defaultTitle: 'Dropped', mediaType: 'book' }, // Брошено
+  { i18nTitleKey: 'watching', defaultTitle: 'Watching', mediaType: 'video' }, // Смотрю
+  { i18nTitleKey: 'planned', defaultTitle: 'Planned', mediaType: 'video' }, // Буду смотреть
+  { i18nTitleKey: 'completed', defaultTitle: 'Completed', mediaType: 'video' }, // Просмотрел
+  { i18nTitleKey: 'dropped', defaultTitle: 'Dropped', mediaType: 'video' }, // Бросил
 
   // 🎵 Музыка
   { i18nTitleKey: 'listening', defaultTitle: 'Listening', mediaType: 'music' }, // Слушаю

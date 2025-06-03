@@ -11,7 +11,7 @@ import { ListsView } from '../ui/view'
 
 export function ListsSettingsView() {
   const [ready, setReady] = useState(false)
-  const [selectedMediaType, setSelectedMediaType] = useState<MediaType>('kino')
+  const [selectedMediaType, setSelectedMediaType] = useState<MediaType>('video')
   const [state, fetchLists, pending] = useActionState(
     async (_state: List[], payload: MediaType) => {
       return await getCurrentUserLists(payload)

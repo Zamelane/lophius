@@ -16,7 +16,8 @@
     "incremental": true,
     "paths": {
       "@/*": ["../web/*"],
-      "@plugins/*": ["./plugins/*"]
+      "@plugins/*": ["./plugins/*"],
+      "database/*": ["../../packages/database/src/*"],
     },
     "baseUrl": ".",
     "typeRoots": ["../web/interfaces"]

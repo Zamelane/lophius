@@ -1,6 +1,6 @@
 import type { ElysiaWS } from 'elysia/ws'
-import type { ParserPlugin } from 'src/types'
 import type { StatusUpdate } from './interfaces'
+import { ParserPluginInstance } from 'src/types'
 
 export type StatusType = 'close' | 'open' | 'completed'
 
@@ -27,8 +27,8 @@ export class SearchStatus {
   }
 
   // Добавить новое обновление и отправить клиенту
-  addUpdate(plugin: ParserPlugin, data: StatusUpdate) {
-    const update = { data, plugin: { uid: plugin.uid, name: plugin.name } }
+  addUpdate(plugin: ParserPluginInstance, data: StatusUpdate) {
+    const update = { data, plugin: { uid: plugin.uid, name: plugin.pluginName } }
     this.updates.push(update)
     if (this.wsClient && this.wsClient.readyState === 1) {
       this.wsClient.send(JSON.stringify({ type: 'update', ...update }))

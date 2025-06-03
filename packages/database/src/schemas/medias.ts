@@ -23,7 +23,7 @@ import { origin_countries } from 'database/schemas/origin_countries.ts'
 import { release_dates } from 'database/schemas/release_dates.ts'
 import { spoken_languages } from 'database/schemas/spoken_languages.ts'
 import { external_logos } from './external_logos'
-import { media_status, media_types } from './media_types'
+import { content_types, media_status, media_types } from './media_types'
 import { sources } from './sources'
 import { translates } from './translates'
 
@@ -36,6 +36,7 @@ export const medias = pgTable(
       .notNull(),
     mediaType: media_types().notNull(),
     mediaStatus: media_status().notNull(),
+    contentType: content_types().notNull(),
     external_id: varchar({ length: 255 }).notNull(),
     isAdult: boolean().notNull().default(true),
     isVideo: boolean()

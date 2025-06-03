@@ -1,6 +1,6 @@
 import type { Context } from '@plugins/tmdb/types.ts'
 
-export class CreateOrGetKinoStep {
+export class CreateOrGetVideoStep {
   async execute(ctx: Context): Promise<Context> {
     const { id, adult, video, original_language } = ctx.fetchedData
 
@@ -24,14 +24,15 @@ export class CreateOrGetKinoStep {
         external_id: stringId,
         isAdult: adult,
         isVideo: video,
-        mediaType: 'kino',
-        mediaStatus: 'ready'
+        mediaType: 'video',
+        mediaStatus: 'ready',
+        contentType: 'film'
       })
     } else {
       media.external_id = stringId
       media.isVideo = video
       media.isAdult = adult
-      media.mediaType = 'kino'
+      media.mediaType = 'video'
       ctx.sourceMediaService.updateMedia(media)
     }
 

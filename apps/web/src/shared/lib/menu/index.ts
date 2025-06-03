@@ -4,9 +4,9 @@ import type { NavMainMenuType } from '../../ui/navigation/nav-main'
 
 import adminMenu from './admin'
 //import bookMenu from './book'
-import comicsMenu from './comics'
+import comicMenu from './comic'
 import homeMenu from './home'
-import musicMenu from './music'
+//import musicMenu from './music'
 import videoMenu from './video'
 
 export type MenuType = {
@@ -23,8 +23,8 @@ export type MenuType = {
 export const menu: MenuType[] = [
   homeMenu,
   videoMenu,
-  comicsMenu,
+  comicMenu,
   //bookMenu,
-  musicMenu,
+  //musicMenu,
   adminMenu
 ]
