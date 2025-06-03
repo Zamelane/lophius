@@ -1,39 +1,41 @@
 'use server'
 
-import { and, db, eq, isNull, or, sql } from "database";
-import { lists, userListMedias, userLists } from "database/schemas/lists";
-import { List } from "../types";
-import { MediaType } from "database/schemas/media_types";
+import { and, db, eq, isNull, or, sql } from 'database'
+import { lists, userListMedias, userLists } from 'database/schemas/lists'
+import type { MediaType } from 'database/schemas/media_types'
+import type { List } from '../types'
 
 // Возвращает списки конкретного пользователя для конкретного типа медиа
 export async function getUserLists(userId: number, mediaType: MediaType) {
-  const totalLiteral = db.select({
-    total: sql<number>`count(${userListMedias.mediaId})`.as('total')
-  }).from(userListMedias)
-  .where(and(
-    eq(userListMedias.listId, lists.id),
-    eq(userListMedias.userId, userId)
-  )).as('total_literal')
-
-  const rows = await db.select()
-    .from(lists)
-    .where(and(
-      or(isNull(lists.authorId), eq(lists.authorId, userId)),
-      eq(lists.mediaType, mediaType)
-    ))
-    .leftJoin(
-      userLists,
+  const totalLiteral = db
+    .select({
+      total: sql<number>`count(${userListMedias.mediaId})`.as('total')
+    })
+    .from(userListMedias)
+    .where(
       and(
-        eq(userLists.listId, lists.id),
-        eq(userLists.userId, userId)
+        eq(userListMedias.listId, lists.id),
+        eq(userListMedias.userId, userId)
       )
     )
-    .orderBy(
-      userLists.order,
-      lists.order
+    .as('total_literal')
+
+  const rows = await db
+    .select()
+    .from(lists)
+    .where(
+      and(
+        or(isNull(lists.authorId), eq(lists.authorId, userId)),
+        eq(lists.mediaType, mediaType)
+      )
     )
+    .leftJoin(
+      userLists,
+      and(eq(userLists.listId, lists.id), eq(userLists.userId, userId))
+    )
+    .orderBy(userLists.order, lists.order)
     .innerJoinLateral(totalLiteral, sql`true`)
-  
+
   const result: List[] = []
 
   for (const row of rows) {
@@ -47,7 +49,7 @@ export async function getUserLists(userId: number, mediaType: MediaType) {
       mediaType: list.mediaType,
       isHidden: userList?.isHidden ?? false,
       isSystem: list.authorId === null,
-      comment: userList?.comment ?? "",
+      comment: userList?.comment ?? '',
       total: Number(row.total_literal.total)
     })
   }

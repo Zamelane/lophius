@@ -1,1 +1,1 @@
-export {default} from '../[mediaType]/settings/layout'
+export { default } from '../[mediaType]/settings/layout'

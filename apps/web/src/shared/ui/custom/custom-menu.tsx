@@ -1,9 +1,14 @@
 'use client'
 
-import type { LayoutProps } from '@/src/shared/types'
 import { cn } from '@/src/shared/lib/utils'
+import type { LayoutProps } from '@/src/shared/types'
 import type { LucideIcon } from 'lucide-react'
-import { useState, type Dispatch, type ReactElement, type SetStateAction } from 'react'
+import {
+  type Dispatch,
+  type ReactElement,
+  type SetStateAction,
+  useState
+} from 'react'
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 import { Button } from '../shadcn/button'
@@ -24,8 +29,17 @@ type Props<T extends number | string> = {
   selectedId?: string | null
 }
 
-export function CustomMenu<T extends number | string>({ tabs, selected, setSelected, children, selectedId, tabChange }: Props<T>) {
-  const [selectedTab, setSelectedTab] = useState(tabs.find(t => t.id === selectedId) || tabs[0])
+export function CustomMenu<T extends number | string>({
+  tabs,
+  selected,
+  setSelected,
+  children,
+  selectedId,
+  tabChange
+}: Props<T>) {
+  const [selectedTab, setSelectedTab] = useState(
+    tabs.find((t) => t.id === selectedId) || tabs[0]
+  )
   setSelected ??= setSelectedTab
   selected ??= selectedTab
   children &&= Array.isArray(children) ? children : [children]
@@ -52,27 +66,25 @@ export function CustomMenu<T extends number | string>({ tabs, selected, setSelec
                 className={
                   selected?.id === v.id
                     ? cn(
-                      'inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm disabled:pointer-events-none',
-                      'disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
-                      'font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 h-8 px-3 py-2 [&_svg]:mr-1 justify-center'
-                    )
+                        'inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm disabled:pointer-events-none',
+                        'disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+                        'font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 h-8 px-3 py-2 [&_svg]:mr-1 justify-center'
+                      )
                     : cn(
-                      'inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm',
-                      'disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none',
-                      '[&_svg]:shrink-0 font-medium hover:bg-accent hover:text-accent-foreground h-8 px-3 py-2 [&_svg]:mr-1 justify-center'
-                    )
+                        'inline-flex gap-2 items-center whitespace-nowrap rounded-md text-sm',
+                        'disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none',
+                        '[&_svg]:shrink-0 font-medium hover:bg-accent hover:text-accent-foreground h-8 px-3 py-2 [&_svg]:mr-1 justify-center'
+                      )
                 }
               >
                 <div className='flex gap-2 items-center'>
                   {v.icon && <v.icon />}
                   {v.title}
-                  {
-                    v.badge && (
-                      <div className='inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-[10px] px-1.5 py-0.5 rounded-full pointer-events-none h-[18px]'>
-                        {v.badge}
-                      </div>
-                    )
-                  }
+                  {v.badge && (
+                    <div className='inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-[10px] px-1.5 py-0.5 rounded-full pointer-events-none h-[18px]'>
+                      {v.badge}
+                    </div>
+                  )}
                 </div>
               </Button>
               {selected?.id === v.id ? (
@@ -84,15 +96,13 @@ export function CustomMenu<T extends number | string>({ tabs, selected, setSelec
           ))}
         </div>
       </ScrollContainer>
-      {
-        children && (
-          <div>
-            {
-              children.find(c => c.props.id === selected.id && selected.id !== undefined)
-            }
-          </div>
-        )
-      }
+      {children && (
+        <div>
+          {children.find(
+            (c) => c.props.id === selected.id && selected.id !== undefined
+          )}
+        </div>
+      )}
     </div>
   )
 }

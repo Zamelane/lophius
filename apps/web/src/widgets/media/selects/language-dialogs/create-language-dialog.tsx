@@ -1,5 +1,8 @@
 'use client'
 
+import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
+import type { Language, Translate, WithRequired } from '@/src/shared/types'
+import type { LanguageInfoDataType } from '@/src/shared/types/edit-types'
 import { EditSectionItem } from '@/src/shared/ui/custom/custom-edit'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import {
@@ -12,9 +15,6 @@ import {
   DialogTrigger
 } from '@/src/shared/ui/shadcn/dialog'
 import { Input } from '@/src/shared/ui/shadcn/input'
-import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
-import type { Language, Translate, WithRequired } from '@/src/shared/types'
-import type { LanguageInfoDataType } from '@/src/shared/types/edit-types'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import Image from 'next/image'
 import { type Dispatch, type SetStateAction, useState } from 'react'

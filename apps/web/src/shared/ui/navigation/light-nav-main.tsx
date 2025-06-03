@@ -3,16 +3,16 @@
 import type { LucideIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
-import type { LayoutProps } from '@/src/shared/types'
-import { cn } from '@/src/shared/lib/utils'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
-import { useGlobalSearchContext } from '@/src/widgets/global-search'
+import { cn } from '@/src/shared/lib/utils'
+import type { LayoutProps } from '@/src/shared/types'
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar
 } from '@/src/shared/ui/shadcn/sidebar'
+import { useGlobalSearchContext } from '@/src/widgets/global-search'
 
 const ModifyLocaleLink = (
   props: React.ComponentProps<typeof LocaleLink> & { action?: () => void }

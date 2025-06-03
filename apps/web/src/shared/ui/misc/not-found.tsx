@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from '../shadcn/button'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import { Button } from '../shadcn/button'
 
 interface NotFoundProps {
   title?: string

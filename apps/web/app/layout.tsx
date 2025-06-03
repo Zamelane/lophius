@@ -1,10 +1,10 @@
 import './globals.css'
 
+import { getCurrentUser } from '@/src/shared/lib/dal'
 import { AuthProvider } from '@/src/shared/providers/auth-context'
 import { ThemeProvider } from '@/src/shared/providers/theme-provider'
-import { Toaster } from '@/src/shared/ui/shadcn/sonner'
 import type { ContentResponse, LayoutProps, UserInfo } from '@/src/shared/types'
-import { getCurrentUser } from '@/src/shared/lib/dal'
+import { Toaster } from '@/src/shared/ui/shadcn/sonner'
 import type { Metadata } from 'next'
 import { AppProgressBar } from 'next-app-progress-bar'
 import { NextIntlClientProvider } from 'next-intl'

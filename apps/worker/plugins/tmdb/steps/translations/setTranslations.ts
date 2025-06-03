@@ -48,7 +48,8 @@ export class SetTranslationsStep {
       (v) => v.language.iso_639_1 === ctx?.fetchedData?.original_language
     )
     if (!translate) {
-      if (!ctx.fetchedData.original_language || !ctx.fetchedData.title) return ctx
+      if (!ctx.fetchedData.original_language || !ctx.fetchedData.title)
+        return ctx
 
       const language = ctx.sourceMediaService.languageService.createLanguage({
         iso_639_1: ctx.fetchedData.original_language

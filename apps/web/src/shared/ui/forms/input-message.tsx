@@ -1,6 +1,6 @@
-import { Label } from '../shadcn/label'
-import type { TranslationFunctionType } from '@/src/shared/types/translationFunctionType'
 import { cn } from '@/src/shared/lib/utils'
+import type { TranslationFunctionType } from '@/src/shared/types/translationFunctionType'
+import { Label } from '../shadcn/label'
 
 export default function InputMessage({
   t,

@@ -1,6 +1,6 @@
-import { PluginQueue } from './plugin-queue.ts';
+import { PluginQueue } from './plugin-queue.ts'
 import { PluginsManager } from './plugins-manager.ts'
-import { SearchQueue } from './search/search-queue.ts';
+import { SearchQueue } from './search/search-queue.ts'
 import { app, websocketApp } from './server-app.ts'
 
 export * from './utils'
@@ -25,8 +25,4 @@ export const run = async (port = 3001) => {
   }
 }
 
-export {
-  pluginManager,
-  searchQueue,
-  pluginQueue
-}
+export { pluginManager, searchQueue, pluginQueue }

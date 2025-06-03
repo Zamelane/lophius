@@ -1,10 +1,13 @@
-import { EditSection, EditSectionItem } from '@/src/shared/ui/custom/custom-edit'
-import { Input } from '@/src/shared/ui/shadcn/input'
 import type {
   GenreInfoDataType,
   LanguageInfoDataType,
   SerialProductionStatusInfoDataType
 } from '@/src/shared/types/edit-types'
+import {
+  EditSection,
+  EditSectionItem
+} from '@/src/shared/ui/custom/custom-edit'
+import { Input } from '@/src/shared/ui/shadcn/input'
 
 import { GenreSelect } from '../../selects/genre-select'
 import { SerialProductionStatusSelect } from '../../selects/serial-production-status-select'

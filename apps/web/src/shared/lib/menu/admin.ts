@@ -1,4 +1,8 @@
-import { /*SearchIcon,*/ ListIcon, ServerCogIcon, ShieldUserIcon } from 'lucide-react'
+import {
+  /*SearchIcon,*/ ListIcon,
+  ServerCogIcon,
+  ShieldUserIcon
+} from 'lucide-react'
 import type { MenuType } from '.'
 import type { LightMenuItemType } from '../../ui/navigation/light-nav-main'
 import type { NavMainMenuType } from '../../ui/navigation/nav-main'

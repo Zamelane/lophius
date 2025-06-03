@@ -1,20 +1,16 @@
 'use client'
 
-import { MediaType, mediaTypes } from 'database/schemas/media_types'
-import { defaultLocale } from '../i18n/config'
+import { type MediaType, mediaTypes } from 'database/schemas/media_types'
 import NextIntlLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
+import { defaultLocale } from '../i18n/config'
 
 type Props = React.ComponentProps<typeof NextIntlLink> & {
   ignoreMediaType?: boolean
 }
 
-export function LocaleLink({
-  href,
-  ignoreMediaType,
-  ...props
-}: Props) {
+export function LocaleLink({ href, ignoreMediaType, ...props }: Props) {
   const pathname = usePathname()
   const hrefString = href.toString()
 
@@ -55,7 +51,7 @@ export function LocaleLink({
     if (mediaType && !hrefHasMediaType && !ignoreMediaType) {
       const insertPosition = hrefHasLocale ? 1 : 0
       hrefSegments.splice(insertPosition, 0, mediaType)
-      resolvedHref = '/' + hrefSegments.join('/')
+      resolvedHref = `/${hrefSegments.join('/')}`
     }
 
     // Добавим локаль, если её нет

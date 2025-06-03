@@ -1,18 +1,21 @@
 'use server'
 
-import { getCurrentUser } from "@/src/shared/lib/dal";
-import { List } from "../types";
-import { db, WithOptional } from "database";
-import { lists, userLists } from "database/schemas/lists";
+import { getCurrentUser } from '@/src/shared/lib/dal'
+import { type WithOptional, db } from 'database'
+import { lists, userLists } from 'database/schemas/lists'
+import type { List } from '../types'
 
-export async function createList(list: WithOptional<List, 'id' | 'i18nTitle' | 'isSystem'>) {
+export async function createList(
+  list: WithOptional<List, 'id' | 'i18nTitle' | 'isSystem'>
+) {
   const user = await getCurrentUser()
 
   if (!user || !list.mediaType) {
     return
   }
 
-  const [newList] = await db.insert(lists)
+  const [newList] = await db
+    .insert(lists)
     .values({
       authorId: user.id,
       mediaType: list.mediaType,
@@ -21,7 +24,8 @@ export async function createList(list: WithOptional<List, 'id' | 'i18nTitle' | '
     })
     .returning()
 
-  await db.insert(userLists)
+  await db
+    .insert(userLists)
     .values({
       listId: newList.id,
       userId: user.id,

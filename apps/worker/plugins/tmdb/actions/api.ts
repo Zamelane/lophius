@@ -1,10 +1,10 @@
 import { saveMovies } from '@plugins/tmdb/actions/savers.ts'
 import { compareAsc } from 'date-fns'
+import { allFieldsDefined } from '../../../../web/src/shared/types/helps'
 import type { PluginStorage } from '../../../src/plugin-storage.ts'
 import { discoverMovie } from '../client'
+import type { TMDBPlugin } from '../plugin.ts'
 import type { StorageData } from '../types'
-import { allFieldsDefined } from '../../../../web/src/shared/types/helps';
-import { TMDBPlugin } from '../plugin.ts'
 
 export async function moviesLibraryLoader(plugin: TMDBPlugin) {
   const { movies, defaultLang, token } = plugin.storageData
@@ -92,7 +92,10 @@ export async function moviesLibraryLoader(plugin: TMDBPlugin) {
     console.info(`Страница ${page}/${500} (${date}/${date_gte}) извлечена`)
   }
 
-  await setTotalComplete({ storage: plugin.storage, storageData: plugin.storageData })
+  await setTotalComplete({
+    storage: plugin.storage,
+    storageData: plugin.storageData
+  })
 }
 
 async function setTotalComplete({

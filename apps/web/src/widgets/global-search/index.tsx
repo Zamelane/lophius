@@ -8,17 +8,20 @@ import {
   useState
 } from 'react'
 
-import {
-  Search
-} from '@/src/features/media/search/search'
+import { Search } from '@/src/features/media/search/search'
 import { limitResults } from '@/src/features/media/search/search/config'
-import { Tab, Tabs } from '@/src/shared/ui/tabs/tabs-1'
+import type {
+  MediaType,
+  ObjectType,
+  SearchResultType
+} from '@/src/features/media/search/types'
+import { useSearchWebSocket } from '@/src/features/online-search/hooks/useSearchWebSocket'
 import { useDebounce } from '@/src/shared/hooks/debounce'
 import type { LayoutProps } from '@/src/shared/types'
+import { Tab, Tabs } from '@/src/shared/ui/tabs/tabs-1'
 import NumberFlow from '@number-flow/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
-import { SkewedToggle } from '../../shared/ui/toggles/skewed-toggle'
 import { Button } from '../../shared/ui/shadcn/button'
 import {
   CommandDialog,
@@ -27,9 +30,8 @@ import {
 } from '../../shared/ui/shadcn/command'
 import { DialogTitle } from '../../shared/ui/shadcn/dialog'
 import { Spinner } from '../../shared/ui/shadcn/spinner'
-import { useSearchWebSocket } from '@/src/features/online-search/hooks/useSearchWebSocket'
+import { SkewedToggle } from '../../shared/ui/toggles/skewed-toggle'
 import { GlobalSearchItemCard } from './items/gs-card-item'
-import { MediaType, ObjectType, SearchResultType } from '@/src/features/media/search/types'
 
 type TabType = {
   title: string
@@ -90,11 +92,12 @@ export function GlobalSearch() {
     status,
     error: wsError,
     results: wsResults,
+    resultsLength: wsResultsLength
   } = useSearchWebSocket({
     query: searchQuery,
     mediaType: mediaType === 'all' ? 'kino' : mediaType,
     objectType
-  });
+  })
 
   // Режим поиска
   const [isOnlineSearch, setIsOnlineSearch] = useState(false)
@@ -166,6 +169,7 @@ export function GlobalSearch() {
   // Обработчик онлайн поиска
   const onlineSearchHandler = async () => {
     try {
+      if (!searchQuery) return
       await connect()
     } catch (error) {
       if (error) {
@@ -244,23 +248,24 @@ export function GlobalSearch() {
         </Tabs>
 
         <div className='h-full overflow-hidden'>
-          {isLoading || (status !== 'closed' && wsResults.length === 0) && (
-            <motion.div
-              key='loading'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className='h-full flex flex-col justify-center items-center'
-            >
-              <Spinner size='lg' className='bg-black dark:bg-white' />
-              {
-                status
-              }
-            </motion.div>
-          )}
+          {isLoading ||
+            (status !== 'closed' && wsResults.length === 0 && (
+              <motion.div
+                key='loading'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className='h-full flex flex-col justify-center items-center'
+              >
+                <Spinner size='lg' className='bg-black dark:bg-white' />
+                {status}
+              </motion.div>
+            ))}
 
-          {(!results?.current || error) && !isLoading
-            && wsResults.length === 0 && status === 'closed' && (
+          {(!results?.current || error) &&
+            !isLoading &&
+            wsResults.length === 0 &&
+            status === 'closed' && (
               <motion.div
                 key='empty'
                 initial={{ opacity: 0, y: 10 }}
@@ -275,10 +280,18 @@ export function GlobalSearch() {
             )}
 
           <CommandList className='px-4 py-2'>
-            {!error && !wsError &&
-              (isOnlineSearch ? wsResults : [{ plugin: { name: '', uid: '' }, items: results?.items || [] }]).map((g) => {
-
-                return g.items.map(m => {
+            {!error &&
+              !wsError &&
+              (isOnlineSearch
+                ? wsResults
+                : [
+                    {
+                      plugin: { name: '', uid: '' },
+                      items: results?.items || []
+                    }
+                  ]
+              ).map((g) => {
+                return g.items.map((m) => {
                   if (m.objectType === 'media') {
                     if (m.mediaType === 'kino') {
                       return (
@@ -318,8 +331,16 @@ export function GlobalSearch() {
           <div className='flex flex-row items-center gap-2'>
             <p>Lophius</p>
             <div className='text-muted-foreground text-sm'>
-              <NumberFlow value={(isOnlineSearch ? wsResults.length || undefined : results?.total) ?? 'Infinity'} />
-              {isOnlineSearch ? wsResults.length || undefined : results?.total && ' совпадения'}
+              <NumberFlow
+                value={
+                  (isOnlineSearch
+                    ? wsResultsLength || undefined
+                    : results?.total) ?? 'Infinity'
+                }
+              />
+              {(isOnlineSearch
+                ? wsResultsLength || undefined
+                : results?.total) && ' совпадения'}
             </div>
           </div>
 

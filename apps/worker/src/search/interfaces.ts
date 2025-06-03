@@ -1,7 +1,7 @@
-import { SearchStatus } from "./search-status";
-import { MediaType } from "database/src/schemas/media_types";
-import { GlobalSearchItemCardProps } from '../../../web/src/widgets/global-search/items/gs-card-item';
-import { MediasType, ObjectType } from "@/src/features/media/search/types";
+import type { MediasType, ObjectType } from '@/src/features/media/search/types'
+import type { MediaType } from 'database/src/schemas/media_types'
+import type { GlobalSearchItemCardProps } from '../../../web/src/widgets/global-search/items/gs-card-item'
+import type { SearchStatus } from './search-status'
 
 export type SearchData = {
   query: string
@@ -21,7 +21,7 @@ export type MediaOnlineResultType = {
 }
 
 export interface SearchRequest {
-  userId: number;
-  data: SearchData;
-  status: SearchStatus;
+  userId: number
+  data: SearchData
+  status: SearchStatus
 }

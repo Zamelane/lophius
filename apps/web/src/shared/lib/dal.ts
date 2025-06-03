@@ -1,6 +1,6 @@
 import 'server-only'
-import type { UserInfo } from '@/src/shared/types'
 import { decrypt } from '@/src/shared/lib/session'
+import type { UserInfo } from '@/src/shared/types'
 import { db } from 'database'
 import { users } from 'database/src/schemas'
 import { eq } from 'drizzle-orm'

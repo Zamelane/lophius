@@ -1,6 +1,9 @@
 'use client'
 
 import { login } from '@/src/features/auth/services/login'
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import { InputCustom } from '@/src/shared/ui/custom/input-custom'
+import LoadingButton from '@/src/shared/ui/custom/loading-button'
 import {
   Card,
   CardContent,
@@ -8,15 +11,12 @@ import {
   CardHeader,
   CardTitle
 } from '@/src/shared/ui/shadcn/card'
-import { InputCustom } from '@/src/shared/ui/custom/input-custom'
 import { Label } from '@/src/shared/ui/shadcn/label'
-import LoadingButton from '@/src/shared/ui/custom/loading-button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
 } from '@/src/shared/ui/shadcn/popover'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { useTranslations } from 'next-intl'
 import { redirect } from 'next/navigation'
 import React, { useState, useActionState } from 'react'

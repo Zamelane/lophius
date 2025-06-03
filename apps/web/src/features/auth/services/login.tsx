@@ -1,14 +1,14 @@
 'use server'
 
+import { LoginFormSchema } from '@/src/features/auth/schemas/LoginFormSchema'
 import FindUser from '@/src/features/auth/services/find-user'
 import { api_t_keys } from '@/src/shared/i18n'
+import { createSession } from '@/src/shared/lib/session'
 import type {
   CurrentUserInfo,
   ErrorResponse,
   ServerResponse
 } from '@/src/shared/types'
-import { createSession } from '@/src/shared/lib/session'
-import { LoginFormSchema } from '@/src/features/auth/schemas/LoginFormSchema'
 
 export async function login(
   state: (ErrorResponse & ServerResponse<CurrentUserInfo>) | undefined,

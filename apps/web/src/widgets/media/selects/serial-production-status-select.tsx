@@ -1,3 +1,5 @@
+import type { SerialStatusType } from '@/src/shared/types'
+import type { SerialProductionStatusInfoDataType } from '@/src/shared/types/edit-types'
 import {
   Select,
   SelectContent,
@@ -7,8 +9,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/src/shared/ui/shadcn/select'
-import type { SerialStatusType } from '@/src/shared/types'
-import type { SerialProductionStatusInfoDataType } from '@/src/shared/types/edit-types'
 import {
   BanIcon,
   ClockFadingIcon,

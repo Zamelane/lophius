@@ -2,12 +2,12 @@
 
 import { useSidebar } from '@/src/shared/ui/shadcn/sidebar'
 import { ModeToggle } from '@/src/shared/ui/toggles/themes-toggle'
+import { AnimatePresence, motion } from 'framer-motion'
 import { SidebarIcon } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Button } from '../shadcn/button'
 import { Separator } from '../shadcn/separator'
-import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
@@ -28,22 +28,22 @@ export function SiteHeader() {
   }, [])
 
   return (
-    <header className="-ml-[2px] md:ml-0 flex sticky top-0 z-50 w-full items-center justify-center bg-background/70 backdrop-blur-md backdrop-saturate-150 supports-[backdrop-filter]:bg-background/60 py-2">
-      <div className="flex h-[--header-height] w-full items-center gap-2 px-2 max-w-[1920px]">
+    <header className='-ml-[2px] md:ml-0 flex sticky top-0 z-50 w-full items-center justify-center bg-background/70 backdrop-blur-md backdrop-saturate-150 supports-[backdrop-filter]:bg-background/60 py-2'>
+      <div className='flex h-[--header-height] w-full items-center gap-2 px-2 max-w-[1920px]'>
         <Button
-          size="icon"
-          variant="ghost"
-          className="aspect-square"
+          size='icon'
+          variant='ghost'
+          className='aspect-square'
           onClick={toggleSidebar}
         >
           <SidebarIcon />
         </Button>
-        <Separator className="mr-2 h-4" orientation="vertical" />
+        <Separator className='mr-2 h-4' orientation='vertical' />
 
         <AnimatePresence>
           {title && (
             <motion.div
-              className="text-xl font-medium truncate"
+              className='text-xl font-medium truncate'
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -54,7 +54,7 @@ export function SiteHeader() {
           )}
         </AnimatePresence>
 
-        <div className="ml-auto w-max flex flex-row gap-2">
+        <div className='ml-auto w-max flex flex-row gap-2'>
           <ModeToggle />
         </div>
       </div>

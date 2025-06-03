@@ -37,7 +37,9 @@ export class PluginsManager {
         // Динамический импорт (Bun поддерживает ES-модули)
         const pluginModule = await import(entry)
         const plugin = pluginModule.default as ParserPluginClass
-        const instance = await plugin.init(await PluginStorage.init(plugin.uid, plugin.pluginName))
+        const instance = await plugin.init(
+          await PluginStorage.init(plugin.uid, plugin.pluginName)
+        )
 
         if (!instance.pluginName) {
           console.error(`🛑 Plugin '${entry}' ignored: missing 'name' field!`)
@@ -63,17 +65,15 @@ export class PluginsManager {
 
         if (config.promise) continue
 
-        config.promise = config.plugin
-          .execute()
-          .then(() => {
-            config.promise = undefined
-          })
+        config.promise = config.plugin.execute().then(() => {
+          config.promise = undefined
+        })
       }
       await Bun.sleep(60000)
     }
   }
 
   getPlugins() {
-    return Object.keys(this.plugins).map(key => this.plugins[key])
+    return Object.keys(this.plugins).map((key) => this.plugins[key])
   }
 }

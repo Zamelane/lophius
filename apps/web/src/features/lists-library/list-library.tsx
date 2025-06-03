@@ -1,22 +1,29 @@
 'use client'
 
-import { CustomMenu, MenuContent, Tab } from "@/src/shared/ui/custom/custom-menu";
-import { List } from "../settings/types";
-import { useTranslations } from "next-intl";
-import { GridLayout } from "@/src/shared/ui/layout/grid-layout";
-import { GridMediaCard, Props as GridMediaCardProps } from "../media/ui/gridMediaCard";
-import { useEffect, useRef, useState } from "react";
-import { MediaType } from "database/schemas/media_types";
-import { loadListMedias } from "./services/loadListMedias";
-import { Spinner } from "@/src/shared/ui/shadcn/spinner";
+import {
+  CustomMenu,
+  MenuContent,
+  type Tab
+} from '@/src/shared/ui/custom/custom-menu'
+import { GridLayout } from '@/src/shared/ui/layout/grid-layout'
+import { Spinner } from '@/src/shared/ui/shadcn/spinner'
+import type { MediaType } from 'database/schemas/media_types'
+import { useTranslations } from 'next-intl'
+import { useEffect, useRef, useState } from 'react'
+import {
+  GridMediaCard,
+  type Props as GridMediaCardProps
+} from '../media/ui/gridMediaCard'
+import type { List } from '../settings/types'
+import { loadListMedias } from './services/loadListMedias'
 
 type Props = {
-  lists: List[],
+  lists: List[]
   mediaType: MediaType
 }
 
 type TabProps = Tab<number> & {
-  medias: GridMediaCardProps[],
+  medias: GridMediaCardProps[]
   comment?: string | null
   hasMore: boolean
 }
@@ -33,9 +40,10 @@ export function ListLibrary({ lists, mediaType }: Props) {
       medias: [],
       hasMore: true,
       title: 'Все',
-      badge: lists.reduce((sum, list) => (list.total ?? 0) + sum, 0) || undefined
+      badge:
+        lists.reduce((sum, list) => (list.total ?? 0) + sum, 0) || undefined
     },
-    ...lists.map(list => ({
+    ...lists.map((list) => ({
       id: list.id,
       title: list.i18nTitle ? t(list.i18nTitle) : list.title,
       comment: list.comment,
@@ -47,29 +55,41 @@ export function ListLibrary({ lists, mediaType }: Props) {
   ]
 
   const [tabs, setTabs] = useState(initialTabs)
-  const [selectedTabId, setSelectedTabId] = useState<number | undefined>(initialTabs?.[0]?.id)
+  const [selectedTabId, setSelectedTabId] = useState<number | undefined>(
+    initialTabs?.[0]?.id
+  )
   const [loading, setLoading] = useState(false)
 
   const loaderRef = useRef<HTMLDivElement | null>(null)
 
   async function loadMore(listId: number) {
-    const tab = tabs.find(t => t.id === listId)
+    const tab = tabs.find((t) => t.id === listId)
     if (!tab || !tab.hasMore || isLoadingRef.current) return
-    
+
     isLoadingRef.current = true
     setLoading(true)
     try {
-      const newMedias = await loadListMedias({ listId, mediaType, offset: tab.medias.length, size: PAGE_SIZE })
-      console.log({ listId, mediaType, offset: tab.medias.length, size: PAGE_SIZE })
+      const newMedias = await loadListMedias({
+        listId,
+        mediaType,
+        offset: tab.medias.length,
+        size: PAGE_SIZE
+      })
+      console.log({
+        listId,
+        mediaType,
+        offset: tab.medias.length,
+        size: PAGE_SIZE
+      })
 
-      setTabs(prev =>
-        prev.map(t =>
+      setTabs((prev) =>
+        prev.map((t) =>
           t.id === listId
             ? {
-              ...t,
-              medias: [...t.medias, ...newMedias],
-              hasMore: newMedias.length === PAGE_SIZE
-            }
+                ...t,
+                medias: [...t.medias, ...newMedias],
+                hasMore: newMedias.length === PAGE_SIZE
+              }
             : t
         )
       )
@@ -82,7 +102,7 @@ export function ListLibrary({ lists, mediaType }: Props) {
   // Загрузка при выборе новой вкладки
   useEffect(() => {
     if (selectedTabId === undefined) return
-    const tab = tabs.find(t => t.id === selectedTabId)
+    const tab = tabs.find((t) => t.id === selectedTabId)
     if (tab && tab.medias.length === 0) {
       tab.hasMore = true
       loadMore(tab.id)
@@ -92,7 +112,7 @@ export function ListLibrary({ lists, mediaType }: Props) {
   // IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
-      entries => {
+      (entries) => {
         if (entries[0].isIntersecting && selectedTabId !== undefined) {
           loadMore(selectedTabId)
         }
@@ -114,16 +134,14 @@ export function ListLibrary({ lists, mediaType }: Props) {
   return (
     <div>
       <CustomMenu tabs={tabs} tabChange={setSelectedTabId}>
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <MenuContent key={tab.id} id={tab.id}>
-            {
-              tab.comment && (
-                <div className="flex flex-col gap-1 flex-grow border rounded-md py-3 px-3.5">
-                  <h6 className="text-sm font-semibold">Заметка</h6>
-                  <p className="text-sm break-all">{ tab.comment }</p>
-                </div>
-              )
-            }
+            {tab.comment && (
+              <div className='flex flex-col gap-1 flex-grow border rounded-md py-3 px-3.5'>
+                <h6 className='text-sm font-semibold'>Заметка</h6>
+                <p className='text-sm break-all'>{tab.comment}</p>
+              </div>
+            )}
             <GridLayout>
               {tab.medias.map((media, i) => (
                 <GridMediaCard key={i} {...media} />
@@ -131,8 +149,10 @@ export function ListLibrary({ lists, mediaType }: Props) {
             </GridLayout>
 
             {tab.id === selectedTabId && (
-              <div ref={loaderRef} className="flex justify-center py-4">
-                {loading && <Spinner size='lg' className='bg-black dark:bg-white' />}
+              <div ref={loaderRef} className='flex justify-center py-4'>
+                {loading && (
+                  <Spinner size='lg' className='bg-black dark:bg-white' />
+                )}
               </div>
             )}
           </MenuContent>

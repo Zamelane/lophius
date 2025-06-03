@@ -1,3 +1,4 @@
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   DropdownMenu,
@@ -11,7 +12,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/src/shared/ui/shadcn/dropdown-menu'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import {
   BookIcon,
   CatIcon,

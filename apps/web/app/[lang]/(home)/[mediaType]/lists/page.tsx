@@ -1,6 +1,6 @@
-import { ListLibraryView } from "@/src/features/lists-library"
-import { MediaType } from "database/schemas/media_types"
-import { forbidden } from "next/navigation"
+import { ListLibraryView } from '@/src/features/lists-library'
+import type { MediaType } from 'database/schemas/media_types'
+import { forbidden } from 'next/navigation'
 
 type Props = {
   params: Promise<{ mediaType?: MediaType }>
@@ -9,10 +9,7 @@ type Props = {
 export default async function ListsPage({ params }: Props) {
   const mediaType = (await params).mediaType
 
-  if (!mediaType)
-    forbidden()
+  if (!mediaType) forbidden()
 
-  return (
-    <ListLibraryView mediaType={mediaType} />
-  )
+  return <ListLibraryView mediaType={mediaType} />
 }

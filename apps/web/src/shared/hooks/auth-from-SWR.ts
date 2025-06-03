@@ -1,8 +1,8 @@
 'use client'
 
-import { useAuth } from '@/src/shared/providers/auth-context'
-import type { ClientResponse, CurrentUserInfo } from '@/src/shared/types';
 import { fetcher } from '@/src/shared/lib/fetcher'
+import { useAuth } from '@/src/shared/providers/auth-context'
+import type { ClientResponse, CurrentUserInfo } from '@/src/shared/types'
 import useSWR from 'swr'
 
 export function AuthFromSWR() {

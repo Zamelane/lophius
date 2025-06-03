@@ -1,7 +1,12 @@
 'use server'
 
+import type {
+  MediaType,
+  ObjectType,
+  PlaceType,
+  SearchResultType
+} from '../types'
 import { SearchMediaOffline } from './searchMediaOffline'
-import { MediaType, ObjectType, PlaceType, SearchResultType } from '../types'
 
 export type Props = {
   search: string

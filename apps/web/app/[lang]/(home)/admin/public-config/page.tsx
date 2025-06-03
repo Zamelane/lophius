@@ -1,8 +1,12 @@
 'use client'
 
-import { CustomMenu, MenuContent, Tab } from '../../../../../src/shared/ui/custom/custom-menu';
-import { ListsView } from "@/src/features/settings/ui/view";
-import { ListIcon } from "lucide-react";
+import { ListsView } from '@/src/features/settings/ui/view'
+import { ListIcon } from 'lucide-react'
+import {
+  CustomMenu,
+  MenuContent,
+  type Tab
+} from '../../../../../src/shared/ui/custom/custom-menu'
 
 export default function Page() {
   const tabs: Tab[] = [
@@ -16,11 +20,9 @@ export default function Page() {
   return (
     <div>
       <CustomMenu tabs={tabs}>
-
-        <MenuContent id="lists">
+        <MenuContent id='lists'>
           <ListsView />
         </MenuContent>
-
       </CustomMenu>
     </div>
   )

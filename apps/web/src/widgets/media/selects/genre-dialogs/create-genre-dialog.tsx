@@ -1,5 +1,11 @@
 'use client'
 
+import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
+import type { Language, Translate, WithRequired } from '@/src/shared/types'
+import type {
+  GenreInfoDataType,
+  LanguageInfoDataType
+} from '@/src/shared/types/edit-types'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   Dialog,
@@ -11,12 +17,6 @@ import {
   DialogTrigger
 } from '@/src/shared/ui/shadcn/dialog'
 import { Input } from '@/src/shared/ui/shadcn/input'
-import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
-import type { Language, Translate, WithRequired } from '@/src/shared/types'
-import type {
-  GenreInfoDataType,
-  LanguageInfoDataType
-} from '@/src/shared/types/edit-types'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'

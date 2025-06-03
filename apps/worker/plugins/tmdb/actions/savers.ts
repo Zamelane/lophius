@@ -1,8 +1,8 @@
 import type { DiscoverMovieResponse } from '@plugins/tmdb/client'
 import type { Context } from '@plugins/tmdb/types.ts'
 import { SourceMediaService } from 'database/src/services/SourceMediaService.ts'
+import type { TMDBPlugin } from '../plugin.ts'
 import { createMoviePipeline } from '../utils/pipelineFactory.ts'
-import { TMDBPlugin } from '../plugin.ts'
 
 export async function saveMovies(
   plugin: TMDBPlugin,

@@ -1,5 +1,6 @@
 'use client'
 
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,10 +17,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem
 } from '@/src/shared/ui/shadcn/sidebar'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { ChevronRight, type LucideIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
+import type { UserInfo } from '../../types'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -27,7 +28,6 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger
 } from '../shadcn/context-menu'
-import { UserInfo } from '../../types'
 
 export type NavMainMenuType = {
   title: string
@@ -40,7 +40,7 @@ export type NavMainMenuType = {
     menu?: {
       title: string
       url: string
-      icon?: LucideIcon,
+      icon?: LucideIcon
     }[]
   }[]
 }[]
@@ -50,97 +50,97 @@ type Props = {
   user: UserInfo | undefined
 }
 
-export function NavMain({
-  config,
-  user
-}: Props) {
+export function NavMain({ config, user }: Props) {
   const path = usePathname()
   return (
     <>
-      {config.map((v, i) => (!v.isAuthRequired || user) && (
-        <SidebarGroup key={i}>
-          <SidebarGroupLabel>{v.title}</SidebarGroupLabel>
-          <SidebarMenu>
-            {v.items.map((item) => (
-              <Collapsible
-                asChild
-                key={`c_${item.title}`}
-                defaultOpen={path === item.url}
-              >
-                <SidebarMenuItem>
-                  <ContextMenu>
-                    <ContextMenuTrigger>
-                      <SidebarMenuButton
-                        asChild
-                        tooltip={item.title}
-                        isActive={path === item.url}
-                        className='transition-all duration-200'
-                      >
-                        <LocaleLink href={item.url}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </LocaleLink>
-                      </SidebarMenuButton>
-                    </ContextMenuTrigger>
-                    <ContextMenuContent>
-                      {item.menu?.map((subItem) => (
-                        <LocaleLink
-                          href={subItem.url}
-                          key={`s_${subItem.title}`}
-                        >
-                          <ContextMenuItem
-                            key={`ss_${subItem.title}`}
+      {config.map(
+        (v, i) =>
+          (!v.isAuthRequired || user) && (
+            <SidebarGroup key={i}>
+              <SidebarGroupLabel>{v.title}</SidebarGroupLabel>
+              <SidebarMenu>
+                {v.items.map((item) => (
+                  <Collapsible
+                    asChild
+                    key={`c_${item.title}`}
+                    defaultOpen={path === item.url}
+                  >
+                    <SidebarMenuItem>
+                      <ContextMenu>
+                        <ContextMenuTrigger>
+                          <SidebarMenuButton
+                            asChild
+                            tooltip={item.title}
+                            isActive={path === item.url}
                             className='transition-all duration-200'
                           >
-                            <p className={subItem.icon ? 'pr-2' : ''}>
-                              {subItem.title}
-                            </p>
-                            {subItem.icon && (
-                              <ContextMenuShortcut>
-                                <subItem.icon size={16} />
-                              </ContextMenuShortcut>
-                            )}
-                          </ContextMenuItem>
-                        </LocaleLink>
-                      ))}
-                    </ContextMenuContent>
-                  </ContextMenu>
-                  {item.menu?.length ? (
-                    <>
-                      <CollapsibleTrigger
-                        asChild
-                        className='transition-all duration-200'
-                      >
-                        <SidebarMenuAction className='data-[state=open]:rotate-90'>
-                          <ChevronRight />
-                          <span className='sr-only'>Toggle</span>
-                        </SidebarMenuAction>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
+                            <LocaleLink href={item.url}>
+                              <item.icon />
+                              <span>{item.title}</span>
+                            </LocaleLink>
+                          </SidebarMenuButton>
+                        </ContextMenuTrigger>
+                        <ContextMenuContent>
                           {item.menu?.map((subItem) => (
-                            <SidebarMenuSubItem key={`sm_${subItem.title}`}>
-                              <SidebarMenuSubButton
-                                asChild
+                            <LocaleLink
+                              href={subItem.url}
+                              key={`s_${subItem.title}`}
+                            >
+                              <ContextMenuItem
+                                key={`ss_${subItem.title}`}
                                 className='transition-all duration-200'
                               >
-                                <LocaleLink href={subItem.url}>
-                                  {subItem.icon && <subItem.icon />}
-                                  <span>{subItem.title}</span>
-                                </LocaleLink>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
+                                <p className={subItem.icon ? 'pr-2' : ''}>
+                                  {subItem.title}
+                                </p>
+                                {subItem.icon && (
+                                  <ContextMenuShortcut>
+                                    <subItem.icon size={16} />
+                                  </ContextMenuShortcut>
+                                )}
+                              </ContextMenuItem>
+                            </LocaleLink>
                           ))}
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    </>
-                  ) : null}
-                </SidebarMenuItem>
-              </Collapsible>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-      ))}
+                        </ContextMenuContent>
+                      </ContextMenu>
+                      {item.menu?.length ? (
+                        <>
+                          <CollapsibleTrigger
+                            asChild
+                            className='transition-all duration-200'
+                          >
+                            <SidebarMenuAction className='data-[state=open]:rotate-90'>
+                              <ChevronRight />
+                              <span className='sr-only'>Toggle</span>
+                            </SidebarMenuAction>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            <SidebarMenuSub>
+                              {item.menu?.map((subItem) => (
+                                <SidebarMenuSubItem key={`sm_${subItem.title}`}>
+                                  <SidebarMenuSubButton
+                                    asChild
+                                    className='transition-all duration-200'
+                                  >
+                                    <LocaleLink href={subItem.url}>
+                                      {subItem.icon && <subItem.icon />}
+                                      <span>{subItem.title}</span>
+                                    </LocaleLink>
+                                  </SidebarMenuSubButton>
+                                </SidebarMenuSubItem>
+                              ))}
+                            </SidebarMenuSub>
+                          </CollapsibleContent>
+                        </>
+                      ) : null}
+                    </SidebarMenuItem>
+                  </Collapsible>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          )
+      )}
     </>
   )
 }

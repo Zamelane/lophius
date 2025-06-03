@@ -1,11 +1,14 @@
-import { EditSection, EditSectionItem } from '@/src/shared/ui/custom/custom-edit'
-import { Input } from '@/src/shared/ui/shadcn/input'
-import { Textarea } from '@/src/shared/ui/shadcn/textarea'
 import type {
   CountryInfoDataType,
   LanguageInfoDataType,
   OriginalLanguageInfoDataType
 } from '@/src/shared/types/edit-types'
+import {
+  EditSection,
+  EditSectionItem
+} from '@/src/shared/ui/custom/custom-edit'
+import { Input } from '@/src/shared/ui/shadcn/input'
+import { Textarea } from '@/src/shared/ui/shadcn/textarea'
 
 import { CountrySelect } from '../../selects/country-select'
 import { LanguageSelect } from '../../selects/language-select'

@@ -1,7 +1,10 @@
-import React from "react"
 import { afterColors, colors } from '../config'
 
-export function renderDots(level: number, isPast: boolean, isSelected: boolean) {
+export function renderDots(
+  level: number,
+  isPast: boolean,
+  isSelected: boolean
+) {
   const dots = []
   for (let i = 1; i <= level; i++) {
     dots.push(
@@ -19,7 +22,7 @@ export function renderDots(level: number, isPast: boolean, isSelected: boolean) 
   return (
     <div
       className={`flex flex-row items-center transition-[gap] duration-300 ease-in-out ${
-        isSelected ? "gap-0.5" : "gap-0"
+        isSelected ? 'gap-0.5' : 'gap-0'
       }`}
     >
       {dots}

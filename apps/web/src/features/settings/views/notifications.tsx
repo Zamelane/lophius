@@ -1,7 +1,5 @@
 'use client'
 
 export function NotificationsSettingsView() {
-  return (
-    <div>Уведы тут</div>
-  )
+  return <div>Уведы тут</div>
 }

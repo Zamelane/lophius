@@ -1,6 +1,13 @@
-import { db, eq, sql } from "database"
-import { external_domains, external_images, external_posters, languages, medias, translates } from "database/schemas"
-import { languagePriority } from "../../media/search/search/searchMediaOffline"
+import { db, eq, sql } from 'database'
+import {
+  external_domains,
+  external_images,
+  external_posters,
+  languages,
+  medias,
+  translates
+} from 'database/schemas'
+import { languagePriority } from '../../media/search/search/searchMediaOffline'
 
 // Запрос выбора лучшего перевода для каждой строки медиа, которое будет отдавать
 export function literalTranslate(locale: string) {
@@ -12,9 +19,7 @@ export function literalTranslate(locale: string) {
     .from(translates)
     .leftJoin(languages, eq(languages.id, translates.languageId))
     .where(eq(translates.mediaId, medias.id)) // Выбираем тот, у которого язык ближе к пользователю
-    .orderBy(
-      ...languagePriority(languages.iso_639_1, locale)
-    )
+    .orderBy(...languagePriority(languages.iso_639_1, locale))
     .limit(1)
     .as('literal_translate')
 }

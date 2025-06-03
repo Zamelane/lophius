@@ -1,4 +1,4 @@
-import { MediaType } from "database/schemas/media_types"
+import type { MediaType } from 'database/schemas/media_types'
 
 export type List = {
   id: number

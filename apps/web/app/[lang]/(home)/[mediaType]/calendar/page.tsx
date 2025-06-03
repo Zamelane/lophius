@@ -1,9 +1,9 @@
-import { CalendarView } from "@/src/features/calendar";
+import { CalendarView } from '@/src/features/calendar'
 
 export default function Page() {
   return (
     <div>
-      <CalendarView/>
+      <CalendarView />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { MediasTableType } from "database/schemas"
+import type { MediasTableType } from 'database/schemas'
 
 export const objectTypes = ['media', 'personage', 'person', 'user'] as const
 

@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '../shadcn/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
 } from '@/src/shared/ui/shadcn/dropdown-menu'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { Button } from '../shadcn/button'
 
 export function ModeToggle() {
   const { setTheme } = useTheme()

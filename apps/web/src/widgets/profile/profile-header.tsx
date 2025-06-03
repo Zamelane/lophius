@@ -1,15 +1,15 @@
+import type { SetState, UserInfo } from '@/src/shared/types'
 import { AnimatedSubscribeButton } from '@/src/shared/ui/animated/animated-subscribe-button'
 import { TextAnimate } from '@/src/shared/ui/animated/text-animate'
 import { Skeleton } from '@/src/shared/ui/shadcn/skeleton'
-import type { SetState, UserInfo } from '@/src/shared/types'
 import { CheckIcon, ChevronRightIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 
+import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 import { Centrize } from '../../shared/ui/layout/centrize'
 import EditProfileDialog from './dialogs/edit-dialog'
 import { ProfileAvatar } from './profile-avatar'
-import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 
 type ParamsType = {
   data: UserInfo

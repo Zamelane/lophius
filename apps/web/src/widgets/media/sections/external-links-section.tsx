@@ -1,5 +1,7 @@
 'use client'
 
+import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import type { ExternalLinksInfoDataType } from '@/src/shared/types/edit-types'
 import {
   EditSection,
   EditSectionGroup,
@@ -7,8 +9,6 @@ import {
 } from '@/src/shared/ui/custom/custom-edit'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import { Input } from '@/src/shared/ui/shadcn/input'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
-import type { ExternalLinksInfoDataType } from '@/src/shared/types/edit-types'
 import { Plus, SquareArrowOutUpRightIcon, TrashIcon } from 'lucide-react'
 
 type Props = {

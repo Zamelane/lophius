@@ -1,5 +1,10 @@
 'use client'
 
+import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
+import type {
+  KinoTranslateInfoDataType,
+  LanguageInfoDataType
+} from '@/src/shared/types/edit-types'
 import { Button } from '@/src/shared/ui/shadcn/button'
 import {
   Dialog,
@@ -10,11 +15,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/src/shared/ui/shadcn/dialog'
-import type { LanguageTranslation, LayoutProps } from '@/src/shared/types'
-import type {
-  KinoTranslateInfoDataType,
-  LanguageInfoDataType
-} from '@/src/shared/types/edit-types'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
