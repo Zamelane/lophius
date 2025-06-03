@@ -128,6 +128,11 @@ export function useSearchWebSocket({ query, mediaType, objectType }: Props) {
     abortRef.current?.()
   }, [])
 
+  const clearResults = () => {
+    setResults([])
+    setResultsLength(0)
+  }
+
   useEffect(() => {
     const total = results.reduce(
       (acc, pluginResult) => acc + pluginResult.items.length,
@@ -142,6 +147,7 @@ export function useSearchWebSocket({ query, mediaType, objectType }: Props) {
     status,
     error,
     results,
-    resultsLength
+    resultsLength,
+    clearResults
   }
 }

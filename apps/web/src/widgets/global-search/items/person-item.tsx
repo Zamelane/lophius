@@ -2,7 +2,7 @@ import { PersonType } from "@/src/features/media/search/types"
 import { LocaleLink } from "@/src/shared/hooks/locale-link"
 import { cn } from "@/src/shared/lib/utils"
 import { Image } from "@/src/shared/ui/media/image"
-import { CommandItem } from "cmdk"
+import { CommandItem } from "@/src/shared/ui/shadcn/command"
 import { motion } from 'framer-motion'
 import { SearchSlashIcon } from "lucide-react"
 

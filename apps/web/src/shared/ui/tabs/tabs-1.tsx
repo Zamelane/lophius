@@ -121,6 +121,7 @@ interface TabProps<T = string> {
   openSubMenu?: () => void
   closeSubMenu?: () => void
   toggleSubMenu?: () => void
+  hide?: boolean
 }
 
 export function Tab<T = string>({
@@ -132,7 +133,8 @@ export function Tab<T = string>({
   isOpen,
   isActive,
   closeSubMenu,
-  toggleSubMenu
+  toggleSubMenu,
+  hide
 }: TabProps<T>) {
   const hasSub = subItems?.length
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -154,7 +156,7 @@ export function Tab<T = string>({
   }
 
   return (
-    <div className='relative' key={title}>
+    <div className='relative' key={title} hidden={hide}>
       <div className='flex items-center overflow-hidden'>
         <button
           ref={buttonRef}
