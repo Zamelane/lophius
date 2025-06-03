@@ -11,7 +11,7 @@ export type OnlineSearchMethodArgs = {
 }
 
 export type ParserPluginConfig = {
-  name: string
+  pluginName: string
   uid: string
   allowedDomains?: string[]
   version: string
@@ -34,6 +34,7 @@ export type ParserPluginInstance<TThis = any> = ParserPluginConfig & {
  */
 export interface ParserPluginClass<T extends ParserPluginInstance = ParserPluginInstance> {
   uid: string
+  pluginName: string
   init(storage: PluginStorage): Promise<T>
 }
 

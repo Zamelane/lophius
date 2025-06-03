@@ -19,7 +19,8 @@ export class CreateOrGetKinoStep {
         external_id: stringId,
         isAdult: adult,
         isVideo: video,
-        mediaType: 'kino'
+        mediaType: 'kino',
+        mediaStatus: 'ready'
       })
     } else {
       media.external_id = stringId

@@ -76,7 +76,7 @@ export async function moviesLibraryLoader(plugin: TMDBPlugin) {
     date_gte = lastItemReleaseDate ?? null
 
     // Сохраняем результаты страниц
-    await saveMovies(plugin, data, await plugin.storage.GetSourceId())
+    await saveMovies(plugin, data, plugin.storage.sourceId)
     const rs = await plugin.storage.update<StorageData>({
       ...plugin.storageData,
       movies: {

@@ -14,7 +14,6 @@ export async function onlineSearch(this: TMDBPlugin, onlineSearch: OnlineSearchM
 
 
   const data = this.storageData
-  await this.storage.GetSourceId()
 
   if (!data || !data.token || !this.storage.sourceId) {
     return
@@ -49,7 +48,8 @@ async function fetchVideos(plugin: TMDBPlugin, data: StorageData, { status, requ
       external_id: item.id!.toString(),
       isAdult: item.adult ?? true,
       isVideo: item.video ?? false,
-      mediaType: 'kino'
+      mediaType: 'kino',
+      mediaStatus: 'preliminary'
     }).execute()
 
     if (result.media.id) {

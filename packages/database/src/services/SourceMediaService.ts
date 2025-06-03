@@ -95,7 +95,8 @@ export class SourceMediaService extends BaseService {
         'mediaType',
         'isAdult',
         'isVideo',
-        'external_id'
+        'external_id',
+        'mediaStatus'
       ])
     )
     this.uow.registerOperation('insert', this.mediaRepository, {

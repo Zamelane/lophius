@@ -37,17 +37,17 @@ export class PluginsManager {
         // Динамический импорт (Bun поддерживает ES-модули)
         const pluginModule = await import(entry)
         const plugin = pluginModule.default as ParserPluginClass
-        const instance = await plugin.init(await PluginStorage.init(plugin.uid))
+        const instance = await plugin.init(await PluginStorage.init(plugin.uid, plugin.pluginName))
 
-        if (!instance.name) {
+        if (!instance.pluginName) {
           console.error(`🛑 Plugin '${entry}' ignored: missing 'name' field!`)
           continue
         }
 
-        this.plugins[instance.name] = {
+        this.plugins[instance.pluginName] = {
           plugin: instance
         }
-        console.info(`✅ Plugin loaded: ${instance.name}`)
+        console.info(`✅ Plugin loaded: ${instance.pluginName}`)
       } catch (err) {
         console.error(`❌ Plugin loading error (${entry}):`, err)
       }

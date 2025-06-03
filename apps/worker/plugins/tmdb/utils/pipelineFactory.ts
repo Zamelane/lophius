@@ -14,7 +14,7 @@ import {
   SetMediaStatusStep,
   SetTranslationsStep
 } from '../steps'
-import { WithOptional } from 'database'
+import { OptionalMedia, PartialMedia, WithOptional } from 'database'
 import { Media } from 'database/src/schemas'
 import { SourceMediaService } from 'database/src/services/SourceMediaService'
 import { TMDBPlugin } from '../plugin'
@@ -36,7 +36,7 @@ export function createMoviePipeline(initialContext: Context): Pipeline<Context> 
 
 
 export type PrefetchContext = {
-  media: WithOptional<Media, 'id' | 'sourceId'>,
+  media: OptionalMedia,
   sourceMediaService: SourceMediaService
 }
 export function createPrefetchMediaPipeline(plugin: TMDBPlugin, media: PrefetchContext['media']): Pipeline<PrefetchContext> {

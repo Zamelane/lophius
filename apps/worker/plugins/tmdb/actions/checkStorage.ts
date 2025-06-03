@@ -29,7 +29,7 @@ export async function checkStorage(storage: PluginStorage): Promise<StorageData>
       token: process.env.TMDB_TOKEN!
     }
 
-    const result = await storage.create<StorageData>(storageData)
+    const result = await storage.update<StorageData>(storageData)
 
     if (!result.successful) throw new Error('Error set storage data')
     return storageData

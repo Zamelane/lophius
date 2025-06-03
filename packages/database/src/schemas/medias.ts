@@ -23,21 +23,22 @@ import { origin_countries } from 'database/schemas/origin_countries.ts'
 import { release_dates } from 'database/schemas/release_dates.ts'
 import { spoken_languages } from 'database/schemas/spoken_languages.ts'
 import { external_logos } from './external_logos'
-import { media_types } from './media_types'
+import { media_status, media_types } from './media_types'
 import { sources } from './sources'
 import { translates } from './translates'
 
 export const medias = pgTable(
   'medias',
   {
-    isVideo: boolean(),
-    mediaType: media_types().notNull(),
-    isAdult: boolean().notNull().default(true),
     id: bigserial({ mode: 'number' }).primaryKey(),
-    external_id: varchar({ length: 255 }).notNull(),
     sourceId: integer()
       .references(() => sources.id)
-      .notNull()
+      .notNull(),
+    mediaType: media_types().notNull(),
+    mediaStatus: media_status().notNull(),
+    external_id: varchar({ length: 255 }).notNull(),
+    isAdult: boolean().notNull().default(true),
+    isVideo: boolean()
   },
   (table) => [
     unique().on(table.sourceId, table.external_id),

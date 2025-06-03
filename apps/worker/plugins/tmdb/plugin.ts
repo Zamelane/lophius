@@ -7,7 +7,7 @@ import { StorageData } from './types'
 import { checkStorage } from './actions/checkStorage'
 
 export class TMDBPlugin implements ParserPluginInstance {
-  name = TMDBConfig.name
+  pluginName = TMDBConfig.pluginName
   uid = TMDBConfig.uid
   version = TMDBConfig.version
 
@@ -19,6 +19,7 @@ export class TMDBPlugin implements ParserPluginInstance {
 
   // Делаем uid доступным до инициализации
   static uid = TMDBConfig.uid
+  static pluginName = TMDBConfig.pluginName
 
   // Инициализация плагина
   static async init(storage: PluginStorage): Promise<TMDBPlugin> {
