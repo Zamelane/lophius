@@ -3,8 +3,9 @@ import { treaty } from '@elysiajs/eden'
 import { WorkerAppHttp } from '../../../../../worker/src/server-app';
 import { MediaType } from 'database/schemas/media_types';
 import { getCurrentLocale } from '@/src/shared/i18n/current-locale';
+import { ObjectType } from '../../media/search/types';
 
-export async function getSearchKey(query: string, mediaType: MediaType) {
+export async function getSearchKey(query: string, mediaType: MediaType, objectType: ObjectType) {
   const locale = await getCurrentLocale()
   const client = treaty<WorkerAppHttp>("http://localhost:3001")
 
@@ -13,6 +14,7 @@ export async function getSearchKey(query: string, mediaType: MediaType) {
     data: {
       query,
       mediaType,
+      objectType,
       locale
     }
   })

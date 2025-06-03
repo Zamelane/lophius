@@ -8,7 +8,8 @@ import React, {
   cloneElement,
   isValidElement,
   useState,
-  useRef
+  useRef,
+  useEffect
 } from 'react'
 import { createPortal } from 'react-dom'
 import ScrollContainer from 'react-indiana-drag-scroll'
@@ -161,7 +162,7 @@ export function Tab<T = string>({
           onClick={handleMainClick}
           className={cn(
             'flex flex-row items-center',
-            subItems?.find((v) => v.selected && !v.hideOnSelected)
+            subItems?.find((v) => v.key === selectedSubKey && !v.hideOnSelected)
               ? 'gap-2'
               : 'gap-1',
             hasSub ? 'pl-3 pr-1' : 'px-3',
@@ -183,7 +184,7 @@ export function Tab<T = string>({
                 isOpen ? 'text-foreground' : ''
               )}
             >
-              {subItems?.find((v) => v.selected && !v.hideOnSelected)?.title}
+              {subItems?.find((v) => v.key === selectedSubKey && !v.hideOnSelected)?.title}
               <ChevronDownIcon size={16} />
             </p>
           )}

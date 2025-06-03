@@ -9,10 +9,7 @@ import {
 } from 'react'
 
 import {
-  type MediaType,
-  type ObjectType,
-  Search,
-  type SearchResultType
+  Search
 } from '@/src/features/media/search/search'
 import { limitResults } from '@/src/features/media/search/search/config'
 import { Tab, Tabs } from '@/src/shared/ui/tabs/tabs-1'
@@ -32,6 +29,7 @@ import { DialogTitle } from '../../shared/ui/shadcn/dialog'
 import { Spinner } from '../../shared/ui/shadcn/spinner'
 import { useSearchWebSocket } from '@/src/features/online-search/hooks/useSearchWebSocket'
 import { GlobalSearchItemCard } from './items/gs-card-item'
+import { MediaType, ObjectType, SearchResultType } from '@/src/features/media/search/types'
 
 type TabType = {
   title: string
@@ -92,7 +90,11 @@ export function GlobalSearch() {
     status,
     error: wsError,
     results: wsResults,
-  } = useSearchWebSocket({ query: searchQuery, mediaType: mediaType === 'all' ? 'kino' : mediaType });
+  } = useSearchWebSocket({
+    query: searchQuery,
+    mediaType: mediaType === 'all' ? 'kino' : mediaType,
+    objectType
+  });
 
   // Режим поиска
   const [isOnlineSearch, setIsOnlineSearch] = useState(false)
@@ -316,8 +318,8 @@ export function GlobalSearch() {
           <div className='flex flex-row items-center gap-2'>
             <p>Lophius</p>
             <div className='text-muted-foreground text-sm'>
-              <NumberFlow value={results?.total ?? 'Infinity'} />
-              {results && ' совпадения'}
+              <NumberFlow value={(isOnlineSearch ? wsResults.length || undefined : results?.total) ?? 'Infinity'} />
+              {isOnlineSearch ? wsResults.length || undefined : results?.total && ' совпадения'}
             </div>
           </div>
 

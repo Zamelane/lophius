@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SearchRequest } from './interfaces';
+import { SearchData, SearchRequest } from './interfaces';
 import { SearchStatus, StatusType } from './search-status';
 import { pluginManager } from 'src';
 import { PluginStorage } from 'src/plugin-storage';
 import { PluginQueue } from 'src/plugin-queue';
-import { MediaType } from 'database/src/schemas/media_types';
 
 export class SearchQueue {
   private maxConcurrent: number;
@@ -22,11 +21,7 @@ export class SearchQueue {
     data
   }: {
     userId: number,
-    data: {
-      query: string
-      mediaType: MediaType,
-      locale: string
-    }
+    data: SearchData
   }) {
     // Удаляем другие запросы, если они уже закрыты
     this.queue.forEach((request, key) => {
@@ -97,8 +92,10 @@ export class SearchQueue {
     const promises: Promise<void>[] = []
 
     allowedOnlineSearchPlugins.map(plugin => {
+      if (!plugin.onlineSearch)
+        return
+
       const promise = plugin.onlineSearch({
-        storage: new PluginStorage(plugin.name),
         request: request.data,
         status
       }).catch(err => console.log(err))

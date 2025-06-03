@@ -7,3 +7,11 @@ export const TMDBConfig: ParserPluginConfig = {
   concurrent: 10,
   maxInMinute: 40 * 60,
 }
+
+export const InternalConfig = {
+  img: {
+    https: true,
+    domain: 'image.tmdb.org',
+    path: '/t/p/original'
+  }
+}
