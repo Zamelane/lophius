@@ -1,25 +1,34 @@
-type Step<Context> = {
-  execute: (ctx: Context) => Promise<Context>
-}
+export type Step<Input extends object, Output extends object> = {
+  execute(ctx: Input): Promise<Output>;
+  readonly _input?: Input;
+  readonly _output?: Output;
+};
 
-export class Pipeline<Context> {
-  private steps: Step<Context>[] = []
-  private context: Context
+export class Pipeline<
+  InitialContext extends object,
+  CurrentContext extends object = InitialContext
+> {
+  private _steps: Step<any, any>[] = [];
 
-  constructor(initialContext: Context) {
-    this.context = initialContext
+  constructor(private readonly initialContext: InitialContext) {}
+
+  addStep<
+    RequiredInput extends CurrentContext,
+    StepOutput extends object
+  >(
+    step: Step<RequiredInput, StepOutput>
+  ): Pipeline<InitialContext, CurrentContext & StepOutput> {
+    const newPipeline = new Pipeline<InitialContext, CurrentContext & StepOutput>(this.initialContext);
+    newPipeline._steps = [...this._steps, step];
+    return newPipeline;
   }
 
-  addStep(step: Step<Context>): this {
-    this.steps.push(step)
-    return this
-  }
-
-  async execute(): Promise<Context> {
-    let ctx = this.context
-    for (const step of this.steps) {
-      ctx = await step.execute(ctx)
+  async execute(): Promise<CurrentContext> {
+    let currentCtx: any = this.initialContext;
+    for (const step of this._steps) {
+      const stepOutput = await step.execute(currentCtx);
+      currentCtx = { ...currentCtx, ...stepOutput };
     }
-    return ctx
+    return currentCtx as CurrentContext;
   }
 }

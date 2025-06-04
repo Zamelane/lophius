@@ -43,7 +43,7 @@ export type MediaPrefetchContext = {
 export function createPrefetchMediaPipeline(
   plugin: TMDBPlugin,
   media: MediaPrefetchContext['media']
-): Pipeline<MediaPrefetchContext> {
+) {
   return new Pipeline<MediaPrefetchContext>({
     media,
     sourceMediaService: new SourceMediaService(plugin.storage.sourceId)

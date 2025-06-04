@@ -1,18 +1,22 @@
 import type { Context } from '@plugins/tmdb/types.ts'
 import { defaultValue } from '@plugins/tmdb/utils.ts'
 import { type PartialExternalDomain, logger } from 'database'
+import { MediaModel } from 'database/models/Media/model'
+import { Step } from 'src/lib/pipeline'
+import { ImagesFetcherDataContext, SourceMediaServiceContext } from '../types'
 
 const imageCDN = 'https://image.tmdb.org/t/p/original'
 const subPath = '/t/p/original'
 
-export class SetImagesStep {
-  async execute(ctx: Context): Promise<Context> {
-    if (!ctx.mediaModel) throw new Error('Media model missing')
+type InWith = ImagesFetcherDataContext
+& SourceMediaServiceContext
+& {
+  mediaModel: MediaModel
+}
 
-    if (!ctx.fetchedImagesData) throw new Error('Fetched ImagesData missing')
-
-    const mediaModel = ctx.mediaModel
-
+type OutWith = InWith
+export class SetImagesStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
     if (ctx.fetchedImagesData) {
       const posters = defaultValue(ctx.fetchedImagesData.posters, [])
       const logos = defaultValue(ctx.fetchedImagesData.logos, [])

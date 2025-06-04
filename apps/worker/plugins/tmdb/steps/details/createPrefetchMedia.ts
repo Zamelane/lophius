@@ -1,22 +1,34 @@
-import type { MediaPrefetchContext } from '../../utils/pipelineFactory'
+import { Step } from 'src/lib/pipeline'
+import { SourceMediaServiceContext } from '../types'
+import { MediaModel } from 'database/models/Media/model'
+import { OptionalMedia } from 'database'
 
-export class CreatePrefetchMediaStep {
-  async execute(ctx: MediaPrefetchContext): Promise<MediaPrefetchContext> {
-    let media = await ctx.sourceMediaService.findMediaByExternalId(
+type InWith = SourceMediaServiceContext & {
+  media: OptionalMedia
+}
+
+ type OutWith = InWith & {
+  mediaModel: MediaModel
+ }
+
+export class CreatePrefetchMediaStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
+    let mediaModel = await ctx.sourceMediaService.findMediaByExternalId(
       ctx.media.external_id
     )
 
-    if (!media) {
-      media = ctx.sourceMediaService.createMediaWithOriginalTitle(ctx.media)
+    if (!mediaModel) {
+      mediaModel = ctx.sourceMediaService.createMediaWithOriginalTitle(ctx.media)
     } else {
-      media.isVideo = ctx.media.isVideo
-      media.isAdult = ctx.media.isAdult
-      media.mediaType = 'video'
-      ctx.sourceMediaService.updateMedia(media)
+      mediaModel.isVideo = ctx.media.isVideo
+      mediaModel.isAdult = ctx.media.isAdult
+      mediaModel.mediaType = 'video'
+      ctx.sourceMediaService.updateMedia(mediaModel)
     }
 
-    ctx.media = media
-
-    return ctx
+    return {
+      ...ctx,
+      mediaModel
+    }
   }
 }

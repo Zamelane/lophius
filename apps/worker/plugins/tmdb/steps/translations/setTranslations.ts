@@ -1,12 +1,18 @@
-import type { Context } from '@plugins/tmdb/types.ts'
+import { Step } from 'src/lib/pipeline'
+import { MovieFetchedDataContext, SourceMediaServiceContext, TranslatesFetchedDataContext } from '../types'
+import { MediaModel } from 'database/models/Media/model'
 
-export class SetTranslationsStep {
-  async execute(ctx: Context): Promise<Context> {
-    if (!ctx.mediaModel) throw new Error('Media model missing')
+type InWith = TranslatesFetchedDataContext
+& SourceMediaServiceContext
+& MovieFetchedDataContext
+& {
+  mediaModel: MediaModel
+}
 
-    if (!ctx.fetchedTranslatesData)
-      throw new Error('Fetched TranslatesData missing')
+type OutWith = InWith
 
+export class SetTranslationsStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
     const translates = []
 
     if (ctx.fetchedTranslatesData?.translations) {

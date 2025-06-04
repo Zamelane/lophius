@@ -10,11 +10,7 @@ import type {
 
 export interface Context {
   fetchedData: ArrayElementType<DiscoverMovieResponse['results']>
-  fetchedMovieDetails?: MovieDetailsResponse
-  fetchedTranslatesData?: MovieTranslationsResponse
-  fetchedImagesData?: MovieImagesResponse
   sourceMediaService: SourceMediaService
-  mediaModel?: MediaModel
   token: string
 }
 

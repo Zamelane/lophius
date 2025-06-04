@@ -1,6 +1,12 @@
 import type { SourceMediaService } from 'database/src/services/SourceMediaService'
-export class CommitStep<T extends { sourceMediaService: SourceMediaService }> {
-  async execute(ctx: T): Promise<T> {
+import { SourceMediaServiceContext } from './types'
+import { Step } from 'src/lib/pipeline'
+
+type InWith = SourceMediaServiceContext
+
+type OutWith = InWith
+export class CommitStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
     await ctx.sourceMediaService.commit()
     return ctx
   }
