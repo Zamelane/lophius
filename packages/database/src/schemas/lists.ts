@@ -5,6 +5,7 @@ import {
   integer,
   pgTable,
   primaryKey,
+  timestamp,
   unique,
   varchar
 } from 'drizzle-orm/pg-core'
@@ -64,7 +65,8 @@ export const userListMedias = pgTable(
     mediaId: bigint({ mode: 'number' }).references(() => medias.id, {
       onDelete: 'cascade',
       onUpdate: 'cascade'
-    })
+    }),
+    date: timestamp({ mode: 'date' }).defaultNow()
   },
   (table) => [
     primaryKey({ columns: [table.listId, table.mediaId, table.userId] })
