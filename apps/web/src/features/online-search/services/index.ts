@@ -11,7 +11,7 @@ export async function getSearchKey(
   objectType: ObjectType
 ) {
   const locale = await getCurrentLocale()
-  const client = treaty<WorkerAppHttp>('http://localhost:3001')
+  const client = treaty<WorkerAppHttp>(process.env.WS_LOCAL_URL!)
 
   const { data, error } = await client.search.post({
     userId: 1,
