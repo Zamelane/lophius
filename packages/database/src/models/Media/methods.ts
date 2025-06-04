@@ -62,16 +62,12 @@ export async function insertMedia(
     await this.tx
       .insert(medias)
       .values({
-        ...pickExistingByType(data.media, [
-          'mediaType',
-          'sourceId',
-          'isAdult',
-          'external_id',
-          'isVideo',
-          'mediaStatus',
-          'contentType'
-        ]),
+        ...data.media,
         sourceId: data.sourceId
+      })
+      .onConflictDoUpdate({
+        target: [medias.external_id, medias.sourceId],
+        set: data.media
       })
       .returning(),
     (r) => {

@@ -58,9 +58,9 @@ export function VideoItem({ setOpen, ...m }: Props) {
             <p className='text-base mb-1 truncate'>{m.title}</p>
             <p className='text-xs text-secondary-foreground opacity-80 mt-1'>
               {[
-                m.contentType === 'film' && 'Фильм' || m.contentType === 'serial' && 'Сериал',
-                m.firstAirDate && new Date(m.firstAirDate).getFullYear()
-              ].join(', ')}
+                m.contentType === 'film' && 'Фильм' || m.contentType === 'serial' && 'Сериал' || null,
+                m.firstAirDate && new Date(m.firstAirDate).getFullYear() || null
+              ].filter(v => v !== null).join(', ')}
             </p>
           </div>
         </CommandItem>

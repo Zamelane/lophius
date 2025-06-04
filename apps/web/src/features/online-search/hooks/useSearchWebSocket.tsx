@@ -9,6 +9,7 @@ type PluginProps = { uid: string; name: string }
 type Message =
   | { type: 'close' }
   | { type: 'update'; data: GlobalSearchItemCardProps; plugin: PluginProps }
+  | { type: 'init'; data: { data: GlobalSearchItemCardProps; plugin: PluginProps }[] }
 
 type Status = 'connecting' | 'wait results' | 'closed'
 
@@ -101,8 +102,15 @@ export function useSearchWebSocket({ query, mediaType, objectType }: Props) {
               ]
             })
           }
-
-          if (message.type === 'close') {
+          else if (message.type === 'init') {
+            // Обработка инициализации - заменяем все текущие данные новыми
+            const newResults = message.data.map(item => ({
+              plugin: item.plugin,
+              items: [item.data]
+            }))
+            setResults(newResults)
+          }
+          else if (message.type === 'close') {
             console.log('✅ Получено сообщение CLOSE, закрываю')
             ws.close()
             resolve()

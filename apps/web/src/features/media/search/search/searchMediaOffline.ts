@@ -9,8 +9,8 @@ import {
   translates
 } from 'database/schemas' // Таблицы и схемы
 import { type Column, eq, or, sql } from 'drizzle-orm' // Импорт необходимых функций
-import type { MediaType, SearchResultType } from '.' // Типы данных для поиска
 import { limitResults } from './config'
+import { MediaType, SearchResultType } from '../types'
 
 // Приоритет для языка
 export const languagePriority = (langColumn: Column, locale: string) => [
@@ -140,6 +140,7 @@ export async function SearchMediaOffline({
         domain: literalPosters.domain,
         path: literalPosters.path
       },
+      contentType: medias.contentType,
       isAdult: medias.isAdult
     })
     .from(rankedTranslations)
@@ -164,7 +165,8 @@ export async function SearchMediaOffline({
       poster: media.img ?? null,
       mediaType: media.mediaType,
       isAdult: media.isAdult,
-      objectType: 'media'
+      objectType: 'media',
+      contentType: media.contentType
     })
   }
 

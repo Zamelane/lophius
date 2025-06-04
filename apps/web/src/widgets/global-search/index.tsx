@@ -181,7 +181,8 @@ export function GlobalSearch() {
 
   // Эффект для выполнения поиска
   useEffect(() => {
-    fetchResults(debouncedQuery)
+    if (!isOnlineSearch)
+      fetchResults(debouncedQuery)
   }, [debouncedQuery, fetchResults])
 
   // Регистрируем функционал переключения онлайна поиска
@@ -264,8 +265,8 @@ export function GlobalSearch() {
         </Tabs>
 
         <div className='h-full overflow-hidden'>
-          {isLoading ||
-            (status !== 'closed' && wsResults.length === 0 && (
+          {(isLoading ||
+            (status !== 'closed' && wsResults.length === 0)) && (
               <motion.div
                 key='loading'
                 initial={{ opacity: 0 }}
@@ -274,9 +275,13 @@ export function GlobalSearch() {
                 className='h-full flex flex-col justify-center items-center'
               >
                 <Spinner size='lg' className='bg-black dark:bg-white' />
-                {status}
+                {
+                  isOnlineSearch
+                  ? status
+                  : 'Загрузка'
+                }
               </motion.div>
-            ))}
+            )}
 
           {(!results?.current || error) &&
             !isLoading &&
@@ -365,7 +370,7 @@ export function GlobalSearch() {
               />
               {(isOnlineSearch
                 ? wsResultsLength || undefined
-                : results?.total) && ' совпадения'}
+                : results?.total) && ' совпадений'}
             </div>
           </div>
 
