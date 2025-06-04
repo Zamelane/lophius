@@ -9,6 +9,8 @@ export const searchRoute = new Elysia().post(
     const { userId, data } = body
     const key = searchQueue.registrateNewSearch({ userId, data })
 
+    console.log(`Registrate serach key: ${key}`)
+
     return { key }
   },
   {

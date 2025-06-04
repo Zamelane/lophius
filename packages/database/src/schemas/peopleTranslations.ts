@@ -15,7 +15,7 @@ export const peopleTranslations = pgTable('people_translations', {
   bio: text(),
   primary: boolean()
 }, table => [
-  unique().on(table.languageId, table.peopleId, table.countryId)
+  unique().on(table.languageId, table.peopleId, table.countryId).nullsNotDistinct()
 ])
 
 export type PeopleTranslationsTableType = typeof peopleTranslations.$inferSelect
