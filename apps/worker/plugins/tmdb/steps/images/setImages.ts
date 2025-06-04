@@ -1,4 +1,3 @@
-import type { Context } from '@plugins/tmdb/types.ts'
 import { defaultValue } from '@plugins/tmdb/utils.ts'
 import { type PartialExternalDomain, logger } from 'database'
 import { MediaModel } from 'database/models/Media/model'

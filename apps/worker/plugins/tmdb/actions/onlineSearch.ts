@@ -55,6 +55,12 @@ async function fetchPersons(
     if (!item.id)
       continue
 
+    const gender = item.gender === 1
+      ? false
+      : item.gender === 2
+        ? true
+        : null
+
     // const result = await createPrefetchMediaPipeline(plugin, {
     //   external_id: item.id.toString(),
     //   isAdult: item.adult ?? true,
@@ -65,30 +71,36 @@ async function fetchPersons(
     // }).execute()
 
     const result = await createPrefetchPersonPipeline(plugin, {
+      external_id: item.id.toString(),
+      age: null,
+      name: item.name || 'none',
+      gender,
+      sourceId: plugin.storage.sourceId
+    }, item.profile_path
+      ? {
+        path: item.profile_path,
+        height: null,
+        width: null,
+        vote_avg: null,
+        vote_count: null
+      }
+      : undefined).execute()
 
-    }, {
-
-    }).execute()
-
-    if (item.id) {
+    if (result.peopleModel.id) {
       status.addUpdate(plugin, {
-        id: ++i,
+        id: result.peopleModel.id,
         isAdult: item.adult ?? true,
         objectType: 'person',
         mediaType: 'person',
         name: item.name || "Нету",
         avatar: item.profile_path
           ? {
-              domain: InternalConfig.img.domain,
-              https: InternalConfig.img.https,
-              path: InternalConfig.img.path + item.profile_path
-            }
+            domain: InternalConfig.img.domain,
+            https: InternalConfig.img.https,
+            path: InternalConfig.img.path + item.profile_path
+          }
           : undefined,
-        gender: item.gender === 1
-            ? false
-            : item.gender === 2
-              ? true
-              : undefined
+        gender: gender || undefined
       })
     }
   }
@@ -133,8 +145,6 @@ async function fetchVideos(
       contentType: 'film'
     }).execute()
 
-    console.log(result)
-
     if (result.mediaModel.id) {
       status.addUpdate(plugin, {
         id: result.mediaModel.id,
@@ -145,10 +155,10 @@ async function fetchVideos(
         title: item.title ?? 'Нету',
         poster: item.poster_path
           ? {
-              domain: InternalConfig.img.domain,
-              https: InternalConfig.img.https,
-              path: InternalConfig.img.path + item.poster_path
-            }
+            domain: InternalConfig.img.domain,
+            https: InternalConfig.img.https,
+            path: InternalConfig.img.path + item.poster_path
+          }
           : undefined,
         firstAirDate: item.release_date
       })
@@ -200,10 +210,10 @@ async function fetchVideos(
         title: item.name ?? 'Нету',
         poster: item.poster_path
           ? {
-              domain: InternalConfig.img.domain,
-              https: InternalConfig.img.https,
-              path: InternalConfig.img.path + item.poster_path
-            }
+            domain: InternalConfig.img.domain,
+            https: InternalConfig.img.https,
+            path: InternalConfig.img.path + item.poster_path
+          }
           : undefined,
         firstAirDate: item.first_air_date
       })
