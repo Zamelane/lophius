@@ -4,7 +4,6 @@ import { OptionalPeople, OptionalPeopleId } from './type'
 
 export class PeopleModel implements OptionalPeople {
   id?: OptionalPeopleId
-  name!: OptionalPeople['name']
   external_id!: OptionalPeople['external_id']
   sourceId!: OptionalPeople['sourceId']
   age!: OptionalPeople['age']

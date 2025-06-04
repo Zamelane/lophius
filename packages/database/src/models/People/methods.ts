@@ -1,4 +1,4 @@
-import { genres, people } from 'database/schemas'
+import { people } from 'database/schemas'
 import { queryOneResult } from 'database/utils'
 import type { PeopleRepository } from './repository'
 import { PeopleModel } from './model'

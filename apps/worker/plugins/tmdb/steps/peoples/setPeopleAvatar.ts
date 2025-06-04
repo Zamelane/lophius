@@ -2,6 +2,7 @@ import { OptionalExternalImage, type PartialExternalDomain } from 'database'
 import { Step } from 'src/lib/pipeline'
 import { SourceMediaServiceContext } from '../types'
 import { ExternalImageModel } from 'database/models/ExternalImage/model'
+import { PeopleModel } from 'database/models/People/model'
 
 const imageCDN = 'https://image.tmdb.org/t/p/original'
 const subPath = '/t/p/original'
@@ -9,12 +10,13 @@ const subPath = '/t/p/original'
 type InWith = SourceMediaServiceContext
 & {
   avatar?: OptionalExternalImage
+  peopleModel: PeopleModel
 }
 
 type OutWith = InWith & {
   externalImageModel?: ExternalImageModel
 }
-export class SetImagesStep implements Step<InWith, OutWith> {
+export class SetPeopleAvatarStep implements Step<InWith, OutWith> {
   async execute(ctx: InWith): Promise<OutWith> {
     if (!ctx.avatar) {
       return ctx
@@ -25,6 +27,8 @@ export class SetImagesStep implements Step<InWith, OutWith> {
       language: null,
       externalDomain: this.getDomainByUrl(imageCDN) 
     })
+
+    ctx.peopleModel.avatar = externalImageModel
 
     return {
       ...ctx,

@@ -39,6 +39,9 @@ import { PeopleService } from './PeopleService'
 import { PartialPeople } from 'database/models/People'
 import { PeopleModel } from 'database/models/People/model'
 import { ExternalImageModel } from 'database/models/ExternalImage/model'
+import { PeopleTranslationService } from './PeopleTranslationService'
+import { PartialPeopleTranslate, PartialPeopleTranslateWithOutPeople } from 'database/models/PeopleTranslation'
+import { PeopleTranslationModel } from 'database/models/PeopleTranslation/model'
 
 export class SourceMediaService extends BaseService {
   private readonly mediaRepository: MediaRepository
@@ -60,6 +63,7 @@ export class SourceMediaService extends BaseService {
   public readonly statusService: StatusService
   public readonly mediaRevenueService: MediaRevenueService
   public readonly peopleService: PeopleService
+  public readonly peopleTrnsltationService: PeopleTranslationService
 
   constructor(
     protected sourceId: SourceId,
@@ -90,6 +94,7 @@ export class SourceMediaService extends BaseService {
     this.statusService = new StatusService(tx, this.uow)
     this.mediaRevenueService = new MediaRevenueService(tx, this.uow)
     this.peopleService = new PeopleService(tx, this.uow)
+    this.peopleTrnsltationService = new PeopleTranslationService(tx, this.uow)
   }
 
   /**
@@ -245,6 +250,10 @@ export class SourceMediaService extends BaseService {
       media,
       status ? this.statusService.saveStatus(status) : undefined
     )
+  }
+
+  setPeopleTranslation(people: PeopleModel, translation: PartialPeopleTranslateWithOutPeople): PeopleTranslationModel {
+    return this.peopleTrnsltationService.createPeopleTranslate(people, translation)
   }
 
   async commit() {

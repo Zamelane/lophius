@@ -19,6 +19,9 @@ import {
 } from '../steps'
 import { OptionalPeople } from 'database/models/People'
 import { SetPeopleStep } from '../steps/peoples/setPeople'
+import { PartialPeopleTranslateWithOutModels, PartialPeopleTranslateWithOutPeople } from 'database/models/PeopleTranslation'
+import { SetPeopleAvatarStep } from '../steps/peoples/setPeopleAvatar'
+import { SetPeopleTranslateStep } from '../steps/peoples/setPeopleTranslate'
 
 export function createMoviePipeline(
   initialContext: Context
@@ -56,18 +59,23 @@ export function createPrefetchMediaPipeline(
 export type PeoplePrefetchContext = {
   avatar?: OptionalExternalImage
   people: OptionalPeople
+  translation: PartialPeopleTranslateWithOutModels
   sourceMediaService: SourceMediaService
 }
 export function createPrefetchPersonPipeline(
   plugin: TMDBPlugin,
   people: PeoplePrefetchContext['people'],
+  translation: PeoplePrefetchContext['translation'],
   avatar: PeoplePrefetchContext['avatar']
 ) {
   return new Pipeline<PeoplePrefetchContext>({
     people,
     avatar,
+    translation,
     sourceMediaService: new SourceMediaService(plugin.storage.sourceId)
   })
     .addStep(new SetPeopleStep())
+    .addStep(new SetPeopleTranslateStep())
+    .addStep(new SetPeopleAvatarStep())
     .addStep(new CommitStep())
 }
