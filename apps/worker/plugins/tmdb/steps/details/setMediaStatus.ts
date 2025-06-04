@@ -1,7 +1,17 @@
-import type { Context } from '@plugins/tmdb/types.ts'
+import { FetchedMovieDetailsContext, SourceMediaServiceContext } from '../types'
+import { MediaModel } from 'database/models/Media/model'
+import { Step } from 'src/lib/pipeline'
 
-export class SetMediaStatusStep {
-  async execute(ctx: Context): Promise<Context> {
+type InWith = FetchedMovieDetailsContext
+& SourceMediaServiceContext
+& {
+  mediaModel: MediaModel
+}
+
+type OutWith = InWith
+
+export class SetMediaStatusStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
     if (!ctx.mediaModel) throw new Error('Media model missing')
 
     if (!ctx.fetchedMovieDetails)

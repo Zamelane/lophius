@@ -1,15 +1,22 @@
 import { movieTranslations } from '@plugins/tmdb/client'
-import type { Context } from '@plugins/tmdb/types.ts'
+import { MovieFetchedDataContext, TranslatesFetchedDataContext } from '../types'
+import { MediaModel } from 'database/models/Media/model'
+import { Step } from 'src/lib/pipeline';
 
-export class GetTranslationsStep {
-  async execute(ctx: Context): Promise<Context> {
-    if (!ctx.mediaModel) throw new Error('Media model missing')
-    if (!ctx.fetchedData.id) throw new Error('Id is missing')
+type InWith = MovieFetchedDataContext
+& {
+  token: string
+  mediaModel: MediaModel
+}
 
+type OutWith = TranslatesFetchedDataContext & InWith
+
+export class GetTranslationsStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
     const { data, error } = await movieTranslations({
       auth: ctx.token,
       path: {
-        movie_id: ctx.fetchedData.id
+        movie_id: ctx.fetchedData.id!
       }
     })
 
@@ -21,8 +28,9 @@ export class GetTranslationsStep {
         })
       )
 
-    ctx.fetchedTranslatesData = data
-
-    return ctx
+    return {
+      ...ctx,
+      fetchedTranslatesData: data
+    }
   }
 }

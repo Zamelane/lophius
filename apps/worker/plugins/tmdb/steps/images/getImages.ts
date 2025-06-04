@@ -1,8 +1,18 @@
 import { movieImages } from '@plugins/tmdb/client'
-import type { Context } from '@plugins/tmdb/types.ts'
+import { MediaModel } from 'database/models/Media/model'
+import { Step } from 'src/lib/pipeline'
+import { ImagesFetcherDataContext, MovieFetchedDataContext } from '../types'
 
-export class GetImagesStep {
-  async execute(ctx: Context): Promise<Context> {
+type InWith = MovieFetchedDataContext
+& {
+  token: string
+  mediaModel: MediaModel
+}
+
+type OutWith = ImagesFetcherDataContext & InWith
+
+export class GetImagesStep implements Step<InWith, OutWith> {
+  async execute(ctx: InWith): Promise<OutWith> {
     if (!ctx.mediaModel) throw new Error('Media model missing')
 
     if (!ctx.fetchedData.id) throw new Error('Id is missing')
@@ -22,8 +32,9 @@ export class GetImagesStep {
         })
       )
 
-    ctx.fetchedImagesData = data
-
-    return ctx
+    return {
+      ...ctx,
+      fetchedImagesData: data
+    }
   }
 }

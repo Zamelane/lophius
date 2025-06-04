@@ -133,9 +133,11 @@ async function fetchVideos(
       contentType: 'film'
     }).execute()
 
-    if (result.media.id) {
+    console.log(result)
+
+    if (result.mediaModel.id) {
       status.addUpdate(plugin, {
-        id: result.media.id,
+        id: result.mediaModel.id,
         isAdult: item.adult ?? true,
         mediaType: 'video',
         objectType: 'media',
@@ -188,9 +190,9 @@ async function fetchVideos(
       contentType: 'serial'
     }).execute()
 
-    if (result.media.id) {
+    if (result.mediaModel.id) {
       status.addUpdate(plugin, {
-        id: result.media.id,
+        id: result.mediaModel.id,
         isAdult: item.adult ?? true,
         mediaType: 'video',
         objectType: 'media',

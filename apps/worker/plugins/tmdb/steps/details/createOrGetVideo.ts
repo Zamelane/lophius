@@ -1,7 +1,16 @@
-import type { Context } from '@plugins/tmdb/types.ts'
+import { MediaModel } from 'database/models/Media/model'
+import { Step } from 'src/lib/pipeline'
+import { MovieFetchedDataContext, SourceMediaServiceContext } from '../types'
 
-export class CreateOrGetVideoStep {
-  async execute(ctx: Context): Promise<Context> {
+type InStep = MovieFetchedDataContext
+  & SourceMediaServiceContext
+
+type OutStep = InStep & {
+  mediaModel: MediaModel
+}
+
+export class CreateOrGetVideoStep<Context> implements Step<InStep, OutStep> {
+  async execute(ctx: InStep): Promise<OutStep> {
     const { id, adult, video, original_language } = ctx.fetchedData
 
     if (
@@ -36,8 +45,9 @@ export class CreateOrGetVideoStep {
       ctx.sourceMediaService.updateMedia(media)
     }
 
-    ctx.mediaModel = media
-
-    return ctx
+    return {
+      ...ctx,
+      mediaModel: media
+    }
   }
 }
