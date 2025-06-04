@@ -38,6 +38,7 @@ import { BaseService } from './types'
 import { PeopleService } from './PeopleService'
 import { PartialPeople } from 'database/models/People'
 import { PeopleModel } from 'database/models/People/model'
+import { ExternalImageModel } from 'database/models/ExternalImage/model'
 
 export class SourceMediaService extends BaseService {
   private readonly mediaRepository: MediaRepository
@@ -171,6 +172,22 @@ export class SourceMediaService extends BaseService {
 
   deleteNotInBackdrops(media: MediaModel, backdrops: ExternalBackdropModel[]) {
     this.externalBackdropService.deleteNotIn(media, backdrops)
+  }
+
+  async createExternalImage(
+    image: Omit<PartialExternalImage, 'externalDomain'> & {
+      externalDomain: PartialExternalDomain
+    }
+  ): Promise<ExternalImageModel> {
+    const externalDomain = await this.externalDomainService.findOrCreate({
+      ...image.externalDomain
+    })
+    const externalImage = await this.externalImageService.findOrCreate({
+      ...image,
+      externalDomain
+    })
+
+    return externalImage
   }
 
   async createLogo(

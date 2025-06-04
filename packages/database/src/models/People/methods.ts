@@ -13,7 +13,7 @@ export async function insertPeople(this: PeopleRepository, data: PeopleModel) {
       .insert(people)
       .values(data)
       .onConflictDoUpdate({
-        target: people.external_id,
+        target: [people.sourceId, people.external_id],
         set: data
       })
       .returning(),
