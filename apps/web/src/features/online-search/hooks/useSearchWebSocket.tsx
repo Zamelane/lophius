@@ -45,7 +45,7 @@ export function useSearchWebSocket({ query, mediaType, objectType }: Props) {
       setResults([])
       setResultsLength(0)
 
-      const ws = new WebSocket(`ws://localhost:3002/status?key=${key}`)
+      const ws = new WebSocket(`${process.env.WS_PUBLIC_URL}/status?key=${key}`)
       wsRef.current = ws
 
       ws.onopen = () => {
