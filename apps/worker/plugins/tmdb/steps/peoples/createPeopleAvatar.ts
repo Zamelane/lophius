@@ -10,13 +10,12 @@ const subPath = '/t/p/original'
 type InWith = SourceMediaServiceContext
 & {
   avatar?: OptionalExternalImage
-  peopleModel: PeopleModel
 }
 
 type OutWith = InWith & {
   externalImageModel?: ExternalImageModel
 }
-export class SetPeopleAvatarStep implements Step<InWith, OutWith> {
+export class CreatePeopleAvatarStep implements Step<InWith, OutWith> {
   async execute(ctx: InWith): Promise<OutWith> {
     if (!ctx.avatar) {
       return ctx
@@ -27,8 +26,6 @@ export class SetPeopleAvatarStep implements Step<InWith, OutWith> {
       language: null,
       externalDomain: this.getDomainByUrl(imageCDN) 
     })
-
-    ctx.peopleModel.avatar = externalImageModel
 
     return {
       ...ctx,

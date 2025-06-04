@@ -20,7 +20,7 @@ import {
 import { OptionalPeople } from 'database/models/People'
 import { SetPeopleStep } from '../steps/peoples/setPeople'
 import { PartialPeopleTranslateWithOutModels, PartialPeopleTranslateWithOutPeople } from 'database/models/PeopleTranslation'
-import { SetPeopleAvatarStep } from '../steps/peoples/setPeopleAvatar'
+import { CreatePeopleAvatarStep } from '../steps/peoples/createPeopleAvatar'
 import { SetPeopleTranslateStep } from '../steps/peoples/setPeopleTranslate'
 
 export function createMoviePipeline(
@@ -74,8 +74,8 @@ export function createPrefetchPersonPipeline(
     translation,
     sourceMediaService: new SourceMediaService(plugin.storage.sourceId)
   })
+    .addStep(new CreatePeopleAvatarStep())
     .addStep(new SetPeopleStep())
     .addStep(new SetPeopleTranslateStep())
-    .addStep(new SetPeopleAvatarStep())
     .addStep(new CommitStep())
 }

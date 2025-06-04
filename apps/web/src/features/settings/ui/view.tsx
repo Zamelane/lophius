@@ -98,7 +98,6 @@ export function ListsView({
             <SelectGroup>
               <SelectItem value='video'>Видео</SelectItem>
               <SelectItem value='comic'>Комиксы</SelectItem>
-              <SelectItem value='book'>Книги</SelectItem>
               <SelectItem value='music'>Музыка</SelectItem>
             </SelectGroup>
           </SelectContent>

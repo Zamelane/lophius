@@ -3,6 +3,7 @@ import { getTvDetailedInfo } from '@/src/features/media/pages/get-tv-detailed-in
 import { Button } from '@/src/shared/ui/button'
 import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
 import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
+import { ParseStatusCard } from '@/src/widgets/auto-parse/statusCard'
 import { InfoBlock } from '@/src/widgets/media/info-block'
 import { MediaPoster } from '@/src/widgets/media/media-poster'
 import { FilmInfo } from '@/src/widgets/media/page-info/film-info'
@@ -31,6 +32,7 @@ export default async function TVDetailedPage({ params }: Props) {
 
   return (
     <ContentLayout className='px-0'>
+      <ParseStatusCard/>
       {/* Мобильная версия */}
       <div className='relative md:hidden h-[450px] blur-lg opacity-80 object-cover'>
         {(mediaInfo.backdrops.length > 0 || mediaInfo.posters.length > 0) && (
