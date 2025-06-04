@@ -1,4 +1,4 @@
-import { run } from './src'
+import { pluginManager, run } from './src'
 export * from './src'
 
 run().then((p) => {
