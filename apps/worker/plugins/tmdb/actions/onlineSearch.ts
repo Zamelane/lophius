@@ -73,10 +73,15 @@ async function fetchPersons(
     const result = await createPrefetchPersonPipeline(plugin, {
       external_id: item.id.toString(),
       age: null,
-      name: item.name || 'none',
       gender,
       sourceId: plugin.storage.sourceId
-    }, item.profile_path
+    }, 
+    {
+      name: item.name || null,
+      bio: null,
+      primary: false
+    },
+    item.profile_path
       ? {
         path: item.profile_path,
         height: null,
