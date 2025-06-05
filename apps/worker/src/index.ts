@@ -14,11 +14,10 @@ const searchQueue = new SearchQueue(3, pluginQueue)
 /**
  * Run the server!
  */
-export const run = async (port = 3001) => {
+export const run = async () => {
   try {
-    app.listen({ port })
-    websocketApp.listen({ port: port + 1 })
-    return port
+    app.listen({ port: process.env.LOCAL_PORT })
+    websocketApp.listen({ port: process.env.PUBLIC_PORT })
   } catch (err) {
     console.error(`Server didn't started. Reason: ${err}`)
     process.exit(1)
