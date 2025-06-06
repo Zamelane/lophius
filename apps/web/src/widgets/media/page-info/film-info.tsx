@@ -3,14 +3,14 @@
 import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
 import { CinemaInfoTab } from '@/src/widgets/media/page-info/tabs/info-tab'
 import { useState } from 'react'
-import { CustomMenu, type Tab } from '../../../shared/ui/custom/custom-menu'
+import { CustomMenu, MenuContent, type Tab } from '../../../shared/ui/custom/custom-menu'
 
 export type Info = {
   mediaInfo: GetTvDetailedInfoResult
 }
 
 export function FilmInfo({ mediaInfo }: Info) {
-  const tabs: Tab[] = [
+  const tabs: Tab<string>[] = [
     {
       id: 'info',
       title: 'Информация'
@@ -22,11 +22,11 @@ export function FilmInfo({ mediaInfo }: Info) {
       <CustomMenu
         tabs={tabs}
         selected={selectedTab}
-        setSelected={setSelectedTab}
-      />
-      <div className='flex flex-grow pt-2 max-w-full'>
-        {selectedTab.id === 'info' && <CinemaInfoTab mediaInfo={mediaInfo} />}
-      </div>
+        setSelected={setSelectedTab}>
+        <MenuContent id='info'>
+          <CinemaInfoTab mediaInfo={mediaInfo} />
+        </MenuContent>
+      </CustomMenu>
     </>
   )
 }

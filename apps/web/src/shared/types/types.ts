@@ -91,3 +91,14 @@ export type PartialStatusType = {
   isPartial: boolean
 }
 export type NonEmptyArray<T> = [T, ...T[]]
+
+export type ImagesType = Array<{
+  lang?: {
+    id: number
+    englishName?: null | string
+    nativeName?: null | string
+  }
+  imgSrc: string
+  width?: null | number
+  height?: null | number
+}>

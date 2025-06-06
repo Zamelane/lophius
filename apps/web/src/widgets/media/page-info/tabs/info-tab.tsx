@@ -1,5 +1,6 @@
 import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
+import { MediaInfoBlock } from '@/src/shared/ui/media/page-components/media-info-block'
 import { Tag } from '@/src/widgets/media/page-info/tags/tag'
 import { TagContainer } from '@/src/widgets/media/page-info/tags/tag-container'
 import Image from 'next/image'
@@ -12,12 +13,6 @@ export function CinemaInfoTab({ mediaInfo }: Props) {
   let mediaType = undefined
 
   switch (mediaInfo.mediaType) {
-    case 'anime':
-      mediaType = 'фильм'
-      break
-    case 'book':
-      mediaType = 'фильм'
-      break
     case 'comic':
       mediaType = 'фильм'
       break
@@ -31,6 +26,7 @@ export function CinemaInfoTab({ mediaInfo }: Props) {
 
   return (
     <div className='flex flex-col gap-4 pt-2 min-w-0 max-w-full'>
+      <MediaInfoBlock mediaInfo={mediaInfo} orientation='horizontal' />
       <TagContainer>
         {mediaType && (
           <Tag

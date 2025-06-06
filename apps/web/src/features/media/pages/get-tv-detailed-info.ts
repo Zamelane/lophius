@@ -3,6 +3,7 @@
 import { translationEstimation } from '@/src/features/media/search/estimation'
 import { prioritizationByLanguage } from '@/src/features/media/search/prioritization-by-language'
 import { getCurrentLocale } from '@/src/shared/i18n/current-locale'
+import { ImagesType } from '@/src/shared/types'
 import { db } from 'database/index'
 import type {
   CountriesTableType,
@@ -224,14 +225,3 @@ export type GetTvDetailedInfoResult = {
     runtimes: number[]
   }
 }
-
-type ImagesType = Array<{
-  lang?: {
-    id: number
-    englishName?: null | string
-    nativeName?: null | string
-  }
-  imgSrc: string
-  width?: null | number
-  height?: null | number
-}>

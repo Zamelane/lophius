@@ -1,14 +1,12 @@
-import { MediaListButton } from '@/src/features/media-list-button'
 import { getTvDetailedInfo } from '@/src/features/media/pages/get-tv-detailed-info'
-import { Button } from '@/src/shared/ui/button'
 import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
-import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
+import { DesktopSidebar } from '@/src/shared/ui/media/page-components/desktop-sidebar'
+import { MobileActions } from '@/src/shared/ui/media/page-components/mobile-actions'
+import { MobilePoster } from '@/src/shared/ui/media/page-components/mobile-poster'
+import { MobileBackdrop } from '@/src/shared/ui/media/page-components/mobileBackdrop'
+import { TitleSection } from '@/src/shared/ui/media/page-components/title-section'
 import { ParseStatusCard } from '@/src/widgets/auto-parse/statusCard'
-import { InfoBlock } from '@/src/widgets/media/info-block'
-import { MediaPoster } from '@/src/widgets/media/media-poster'
 import { FilmInfo } from '@/src/widgets/media/page-info/film-info'
-import { RatingBadge } from '@/src/widgets/media/rating-badge'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 export const revalidate = 3600
@@ -32,89 +30,16 @@ export default async function TVDetailedPage({ params }: Props) {
 
   return (
     <ContentLayout className='px-0'>
-      <ParseStatusCard/>
-      {/* Мобильная версия */}
-      <div className='relative md:hidden h-[450px] blur-lg opacity-80 object-cover'>
-        {(mediaInfo.backdrops.length > 0 || mediaInfo.posters.length > 0) && (
-          <Image
-            fill
-            alt='Задник'
-            className='object-cover object-top'
-            src={
-              mediaInfo.backdrops.length > 0
-                ? mediaInfo.backdrops[0].imgSrc
-                : mediaInfo.posters[0].imgSrc
-            }
-          />
-        )}
-        <div className='absolute inset-0 bg-gradient-to-b from-transparent to-80% to-background' />
-      </div>
+      <ParseStatusCard />
+      <MobileBackdrop backdrops={[...mediaInfo.backdrops, ...mediaInfo.posters]} />
 
       <div className='flex py-4 gap-4 px-[16px] md:px-[0]'>
-        {/* Десктопная версия */}
-        <div className='hidden md:flex flex-col gap-2 h-full sticky top-4 min-w-[250px] max-w-[250px]'>
-          <MediaPoster posters={mediaInfo.posters} />
-          <div className='flex flex-col gap-2 max-w-[250px]'>
-            <Button isPrimary>Смотреть</Button>
-            <MediaListButton mediaId={id} />
-          </div>
-          <div className='border-[1px] border-border rounded-sm py-2 px-3 flex flex-col gap-2'>
-            <div className='flex flex-col gap-2'>
-              <InfoBlock
-                value='2018'
-                title='Год выпуска'
-                href='/tv/catalog?yearMin=2018&yearMax=2018'
-              />
-              <InfoBlock
-                title='Переводов'
-                href='?modal=translates'
-                value={Math.max(
-                  mediaInfo.translates.titles.length,
-                  mediaInfo.translates.taglines.length,
-                  mediaInfo.translates.overviews.length
-                ).toString()}
-              />
-              <InfoBlock
-                isLast
-                value='Япония'
-                title='Страна оригинала'
-                href='/tv/catalog?country=123'
-              />
-            </div>
-          </div>
-        </div>
+        <DesktopSidebar mediaInfo={mediaInfo} id={id} />
+
         <div className='flex flex-col gap-4 flex-grow min-w-0 max-w-full'>
-          <div className='z-40 flex md:hidden justify-center mt-[-425px]'>
-            <MediaPoster
-              posters={mediaInfo.posters}
-              className='h-[350px] overflow-clip'
-            />
-          </div>
-          <div className='z-40 flex justify-center md:justify-between items-start'>
-            <div className='flex flex-col text-center md:text-start'>
-              <HeaderTitle className='text-center md:text-start text-2xl font-semibold line-clamp-2'>
-                {mediaInfo.translates.titles.length ? (
-                  mediaInfo.translates.titles[0]
-                ) : (
-                  <i>[Без заголовка]</i>
-                )}
-              </HeaderTitle>
-              <p className='text-center md:text-start text-sm text-secondary-foreground opacity-80 line-clamp-2'>
-                {mediaInfo.translates.taglines.length ? (
-                  mediaInfo.translates.taglines[0]
-                ) : (
-                  <i>Без tagline ...</i>
-                )}
-              </p>
-            </div>
-            <div className='hidden md:flex flex-col justify-end text-end'>
-              <RatingBadge rating='9.73' votes='0 оценок' />
-            </div>
-          </div>
-          <div className='z-40 flex flex-col gap-2 md:hidden'>
-            <Button isPrimary>Смотреть</Button>
-            <MediaListButton mediaId={id} />
-          </div>
+          <MobilePoster posters={mediaInfo.posters} />
+          <TitleSection mediaInfo={mediaInfo} />
+          <MobileActions id={id} />
           <div className='flex flex-grow flex-col max-w-full'>
             <FilmInfo mediaInfo={mediaInfo} />
           </div>
