@@ -1,20 +1,26 @@
-import { ImagesType } from "@/src/shared/types";
+'use client'
+
+import { MediaInfoType } from "@/src/shared/types/web-types";
 import Image from "next/image";
 
 type Props = {
-  backdrops: ImagesType
+  mediaInfo: MediaInfoType
 }
 
-export function MobileBackdrop({ backdrops }: Props) {
+export function MobileBackdrop({ mediaInfo }: Props) {
+  const backdrop = mediaInfo.backdrops?.default.img
+    || mediaInfo.posters?.default.img
+    || undefined
+
   return (
     <div className='relative md:hidden h-[450px] blur-lg opacity-80 object-cover'>
-      {(backdrops.length > 0) && (
+      {backdrop && (
         <Image
           fill
           alt='Задник'
           className='object-cover object-top'
           src={
-            backdrops[0].imgSrc
+            `http${backdrop.https ? 's' : ''}://${backdrop.domain}${backdrop.path}`
           }
         />
       )}

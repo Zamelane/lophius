@@ -1,20 +1,23 @@
 'use client'
 
-import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
 import { cn } from '@/src/shared/lib/utils'
+import { MediaInfoType } from '@/src/shared/types/web-types'
+import { calculateImageSrc } from '@/src/utils/calculateImageSrc'
 import { SearchSlashIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { PhotoSlider } from 'react-photo-view/src'
 
 type MediaPosterProps = {
-  posters: GetTvDetailedInfoResult['posters']
+  mediaInfo: MediaInfoType
   className?: string
 }
 
-export function MediaPoster({ posters, className = '' }: MediaPosterProps) {
+export function MediaPoster({ mediaInfo, className = '' }: MediaPosterProps) {
   const [visible, setVisible] = useState(false)
   const [index, setIndex] = useState(0)
+
+  const poster = mediaInfo.posters?.default
 
   return (
     <>
@@ -23,14 +26,14 @@ export function MediaPoster({ posters, className = '' }: MediaPosterProps) {
         className={`relative aspect-[5/7] rounded-[4px] ${className}`}
       >
         {
-          posters.length > 0 && (
+          poster && (
             <div className='inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-[10px] px-1.5 py-0.5 rounded-full absolute top-1 right-1 z-10 cursor-pointer'>
-              {posters.length} обложек
+              {mediaInfo.posters?.total || 1} обложек
             </div>
           )
         }
         <div className='cursor-pointer'>
-          {posters.length > 0 ? (
+          {poster ? (
             <Image
               className={cn(
                 'aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px]',
@@ -41,15 +44,15 @@ export function MediaPoster({ posters, className = '' }: MediaPosterProps) {
               loading='lazy'
               decoding='async'
               alt='Обложка'
-              {...(posters[0].width && posters[0].height
+              {...(poster.img.width && poster.img.height
                 ? {
-                  src: posters[0].imgSrc,
-                  width: posters[0].width,
-                  height: posters[0].height
+                  src: calculateImageSrc(poster.img),
+                  width: poster.img.width,
+                  height: poster.img.height
                 }
                 : {
                   fill: true,
-                  src: posters[0].imgSrc
+                  src: calculateImageSrc(poster.img)
                 })}
             />
           ) : (
@@ -60,19 +63,23 @@ export function MediaPoster({ posters, className = '' }: MediaPosterProps) {
         </div>
       </div>
 
-      <PhotoSlider
-        index={index}
-        speed={() => 500}
-        visible={visible}
-        onIndexChange={setIndex}
-        onClose={() => setVisible(false)}
-        images={posters.map((poster, idx) => ({
-          src: poster.imgSrc,
-          key: idx.toString(),
-          width: poster.width ?? undefined,
-          height: poster.height ?? undefined
-        }))}
-      />
+      {
+        mediaInfo.posters && (
+          <PhotoSlider
+            index={index}
+            speed={() => 500}
+            visible={visible}
+            onIndexChange={setIndex}
+            onClose={() => setVisible(false)}
+            images={mediaInfo.posters?.more.map((poster, idx) => ({
+              src: calculateImageSrc(poster),
+              key: idx.toString(),
+              width: poster.width ?? undefined,
+              height: poster.height ?? undefined
+            }))}
+          />
+        )
+      }
     </>
   )
 }

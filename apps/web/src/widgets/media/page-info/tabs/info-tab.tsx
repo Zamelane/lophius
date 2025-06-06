@@ -1,92 +1,25 @@
-import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
-import { LocaleLink } from '@/src/shared/hooks/locale-link'
 import { MediaInfoBlock } from '@/src/shared/ui/media/page-components/media-info-block'
-import { Tag } from '@/src/widgets/media/page-info/tags/tag'
-import { TagContainer } from '@/src/widgets/media/page-info/tags/tag-container'
-import Image from 'next/image'
+import { MediaTagsBlock } from '../tags/media-tags-block'
+import { DescriptionBlock } from '../../ui/description-block'
+import { MediaBadgesBlock } from '../category-badges/media-badges-block'
+import { MediaInfoType } from '@/src/shared/types/web-types'
 
 export type Props = {
-  mediaInfo: GetTvDetailedInfoResult
+  mediaInfo: MediaInfoType
 }
 
-export function CinemaInfoTab({ mediaInfo }: Props) {
-  let mediaType = undefined
+export function MediaInfoTab({ mediaInfo }: Props) {
 
-  switch (mediaInfo.mediaType) {
-    case 'comic':
-      mediaType = 'фильм'
-      break
-    case 'video':
-      mediaType = 'фильм'
-      break
-    case 'music':
-      mediaType = 'фильм'
-      break
-  }
 
   return (
     <div className='flex flex-col gap-4 pt-2 min-w-0 max-w-full'>
       <MediaInfoBlock mediaInfo={mediaInfo} orientation='horizontal' />
-      <TagContainer>
-        {mediaType && (
-          <Tag
-            accent
-            text={mediaType}
-            href={`/tv/catalog?type=${mediaInfo.mediaType}`}
-          />
-        )}
-        <Tag text='комедия' href='/tv/catalog?genre=comedy' />
-      </TagContainer>
+      <MediaTagsBlock mediaInfo={mediaInfo} />
 
-      <div className='flex flex-col gap-2'>
-        <h6 className='text-lg font-semibold'>Описание</h6>
-        <p className='text-sm'>
-          {mediaInfo.translates.overviews.length ? (
-            mediaInfo.translates.overviews[0]
-          ) : (
-            <i>Без описания ...</i>
-          )}
-        </p>
-      </div>
+      <DescriptionBlock mediaInfo={mediaInfo} />
 
-      <div className='flex flex-wrap gap-4'>
-        <div className='flex flex-col gap-2'>
-          <h6 className='text-lg font-semibold'>Телесеть</h6>
-          <div className='flex flex-wrap gap-1'>
-            <LocaleLink
-              href='/tv-network/123'
-              className='rounded-full inline-flex gap-1 items-center border transition-colors focus:outline-none border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs font-medium pr-1.5'
-            >
-              <Image
-                alt='ATX'
-                width={20}
-                height={20}
-                className='rounded-full w-[20px] h-[20px] border-secondary border-[1px] bg-background'
-                src='https://media.themoviedb.org/t/p/h50_filter(negate,000,666)/fERjndErEpveJmQZccJbJDi93rj.png'
-              />
-              {' AT-X'}
-            </LocaleLink>
-          </div>
-        </div>
-        <div className='flex flex-col gap-2'>
-          <h6 className='text-lg font-semibold'>Трекеры</h6>
-          <div className='flex flex-wrap gap-1'>
-            <LocaleLink
-              href='/trackers/123'
-              className='rounded-full inline-flex gap-1 items-center border transition-colors focus:outline-none border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs font-medium pr-1.5'
-            >
-              <Image
-                alt='TMDB'
-                width={20}
-                height={20}
-                className='rounded-full w-[20px] h-[20px] border-secondary border-[1px] bg-background'
-                src='https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg'
-              />
-              {' TMDB'}
-            </LocaleLink>
-          </div>
-        </div>
-      </div>
+      <MediaBadgesBlock />
+
     </div>
   )
 }

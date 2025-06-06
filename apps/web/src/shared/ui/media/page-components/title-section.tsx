@@ -1,9 +1,11 @@
+'use client'
+
 import { HeaderTitle } from '@/src/shared/ui/navigation/header-title'
 import { RatingBadge } from '@/src/widgets/media/rating-badge'
-import { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
+import { MediaInfoType } from '@/src/shared/types/web-types'
 
 type Props = {
-  mediaInfo: GetTvDetailedInfoResult
+  mediaInfo: MediaInfoType
 }
 
 export function TitleSection({ mediaInfo }: Props) {
@@ -11,15 +13,15 @@ export function TitleSection({ mediaInfo }: Props) {
     <div className='z-40 flex justify-center md:justify-between items-start'>
       <div className='flex flex-col text-center md:text-start'>
         <HeaderTitle className='text-center md:text-start text-2xl font-semibold line-clamp-2'>
-          {mediaInfo.translates.titles.length ? (
-            mediaInfo.translates.titles[0]
+          {mediaInfo.title ? (
+            mediaInfo.title.text
           ) : (
             <i>[Без заголовка]</i>
           )}
         </HeaderTitle>
         <p className='text-center md:text-start text-sm text-secondary-foreground opacity-80 line-clamp-2'>
-          {mediaInfo.translates.taglines.length ? (
-            mediaInfo.translates.taglines[0]
+          {mediaInfo.tagline ? (
+            mediaInfo.tagline.text
           ) : (
             <i>Без tagline ...</i>
           )}

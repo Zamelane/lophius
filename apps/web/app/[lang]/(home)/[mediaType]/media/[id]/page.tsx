@@ -1,12 +1,8 @@
-import { getTvDetailedInfo } from '@/src/features/media/pages/get-tv-detailed-info'
-import { ContentLayout } from '@/src/shared/ui/layout/content-layout'
-import { DesktopSidebar } from '@/src/shared/ui/media/page-components/desktop-sidebar'
-import { MobileActions } from '@/src/shared/ui/media/page-components/mobile-actions'
-import { MobilePoster } from '@/src/shared/ui/media/page-components/mobile-poster'
-import { MobileBackdrop } from '@/src/shared/ui/media/page-components/mobileBackdrop'
-import { TitleSection } from '@/src/shared/ui/media/page-components/title-section'
-import { ParseStatusCard } from '@/src/widgets/auto-parse/statusCard'
-import { FilmInfo } from '@/src/widgets/media/page-info/film-info'
+import { MediaListButton } from '@/src/features/media-list-button'
+import { getMediaInfo } from '@/src/features/media/services/getMediaInfo'
+import { MediaPageView } from '@/src/widgets/media/page-info/view'
+import { db, eq } from 'database'
+import { medias } from 'database/schemas'
 import { notFound } from 'next/navigation'
 
 export const revalidate = 3600
@@ -22,29 +18,20 @@ export default async function TVDetailedPage({ params }: Props) {
     notFound()
   }
 
-  const mediaInfo = await getTvDetailedInfo({ id })
+  const [check] = await db.select()
+    .from(medias)
+    .where(eq(medias.id, id))
+    .limit(1)
 
-  if (!mediaInfo) {
+  if (!check) {
     notFound()
   }
 
+  const mediaInfo = await getMediaInfo({ id })
+
+  const mediaListButton = (<MediaListButton mediaId={id}/>)
+
   return (
-    <ContentLayout className='px-0'>
-      <ParseStatusCard />
-      <MobileBackdrop backdrops={[...mediaInfo.backdrops, ...mediaInfo.posters]} />
-
-      <div className='flex py-4 gap-4 px-[16px] md:px-[0]'>
-        <DesktopSidebar mediaInfo={mediaInfo} id={id} />
-
-        <div className='flex flex-col gap-4 flex-grow min-w-0 max-w-full'>
-          <MobilePoster posters={mediaInfo.posters} />
-          <TitleSection mediaInfo={mediaInfo} />
-          <MobileActions id={id} />
-          <div className='flex flex-grow flex-col max-w-full'>
-            <FilmInfo mediaInfo={mediaInfo} />
-          </div>
-        </div>
-      </div>
-    </ContentLayout>
+    <MediaPageView mediaInfo={mediaInfo} mediaListButton={mediaListButton} />
   )
 }

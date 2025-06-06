@@ -1,25 +1,34 @@
+'use client'
+
 import { LocaleLink } from '@/src/shared/hooks/locale-link'
 
-type Props = {
+export type Tag = {
   href?: string
-  accent?: boolean
+  style?: 'primary' | 'accent' | 'default'
   text: string
 }
 
-export function Tag(props: Props) {
-  const accentClassName =
-    'inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs px-2.5 py-0.5 rounded-full'
-  const noAccentClassName =
-    'inline-flex flex-shrink-0 items-center border font-semibold transition-colors text-foreground text-xs px-2.5 py-0.5 rounded-full'
-  const className = props.accent ? accentClassName : noAccentClassName
+type Props = {
+  tag: Tag
+}
+
+const styles = {
+  'primary': 'inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-foreground text-primary-foreground hover:bg-primary/80 text-xs px-2.5 py-0.5 rounded-full',
+  'accent': 'inline-flex flex-shrink-0 items-center border font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 text-xs px-2.5 py-0.5 rounded-full',
+  'default': 'inline-flex flex-shrink-0 items-center border font-semibold transition-colors text-foreground text-xs px-2.5 py-0.5 rounded-full'
+}
+
+export function TagComponent({ tag }: Props) {
+  const className = styles[tag.style || 'default']
+  
   return (
     <>
-      {props.href ? (
-        <LocaleLink href={props.href} className={className}>
-          {props.text}
+      {tag.href ? (
+        <LocaleLink href={tag.href} className={className}>
+          {tag.text}
         </LocaleLink>
       ) : (
-        <div className={className}>{props.text}</div>
+        <div className={className}>{tag.text}</div>
       )}
     </>
   )

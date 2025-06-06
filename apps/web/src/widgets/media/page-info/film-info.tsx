@@ -1,12 +1,12 @@
 'use client'
 
-import type { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
-import { CinemaInfoTab } from '@/src/widgets/media/page-info/tabs/info-tab'
+import { MediaInfoTab } from '@/src/widgets/media/page-info/tabs/info-tab'
 import { useState } from 'react'
 import { CustomMenu, MenuContent, type Tab } from '../../../shared/ui/custom/custom-menu'
+import { MediaInfoType } from '@/src/shared/types/web-types'
 
 export type Info = {
-  mediaInfo: GetTvDetailedInfoResult
+  mediaInfo: MediaInfoType
 }
 
 export function FilmInfo({ mediaInfo }: Info) {
@@ -24,7 +24,7 @@ export function FilmInfo({ mediaInfo }: Info) {
         selected={selectedTab}
         setSelected={setSelectedTab}>
         <MenuContent id='info'>
-          <CinemaInfoTab mediaInfo={mediaInfo} />
+          <MediaInfoTab mediaInfo={mediaInfo} />
         </MenuContent>
       </CustomMenu>
     </>
