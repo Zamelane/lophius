@@ -8,11 +8,11 @@ import { notFound } from 'next/navigation'
 export const revalidate = 3600
 
 type Props = {
-  params: Promise<{ id: number }>
+  params: Promise<{ id: string }>
 }
 
 export default async function TVDetailedPage({ params }: Props) {
-  const id = (await params).id
+  const id = Number.parseInt((await params).id)
 
   if (!id) {
     notFound()
@@ -32,6 +32,6 @@ export default async function TVDetailedPage({ params }: Props) {
   const mediaListButton = (<MediaListButton mediaId={id}/>)
 
   return (
-    <MediaPageView mediaInfo={mediaInfo} mediaListButton={mediaListButton} />
+    <MediaPageView mediaId={id} mediaInfo={/*mediaInfo*/ undefined} mediaListButton={mediaListButton} />
   )
 }

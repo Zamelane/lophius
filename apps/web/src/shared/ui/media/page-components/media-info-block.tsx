@@ -17,7 +17,7 @@ export function MediaInfoBlock({ mediaInfo, orientation }: Props) {
     {
       title: 'Переводов',
       href: '?modal=translates',
-      value: mediaInfo.meta.totalTranslations?.toString() || '1'
+      value: mediaInfo?.meta?.totalTranslations?.toString() || '1'
     },
     {
       value: 'Япония',
