@@ -1,15 +1,17 @@
+'use client'
+
 import { MediaPoster } from '@/src/widgets/media/media-poster'
-import { GetTvDetailedInfoResult } from '@/src/features/media/pages/get-tv-detailed-info'
+import { MediaInfoType } from '@/src/shared/types/web-types'
 
 type Props = {
-  posters: GetTvDetailedInfoResult['posters']
+  mediaInfo: MediaInfoType
 }
 
-export function MobilePoster({ posters }: Props) {
+export function MobilePoster({ mediaInfo }: Props) {
   return (
     <div className='z-40 flex md:hidden justify-center mt-[-475px]'>
       <MediaPoster
-        posters={posters}
+        mediaInfo={mediaInfo}
         className='h-[350px] overflow-clip'
       />
     </div>

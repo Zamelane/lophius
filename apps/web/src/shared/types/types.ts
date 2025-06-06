@@ -92,6 +92,14 @@ export type PartialStatusType = {
 }
 export type NonEmptyArray<T> = [T, ...T[]]
 
+export type ImageType = {
+  width?: number
+  height?: number
+  https: boolean
+  domain: string
+  path: string
+}
+
 export type ImagesType = Array<{
   lang?: {
     id: number

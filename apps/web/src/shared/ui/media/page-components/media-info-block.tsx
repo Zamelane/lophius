@@ -1,9 +1,9 @@
-import { GetTvDetailedInfoResult } from "@/src/features/media/pages/get-tv-detailed-info"
 import { InfoBlockItem } from "@/src/widgets/media/info-block-item"
 import { InfoBlock, InfoBlockProps } from "./info-block"
+import { MediaInfoType } from "@/src/shared/types/web-types"
 
 type Props = {
-  mediaInfo: GetTvDetailedInfoResult
+  mediaInfo: MediaInfoType
   orientation: InfoBlockProps['orientation']
 }
 
@@ -17,11 +17,7 @@ export function MediaInfoBlock({ mediaInfo, orientation }: Props) {
     {
       title: 'Переводов',
       href: '?modal=translates',
-      value: Math.max(
-        mediaInfo.translates.titles.length,
-        mediaInfo.translates.taglines.length,
-        mediaInfo.translates.overviews.length
-      ).toString()
+      value: mediaInfo.meta.totalTranslations?.toString() || '1'
     },
     {
       value: 'Япония',
