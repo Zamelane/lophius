@@ -9,29 +9,45 @@ import { TitleSection } from "@/src/shared/ui/media/page-components/title-sectio
 import { MobileActions } from "@/src/shared/ui/media/page-components/mobile-actions";
 import { FilmInfo } from "./film-info";
 import { MediaInfoType } from "@/src/shared/types/web-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaInfoWebSocket } from "./hooks/useAutoParseSocketWrapper";
+import { getParseKey } from "./services/getParseKey";
 
 type Props = {
+  mediaId: number
   mediaInfo?: MediaInfoType
   mediaListButton: React.ReactNode
 }
 
-export function MediaPageView({ mediaInfo: mediaInfoFromServer, mediaListButton }: Props) {
+export function MediaPageView({ mediaId, mediaInfo: mediaInfoFromServer, mediaListButton }: Props) {
   const [] = useState(1)
 
   const {
     mediaInfo: realTimeMediaInfo,
+    connect,
     connected,
     disconnect
   } = useMediaInfoWebSocket({
-    key: 'some-unique-id-or-key',
     initialData: {},
     onClose: () => console.log('Закрыт'),
     onError: err => console.error('Ошибка:', err)
   })
 
   const mediaInfo = mediaInfoFromServer || realTimeMediaInfo
+
+
+  useEffect(() => {
+    const parseHandler = async () => {
+      const key = await getParseKey(mediaId)
+
+      if (!key) {
+        throw new Error(`Нет ключа`)
+      }
+
+      connect(key)
+    }
+    parseHandler()
+  }, [])
 
   return (
     <ContentLayout className='px-0'>

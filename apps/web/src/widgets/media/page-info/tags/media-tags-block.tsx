@@ -10,8 +10,8 @@ export function MediaTagsBlock({ mediaInfo }: Props) {
   const tags: Tag[] = [
     {
       style: 'accent',
-      text: mediaInfo._raw.media.mediaType,
-      href: `/tv/catalog?type=${mediaInfo._raw.media.mediaType}`
+      text: mediaInfo?._raw?.media.mediaType || '123',
+      href: `/tv/catalog?type=${mediaInfo?._raw?.media.mediaType}`
     },
     {
       text: 'комедия',

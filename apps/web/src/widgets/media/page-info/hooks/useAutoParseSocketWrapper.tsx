@@ -1,105 +1,110 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
-import type { MediaInfoType } from '@/src/shared/types/web-types'
-import { applyPatch, Operation } from 'fast-json-patch'
+import { useRef, useState, useCallback, useEffect } from 'react';
+import { applyPatch, Operation } from 'fast-json-patch';
 
-// Типы сообщений WebSocket
-type MediaInfoPatchMessage = {
-  type: 'patch'
-  patch: Operation[]
-}
+type PatchMessage = {
+  type: 'patch';
+  patch: Operation[];
+};
 
-type WebSocketMessage = MediaInfoPatchMessage
+type CompletedMessage = {
+  status: 'completed';
+};
+
+type WebSocketMessage = PatchMessage | CompletedMessage;
 
 type UseMediaInfoWebSocketOptions = {
-  key: string
-  initialData: MediaInfoType
-  onClose?: () => void
-  onError?: (error: string) => void
-}
+  initialData: any;
+  onClose?: () => void;
+  onError?: (error: string) => void;
+};
 
 export function useMediaInfoWebSocket({
-  key,
   initialData,
   onClose,
   onError,
 }: UseMediaInfoWebSocketOptions) {
-  const [mediaInfo, setMediaInfo] = useState<MediaInfoType>(initialData)
-  const [connected, setConnected] = useState(false)
-  const wsRef = useRef<WebSocket | null>(null)
+  const [mediaInfo, setMediaInfo] = useState(initialData);
+  const [connected, setConnected] = useState(false);
+  const wsRef = useRef<WebSocket | null>(null);
+  const patchQueueRef = useRef<Operation[]>([]);
+  const isProcessingRef = useRef(false);
+  const dataRef = useRef(initialData);
 
-  const pendingPatches = useRef<Operation[][]>([])
-  const throttleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const THROTTLE_MS = 100
+  const processQueue = useCallback(() => {
+    if (isProcessingRef.current || patchQueueRef.current.length === 0) return;
 
-  function applyMergedPatches() {
-    setMediaInfo((prev) => {
-      if (!prev || pendingPatches.current.length === 0) return prev
+    isProcessingRef.current = true;
+    const patchesToApply = [...patchQueueRef.current];
+    patchQueueRef.current = [];
 
-      // Собираем все операции в один массив
-      const mergedOps = pendingPatches.current.flat()
-      pendingPatches.current = []
-
-      // Применяем все операции
-      const patched = applyPatch(prev, mergedOps, /*validate*/ true).newDocument
-      return patched
-    })
-  }
-
-  useEffect(() => {
-    if (!key) return
-
-    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/media-info?key=${key}`)
-    wsRef.current = ws
-
-    ws.onopen = () => {
-      setConnected(true)
-      console.log('📡 WebSocket открыт')
-    }
-
-    ws.onerror = () => {
-      setConnected(false)
-      onError?.('Ошибка WebSocket подключения')
-      ws.close()
-    }
-
-    ws.onmessage = (event) => {
-      try {
-        const message: WebSocketMessage = JSON.parse(event.data)
-
-        if (message.type === 'patch') {
-          pendingPatches.current.push(message.patch)
-
-          if (!throttleTimeout.current) {
-            throttleTimeout.current = setTimeout(() => {
-              applyMergedPatches()
-              throttleTimeout.current = null
-            }, THROTTLE_MS)
-          }
-        }
-      } catch (err) {
-        console.error('Ошибка разбора сообщения WebSocket:', err)
+    try {
+      const result = applyPatch(dataRef.current, patchesToApply, false, false);
+      const newData = result.newDocument;
+      dataRef.current = newData;
+      setMediaInfo(newData);
+    } catch (err) {
+      console.error('Patch application failed:', err);
+      onError?.('Ошибка применения изменений');
+    } finally {
+      isProcessingRef.current = false;
+      
+      if (patchQueueRef.current.length > 0) {
+        processQueue();
       }
     }
+  }, [onError]);
 
+  const handlePatch = useCallback((patch: Operation[]) => {
+    patchQueueRef.current.push(...patch);
+    processQueue();
+  }, [processQueue]);
+
+  const connect = useCallback((key: string) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) return;
+
+    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/status?key=${key}`);
+    wsRef.current = ws;
+
+    ws.onopen = () => setConnected(true);
+    ws.onerror = () => {
+      onError?.('WebSocket error');
+      setConnected(false);
+    };
     ws.onclose = () => {
-      setConnected(false)
-      onClose?.()
-      console.log('🔌 WebSocket закрыт')
-    }
+      setConnected(false);
+      onClose?.();
+    };
+    ws.onmessage = (event) => {
+      try {
+        const message: WebSocketMessage = JSON.parse(event.data);
+        
+        // Правильная проверка типа сообщения
+        if ('type' in message && message.type === 'patch') {
+          handlePatch(message.patch);
+        } else if ('status' in message && message.status === 'completed') {
+          console.log('Processing completed');
+        }
+      } catch (err) {
+        console.error('Message processing error:', err);
+      }
+    };
 
-    return () => {
-      ws.close()
-      if (throttleTimeout.current) clearTimeout(throttleTimeout.current)
-    }
-  }, [key])
+    return () => ws.close();
+  }, [handlePatch, onClose, onError]);
 
   const disconnect = useCallback(() => {
-    wsRef.current?.close()
-  }, [])
+    wsRef.current?.close();
+    wsRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    dataRef.current = mediaInfo;
+  }, [mediaInfo]);
 
   return {
     mediaInfo,
     connected,
+    connect,
     disconnect,
-  }
+  };
 }

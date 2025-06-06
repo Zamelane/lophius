@@ -1,5 +1,6 @@
 import type { PluginStorage } from './plugin-storage'
-import type { SearchRequest } from './search/interfaces'
+import type { ParseRequest, SearchRequest } from './search/interfaces'
+import { ParseStatus } from './search/parse-status'
 import type { SearchStatus } from './search/search-status'
 
 export type Method<TThis> = (this: TThis) => Promise<void>
@@ -8,10 +9,23 @@ export type OnlineSearchMethod<TThis> = (
   this: TThis,
   args: OnlineSearchMethodArgs
 ) => Promise<void>
+
 export type OnlineSearchMethodArgs = {
   status: SearchStatus
   request: SearchRequest['data']
 }
+
+
+export type ParseMethod<TThis> = (
+  this: TThis,
+  args: ParseMethodArgs
+) => Promise<void>
+
+export type ParseMethodArgs = {
+  status: ParseStatus
+  request: ParseRequest
+}
+
 
 export type ParserPluginConfig = {
   pluginName: string
@@ -29,6 +43,9 @@ export type ParserPluginInstance<TThis = any> = ParserPluginConfig & {
 
   // Online search
   onlineSearch?: OnlineSearchMethod<TThis>
+
+  // Parse
+  parseMediaInfo?: ParseMethod<TThis>
 }
 
 /**
