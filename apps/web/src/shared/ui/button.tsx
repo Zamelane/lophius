@@ -10,6 +10,7 @@ type ButtonProps = DetailedHTMLProps<
 export function Button({
   children,
   isPrimary = false,
+  className: externalClassName,
   ...props
 }: ButtonProps & LayoutProps & { isPrimary?: boolean }) {
   const className =
@@ -19,7 +20,7 @@ export function Button({
     'bg-secondary text-secondary-foreground hover:bg-secondary/80'
   return (
     <button
-      className={cn(className, isPrimary ? primary : secondary)}
+      className={cn(className, externalClassName, isPrimary ? primary : secondary)}
       {...props}
     >
       {children}

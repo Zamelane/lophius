@@ -113,7 +113,7 @@ export default async function TVDetailedPage({ params }: Props) {
           </div>
           <div className='z-40 flex flex-col gap-2 md:hidden'>
             <Button isPrimary>Смотреть</Button>
-            <Button>Добавить в список</Button>
+            <MediaListButton mediaId={id} />
           </div>
           <div className='flex flex-grow flex-col max-w-full'>
             <FilmInfo mediaInfo={mediaInfo} />

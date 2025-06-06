@@ -64,7 +64,11 @@ export default async function MyApp({ children }: LayoutProps) {
             defaultTheme='system'
             disableTransitionOnChange
           >
-            <AuthProvider initialData={auth}>{children}</AuthProvider>
+            <AuthProvider initialData={auth}>
+              <div vaul-drawer-wrapper="" className="bg-background">
+                {children}
+              </div>
+            </AuthProvider>
           </ThemeProvider>
           <Toaster richColors closeButton duration={8000} />
         </NextIntlClientProvider>
