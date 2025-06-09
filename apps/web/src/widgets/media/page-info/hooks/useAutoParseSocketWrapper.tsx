@@ -83,6 +83,7 @@ export function useMediaInfoWebSocket({
           handlePatch(message.patch);
         } else if ('status' in message && message.status === 'completed') {
           console.log('Processing completed');
+          ws.close()
         }
       } catch (err) {
         console.error('Message processing error:', err);
