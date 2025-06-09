@@ -1,6 +1,7 @@
 import type { ParseMethodArgs } from 'src/types'
 import type TMDBPlugin from '..'
-import { sleepSync } from 'bun'
+import { createParseMediaInfoPipeline } from '../utils/pipelineFactory'
+import { SourceMediaService } from 'database/services/SourceMediaService'
 
 export async function parseMediaInfo(
   this: TMDBPlugin,
@@ -12,59 +13,15 @@ export async function parseMediaInfo(
     return
   }
 
-  status.newData.title = {
-    lang: null,
-    text: 'Hello test1'
-  }
+  const service = new SourceMediaService(this.storage.sourceId)
 
-  status.newData.posters = {
-    default: {
-      img: {
-        domain: 'image.tmdb.org',
-        https: false,
-        path: '/0'
-      },
-      lang: ''
-    },
-    total: 1,
-    more: []
-  }
+  const mediaModel = await service.findMediaById(request.mediaId)
 
-  status.addPatch()
-
-  await Bun.sleep(5000)
-
-  status.newData.title = {
-    lang: null,
-    text: 'Hello test2'
-  }
-
-  status.newData.posters.more.push({
-    domain: 'image.tmdb.org',
-    https: false,
-    path: '/1'
-  })
-  status.newData.posters.more.push({
-    domain: 'image.tmdb.org',
-    https: false,
-    path: '/2'
-  })
-  status.newData.posters.more.push({
-    domain: 'image.tmdb.org',
-    https: false,
-    path: '/3'
-  })
-
-  status.addPatch()
+  if (!mediaModel) return
   
-  await Bun.sleep(5000)
-
-  status.newData.title = {
-    lang: null,
-    text: 'Hello test3'
-  }
-
-  status.newData.posters.more = []
-
-  status.addPatch()
+  await createParseMediaInfoPipeline(this, status, request, {
+    sourceMediaService: service,
+    token: this.storageData.token,
+    externalId: mediaModel.external_id
+  }).execute()
 }

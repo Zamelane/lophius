@@ -21,3 +21,11 @@ export type SourceMediaServiceContext = {
 export type FetchedMovieDetailsContext = {
   fetchedMovieDetails: MovieDetailsResponse
 }
+
+export type OrMovieData = {
+      fetchedMovieDetails: FetchedMovieDetailsContext['fetchedMovieDetails']
+      fetchedData?: MovieFetchedDataContext['fetchedData']
+    } | {
+      fetchedMovieDetails?: FetchedMovieDetailsContext['fetchedMovieDetails']
+      fetchedData: MovieFetchedDataContext['fetchedData']
+    }

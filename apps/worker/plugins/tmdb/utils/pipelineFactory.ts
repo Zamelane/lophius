@@ -22,6 +22,11 @@ import { SetPeopleStep } from '../steps/peoples/setPeople'
 import { PartialPeopleTranslateWithOutModels, PartialPeopleTranslateWithOutPeople } from 'database/models/PeopleTranslation'
 import { CreatePeopleAvatarStep } from '../steps/peoples/createPeopleAvatar'
 import { SetPeopleTranslateStep } from '../steps/peoples/setPeopleTranslate'
+import { ParseRequest, ParseUpdate } from 'src/search/interfaces'
+import { ParseStatus } from 'src/search/parse-status'
+import { SendTranslationsWSStep } from '../steps/translations/sendTranslationsWS'
+import { CreateOptionalMediaByDetailsStep } from '../steps/details/optionalMediaByDetails'
+import { TransformMovieDetailsByFetchedDataStep } from '../steps/details/transformMovieDetailsByFetchedData'
 
 export function createMoviePipeline(
   initialContext: Context
@@ -77,5 +82,37 @@ export function createPrefetchPersonPipeline(
     .addStep(new CreatePeopleAvatarStep())
     .addStep(new SetPeopleStep())
     .addStep(new SetPeopleTranslateStep())
+    .addStep(new CommitStep())
+}
+
+export function createParseMediaInfoPipeline(
+  plugin: TMDBPlugin,
+  status: ParseStatus,
+  request: ParseRequest,
+  initialContext: {
+    externalId: string
+    sourceMediaService: SourceMediaService
+    token: string
+  }
+) {
+  return new Pipeline({
+    ...initialContext,
+    status,
+    request
+  })
+    .addStep(new GetMovieDetailsStep())
+    .addStep(new CreateOptionalMediaByDetailsStep())
+    .addStep(new CreatePrefetchMediaStep())
+    .addStep(new TransformMovieDetailsByFetchedDataStep())
+    .addStep(new CreateOrGetVideoStep())
+    .addStep(new GetTranslationsStep())
+    .addStep(new SendTranslationsWSStep())
+    .addStep(new GetImagesStep())
+    .addStep(new SetTranslationsStep())
+    .addStep(new SetImagesStep())
+    .addStep(new SetGenresStep())
+    .addStep(new SetMediaBudgetStep())
+    .addStep(new SetMediaRevenueStep())
+    .addStep(new SetMediaStatusStep())
     .addStep(new CommitStep())
 }
