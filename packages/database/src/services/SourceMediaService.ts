@@ -9,6 +9,7 @@ import {
   type SourceId,
   type Transaction,
   db,
+  eq,
   pickExistingByType
 } from 'database'
 import type { ExternalBackdropModel } from 'database/models/ExternalBackdrop/model.ts'
@@ -40,8 +41,9 @@ import { PartialPeople } from 'database/models/People'
 import { PeopleModel } from 'database/models/People/model'
 import { ExternalImageModel } from 'database/models/ExternalImage/model'
 import { PeopleTranslationService } from './PeopleTranslationService'
-import { PartialPeopleTranslate, PartialPeopleTranslateWithOutPeople } from 'database/models/PeopleTranslation'
+import { PartialPeopleTranslateWithOutPeople } from 'database/models/PeopleTranslation'
 import { PeopleTranslationModel } from 'database/models/PeopleTranslation/model'
+import { medias } from 'database/schemas'
 
 export class SourceMediaService extends BaseService {
   private readonly mediaRepository: MediaRepository
@@ -117,6 +119,12 @@ export class SourceMediaService extends BaseService {
       sourceId: this.sourceId
     })
     return mediaModel
+  }
+
+  async findMediaById(id: number) {
+    return this.tx.query.medias.findFirst({
+      where: eq(medias.id, id)
+    })
   }
 
   createPeople(people: PartialPeople): PeopleModel {

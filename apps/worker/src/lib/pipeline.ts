@@ -10,7 +10,7 @@ export class Pipeline<
 > {
   private _steps: Step<any, any>[] = [];
 
-  constructor(private readonly initialContext: InitialContext) {}
+  constructor(private readonly initialContext: InitialContext, private callback?: (ctx: InitialContext) => void) {}
 
   addStep<
     RequiredInput extends CurrentContext,
@@ -18,7 +18,7 @@ export class Pipeline<
   >(
     step: Step<RequiredInput, StepOutput>
   ): Pipeline<InitialContext, CurrentContext & StepOutput> {
-    const newPipeline = new Pipeline<InitialContext, CurrentContext & StepOutput>(this.initialContext);
+    const newPipeline = new Pipeline<InitialContext, CurrentContext & StepOutput>(this.initialContext, this.callback);
     newPipeline._steps = [...this._steps, step];
     return newPipeline;
   }
@@ -28,6 +28,9 @@ export class Pipeline<
     for (const step of this._steps) {
       const stepOutput = await step.execute(currentCtx);
       currentCtx = { ...currentCtx, ...stepOutput };
+      if (this.callback) {
+        this.callback(currentCtx);
+      }
     }
     return currentCtx as CurrentContext;
   }
