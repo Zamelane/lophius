@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { applyPatch, Operation } from 'fast-json-patch';
+import { ParseStatus } from '@/src/widgets/auto-parse/statusCard';
 
 type PatchMessage = {
   type: 'patch';
@@ -25,6 +26,8 @@ export function useMediaInfoWebSocket({
 }: UseMediaInfoWebSocketOptions) {
   const [mediaInfo, setMediaInfo] = useState(initialData);
   const [connected, setConnected] = useState(false);
+  const [status, setStatus] = useState<ParseStatus>('idle')
+
   const wsRef = useRef<WebSocket | null>(null);
   const patchQueueRef = useRef<Operation[]>([]);
   const isProcessingRef = useRef(false);
@@ -65,13 +68,18 @@ export function useMediaInfoWebSocket({
     const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/status?key=${key}`);
     wsRef.current = ws;
 
-    ws.onopen = () => setConnected(true);
+    ws.onopen = () => {
+      setConnected(true);
+      setStatus('parsing')
+    }
     ws.onerror = () => {
       onError?.('WebSocket error');
+      setStatus('error')
       setConnected(false);
     };
     ws.onclose = () => {
       setConnected(false);
+      setStatus('completed')
       onClose?.();
     };
     ws.onmessage = (event) => {
@@ -94,6 +102,8 @@ export function useMediaInfoWebSocket({
   }, [handlePatch, onClose, onError]);
 
   const disconnect = useCallback(() => {
+    setMediaInfo(initialData)
+    setStatus('cancelled')
     wsRef.current?.close();
     wsRef.current = null;
   }, []);
@@ -105,6 +115,7 @@ export function useMediaInfoWebSocket({
   return {
     mediaInfo,
     connected,
+    status,
     connect,
     disconnect,
   };
