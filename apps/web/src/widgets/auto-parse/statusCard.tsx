@@ -16,15 +16,19 @@ import {
   Circle
 } from 'lucide-react'
 import { cn } from '@/src/shared/lib/utils'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Spinner } from '@/src/shared/ui/shadcn/spinner'
 import { Progress } from '@/src/shared/ui/shadcn/progress'
 
-type ParseStatus = 'idle' | 'parsing' | 'completed' | 'error' | 'cancelled'
+export type ParseStatus = 'idle' | 'parsing' | 'completed' | 'error' | 'cancelled'
 
-export function ParseStatusCard() {
-  const [status, setStatus] = useState<ParseStatus>('idle')
-  const [connected, setConnected] = useState(false)
+type Props = {
+  connected: boolean,
+  status: ParseStatus
+  reload?: () => void
+}
+
+export function ParseStatusCard({ connected, status, reload }: Props) {
   const [stats, setStats] = useState({
     sources: 0,
     media: {
@@ -36,84 +40,16 @@ export function ParseStatusCard() {
     speed: '0 items/sec'
   })
 
-  // Эмуляция работы парсера
-  useEffect(() => {
-    if (status === 'parsing') {
-      setStats({
-        sources: 8,
-        media: {
-          total: 23,
-          success: 0,
-          errors: 0
-        },
-        estimatedTime: '~1m 10s',
-        speed: '0 items/sec'
-      })
-
-      let lastUpdate = Date.now()
-      let processedCount = 0
-
-      const interval = setInterval(() => {
-        const now = Date.now()
-        const timeDiff = (now - lastUpdate) / 1000
-        processedCount++
-        
-        setStats(prev => {
-          const remaining = prev.media.total - prev.media.success - prev.media.errors
-          const shouldError = Math.random() > 0.9 && remaining > 0
-          
-          const newSuccess = prev.media.success + (shouldError ? 0 : 1)
-          const newErrors = prev.media.errors + (shouldError ? 1 : 0)
-          
-          // Расчет оставшегося времени
-          const remainingItems = prev.media.total - newSuccess - newErrors
-          const speed = timeDiff > 0 ? (processedCount / timeDiff).toFixed(1) : '0'
-          const newEstimatedTime = Math.max(0, Math.round(remainingItems / Number(speed)))
-          const minutes = Math.floor(newEstimatedTime / 60)
-          const seconds = newEstimatedTime % 60
-          const timeStr = minutes > 0 
-            ? `~${minutes}m ${seconds}s` 
-            : `~${seconds}s`
-
-          return {
-            ...prev,
-            media: {
-              ...prev.media,
-              success: newSuccess,
-              errors: newErrors
-            },
-            estimatedTime: timeStr,
-            speed: `${speed} items/sec`
-          }
-        })
-
-        lastUpdate = now
-        processedCount = 0
-      }, 1000)
-
-      return () => clearInterval(interval)
-    }
-  }, [status])
-
-  // Эмуляция подключения к WebSocket
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setConnected(true)
-    }, 1500)
-
-    return () => clearTimeout(timeout)
-  }, [])
-
-  const startParse = () => setStatus('parsing')
-  const resetParse = () => setStatus('idle')
+  const startParse = () => {} //setStatus('parsing')
+  const resetParse = () => reload?.()
 
   const progress = status === 'parsing' || status === 'completed' 
     ? Math.round((stats.media.success + stats.media.errors) / stats.media.total * 100)
     : 0
 
   return (
-    <Card className="w-full p-3">
-      <div className="flex flex-col gap-3">
+    <Card className="w-full h-[115px] p-3">
+      <div className="flex flex-col gap-3 h-full">
         {/* Первая строка - статус и управление */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -160,13 +96,8 @@ export function ParseStatusCard() {
           </div>
         </div>
 
-        {/* Прогресс бар */}
-        {(status === 'parsing' || status === 'completed') && (
-          <Progress value={progress} className="h-2" />
-        )}
-
         {/* Вторая строка - статистика */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 h-max">
           <div className="flex items-center gap-3 flex-wrap">
             {/* Источники */}
             <div className="flex items-center gap-1 text-sm">
@@ -204,14 +135,14 @@ export function ParseStatusCard() {
           </div>
 
           {/* Время и подключение */}
-          <div className="flex items-center gap-3">
-            {status === 'parsing' && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{stats.estimatedTime}</span>
-                <span className="hidden lg:inline">осталось</span>
-              </div>
-            )}
+          <div className="flex items-center gap-3 justify-self-end">
+            
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4" />
+              <span>{stats.estimatedTime}</span>
+              <span className="hidden lg:inline">осталось</span>
+            </div>
+            
 
             <div className={cn(
               "flex items-center gap-1 text-sm ml-auto",
@@ -236,7 +167,7 @@ function StatusIndicator({ status }: { status: ParseStatus }) {
   return (
     <div className="relative">
       {status === 'parsing' && (
-        <Spinner size='sm' className='text-primary' />
+        <Spinner size='sm' />
       )}
       {status === 'completed' && (
         <CheckCircle2 className="h-4 w-4 text-green-500" />

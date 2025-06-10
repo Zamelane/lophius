@@ -26,6 +26,7 @@ export function MediaPageView({ mediaId, mediaInfo: mediaInfoFromServer, mediaLi
     mediaInfo: realTimeMediaInfo,
     connect,
     connected,
+    status,
     disconnect
   } = useMediaInfoWebSocket({
     initialData: {},
@@ -35,9 +36,7 @@ export function MediaPageView({ mediaId, mediaInfo: mediaInfoFromServer, mediaLi
 
   const mediaInfo = mediaInfoFromServer || realTimeMediaInfo
 
-
-  useEffect(() => {
-    const parseHandler = async () => {
+  const parseHandler = async () => {
       const key = await getParseKey(mediaId)
 
       if (!key) {
@@ -46,12 +45,19 @@ export function MediaPageView({ mediaId, mediaInfo: mediaInfoFromServer, mediaLi
 
       connect(key)
     }
+
+  const reload = () => {
+    disconnect()
+    parseHandler()
+  }
+
+  useEffect(() => {
     parseHandler()
   }, [])
 
   return (
     <ContentLayout className='px-0'>
-      <ParseStatusCard />
+      <ParseStatusCard connected={connected} status={status} reload={reload} />
       <MobileBackdrop mediaInfo={mediaInfo} />
 
       <div className='flex py-4 gap-4 px-[16px] md:px-[0]'>

@@ -105,14 +105,18 @@ export function createParseMediaInfoPipeline(
     .addStep(new CreatePrefetchMediaStep())
     .addStep(new TransformMovieDetailsByFetchedDataStep())
     .addStep(new CreateOrGetVideoStep())
+
     .addStep(new GetTranslationsStep())
     .addStep(new SendTranslationsWSStep())
+
     .addStep(new GetImagesStep())
+
     .addStep(new SetTranslationsStep())
     .addStep(new SetImagesStep())
     .addStep(new SetGenresStep())
     .addStep(new SetMediaBudgetStep())
     .addStep(new SetMediaRevenueStep())
     .addStep(new SetMediaStatusStep())
+    
     .addStep(new CommitStep())
 }
