@@ -6,6 +6,7 @@ import { Button } from '../shadcn/button'
 interface NotFoundProps {
   title?: string
   description?: string
+  action?: string
 }
 
 export function Illustration(props: React.ComponentPropsWithoutRef<'svg'>) {
@@ -21,7 +22,8 @@ export function Illustration(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 export function NotFoundComponent({
   title = 'Page not found',
-  description = 'Lost, this page is. In another system, it may be.'
+  description = 'Lost, this page is. In another system, it may be.',
+  action = 'Take me home'
 }: NotFoundProps) {
   return (
     <div className='relative text-center z-[1] pt-52'>
@@ -51,19 +53,19 @@ export function NotFoundComponent({
           </div>
         </Button> */}
         <Button asChild className='-order-1 sm:order-none'>
-          <LocaleLink href='/'>Take me home</LocaleLink>
+          <LocaleLink href='/'>{action}</LocaleLink>
         </Button>
       </div>
     </div>
   )
 }
 
-export function NotFound({ title, description }: NotFoundProps) {
+export function NotFound(props: NotFoundProps) {
   return (
     <div className='relative flex flex-col w-full justify-center min-h-full bg-background p-6 md:p-10'>
       <div className='relative max-w-5xl mx-auto w-full'>
         <Illustration className='absolute inset-0 w-full opacity-[0.04] dark:opacity-[0.03] text-foreground' />
-        <NotFoundComponent title={title} description={description} />
+        <NotFoundComponent {...props} />
       </div>
     </div>
   )

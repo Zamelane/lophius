@@ -46,7 +46,7 @@ export default async function UserPage({ params }: Props) {
 
   const user = await CachedMakeUserInfoByNickname(nickname, session?.userId)
 
-  if (!user) return <NotFound title='User not found' />
+  if (!user) return <NotFound title='Пользователь не найден' description='Возожно, вы указали не существующее имя пользователя.' action='Верните меня домой' />
 
   return (
     <UserProfilePageComponent
