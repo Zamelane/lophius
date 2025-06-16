@@ -38,7 +38,10 @@ export function VideoMediaCard({
                 loading='lazy'
                 decoding='async'
                 alt='poster'
-                {...(img.width && img.height ? { width: img.width, height: img.height } : { fill: true })}
+                {...(img.width && img.height ? { width: img.width, height: img.height } : { 
+                  width: 300,
+                  height: 400
+                 })}
               />
             ) : (
               <div className='aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] flex justify-center items-center bg-border'>

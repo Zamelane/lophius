@@ -133,7 +133,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={UserLogout}>
               <LogOut />
-              Log out
+              Выйти
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

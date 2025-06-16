@@ -31,7 +31,7 @@ export default async function AppLayout({ children }: LayoutProps) {
       <SidebarProvider defaultOpen={state}>
         <GlobalSearch />
         <AppSidebar />
-        <SidebarInset className='ml-[2px]'>
+        <SidebarInset className='ml-[2px] max-w-[calc(100%-47px)] overflow-hidden'>
           <SiteHeader />
           <div className='flex flex-grow justify-center overflow-hidden'>
             <div className='w-full max-w-[1920px]'>

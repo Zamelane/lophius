@@ -52,7 +52,10 @@ export function Badge({ title, href, img }: BadgeType) {
   )
 
   if (href) {
-    <LocaleLink href='/tv-network/123' className={badgeStyles['link']}>{content}</LocaleLink>
+    if (href.startsWith('http')) {
+    return <a target="_blank" href={href} className={badgeStyles['link']}>{content}</a>
+    }
+    return <LocaleLink href={href} className={badgeStyles['link']}>{content}</LocaleLink>
   }
 
   return (

@@ -37,6 +37,12 @@ import { SendRatingWS } from '../steps/details/sendRatingWS'
 import { SendHomepageWS } from '../steps/details/sendHomepageWS'
 import { SendGenresWS } from '../steps/details/sendGenresWS'
 import { SendMediaRawWS } from '../steps/details/sendMediaRawWS'
+import { SendProductionCountriesWS } from '../steps/details/sendProductionCountries'
+import { SendSpokenLanguagesWS } from '../steps/details/sendSpokenLanguages'
+import { SendRevenueWS } from '../steps/details/sendRevenueWS'
+import { SendRuntimeWS } from '../steps/details/sendRuntimeWS'
+import { GetRecomendationsStep } from '../steps/details/getRecomendations'
+import { SendRecommendationsWS } from '../steps/details/sendRecommendationsWS'
 
 export function createMoviePipeline(
   initialContext: Context
@@ -109,6 +115,7 @@ export function createParseMediaInfoPipeline(
     ...initialContext,
     status,
     request,
+    plugin,
     locale: request.locale
   })
     .addStep(new GetMovieDetailsStep())
@@ -121,6 +128,10 @@ export function createParseMediaInfoPipeline(
     .addStep(new SendHomepageWS())
     .addStep(new SendGenresWS())
     .addStep(new SendMediaRawWS())
+    .addStep(new SendProductionCountriesWS())
+    .addStep(new SendSpokenLanguagesWS())
+    .addStep(new SendRevenueWS())
+    .addStep(new SendRuntimeWS())
 
     .addStep(new GetTranslationsStep())
     .addStep(new SendTranslationsWSStep())
@@ -133,6 +144,9 @@ export function createParseMediaInfoPipeline(
 
     .addStep(new GetCreditsStep())
     .addStep(new SendCreditsWS())
+
+    .addStep(new GetRecomendationsStep())
+    .addStep(new SendRecommendationsWS())
 
     .addStep(new SetReleasesStep())
     .addStep(new SetTranslationsStep())

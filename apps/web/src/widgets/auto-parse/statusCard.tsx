@@ -47,6 +47,9 @@ export function ParseStatusCard({ connected, status, reload }: Props) {
     ? Math.round((stats.media.success + stats.media.errors) / stats.media.total * 100)
     : 0
 
+  if (status === 'completed')
+    return null
+
   return (
     <Card className="w-full h-[115px] p-3">
       <div className="flex flex-col gap-3 h-full">

@@ -20,7 +20,7 @@ export function DesktopSidebar({ mediaListButton, mediaInfo }: Props) {
         }
         {mediaListButton}
       </div>
-      <MediaInfoBlock mediaInfo={mediaInfo} orientation='horizontal' />
+      <MediaInfoBlock mediaInfo={mediaInfo} orientation='vertical' />
     </div>
   )
 }

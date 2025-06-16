@@ -80,6 +80,9 @@ export type MediaInfoType = {
       total: number
     }
 
+    revenue?: number
+    runtime?: number
+
     genres?: Array<NamedEntity>
 
     seasons?: Array<{
@@ -117,6 +120,7 @@ export type MediaInfoType = {
 
     createdBy?: Person[]
 
+    //
     networks?: Array<{
       id: number
       logo: ImageType
@@ -133,6 +137,7 @@ export type MediaInfoType = {
       originCountry: Country
     }>
 
+    //
     recommendations?: Array<{
       id: number
       title?: LocalizedText
