@@ -1,5 +1,5 @@
 import { ArrayElementType } from "@/src/shared/types"
-import { DiscoverMovieResponse, MovieCreditsResponse, MovieDetailsResponse, MovieImagesResponse, MovieReleaseDatesResponse, MovieTranslationsResponse } from "../client"
+import { DiscoverMovieResponse, MovieCreditsResponse, MovieDetailsResponse, MovieImagesResponse, MovieRecommendationsResponse, MovieReleaseDatesResponse, MovieTranslationsResponse } from "../client"
 import { SourceMediaService } from "database/services/SourceMediaService"
 
 export type MovieFetchedDataContext = {
@@ -8,6 +8,10 @@ export type MovieFetchedDataContext = {
 
 export type MovieCreditsDataContext = {
   fetchedCreditsData: MovieCreditsResponse
+}
+
+export type MovieRecommendationsDataContext = {
+  fetchedRecommendationsData: DiscoverMovieResponse
 }
 
 export type ImagesFetcherDataContext = {

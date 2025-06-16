@@ -1,7 +1,12 @@
+import { MediaInfoType } from "@/src/shared/types/web-types"
 import { CategoryBadges } from "."
 import { CategoryBadgesContainer } from "./category-badges-container"
 
-export function MediaBadgesBlock() {
+export type Props = {
+  mediaInfo: MediaInfoType
+}
+
+export function MediaBadgesBlock({ mediaInfo }: Props) {
   const categories: CategoryBadges[] = [
       {
         title: 'Телесеть',
@@ -25,7 +30,10 @@ export function MediaBadgesBlock() {
               https: true,
               domain: 'www.themoviedb.org',
               path: '/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg'
-            }
+            },
+            href: 'https://www.themoviedb.org/' + (
+              mediaInfo._raw?.media.contentType === 'film' ? 'movie/' : 'tv/'
+            ) + mediaInfo._raw?.media.external_id
           }
         ]
       }
