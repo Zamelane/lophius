@@ -28,7 +28,7 @@ export function TitleSection({ mediaInfo }: Props) {
         </p>
       </div>
       <div className='hidden md:flex flex-col justify-end text-end'>
-        <RatingBadge rating='9.73' votes='0 оценок' />
+        <RatingBadge rating={(mediaInfo.meta?.rating?.voteAverage || 0).toPrecision(3).toString()} votes={(mediaInfo.meta?.rating?.voteCount || 0) + ' оценок'} />
       </div>
     </div>
   )

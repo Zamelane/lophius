@@ -9,7 +9,8 @@ type Props = {
 }
 
 type InWith = Props & {
-  token: string
+  token: string,
+  locale?: string
 }
 
 type OutWith = InWith & FetchedMovieDetailsContext
@@ -33,6 +34,9 @@ export class GetMovieDetailsStep implements Step<InWith, OutWith> {
       path: {
         // @ts-ignore
         movie_id: ctx?.fetchedData?.id || ctx.externalId
+      },
+      query: {
+        language: ctx.locale
       }
     })
 

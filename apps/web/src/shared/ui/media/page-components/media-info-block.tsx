@@ -8,12 +8,17 @@ type Props = {
 }
 
 export function MediaInfoBlock({ mediaInfo, orientation }: Props) {
-  const items: InfoBlockItem[] = [
-    {
-      value: '2018',
-      title: 'Год выпуска',
-      href: '/tv/catalog?yearMin=2018&yearMax=2018'
-    },
+  const items: InfoBlockItem[] = []
+
+  if (mediaInfo.meta?.releaseDate) {
+    items.push({
+      title: 'Дата выхода',
+      href: '?modal=releaseDate',
+      value: new Date(mediaInfo.meta.releaseDate).getFullYear().toString()
+    })
+  }
+
+  items.push(
     {
       title: 'Переводов',
       href: '?modal=translates',
@@ -23,8 +28,7 @@ export function MediaInfoBlock({ mediaInfo, orientation }: Props) {
       value: 'Япония',
       title: 'Страна оригинала',
       href: '/tv/catalog?country=123'
-    }
-  ]
+    })
 
   return (
     <InfoBlock items={items} orientation={orientation} />

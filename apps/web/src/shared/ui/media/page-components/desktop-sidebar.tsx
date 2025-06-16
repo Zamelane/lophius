@@ -15,7 +15,9 @@ export function DesktopSidebar({ mediaListButton, mediaInfo }: Props) {
     <div className='hidden md:flex flex-col gap-2 h-full sticky top-4 min-w-[250px] max-w-[250px]'>
       <MediaPoster mediaInfo={mediaInfo} />
       <div className='flex flex-col gap-2 max-w-[250px]'>
-        <Button isPrimary>Смотреть</Button>
+        {
+          mediaInfo.meta?.homepage && <Button isPrimary>Смотреть</Button>
+        }
         {mediaListButton}
       </div>
       <MediaInfoBlock mediaInfo={mediaInfo} orientation='horizontal' />
