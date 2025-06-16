@@ -72,7 +72,7 @@ export type MediaInfoType = {
       voteCount: number | null
     }
 
-    releaseDate?: Date
+    releaseDate?: string
     totalTranslations?: number
 
     homepage?: {

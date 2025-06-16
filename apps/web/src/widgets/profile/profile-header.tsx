@@ -81,7 +81,7 @@ export const ProfileHeader = ({ data, isAuth, setData }: ParamsType) => {
                   animation='slideLeft'
                   className='text-muted-foreground'
                 >
-                  Subscribers
+                  Подписчиков
                 </TextAnimate>
               </p>
             </div>

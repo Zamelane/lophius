@@ -27,6 +27,16 @@ import { ParseStatus } from 'src/search/parse-status'
 import { SendTranslationsWSStep } from '../steps/translations/sendTranslationsWS'
 import { CreateOptionalMediaByDetailsStep } from '../steps/details/optionalMediaByDetails'
 import { TransformMovieDetailsByFetchedDataStep } from '../steps/details/transformMovieDetailsByFetchedData'
+import { SendImagesWS } from '../steps/translations/sendImagesWS'
+import { GetReleasesStep } from '../steps/details/getReleases'
+import { SetReleasesStep } from '../steps/details/setReleases'
+import { SendReleasesWS } from '../steps/details/sendReleasesWS'
+import { GetCreditsStep } from '../steps/details/getCredits'
+import { SendCreditsWS } from '../steps/details/sendCreditsWS'
+import { SendRatingWS } from '../steps/details/sendRatingWS'
+import { SendHomepageWS } from '../steps/details/sendHomepageWS'
+import { SendGenresWS } from '../steps/details/sendGenresWS'
+import { SendMediaRawWS } from '../steps/details/sendMediaRawWS'
 
 export function createMoviePipeline(
   initialContext: Context
@@ -98,7 +108,8 @@ export function createParseMediaInfoPipeline(
   return new Pipeline({
     ...initialContext,
     status,
-    request
+    request,
+    locale: request.locale
   })
     .addStep(new GetMovieDetailsStep())
     .addStep(new CreateOptionalMediaByDetailsStep())
@@ -106,11 +117,24 @@ export function createParseMediaInfoPipeline(
     .addStep(new TransformMovieDetailsByFetchedDataStep())
     .addStep(new CreateOrGetVideoStep())
 
+    .addStep(new SendRatingWS())
+    .addStep(new SendHomepageWS())
+    .addStep(new SendGenresWS())
+    .addStep(new SendMediaRawWS())
+
     .addStep(new GetTranslationsStep())
     .addStep(new SendTranslationsWSStep())
 
     .addStep(new GetImagesStep())
+    .addStep(new SendImagesWS())
 
+    .addStep(new GetReleasesStep())
+    .addStep(new SendReleasesWS())
+
+    .addStep(new GetCreditsStep())
+    .addStep(new SendCreditsWS())
+
+    .addStep(new SetReleasesStep())
     .addStep(new SetTranslationsStep())
     .addStep(new SetImagesStep())
     .addStep(new SetGenresStep())

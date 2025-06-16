@@ -66,7 +66,7 @@ export function MediaPageView({ mediaId, mediaInfo: mediaInfoFromServer, mediaLi
         <div className='flex flex-col gap-4 flex-grow min-w-0 max-w-full'>
           <MobilePoster mediaInfo={mediaInfo} />
           <TitleSection mediaInfo={mediaInfo} />
-          <MobileActions mediaListButton={mediaListButton} />
+          <MobileActions mediaInfo={mediaInfo} mediaListButton={mediaListButton} />
           <div className='flex flex-grow flex-col max-w-full'>
             <FilmInfo mediaInfo={mediaInfo} />
           </div>

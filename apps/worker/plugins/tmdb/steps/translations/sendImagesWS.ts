@@ -1,9 +1,9 @@
-import { TranslatesFetchedDataContext } from '../types'
+import { ImagesFetcherDataContext } from '../types'
 import { Step } from 'src/lib/pipeline';
 import { ParseRequest } from 'src/search/interfaces';
 import { ParseStatus } from 'src/search/parse-status';
 
-type InWith = TranslatesFetchedDataContext & {
+type InWith = ImagesFetcherDataContext & {
   request: ParseRequest
   status: ParseStatus
 }
@@ -13,75 +13,125 @@ type OutWith = InWith
 export class SendImagesWS implements Step<InWith, OutWith> {
   async execute(ctx: InWith): Promise<OutWith> {
 
-    const { fetchedTranslatesData, status, request } = ctx
+    const { fetchedImagesData, status, request } = ctx
 
     if (!status.newData.meta) {
       status.newData.meta = {}
     }
 
-    fetchedTranslatesData.translations?.map(t => {
-      if (t.data) {
-        if ((!status.newData.title
-          || status.newData.title.lang !== request.locale
-          && t.iso_639_1 === request.locale
-        ) && t.data.title
-        ) {
-          status.newData.title = {
-            lang: t.iso_639_1!,
-            text: t.data.title
-          }
-        }
-        // status.newData.meta!.totalTranslations = (status.newData.meta?.totalTranslations ?? 0) + Math.max(accountedTranslate--, 0)
+    const topBackdrop = fetchedImagesData.backdrops?.sort((a, b) => {
+      let aRating = calculateImgRating(
+        request.locale,
+        typeof a.iso_639_1 === 'string' ? a.iso_639_1 : undefined,
+        a.vote_average,
+        a.vote_count
+      )
+      let bRating = calculateImgRating(
+        request.locale,
+        typeof b.iso_639_1 === 'string' ? b.iso_639_1 : undefined,
+        b.vote_average,
+        b.vote_count
+      )
 
-        if (t.data.homepage) {
-          if (!status.newData.meta?.homepage?.default) {
-            status.newData.meta!.homepage = {
-              default: (
-                !status.newData.meta?.homepage?.default
-                || status.newData.meta.homepage.default.lang !== request.locale
-                && t.iso_639_1 === request.locale
-              ) ? { href: t.data.homepage, lang: t.iso_639_1 || null } : status.newData.meta.homepage.default,
-              total: status.newData.meta?.homepage?.total ?? 1
-            }
-          }
-          status.newData.meta?.homepage?.default
-        }
-
-        if ((!status.newData.description
-          || status.newData.description.lang !== request.locale && t.iso_639_1 === request.locale
-        ) && t.data.overview
-        ) {
-          status.newData.description = {
-            lang: t.iso_639_1!,
-            text: t.data.overview
-          }
-        }
-
-        if ((!status.newData.description
-          || status.newData.description.lang !== request.locale && t.iso_639_1 === request.locale
-        ) && t.data.overview
-        ) {
-          status.newData.description = {
-            lang: t.iso_639_1!,
-            text: t.data.overview
-          }
-        }
-
-        if ((!status.newData.tagline
-          || status.newData.tagline.lang !== request.locale && t.iso_639_1 === request.locale
-        ) && t.data.tagline
-        ) {
-          status.newData.tagline = {
-            lang: t.iso_639_1!,
-            text: t.data.tagline
-          }
-        }
+      if (aRating > bRating) {
+        return -1
+      } else if (aRating < bRating) {
+        return 1;
       }
-    })
 
-    status.newData.meta.totalTranslations = ctx.fetchedTranslatesData.translations?.length ?? 0
+      return NaN;
+    })?.[0]
+
+    if (topBackdrop && topBackdrop.file_path) {
+      status.newData.backdrops = {
+        default: {
+          img: {
+            path: '/t/p/original' + topBackdrop.file_path,
+            domain: 'image.tmdb.org',
+            https: true,
+            height: topBackdrop.height,
+            width: topBackdrop.width
+          },
+          lang: typeof topBackdrop.iso_639_1 === 'string' ? topBackdrop.iso_639_1 : null,
+        },
+        total: fetchedImagesData.backdrops?.length || 0
+      }
+    }
 
     status.addPatch()
+
+    const topPosters = fetchedImagesData.posters?.sort((a, b) => {
+      let aRating = calculateImgRating(
+        request.locale,
+        typeof a.iso_639_1 === 'string' ? a.iso_639_1 : undefined,
+        a.vote_average,
+        a.vote_count
+      )
+      let bRating = calculateImgRating(
+        request.locale,
+        typeof b.iso_639_1 === 'string' ? b.iso_639_1 : undefined,
+        b.vote_average,
+        b.vote_count
+      )
+
+      if (aRating > bRating) {
+        return -1
+      } else if (aRating < bRating) {
+        return 1;
+      }
+
+      return NaN;
+    })?.[0]
+
+    if (topPosters && topPosters.file_path) {
+      status.newData.posters = {
+        default: {
+          img: {
+            path: '/t/p/original' + topPosters.file_path,
+            domain: 'image.tmdb.org',
+            https: true,
+            height: topPosters.height,
+            width: topPosters.width
+          },
+          lang: typeof topPosters.iso_639_1 === 'string' ? topPosters.iso_639_1 : null,
+        },
+        total: fetchedImagesData.backdrops?.length || 0,
+        more: fetchedImagesData.posters?.map((p) => {
+          if (p.file_path) {
+            return {
+              https: true,
+              domain: 'image.tmdb.org',
+              path: '/t/p/original' + p.file_path,
+              height: p.height,
+              width: p.width
+            }
+          }
+          return null
+        }).filter(p => p !== null) || []
+      }
+    }
+
+    status.addPatch()
+
     return ctx
+  }
+}
+
+function calculateImgRating(
+  locale: string,
+  iso_639_1?: string,
+  vote_average?: number,
+  vote_count?: number) {
+  let count = 0
+  if (iso_639_1) {
+    count = iso_639_1 === locale ? 100 : 10
+  }
+
+  if (vote_average) {
+    count += 10;
+  }
+
+  if (vote_count) {
+    count += 10;
   }
 }

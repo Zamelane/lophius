@@ -19,7 +19,6 @@ export function MediaInfoTab({ mediaInfo }: Props) {
       <DescriptionBlock mediaInfo={mediaInfo} />
 
       <MediaBadgesBlock />
-
     </div>
   )
 }
