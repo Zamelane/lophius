@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { applyPatch, Operation } from 'fast-json-patch';
 import { ParseStatus } from '@/src/widgets/auto-parse/statusCard';
+import { MediaInfoType } from '@/src/shared/types/web-types';
 
 type PatchMessage = {
   type: 'patch';
@@ -14,7 +15,7 @@ type CompletedMessage = {
 type WebSocketMessage = PatchMessage | CompletedMessage;
 
 type UseMediaInfoWebSocketOptions = {
-  initialData: any;
+  initialData: MediaInfoType;
   onClose?: () => void;
   onError?: (error: string) => void;
 };
@@ -50,7 +51,7 @@ export function useMediaInfoWebSocket({
       onError?.('Ошибка применения изменений');
     } finally {
       isProcessingRef.current = false;
-      
+
       if (patchQueueRef.current.length > 0) {
         processQueue();
       }
@@ -64,6 +65,10 @@ export function useMediaInfoWebSocket({
 
   const connect = useCallback((key: string) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
+    setMediaInfo(i => ({
+      ...i,
+      isLoading: true
+    }))
 
     const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/status?key=${key}`);
     wsRef.current = ws;
@@ -76,16 +81,24 @@ export function useMediaInfoWebSocket({
       onError?.('WebSocket error');
       setStatus('error')
       setConnected(false);
+      setMediaInfo(i => ({
+        ...i,
+        isLoading: false
+      }))
     };
     ws.onclose = () => {
       setConnected(false);
+      setMediaInfo(i => ({
+        ...i,
+        isLoading: false
+      }))
       setStatus('completed')
       onClose?.();
     };
     ws.onmessage = (event) => {
       try {
         const message: WebSocketMessage = JSON.parse(event.data);
-        
+
         // Правильная проверка типа сообщения
         if ('type' in message && message.type === 'patch') {
           handlePatch(message.patch);

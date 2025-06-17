@@ -153,4 +153,6 @@ export type MediaInfoType = {
   _raw?: {
     media: MediasTableType
   }
+
+  isLoading?: boolean
 }
