@@ -1,3 +1,4 @@
+import { Skeleton } from "@/src/shared/ui/shadcn/skeleton";
 import { Tag } from "./tag";
 import { TagContainer } from "./tag-container";
 import { MediaInfoType } from "@/src/shared/types/web-types";
@@ -41,6 +42,15 @@ export function MediaTagsBlock({ mediaInfo }: Props) {
         href: `/catalog?genre=${genre.id}`
       })
     }
+  }
+
+  if (mediaInfo?.isLoading) {
+    return <div className="flex flex-wrap gap-2">
+      <Skeleton className="w-16 h-5 rounded-lg"/>
+      <Skeleton className="w-16 h-5 rounded-lg"/>
+      <Skeleton className="w-16 h-5 rounded-lg"/>
+      <Skeleton className="w-16 h-5 rounded-lg"/>
+    </div>
   }
 
   return (

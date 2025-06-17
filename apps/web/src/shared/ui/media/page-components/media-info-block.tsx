@@ -1,6 +1,8 @@
 import { InfoBlockItem } from "@/src/widgets/media/info-block-item"
 import { InfoBlock, InfoBlockProps } from "./info-block"
 import { MediaInfoType } from "@/src/shared/types/web-types"
+import { Skeleton } from "../../shadcn/skeleton"
+import { cn } from "@/src/shared/lib/utils"
 
 type Props = {
   mediaInfo: MediaInfoType
@@ -70,6 +72,14 @@ export function MediaInfoBlock({ mediaInfo, orientation }: Props) {
       href: '?modal=translates',
       value: mediaInfo?.meta?.totalTranslations?.toString() || '1'
     })
+
+  if (mediaInfo.isLoading) {
+      return <div className={cn('flex gap-2', orientation === 'vertical' && 'flex-col')}>
+        <Skeleton className="w-full h-[48px]" />
+        <Skeleton className="w-full h-[48px]" />
+        <Skeleton className="w-full h-[48px]" />
+      </div>
+  }
 
   return (
     <InfoBlock items={items} orientation={orientation} />

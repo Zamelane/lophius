@@ -2,6 +2,7 @@
 
 import { cn } from '@/src/shared/lib/utils'
 import { MediaInfoType } from '@/src/shared/types/web-types'
+import { Skeleton } from '@/src/shared/ui/shadcn/skeleton'
 import { calculateImageSrc } from '@/src/utils/calculateImageSrc'
 import { SearchSlashIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -55,11 +56,13 @@ export function MediaPoster({ mediaInfo, className = '' }: MediaPosterProps) {
                   src: calculateImageSrc(poster.img)
                 })}
             />
-          ) : (
-            <div className='aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] flex justify-center items-center bg-border'>
+          ) : 
+          mediaInfo.isLoading
+            ? <Skeleton className='aspect-[5/7] w-full rounded-[4px]'/>
+            : <div className='aspect-[5/7] pointer-events-none object-cover w-full rounded-[4px] flex justify-center items-center bg-border'>
               <SearchSlashIcon />
             </div>
-          )}
+          }
         </div>
       </div>
 

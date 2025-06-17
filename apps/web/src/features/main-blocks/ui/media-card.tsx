@@ -25,7 +25,7 @@ export function VideoMediaCard({
   img
 }: VideoMediaCardProps) {
   return (
-    <LocaleLink href={`media/${id}`} className="flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]">
+    <LocaleLink href={`/media/${id}`} className="flex flex-col gap-[8px] no-underline select-none w-[160px] min-w-[160px]">
       {img ? (
               <Image
                 className={cn(

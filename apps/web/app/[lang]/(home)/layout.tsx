@@ -12,7 +12,10 @@ export default function Layout({ children }: LayoutProps) {
         )
       }
       <SWRProvider>
+        <div className='md:max-w-[calc(100%-20px)] overflow-clip'>
         <AppLayout>{children}</AppLayout>
+
+        </div>
       </SWRProvider>
     </>
   )
