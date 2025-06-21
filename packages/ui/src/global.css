@@ -1,13 +1,11 @@
 @import "tailwindcss";
+@import "./styles/button.css";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
   --color-background: hsl(0 0% 100%);
   --color-white: hsl(0 0% 100%);
   --color-primary: hsl(220 90% 70%);
-
-  --color-btn-default-text: hsl(218 5.3% 70.6%);
-  --color-btn-primary-filled: hsl(34 100% 50%);
 }
 
 @layer dark {
@@ -15,9 +13,6 @@
     --color-background: hsl(0 0% 0%);
     --color-white: hsl(0 0% 100%);
     --color-primary: hsl(220 90% 70%);
-
-    --color-btn-default-text: hsl(218 5.3% 70.6%);
-    --color-btn-primary-filled: hsl(27 100% 47%);
   }
 }
 

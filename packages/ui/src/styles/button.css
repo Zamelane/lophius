@@ -1,0 +1,45 @@
+@theme {
+  --color-btn-default-text: hsl(0, 0%, 0%);
+
+  --color-btn-default-filled: hsla(0, 0%, 0%, 8%);
+  --color-btn-is-filled: hsl(218, 5%, 71%);
+
+  --color-btn-primary-default-filled: hsl(34 100% 50%);
+  --color-btn-primary-filled-color-1: hsl(34 100% 50%);
+  --color-btn-primary-filled-color-2: hsl(338 78% 48%);
+  --color-btn-primary-filled-color-3: hsl(207 90% 54%);
+  --color-btn-primary-filled-color-4: hsl(4 90% 58%);
+  --color-btn-primary-filled-color-5: hsl(260 54% 45%);
+}
+
+@layer dark {
+  [data-theme=dark] {
+    --color-btn-default-text: hsl(218 5.3% 70.6%);
+
+    --color-btn-default-filled: hsl(218, 5%, 71%, 8%);
+    --color-btn-is-filled: hsl(218, 5%, 71%);
+
+    --color-btn-primary-default-filled: hsl(27 100% 47%);
+    --color-btn-primary-filled-color-1: hsl(27 100% 47%);
+    --color-btn-primary-filled-color-2: hsl(334 79% 38%);
+    --color-btn-primary-filled-color-3: hsl(212 80% 42%);
+    --color-btn-primary-filled-color-4: hsl(0 73% 41%);
+    --color-btn-primary-filled-color-5: hsl(260 54% 45%);
+  }
+}
+
+.color-1 {
+    --color-btn-primary-filled: var(--color-btn-primary-filled-color-1);
+}
+.color-2 {
+    --color-btn-primary-filled: var(--color-btn-primary-filled-color-2);
+}
+.color-3 {
+    --color-btn-primary-filled: var(--color-btn-primary-filled-color-3);
+}
+.color-4 {
+    --color-btn-primary-filled: var(--color-btn-primary-filled-color-4);
+}
+.color-5 {
+    --color-btn-primary-filled: var(--color-btn-primary-filled-color-5);
+}
