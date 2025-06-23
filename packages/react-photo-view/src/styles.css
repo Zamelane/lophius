@@ -1,0 +1,176 @@
+@keyframes PhotoView__fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.PhotoView-Slider__clean .PhotoView-Slider__BannerWrap,
+.PhotoView-Slider__clean .PhotoView-Slider__ArrowLeft,
+.PhotoView-Slider__clean .PhotoView-Slider__ArrowRight,
+.PhotoView-Slider__clean .PhotoView-Slider__Overlay {
+  opacity: 0;
+}
+.PhotoView-Slider__willClose .PhotoView-Slider__BannerWrap:hover {
+  opacity: 0;
+}
+.PhotoView-Slider__Backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  transition-property: background-color;
+  z-index: -1;
+}
+.PhotoView-Slider__fadeIn {
+  opacity: 0;
+  animation: PhotoView__fade linear both;
+}
+.PhotoView-Slider__fadeOut {
+  opacity: 0;
+  animation: PhotoView__fade linear both reverse;
+}
+.PhotoView-Slider__BannerWrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.2s ease-out;
+  z-index: 20;
+}
+.PhotoView-Slider__BannerWrap:hover {
+  opacity: 1;
+}
+.PhotoView-Slider__Counter {
+  padding: 0 10px;
+  font-size: 14px;
+  opacity: 0.75;
+}
+.PhotoView-Slider__BannerRight {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.PhotoView-Slider__toolbarIcon {
+  box-sizing: border-box;
+  padding: 10px;
+  fill: white;
+  opacity: 0.75;
+  cursor: pointer;
+  transition: opacity 0.2s linear;
+}
+.PhotoView-Slider__toolbarIcon:hover {
+  opacity: 1;
+}
+.PhotoView-Slider__ArrowLeft,
+.PhotoView-Slider__ArrowRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 100px;
+  margin: auto;
+  opacity: 0.75;
+  z-index: 20;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s linear;
+}
+.PhotoView-Slider__ArrowLeft:hover,
+.PhotoView-Slider__ArrowRight:hover {
+  opacity: 1;
+}
+.PhotoView-Slider__ArrowLeft svg,
+.PhotoView-Slider__ArrowRight svg {
+  box-sizing: content-box;
+  padding: 10px;
+  width: 24px;
+  height: 24px;
+  fill: white;
+  background: rgba(0, 0, 0, 0.3);
+}
+.PhotoView-Slider__ArrowLeft {
+  left: 0;
+}
+.PhotoView-Slider__ArrowRight {
+  right: 0;
+}
+.PhotoView__PhotoWrap,
+.PhotoView__PhotoBox {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  touch-action: none;
+  direction: ltr;
+}
+.PhotoView__PhotoWrap {
+  z-index: 10;
+  overflow: hidden;
+}
+.PhotoView__PhotoBox {
+  transform-origin: left top;
+}
+.PhotoView__Photo {
+  max-width: initial;
+  cursor: grab;
+  user-select: none;
+}
+.PhotoView__Photo:active {
+  cursor: grabbing;
+}
+.PhotoView__icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  transform: translate(-50%, -50%);
+}
+.PhotoView-Portal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  overflow: hidden;
+  touch-action: none;
+  direction: ltr;
+}
+@keyframes PhotoView__rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes PhotoView__delayIn {
+  0%,
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.PhotoView__Spinner {
+  animation: PhotoView__delayIn 0.4s linear both;
+}
+.PhotoView__Spinner svg {
+  animation: PhotoView__rotate 0.6s linear infinite;
+}
