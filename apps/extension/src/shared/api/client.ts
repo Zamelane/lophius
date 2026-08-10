@@ -5,4 +5,4 @@ import { API_URL } from "../config/env";
 
 const client = treaty<App>(API_URL);
 
-export default { client };
+export { client };

@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url));
+const repoRoot = resolve(rootDir, '../..');
 
 export default defineConfig({
   base: './',
@@ -11,6 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(rootDir, 'src'),
+      '@@': repoRoot,
     },
   },
   build: {
