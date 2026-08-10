@@ -6,6 +6,7 @@ export function App() {
   return (
     <HashRouter>
       <div className="app">
+
         <header className="app__header">
           <h1 className="app__brand">Lophius</h1>
           <nav className="app__nav" aria-label="Extension pages">
