@@ -1,0 +1,26 @@
+{
+  "name": "extension",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.4",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "sass": "^1.90.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.2"
+  }
+}
