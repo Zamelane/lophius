@@ -9,11 +9,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@elysia/eden": "^1.4.10",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.0"
   },
   "devDependencies": {
+    "elysia": "1.4.29",
     "@types/chrome": "^0.1.4",
     "@types/node": "^26.2.0",
     "@types/react": "^19.1.10",

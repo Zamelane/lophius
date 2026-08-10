@@ -26,6 +26,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@@/*": ["../../*"],
+      "elysia": ["../server/node_modules/elysia"],
+      "elysia/*": ["../server/node_modules/elysia/*"]
     }
   },
   "include": ["src"]
