@@ -12,3 +12,5 @@ export const telegramChatsTable = sqliteTable("telegram_chats", {
 }, (table) => [
     uniqueIndex("telegram_chats_user_id_chat_id_thread_id_unique").on(table.user_id, table.chat_id, table.thread_id),
 ]);
+
+export type TelegramChatsTableType = typeof telegramChatsTable.$inferSelect;

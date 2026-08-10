@@ -8,3 +8,5 @@ export const usersTable = sqliteTable("users", {
     password: text("password", { length: 255 }).notNull(),
     ...timestamps
 });
+
+export type UsersTableType = typeof usersTable.$inferSelect;
